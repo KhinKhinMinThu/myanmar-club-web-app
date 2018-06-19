@@ -105,6 +105,15 @@ class Page1 extends React.Component {
       }
     ]
   };
+  validateFields = () => {
+    console.log("validate");
+    this.props.form.validateFields((err, values) => {
+      console.log("comonnnn");
+      if (!err) {
+        console.log("Received values of form: ", values);
+      }
+    });
+  };
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {

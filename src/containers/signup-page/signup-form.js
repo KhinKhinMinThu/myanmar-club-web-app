@@ -1,13 +1,12 @@
 import React from "react";
 import "antd/dist/antd.css";
-import Page1 from "./page1";
 import { PageSteps, StepContent, StepAction } from "./components";
 import { message } from "antd";
 
 const steps = [
   {
     title: "First",
-    content: <Page1 />,
+    content: 1,
     ref: "page1"
   },
   {
@@ -15,15 +14,15 @@ const steps = [
     content: "Second-content"
   },
   {
-    title: "Last",
+    title: "Last 1",
     content: "Last-content"
   },
   {
-    title: "Last",
+    title: "Last 2",
     content: "Last-content"
   },
   {
-    title: "Last",
+    title: "Last 3",
     content: "Last-content"
   }
 ];
@@ -35,11 +34,11 @@ class SignupForm extends React.Component {
       current: 0
     };
   }
-  next = () => {
+  next = e => {
     const current = this.state.current + 1;
     // const refName = steps[this.state.current].ref;
-
-    this.setState({ current });
+    this.stepContent.validatePage(e);
+    // this.setState({ current });
   };
   prev = () => {
     const current = this.state.current - 1;
@@ -51,7 +50,13 @@ class SignupForm extends React.Component {
     return (
       <div>
         <PageSteps current={current} steps={steps} />
-        <StepContent current={this.state.current} steps={steps} />
+        <StepContent
+          ref={node => {
+            this.stepContent = node;
+          }}
+          current={this.state.current}
+          steps={steps}
+        />
         <StepAction
           current={this.state.current}
           steps={steps}

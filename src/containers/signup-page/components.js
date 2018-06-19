@@ -1,6 +1,7 @@
 import React from "react";
 import { Input, Steps, Button, Radio, DatePicker, Select } from "antd";
 import { dateFormat, extraInfoStyles } from "../shared-components/common";
+import Page1 from "./page1";
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
@@ -34,9 +35,31 @@ export const PageSteps = props => (
   </Steps>
 );
 
-export const StepContent = props => (
-  <div style={stepsContentStyles}>{props.steps[props.current].content}</div>
-);
+export class StepContent extends React.Component {
+  validatePage = e => {
+    if (this.currentStep === 1) {
+      // this.currentPage.handleSubmit(e);
+      this.currentPage.validateFields();
+    }
+  };
+  render() {
+    const { steps, current } = this.props;
+    this.currentStep = steps[current].content;
+    return (
+      <div style={stepsContentStyles}>
+        {this.currentStep === 1 ? (
+          <Page1
+            ref={node => {
+              this.currentPage = node;
+            }}
+          />
+        ) : (
+          <div />
+        )}
+      </div>
+    );
+  }
+}
 
 export const StepAction = props => (
   <div style={stepActionStyles}>
