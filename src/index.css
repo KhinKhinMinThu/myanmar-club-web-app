@@ -13,3 +13,11 @@
   text-align: center;
   height: 100%;
 }
+
+.signup-page {
+  background: #ececec;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
