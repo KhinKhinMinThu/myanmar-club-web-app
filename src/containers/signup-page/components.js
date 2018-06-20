@@ -6,8 +6,7 @@ import {
   Radio,
   DatePicker,
   Select,
-  InputNumber,
-  Collapse
+  InputNumber
 } from "antd";
 import { dateFormat, extraInfoStyles } from "../shared-components/common";
 import Page1 from "./page1";
@@ -17,7 +16,6 @@ const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const Step = Steps.Step;
 const Option = Select.Option;
-const Panel = Collapse.Panel;
 
 export const cardStyles = {
   borderRadius: 10,
@@ -207,13 +205,5 @@ export const zipCodeInput = (
 );
 export const emailInput = (
   <Input style={fieldWidth} type="text" placeholder="Email Address" />
-);
-export const createAccCollapse = (
-  //width: 606 <2 addr input width + rowGutter: 6>
-  <Collapse style={{ maxWidth: 606 }}>
-    <Panel header="Create a Myanmar Club Account...">
-      <p>blallala</p>
-    </Panel>
-  </Collapse>
 );
 //end

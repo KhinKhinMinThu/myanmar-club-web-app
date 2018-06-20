@@ -7,11 +7,11 @@ import {
   addr1Input,
   addr2Input,
   zipCodeInput,
-  emailInput,
-  createAccCollapse
+  emailInput
 } from "./components";
-import { Form, Card, Row, Col } from "antd";
+import { Form, Card, Row, Col, Collapse, Input } from "antd";
 const FormItem = Form.Item;
+const Panel = Collapse.Panel;
 
 class Page2 extends React.Component {
   addrInputOpts = {
@@ -46,7 +46,28 @@ class Page2 extends React.Component {
       }
     ]
   };
-
+  passwordInputOpts = {
+    rules: [
+      {
+        required: true,
+        message: "Please input your password!"
+      },
+      {
+        validator: this.validateToNextPassword
+      }
+    ]
+  };
+  cfrmPwInputOpts = {
+    rules: [
+      {
+        required: true,
+        message: "Please confirm your password!"
+      },
+      {
+        validator: this.compareToFirstPassword
+      }
+    ]
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const rowGutter = 6;
@@ -74,9 +95,27 @@ class Page2 extends React.Component {
           <FormItem {...formItemLayout} label="Email Address">
             {getFieldDecorator("emailInput", this.emailInputOpts)(emailInput)}
           </FormItem>
-          <FormItem {...formItemLayout} label=" " colon={false}>
-            {createAccCollapse}
-          </FormItem>
+
+          {/*Not able to export/import as onChange/onBlur method not working for Component props*/}
+          <Row>
+            <Col offset={8}>
+              {/* width: 606 <2 addr input width + rowGutter: 6> */}
+              <Collapse style={{ maxWidth: 606 }}>
+                <Panel header="Create a Myanmar Club Account...">
+                  <FormItem {...formItemLayout} label="Password">
+                    {getFieldDecorator("passwordInput", this.passwordInputOpts)(
+                      <Input type="password" />
+                    )}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label="Confirm Password">
+                    {getFieldDecorator("cfrmPwInput", this.cfrmPwInputOpts)(
+                      <Input type="password" onBlur={this.handleConfirmBlur} />
+                    )}
+                  </FormItem>
+                </Panel>
+              </Collapse>
+            </Col>
+          </Row>
         </Form>
       </Card>
     );
