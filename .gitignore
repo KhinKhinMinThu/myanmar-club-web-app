@@ -9,6 +9,9 @@
 # production
 /build
 
+#personal backup folder
+/backup-kk
+
 # misc
 .DS_Store
 .env.local

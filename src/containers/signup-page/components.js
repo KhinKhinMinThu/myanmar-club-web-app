@@ -84,7 +84,7 @@ export const StepAction = props => (
 
 // ******************************* page1 components
 // *******************************
-const fieldWidth = { width: 200 };
+export const fieldWidth = { width: 200 };
 export const firstNameInput = (
   <Input style={fieldWidth} type="text" placeholder="First Name" />
 );
@@ -102,38 +102,6 @@ export const genderRdo = (
 );
 export const dobInput = <DatePicker style={fieldWidth} format={dateFormat} />;
 
-export class NationalityDdl extends React.Component {
-  render() {
-    return (
-      <Select
-        style={fieldWidth}
-        placeholder="Select nationality"
-        onChange={this.props.changed}
-      >
-        <Option value="MM">Myanmar</Option>
-        <Option value="SG">Singaporean</Option>
-        <Option value="OT">Others</Option>
-      </Select>
-    );
-  }
-}
-export class ReligionDdl extends React.Component {
-  render() {
-    return (
-      <Select
-        style={fieldWidth}
-        placeholder="Select religion"
-        onChange={this.props.changed}
-      >
-        <Option value="BU">Buddhism</Option>
-        <Option value="IS">Islam</Option>
-        <Option value="HI">Hinduism</Option>
-        <Option value="CH">Christianity</Option>
-        <Option value="OT">Others</Option>
-      </Select>
-    );
-  }
-}
 export const otherInput = <Input style={fieldWidth} type="text" />;
 
 export const mStatusDdl = (

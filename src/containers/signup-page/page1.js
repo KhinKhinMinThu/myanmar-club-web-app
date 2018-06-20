@@ -1,14 +1,13 @@
 import React from "react";
 import "antd/dist/antd.css";
 import {
+  fieldWidth,
   cardStyles,
   firstNameInput,
   middleNameInput,
   lastNameInput,
   genderRdo,
   dobInput,
-  NationalityDdl,
-  ReligionDdl,
   otherInput,
   mStatusDdl,
   eduLvlInput,
@@ -20,6 +19,7 @@ import {
 } from "./components";
 import { Form, Card, Row, Col, Button } from "antd";
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class Page1 extends React.Component {
   constructor(props) {
@@ -158,16 +158,14 @@ class Page1 extends React.Component {
     let showOtherNatInput = null;
     let showOtherRelInput = null;
     if (this.state.showOtherNat) {
-      showOtherNatInput = getFieldDecorator(
-        "otherNatInput",
-        this.otherNatInputOpts
-      )(otherInput);
+      showOtherNatInput = getFieldDecorator("otherNatInput", this.natInputOpts)(
+        otherInput
+      );
     }
     if (this.state.showOtherRel) {
-      showOtherRelInput = getFieldDecorator(
-        "otherRelInput",
-        this.otherRelInputOpts
-      )(otherInput);
+      showOtherRelInput = getFieldDecorator("otherRelInput", this.relInputOpts)(
+        otherInput
+      );
     }
 
     return (
@@ -193,26 +191,42 @@ class Page1 extends React.Component {
             {getFieldDecorator("dobInput", this.dobInputOpts)(dobInput)}
           </FormItem>
 
+          {/*Not able to export/import as onChange method not working for Component props*/}
           <FormItem {...formItemLayout} label="Nationality">
-            {getFieldDecorator("nationalityDdl", this.natInputOpts)(
-              <Row gutter={rowGutter} type="flex">
-                <Col>
-                  <NationalityDdl changed={this.nationalityDdlChanged} />
-                </Col>
-                <Col>{showOtherNatInput}</Col>
-              </Row>
-            )}
+            <Row gutter={rowGutter} type="flex">
+              <Col>
+                <Select
+                  style={fieldWidth}
+                  defaultValue="MM"
+                  onChange={this.nationalityDdlChanged}
+                >
+                  <Option value="MM">Myanmar</Option>
+                  <Option value="SG">Singaporean</Option>
+                  <Option value="OT">Others</Option>
+                </Select>
+              </Col>
+              <Col>{showOtherNatInput}</Col>
+            </Row>
           </FormItem>
 
+          {/*Not able to export/import as onChange method not working for Component props*/}
           <FormItem {...formItemLayout} label="Religion">
-            {getFieldDecorator("religtionDdl", this.relInputOpts)(
-              <Row gutter={rowGutter} type="flex">
-                <Col>
-                  <ReligionDdl changed={this.religionDdlChanged} />
-                </Col>
-                <Col>{showOtherRelInput}</Col>
-              </Row>
-            )}
+            <Row gutter={rowGutter} type="flex">
+              <Col>
+                <Select
+                  style={fieldWidth}
+                  defaultValue="BU"
+                  onChange={this.religionDdlChanged}
+                >
+                  <Option value="BU">Buddhism</Option>
+                  <Option value="IS">Islam</Option>
+                  <Option value="HI">Hinduism</Option>
+                  <Option value="CH">Christianity</Option>
+                  <Option value="OT">Others</Option>
+                </Select>
+              </Col>
+              <Col>{showOtherRelInput}</Col>
+            </Row>
           </FormItem>
 
           <FormItem {...formItemLayout} label="Marital Status">
@@ -242,6 +256,9 @@ class Page1 extends React.Component {
             )}
             {passNumInfo}
           </FormItem>
+          <Button type="primary" htmlType="submit">
+            Test
+          </Button>
         </Form>
       </Card>
     );
