@@ -6,12 +6,12 @@ import { message } from "antd";
 const steps = [
   {
     title: "First",
-    content: 1,
-    ref: "page1"
+    content: 1
+    //ref: "page1"
   },
   {
     title: "Second",
-    content: "Second-content"
+    content: 2
   },
   {
     title: "Last 1",

@@ -134,7 +134,19 @@ class RegistrationForm extends React.Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <FormItem {...formItemLayout} label="E-mail">
+        <FormItem
+          {{
+            labelCol: {
+              xs: { span: 24 },
+              sm: { span: 8 }
+            },
+            wrapperCol: {
+              xs: { span: 24 },
+              sm: { span: 16 }
+            }
+          }}
+          label="E-mail"
+        >
           {getFieldDecorator("email", {
             rules: [
               {

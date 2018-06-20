@@ -3,6 +3,7 @@ import "antd/dist/antd.css";
 import {
   fieldWidth,
   cardStyles,
+  formItemLayout,
   firstNameInput,
   middleNameInput,
   lastNameInput,
@@ -90,15 +91,6 @@ class Page1 extends React.Component {
     ]
   };
 
-  // validateFieldsll = () => {
-  //   console.log("validate");
-  //   this.props.form.validateFields((err, values) => {
-  //     if (!err) {
-  //       console.log("Received values of form: ", values);
-  //     }
-  //   });
-  // };
-
   nationalityDdlChanged = value => {
     const doesShow = this.state.showOtherNat;
     if (value === "OT" && !doesShow) {
@@ -119,16 +111,16 @@ class Page1 extends React.Component {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      }
-    };
+    // const formItemLayout = {
+    //   labelCol: {
+    //     xs: { span: 24 },
+    //     sm: { span: 8 }
+    //   },
+    //   wrapperCol: {
+    //     xs: { span: 24 },
+    //     sm: { span: 16 }
+    //   }
+    // };
     const rowGutter = 6;
 
     let showOtherNatInput = null;

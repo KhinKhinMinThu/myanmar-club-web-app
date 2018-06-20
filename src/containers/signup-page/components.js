@@ -1,18 +1,39 @@
 import React from "react";
-import { Input, Steps, Button, Radio, DatePicker, Select } from "antd";
+import {
+  Input,
+  Steps,
+  Button,
+  Radio,
+  DatePicker,
+  Select,
+  InputNumber,
+  Collapse
+} from "antd";
 import { dateFormat, extraInfoStyles } from "../shared-components/common";
 import Page1 from "./page1";
+import Page2 from "./page2";
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const Step = Steps.Step;
 const Option = Select.Option;
+const Panel = Collapse.Panel;
 
 export const cardStyles = {
   borderRadius: 10,
   textAlign: "left"
 };
-
+export const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 }
+  }
+};
+export const fieldWidth = { width: 200 };
 // ******************************* signup-form components
 // *******************************
 const stepsContentStyles = {
@@ -38,31 +59,44 @@ export const PageSteps = props => (
 export class StepContent extends React.Component {
   validatePage = e => {
     let result = false;
-    if (this.currentStep === 1) {
+    if (this.currentStep !== 1) {
       this.currentPage.validateFields((err, values) => {
         if (!err) {
           result = true;
         }
       });
+    } else {
+      result = true; // to skip page1 validation
     }
     return result;
   };
   render() {
     const { steps, current } = this.props;
     this.currentStep = steps[current].content;
-    return (
-      <div style={stepsContentStyles}>
-        {this.currentStep === 1 ? (
-          <Page1
-            ref={node => {
-              this.currentPage = node;
-            }}
-          />
-        ) : (
-          <div />
-        )}
-      </div>
-    );
+    // ***********************
+
+    console.log("currentStep", this.currentStep);
+
+    let page = null;
+    if (this.currentStep === 1) {
+      page = (
+        <Page1
+          ref={node => {
+            this.currentPage = node;
+          }}
+        />
+      );
+    } else if (this.currentStep === 2) {
+      page = (
+        <Page2
+          ref={node => {
+            this.currentPage = node;
+          }}
+        />
+      );
+    }
+    // ***********************
+    return <div style={stepsContentStyles}>{page}</div>;
   }
 }
 
@@ -89,7 +123,6 @@ export const StepAction = props => (
 
 // ******************************* page1 components
 // *******************************
-export const fieldWidth = { width: 200 };
 export const firstNameInput = (
   <Input style={fieldWidth} type="text" placeholder="First Name" />
 );
@@ -148,32 +181,39 @@ export const passNumInfo = (
 );
 //end
 
-// export const PasswordInput = (
-//   <Input
-//     prefix={<FormInputIcon type="lock" />}
-//     type="password"
-//     placeholder="Password"
-//   />
-// );
-
-// export const ForgotPasswordLink = (
-//   <a href="" style={{ float: "right" }}>
-//     Forgot password{" "}
-//   </a>
-// );
-
-// export const SignUpLink = (
-//   <a href="" style={{ float: "right" }}>
-//     Sign up now!
-//   </a>
-// );
-
-// export const RememberCheckbox = (
-//   <Checkbox style={{ float: "left" }}>Remember me</Checkbox>
-// );
-
-// export const LoginButton = (
-//   <FullWidthButton type="primary" htmlType="submit">
-//     Log in
-//   </FullWidthButton>
-// );
+// ******************************* page2 components
+// *******************************
+export const addr1Input = (
+  <Input
+    style={{ width: 300 }}
+    type="text"
+    placeholder="Street Address Line 1"
+  />
+);
+export const addr2Input = (
+  <Input
+    style={{ width: 300 }}
+    type="text"
+    placeholder="Street Address Line 2"
+  />
+);
+export const zipCodeInput = (
+  <InputNumber
+    style={fieldWidth}
+    min={1}
+    max={999999}
+    placeholder="Postal/ Zip Code"
+  />
+);
+export const emailInput = (
+  <Input style={fieldWidth} type="text" placeholder="Email Address" />
+);
+export const createAccCollapse = (
+  //width: 606 <2 addr input width + rowGutter: 6>
+  <Collapse style={{ maxWidth: 606 }}>
+    <Panel header="Create a Myanmar Club Account...">
+      <p>blallala</p>
+    </Panel>
+  </Collapse>
+);
+//end
