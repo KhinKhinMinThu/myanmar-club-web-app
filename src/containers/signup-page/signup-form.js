@@ -36,9 +36,11 @@ class SignupForm extends React.Component {
   }
   next = e => {
     const current = this.state.current + 1;
-    // const refName = steps[this.state.current].ref;
-    this.stepContent.validatePage(e);
-    // this.setState({ current });
+    const result = this.stepContent.validatePage(e);
+
+    if (result === true) {
+      this.setState({ current });
+    }
   };
   prev = () => {
     const current = this.state.current - 1;

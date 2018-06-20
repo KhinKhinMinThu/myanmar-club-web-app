@@ -17,7 +17,7 @@ import {
   passNumInput,
   passNumInfo
 } from "./components";
-import { Form, Card, Row, Col, Button } from "antd";
+import { Form, Card, Row, Col, Select } from "antd";
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -84,45 +84,21 @@ class Page1 extends React.Component {
   passNumInputOpts = {
     rules: [
       {
-        type: "email",
-        message: "The input is not valid E-mail!"
-      },
-      {
         required: true,
         message: "Please enter your ID Number!"
       }
     ]
   };
-  emailInputOpts = {
-    rules: [
-      {
-        type: "email",
-        message: "The input is not valid E-mail!"
-      },
-      {
-        required: true,
-        message: "Please input your E-mail!"
-      }
-    ]
-  };
-  validateFields = () => {
-    console.log("validate");
-    this.props.form.validateFields((err, values) => {
-      console.log("comonnnn");
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
-    });
-  };
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-        //this.props.next;
-      }
-    });
-  };
+
+  // validateFieldsll = () => {
+  //   console.log("validate");
+  //   this.props.form.validateFields((err, values) => {
+  //     if (!err) {
+  //       console.log("Received values of form: ", values);
+  //     }
+  //   });
+  // };
+
   nationalityDdlChanged = value => {
     const doesShow = this.state.showOtherNat;
     if (value === "OT" && !doesShow) {
@@ -170,7 +146,7 @@ class Page1 extends React.Component {
 
     return (
       <Card style={cardStyles}>
-        <Form onSubmit={this.handleSubmit}>
+        <Form>
           <FormItem {...formItemLayout} label="Name">
             <Row gutter={rowGutter} type="flex">
               <Col>
@@ -256,9 +232,6 @@ class Page1 extends React.Component {
             )}
             {passNumInfo}
           </FormItem>
-          <Button type="primary" htmlType="submit">
-            Test
-          </Button>
         </Form>
       </Card>
     );

@@ -37,10 +37,15 @@ export const PageSteps = props => (
 
 export class StepContent extends React.Component {
   validatePage = e => {
+    let result = false;
     if (this.currentStep === 1) {
-      // this.currentPage.handleSubmit(e);
-      this.currentPage.validateFields();
+      this.currentPage.validateFields((err, values) => {
+        if (!err) {
+          result = true;
+        }
+      });
     }
+    return result;
   };
   render() {
     const { steps, current } = this.props;
