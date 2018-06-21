@@ -1,19 +1,23 @@
 import React from "react";
 import "antd/dist/antd.css";
 import {
-  fieldWidth,
   cardStyles,
   formItemLayout,
   addr1Input,
   addr2Input,
   zipCodeInput,
-  emailInput
+  emailInput,
+  pwInfo
 } from "./components";
 import { Form, Card, Row, Col, Collapse, Input } from "antd";
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 
 class Page2 extends React.Component {
+  state = {
+    confirmDirty: false,
+    expand: false
+  };
   addrInputOpts = {
     rules: [
       {
@@ -46,27 +50,73 @@ class Page2 extends React.Component {
       }
     ]
   };
-  passwordInputOpts = {
+  pwInputOpts = {
     rules: [
       {
-        required: true,
+        required: false,
         message: "Please input your password!"
-      },
-      {
-        validator: this.validateToNextPassword
       }
+
+      // this validator is not called
+      // must place manually within return formItem tag
+
+      // {
+      //   validator: this.validateToNextPassword
+      // }
     ]
   };
   cfrmPwInputOpts = {
     rules: [
       {
-        required: true,
+        required: false,
         message: "Please confirm your password!"
-      },
-      {
-        validator: this.compareToFirstPassword
       }
+      // this validator is not called
+      // must place manually within return formItem tag
+
+      // {
+      //   validator: this.compareToFirstPassword
+      // }
     ]
+  };
+  handleConfirmOnChange = e => {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  };
+  compareToFirstPassword = (rule, value, callback) => {
+    //console.log("compareToFirstPassword");
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue("pwInput")) {
+      callback("Two passwords that you enter is inconsistent!");
+    } else {
+      callback();
+    }
+  };
+  validateToNextPassword = (rule, value, callback) => {
+    //console.log("validateToNextPassword");
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(["cfrmPwInput"], { force: true });
+    }
+    callback();
+  };
+  checkExpand = value => {
+    // to clear the input value every time expand/collapse
+    this.props.form.setFields({
+      pwInput: {
+        value: null
+      },
+      cfrmPwInput: {
+        value: null
+      }
+    });
+    // changes must be within setState or it won't work due to setState being asychronous
+    this.setState({ expand: !this.state.expand }, () => {
+      // to reset the required value of both password inputs
+      this.pwInputOpts.rules[0].required = this.state.expand;
+      this.cfrmPwInputOpts.rules[0].required = this.state.expand;
+      console.log(this.state.expand);
+    });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -100,18 +150,37 @@ class Page2 extends React.Component {
           <Row>
             <Col offset={8}>
               {/* width: 606 <2 addr input width + rowGutter: 6> */}
-              <Collapse style={{ maxWidth: 606 }}>
+
+              <Collapse style={{ maxWidth: 606 }} onChange={this.checkExpand}>
                 <Panel header="Create a Myanmar Club Account...">
+                  {/* calling validator in "cfrmPwInputOpts/pwInputOpts" doesnt work. 
+                      Somehow the line "validator: this.compareToFirstPassword" must be
+                      written exactly here */}
+
                   <FormItem {...formItemLayout} label="Password">
-                    {getFieldDecorator("passwordInput", this.passwordInputOpts)(
-                      <Input type="password" />
-                    )}
+                    {getFieldDecorator("pwInput", {
+                      ...this.pwInputOpts,
+                      rules: [
+                        ...this.pwInputOpts.rules,
+                        { validator: this.validateToNextPassword }
+                      ]
+                    })(<Input type="password" />)}
                   </FormItem>
                   <FormItem {...formItemLayout} label="Confirm Password">
-                    {getFieldDecorator("cfrmPwInput", this.cfrmPwInputOpts)(
-                      <Input type="password" onBlur={this.handleConfirmBlur} />
+                    {getFieldDecorator("cfrmPwInput", {
+                      ...this.cfrmPwInputOpts,
+                      rules: [
+                        ...this.cfrmPwInputOpts.rules,
+                        { validator: this.compareToFirstPassword }
+                      ]
+                    })(
+                      <Input
+                        type="password"
+                        onChange={this.handleConfirmOnChange}
+                      />
                     )}
                   </FormItem>
+                  {pwInfo}
                 </Panel>
               </Collapse>
             </Col>

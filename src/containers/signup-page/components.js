@@ -8,7 +8,11 @@ import {
   Select,
   InputNumber
 } from "antd";
-import { dateFormat, extraInfoStyles } from "../shared-components/common";
+import {
+  dateFormat,
+  extraInfoStyles,
+  InfoListIcon
+} from "../shared-components/common";
 import Page1 from "./page1";
 import Page2 from "./page2";
 
@@ -205,5 +209,22 @@ export const zipCodeInput = (
 );
 export const emailInput = (
   <Input style={fieldWidth} type="text" placeholder="Email Address" />
+);
+
+export const pwInfo = (
+  <div>
+    <InfoListIcon type="exclamation-circle-o" />
+    <span style={extraInfoStyles}>
+      The password must be at least 6 characters.
+    </span>
+    <br />
+    <InfoListIcon type="exclamation-circle-o" />
+    <span style={extraInfoStyles}>
+      It must contain at least one letter and one number.
+    </span>
+    <br />
+    <InfoListIcon type="exclamation-circle-o" />
+    <span style={extraInfoStyles}>Passwords are case sensitive.</span>
+  </div>
 );
 //end

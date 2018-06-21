@@ -135,7 +135,7 @@ class RegistrationForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem
-          {{
+          {...{
             labelCol: {
               xs: { span: 24 },
               sm: { span: 8 }
@@ -284,9 +284,3 @@ class RegistrationForm extends React.Component {
 const WrappedRegistrationForm = Form.create()(RegistrationForm);
 
 ReactDOM.render(<WrappedRegistrationForm />, mountNode);
-
-<Form onSubmit={this.handleSubmit}>
-  <FormItem {...formItemLayout} label="E-mail">
-    {getFieldDecorator("email", this.emailInputOpts)(<Input />)}
-  </FormItem>
-</Form>;
