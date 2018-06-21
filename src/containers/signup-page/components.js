@@ -6,12 +6,16 @@ import {
   Radio,
   DatePicker,
   Select,
-  InputNumber
+  InputNumber,
+  Upload,
+  Checkbox,
+  Row,
+  Col
 } from "antd";
 import {
   dateFormat,
   extraInfoStyles,
-  InfoListIcon
+  CustomIcon
 } from "../shared-components/common";
 import Page1 from "./page1";
 import Page2 from "./page2";
@@ -20,6 +24,7 @@ const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const Step = Steps.Step;
 const Option = Select.Option;
+const TextArea = Input.TextArea;
 
 export const cardStyles = {
   borderRadius: 10,
@@ -213,18 +218,85 @@ export const emailInput = (
 
 export const pwInfo = (
   <div>
-    <InfoListIcon type="exclamation-circle-o" />
+    <CustomIcon type="exclamation-circle-o" />
     <span style={extraInfoStyles}>
       The password must be at least 6 characters.
     </span>
     <br />
-    <InfoListIcon type="exclamation-circle-o" />
+    <CustomIcon type="exclamation-circle-o" />
     <span style={extraInfoStyles}>
       It must contain at least one letter and one number.
     </span>
     <br />
-    <InfoListIcon type="exclamation-circle-o" />
+    <CustomIcon type="exclamation-circle-o" />
     <span style={extraInfoStyles}>Passwords are case sensitive.</span>
   </div>
 );
+
+export const fbAccInput = (
+  <Input style={fieldWidth} type="text" placeholder="Facebook Profile Link" />
+);
+export const areaCodeDdl = (
+  <Select style={{ width: 70 }}>
+    <Option value="65">+65</Option>
+    <Option value="95">+95</Option>
+  </Select>
+);
+export const homeNoInput = (
+  <InputNumber
+    style={fieldWidth}
+    min={1}
+    max={999999}
+    placeholder="Line Phone Number"
+  />
+);
+export const mobileNoInput = (
+  <InputNumber
+    style={fieldWidth}
+    min={1}
+    max={999999}
+    placeholder="Mobile Number"
+  />
+);
+export const hobbiesInput = <TextArea style={fieldWidth} rows={2} />;
+export const uploadBtn = (
+  // need to change action </upload.do> or something
+  <Upload name="userpic" action="" listType="picture">
+    <Button>
+      <CustomIcon type="upload" /> Click to upload
+    </Button>
+  </Upload>
+);
+export const subComListChk = (
+  <Row>
+    <Col span={24}>
+      <Checkbox value="cultural">
+        ၿမန္မာ့ယဥ္ေက်းမႈအနုပညာ ထိန္းသိမ္းၿမွင့္တင္ ပ်ံ႕ပြားေရး ဆပ္ေကာ္မတီ
+      </Checkbox>
+    </Col>
+    <Col span={24}>
+      <Checkbox value="knowledge">
+        စာေပ၊ ဗဟုသုတ၊ တတ္သိပညာ ၿမွင့္တင္ ပ်ံ႕ပြားေရး ဆပ္ေကာ္မတီ
+      </Checkbox>
+    </Col>
+    <Col span={24}>
+      <Checkbox value="community">
+        စကၤာပူေရာက္ၿမန္မာမိသားစု၏ လူမႈအခက္အခဲမ်ားကူညီေစာင့္ေရွာက္ေရးႏွင့္
+        ေကာင္းမြန္ေသာ လူ႕ေဘာင္ဘဝ <br /> ၿမွင့္တင္ထိန္းသိမ္းေရး ဆပ္ေကာ္မတီ
+      </Checkbox>
+    </Col>
+    <Col span={24}>
+      <Checkbox value="sport">
+        ၿမန္မာ့အားကစားက႑ ပံ့ပိုးကူညီေရး ဆပ္ေကာ္မတီ
+      </Checkbox>
+    </Col>
+    <Col span={24}>
+      <Checkbox value="sponsorship">ရံပံုေငြရွာေဖြေရး ဆပ္ေကာ္မတီ</Checkbox>
+    </Col>
+    <Col span={24}>
+      <Checkbox value="outreach">သတင္းႏွင့္ ၿပန္ၾကားေရး ဆပ္ေကာ္မတီ</Checkbox>
+    </Col>
+  </Row>
+);
+
 //end

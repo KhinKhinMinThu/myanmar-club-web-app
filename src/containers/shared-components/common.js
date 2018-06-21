@@ -6,7 +6,7 @@ export const dateFormat = "DD-MM-YYYY";
 export const FormInputIcon = styled(Icon)`
   color: rgba(0, 0, 0, 0.25);
 `;
-export const InfoListIcon = styled(Icon)`
+export const CustomIcon = styled(Icon)`
   color: rgba(0, 0, 0, 0.25);
 `;
 

@@ -35,7 +35,7 @@ class Page1 extends React.Component {
     rules: [
       {
         required: true,
-        message: "Please input your name!"
+        message: "Please enter your name!"
       }
     ]
   };
@@ -44,7 +44,7 @@ class Page1 extends React.Component {
     rules: [
       {
         required: true,
-        message: "Please input your date of birth!"
+        message: "Please enter your date of birth!"
       }
     ]
   };
