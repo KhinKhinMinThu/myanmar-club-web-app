@@ -1,6 +1,6 @@
 import React from "react";
 import "antd/dist/antd.css";
-import { PageSteps, StepContent, StepAction } from "./components";
+import { PageSteps, StepContent, StepAction } from "./components-form";
 import { message } from "antd";
 
 const steps = [
@@ -15,15 +15,7 @@ const steps = [
   },
   {
     title: "Last 1",
-    content: "Last-content"
-  },
-  {
-    title: "Last 2",
-    content: "Last-content"
-  },
-  {
-    title: "Last 3",
-    content: "Last-content"
+    content: 3
   }
 ];
 
@@ -31,7 +23,7 @@ class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0
+      current: 2
     };
   }
   next = e => {
@@ -41,12 +33,21 @@ class SignupForm extends React.Component {
     if (result === true) {
       this.setState({ current });
     }
+    // to display the next page from top
+    document.documentElement.scrollTop = 0;
   };
   prev = () => {
     const current = this.state.current - 1;
     this.setState({ current });
+    // to display the previous page from top
+    document.documentElement.scrollTop = 0;
   };
-  completed = () => message.success("Processing complete!");
+  completed = e => {
+    const result = this.stepContent.validatePage(e);
+    if (result === true) {
+      message.success("Processing complete!");
+    }
+  };
   render() {
     const { current } = this.state;
     return (

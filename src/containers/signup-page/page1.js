@@ -17,7 +17,7 @@ import {
   sgPassDdl,
   passNumInput,
   passNumInfo
-} from "./components";
+} from "./components-pages";
 import { Form, Card, Row, Col, Select } from "antd";
 const FormItem = Form.Item;
 const Option = Select.Option;

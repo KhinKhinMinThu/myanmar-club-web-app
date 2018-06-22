@@ -13,14 +13,15 @@ import {
   hobbiesInput,
   uploadBtn,
   subComListChk
-} from "./components";
+} from "./components-pages";
 import { Form, Card, Row, Col, Collapse, Input } from "antd";
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 
 class Page2 extends React.Component {
   state = {
-    confirmDirty: false
+    confirmDirty: false,
+    showPw: false
   };
   addrInputOpts = {
     rules: [
@@ -57,7 +58,7 @@ class Page2 extends React.Component {
   pwInputOpts = {
     rules: [
       {
-        required: false,
+        required: true,
         message: "Please enter your password!"
       }
 
@@ -72,7 +73,7 @@ class Page2 extends React.Component {
   cfrmPwInputOpts = {
     rules: [
       {
-        required: false,
+        required: true,
         message: "Please enter your password!"
       }
       // this validator is not called
@@ -125,21 +126,9 @@ class Page2 extends React.Component {
     }
     callback();
   };
-  checkExpand = value => {
-    // to clear the input value every time expand/collapse
-    this.props.form.setFields({
-      pwInput: {
-        value: null
-      },
-      cfrmPwInput: {
-        value: null
-      }
-    });
-
-    const isPwReq = this.pwInputOpts.rules[0].required;
-    const isCfPwReq = this.cfrmPwInputOpts.rules[0].required;
-    this.pwInputOpts.rules[0].required = !isPwReq;
-    this.cfrmPwInputOpts.rules[0].required = !isCfPwReq;
+  checkExpand = () => {
+    const doesShow = this.state.showPw;
+    this.setState({ showPw: !doesShow });
   };
   normFile = e => {
     console.log("Upload event:", e);
@@ -152,7 +141,32 @@ class Page2 extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const rowGutter = 6;
-
+    let showPwInput = null;
+    let showCfmPwInput = null;
+    if (this.state.showPw) {
+      showPwInput = (
+        <FormItem {...formItemLayout} label="Password">
+          {getFieldDecorator("pwInput", {
+            ...this.pwInputOpts,
+            rules: [
+              ...this.pwInputOpts.rules,
+              { validator: this.validateToNextPassword }
+            ]
+          })(<Input type="password" />)}
+        </FormItem>
+      );
+      showCfmPwInput = (
+        <FormItem {...formItemLayout} label="Confirm Password">
+          {getFieldDecorator("cfrmPwInput", {
+            ...this.cfrmPwInputOpts,
+            rules: [
+              ...this.cfrmPwInputOpts.rules,
+              { validator: this.compareToFirstPassword }
+            ]
+          })(<Input type="password" onChange={this.handleConfirmOnChange} />)}
+        </FormItem>
+      );
+    }
     return (
       <Card style={cardStyles}>
         <Form>
@@ -187,30 +201,8 @@ class Page2 extends React.Component {
                     {/* calling validator in "cfrmPwInputOpts/pwInputOpts" doesnt work. 
                       Somehow the line "validator: this.compareToFirstPassword" must be
                       written exactly here */}
-
-                    <FormItem {...formItemLayout} label="Password">
-                      {getFieldDecorator("pwInput", {
-                        ...this.pwInputOpts,
-                        rules: [
-                          ...this.pwInputOpts.rules,
-                          { validator: this.validateToNextPassword }
-                        ]
-                      })(<Input type="password" />)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label="Confirm Password">
-                      {getFieldDecorator("cfrmPwInput", {
-                        ...this.cfrmPwInputOpts,
-                        rules: [
-                          ...this.cfrmPwInputOpts.rules,
-                          { validator: this.compareToFirstPassword }
-                        ]
-                      })(
-                        <Input
-                          type="password"
-                          onChange={this.handleConfirmOnChange}
-                        />
-                      )}
-                    </FormItem>
+                    {showPwInput}
+                    {showCfmPwInput}
                     {pwInfo}
                   </Panel>
                 </Collapse>

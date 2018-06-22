@@ -1,11 +1,10 @@
 import React from "react";
 import {
-  Input,
-  Steps,
-  Button,
   Radio,
+  Button,
   DatePicker,
   Select,
+  Input,
   InputNumber,
   Upload,
   Checkbox,
@@ -13,18 +12,19 @@ import {
   Col
 } from "antd";
 import {
+  CustomIcon,
+  FullWidthButton,
+  monthFormat,
   dateFormat,
   extraInfoStyles,
-  CustomIcon
+  radioStyle
 } from "../shared-components/common";
-import Page1 from "./page1";
-import Page2 from "./page2";
-
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
-const Step = Steps.Step;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
+const MonthPicker = DatePicker.MonthPicker;
+const CheckboxGroup = Checkbox.Group;
 
 export const cardStyles = {
   borderRadius: 10,
@@ -41,92 +41,7 @@ export const formItemLayout = {
   }
 };
 export const fieldWidth = { width: 200 };
-// ******************************* signup-form components
-// *******************************
-const stepsContentStyles = {
-  marginTop: "20px",
-  //border: "1px solid #e9e9e9",
-  borderRadius: 10,
-  backgroundColor: "#fafafa",
-  //minHeight: "200px",
-  textAlign: "center",
-  padding: "18px"
-};
-const stepActionStyles = {
-  marginTop: "24px",
-  textAlign: "right"
-};
-
-export const PageSteps = props => (
-  <Steps current={props.current}>
-    {props.steps.map(item => <Step key={item.title} title={item.title} />)}
-  </Steps>
-);
-
-export class StepContent extends React.Component {
-  validatePage = e => {
-    let result = false;
-    if (this.currentStep !== 1) {
-      this.currentPage.validateFields((err, values) => {
-        if (!err) {
-          result = true;
-        }
-      });
-    } else {
-      result = true; // to skip page1 validation
-    }
-    return result;
-  };
-  render() {
-    const { steps, current } = this.props;
-    this.currentStep = steps[current].content;
-    // ***********************
-
-    console.log("currentStep", this.currentStep);
-
-    let page = null;
-    if (this.currentStep === 1) {
-      page = (
-        <Page1
-          ref={node => {
-            this.currentPage = node;
-          }}
-        />
-      );
-    } else if (this.currentStep === 2) {
-      page = (
-        <Page2
-          ref={node => {
-            this.currentPage = node;
-          }}
-        />
-      );
-    }
-    // ***********************
-    return <div style={stepsContentStyles}>{page}</div>;
-  }
-}
-
-export const StepAction = props => (
-  <div style={stepActionStyles}>
-    {props.current > 0 && (
-      <Button style={{ marginRight: 8 }} onClick={props.prevClicked}>
-        Previous
-      </Button>
-    )}
-    {props.current < props.steps.length - 1 && (
-      <Button type="primary" htmlType="submit" onClick={props.nxtClicked}>
-        Next
-      </Button>
-    )}
-    {props.current === props.steps.length - 1 && (
-      <Button type="primary" onClick={props.completedClicked}>
-        Done
-      </Button>
-    )}
-  </div>
-);
-// end
+export const otherInput = <Input style={fieldWidth} type="text" />;
 
 // ******************************* page1 components
 // *******************************
@@ -146,8 +61,6 @@ export const genderRdo = (
   </RadioGroup>
 );
 export const dobInput = <DatePicker style={fieldWidth} format={dateFormat} />;
-
-export const otherInput = <Input style={fieldWidth} type="text" />;
 
 export const mStatusDdl = (
   <Select style={fieldWidth} placeholder="Select marital status">
@@ -271,32 +184,114 @@ export const subComListChk = (
   <Row>
     <Col span={24}>
       <Checkbox value="cultural">
-        ၿမန္မာ့ယဥ္ေက်းမႈအနုပညာ ထိန္းသိမ္းၿမွင့္တင္ ပ်ံ႕ပြားေရး ဆပ္ေကာ္မတီ
+        ၿမန္မာ့ယဥ္ေက်းမႈအနုပညာ ထိန္းသိမ္းၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
       </Checkbox>
     </Col>
     <Col span={24}>
       <Checkbox value="knowledge">
-        စာေပ၊ ဗဟုသုတ၊ တတ္သိပညာ ၿမွင့္တင္ ပ်ံ႕ပြားေရး ဆပ္ေကာ္မတီ
+        စာေပ၊ ဗဟုသုတ၊ တတ္သိပညာ ၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
       </Checkbox>
     </Col>
     <Col span={24}>
       <Checkbox value="community">
         စကၤာပူေရာက္ၿမန္မာမိသားစု၏ လူမႈအခက္အခဲမ်ားကူညီေစာင့္ေရွာက္ေရးႏွင့္
-        ေကာင္းမြန္ေသာ လူ႕ေဘာင္ဘဝ <br /> ၿမွင့္တင္ထိန္းသိမ္းေရး ဆပ္ေကာ္မတီ
+        ေကာင္းမြန္ေသာ လူ႕ေဘာင္ဘဝ <br /> ၿမွင့္တင္ထိန္းသိမ္းေရး Sub-Committee
       </Checkbox>
     </Col>
     <Col span={24}>
       <Checkbox value="sport">
-        ၿမန္မာ့အားကစားက႑ ပံ့ပိုးကူညီေရး ဆပ္ေကာ္မတီ
+        ၿမန္မာ့အားကစားက႑ ပံ့ပိုးကူညီေရး Sub-Committee
       </Checkbox>
     </Col>
     <Col span={24}>
-      <Checkbox value="sponsorship">ရံပံုေငြရွာေဖြေရး ဆပ္ေကာ္မတီ</Checkbox>
+      <Checkbox value="sponsorship">ရံပံုေငြရွာေဖြေရး Sub-Committee</Checkbox>
     </Col>
     <Col span={24}>
-      <Checkbox value="outreach">သတင္းႏွင့္ ၿပန္ၾကားေရး ဆပ္ေကာ္မတီ</Checkbox>
+      <Checkbox value="outreach">သတင္းႏွင့္ ၿပန္ၾကားေရး Sub-Committee</Checkbox>
     </Col>
   </Row>
 );
+//end
+
+// ******************************* page3 components
+// *******************************
+export const membershipTypeRdo = (
+  <RadioGroup name="membershipTypeRdo">
+    <Radio style={radioStyle} value="TYP1">
+      Life (ရာသက္ပန္) <b>SGD 350</b>
+    </Radio>
+    <Radio style={radioStyle} value="TYP2">
+      Singaporean/ PR/ EP Ordinary <b>SGD 74</b> + Member Card <b>SGD 5</b> (1st
+      time) =
+      <b>SGD 79</b>
+    </Radio>
+    <Radio style={radioStyle} value="TYP3">
+      Other Passes <b>SGD 24</b> + Member Card <b>SGD 5</b> (1st time) =
+      <b>SGD 29</b>
+    </Radio>
+    <Radio style={radioStyle} value="TYP4">
+      Yearly Renewal Fees <b>SGD 24</b> + New Member Card <b>SGD 5</b> =
+      <b>SGD 29</b>
+    </Radio>
+    <Radio style={radioStyle} value="TYP5">
+      6 month Fees <b>SGD 12</b> (not entitled for Member Card / အသင္းဝင္ကဒ္ရမည္
+      မဟုတ္ပါ)
+    </Radio>
+  </RadioGroup>
+);
+export class PaymentTypeRdo extends React.Component {
+  render() {
+    return (
+      <RadioGroup
+        name="paymentTypeRdo"
+        defaultValue="DP"
+        onChange={this.props.changed}
+      >
+        <RadioButton value="DP">Direct Online Payment</RadioButton>
+        <RadioButton value="BT">Bank Transfer</RadioButton>
+        <RadioButton value="CT">Cash Payment</RadioButton>
+      </RadioGroup>
+    );
+  }
+}
+//end
+
+// ******************************* credinfo-form components
+// *******************************
+export const cardExpInput = (
+  <MonthPicker
+    style={fieldWidth}
+    format={monthFormat}
+    placeholder="Select month"
+  />
+);
+export const cardNumInput = <Input type="text" style={fieldWidth} />;
+export const cardExpInfo = <span style={extraInfoStyles}>MM-YYYY</span>;
+export const cardSecInput = (
+  <InputNumber style={fieldWidth} min={1} max={999} />
+);
+export class PaymentBtn extends React.Component {
+  render() {
+    return (
+      <FullWidthButton type="primary" onClick={this.props.clicked}>
+        Make Payment Now
+      </FullWidthButton>
+    );
+  }
+}
+export const declarationInfo = (
+  <p style={{ lineHeight: 1.5 }}>
+    <u>Declaration by applicant (ေလွ်ာက္ထားသူမွ ခံဝန္ခ်က္)</u>
+    I declare that the above particulars given by me are true and correct and I
+    agree to abide by the Constitution of the society. <br />
+    အထက္ေဖာ္ၿပပါ မိမိ၏ ကိုယ္ေရးအခ်က္အလက္မ်ားသည္ မွန္ကန္ပါသည္။ မိမိသည္
+    ၿမန္မာကလပ္(စကၤာပူ) အသင္း၏ ဖြဲ႕စည္းပံုစည္းမ်ဥ္းမ်ားကို လိုက္နာပါမည္။
+  </p>
+);
+const declarationChkList = [
+  { label: "True and Correct", value: "1" },
+  { label: "I will abide by the Constitution of the Society", value: "2" }
+];
+export const declarationChk = <CheckboxGroup options={declarationChkList} />;
 
 //end
