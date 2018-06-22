@@ -47,7 +47,7 @@ class Page2 extends React.Component {
     rules: [
       {
         type: "email",
-        message: "The enter is not valid email address! "
+        message: "The input is not valid email address! "
       },
       {
         required: true,

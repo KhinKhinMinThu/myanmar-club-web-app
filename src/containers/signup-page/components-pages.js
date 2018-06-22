@@ -45,13 +45,13 @@ export const otherInput = <Input style={fieldWidth} type="text" />;
 
 // ******************************* page1 components
 // *******************************
-export const firstNameInput = (
+export const name1Input = (
   <Input style={fieldWidth} type="text" placeholder="First Name" />
 );
-export const middleNameInput = (
+export const name2Input = (
   <Input style={fieldWidth} type="text" placeholder="Middle Name" />
 );
-export const lastNameInput = (
+export const name3Input = (
   <Input style={fieldWidth} type="text" placeholder="Last Name" />
 );
 export const genderRdo = (
@@ -61,7 +61,38 @@ export const genderRdo = (
   </RadioGroup>
 );
 export const dobInput = <DatePicker style={fieldWidth} format={dateFormat} />;
-
+export class NationalityDdl extends React.Component {
+  render() {
+    return (
+      <Select
+        style={fieldWidth}
+        defaultValue="MM"
+        onChange={this.props.changed}
+      >
+        <Option value="MM">Myanmar</Option>
+        <Option value="SG">Singaporean</Option>
+        <Option value="OT">Others</Option>
+      </Select>
+    );
+  }
+}
+export class ReligionDdl extends React.Component {
+  render() {
+    return (
+      <Select
+        style={fieldWidth}
+        placeholder="Select religion"
+        onChange={this.props.changed}
+      >
+        <Option value="BU">Buddhism</Option>
+        <Option value="IS">Islam</Option>
+        <Option value="HI">Hinduism</Option>
+        <Option value="CH">Christianity</Option>
+        <Option value="OT">Others</Option>
+      </Select>
+    );
+  }
+}
 export const mStatusDdl = (
   <Select style={fieldWidth} placeholder="Select marital status">
     <Option value="SI">Single</Option>

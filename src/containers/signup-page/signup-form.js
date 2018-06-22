@@ -5,16 +5,15 @@ import { message } from "antd";
 
 const steps = [
   {
-    title: "First",
+    title: "First Step",
     content: 1
-    //ref: "page1"
   },
   {
-    title: "Second",
+    title: "Second Step",
     content: 2
   },
   {
-    title: "Last 1",
+    title: "Last Step",
     content: 3
   }
 ];
@@ -23,7 +22,7 @@ class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 2
+      current: 0
     };
   }
   next = e => {

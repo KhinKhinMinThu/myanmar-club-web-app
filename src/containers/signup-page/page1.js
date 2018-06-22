@@ -1,12 +1,11 @@
 import React from "react";
 import "antd/dist/antd.css";
 import {
-  fieldWidth,
   cardStyles,
   formItemLayout,
-  firstNameInput,
-  middleNameInput,
-  lastNameInput,
+  name1Input,
+  name2Input,
+  name3Input,
   genderRdo,
   dobInput,
   otherInput,
@@ -18,18 +17,35 @@ import {
   passNumInput,
   passNumInfo
 } from "./components-pages";
-import { Form, Card, Row, Col, Select } from "antd";
+import { NationalityDdl, ReligionDdl } from "./components-pages";
+import { Form, Card, Row, Col } from "antd";
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 class Page1 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showOtherNat: false,
-      showOtherRel: false
-    };
-  }
+  state = {
+    showOtherNat: false,
+    showOtherRel: false
+  };
+
+  nationalityDdlChanged = value => {
+    //console.log("nationalityDdlChanged", value);
+    const doesShow = this.state.showOtherNat;
+    if (value === "OT" && !doesShow) {
+      this.setState({ showOtherNat: true });
+    }
+    if (value !== "OT" && doesShow) {
+      this.setState({ showOtherNat: false });
+    }
+  };
+  religionDdlChanged = value => {
+    const doesShow = this.state.showOtherRel;
+    if (value === "OT" && !doesShow) {
+      this.setState({ showOtherRel: true });
+    }
+    if (value !== "OT" && doesShow) {
+      this.setState({ showOtherRel: false });
+    }
+  };
 
   nameInputOpts = {
     rules: [
@@ -56,14 +72,6 @@ class Page1 extends React.Component {
       }
     ]
   };
-  relInputOpts = {
-    rules: [
-      {
-        required: true,
-        message: "Please specify your religion!"
-      }
-    ]
-  };
   mStatusDdlOpts = { initialValue: "SI" };
   eduLvlInputOpts = {
     rules: [
@@ -85,33 +93,20 @@ class Page1 extends React.Component {
   passNumInputOpts = {
     rules: [
       {
+        pattern: "^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$",
+        message: "The input is not a valid ID Number!"
+      },
+      {
         required: true,
         message: "Please enter your ID Number!"
       }
     ]
   };
 
-  nationalityDdlChanged = value => {
-    const doesShow = this.state.showOtherNat;
-    if (value === "OT" && !doesShow) {
-      this.setState({ showOtherNat: true });
-    }
-    if (value !== "OT" && doesShow) {
-      this.setState({ showOtherNat: false });
-    }
-  };
-  religionDdlChanged = value => {
-    const doesShow = this.state.showOtherRel;
-    if (value === "OT" && !doesShow) {
-      this.setState({ showOtherRel: true });
-    }
-    if (value !== "OT" && doesShow) {
-      this.setState({ showOtherRel: false });
-    }
-  };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const rowGutter = 6;
+    const labelSpace = 8;
+    const itemSpace = { marginLeft: 8 };
 
     let showOtherNatInput = null;
     let showOtherRelInput = null;
@@ -121,76 +116,84 @@ class Page1 extends React.Component {
       );
     }
     if (this.state.showOtherRel) {
-      showOtherRelInput = getFieldDecorator("otherRelInput", this.relInputOpts)(
-        otherInput
-      );
+      showOtherRelInput = getFieldDecorator("otherRelInput")(otherInput);
     }
 
     return (
       <Card style={cardStyles}>
         <Form>
-          <FormItem {...formItemLayout} label="Name">
-            <Row gutter={rowGutter} type="flex">
-              <Col>
-                {getFieldDecorator("firstName", this.nameInputOpts)(
-                  firstNameInput
+          <Row type="flex">
+            {/* Name */}
+            <Col span={labelSpace} style={{ textAlign: "right" }}>
+              <FormItem label="Name" colon={true} required={true} />
+            </Col>
+            <Col>
+              <FormItem>
+                {getFieldDecorator("name1Input", this.nameInputOpts)(
+                  name1Input
                 )}
-              </Col>
-              <Col>{middleNameInput}</Col>
-              <Col>{lastNameInput}</Col>
-            </Row>
-          </FormItem>
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={itemSpace}>
+                {getFieldDecorator("name2Input")(name2Input)}
+              </FormItem>
+            </Col>
+            <Col style={itemSpace}>
+              <FormItem>{getFieldDecorator("name3Input")(name3Input)}</FormItem>
+            </Col>
+          </Row>
 
+          {/* Gender */}
           <FormItem {...formItemLayout} label="Gender">
             {getFieldDecorator("genderRdo", this.genderRdoOpts)(genderRdo)}
           </FormItem>
 
+          {/* Date of Birth */}
           <FormItem {...formItemLayout} label="Date of Birth">
             {getFieldDecorator("dobInput", this.dobInputOpts)(dobInput)}
           </FormItem>
 
-          {/*Not able to export/import as onChange method not working for Component props*/}
-          <FormItem {...formItemLayout} label="Nationality">
-            <Row gutter={rowGutter} type="flex">
-              <Col>
-                <Select
-                  style={fieldWidth}
-                  defaultValue="MM"
-                  onChange={this.nationalityDdlChanged}
-                >
-                  <Option value="MM">Myanmar</Option>
-                  <Option value="SG">Singaporean</Option>
-                  <Option value="OT">Others</Option>
-                </Select>
-              </Col>
-              <Col>{showOtherNatInput}</Col>
-            </Row>
-          </FormItem>
+          {/* Nationality */}
+          <Row type="flex">
+            <Col span={labelSpace} style={{ textAlign: "right" }}>
+              <FormItem label="Nationality" colon={true} required={true} />
+            </Col>
+            <Col>
+              <FormItem>
+                {getFieldDecorator("nationalityDdl")(
+                  <NationalityDdl changed={this.nationalityDdlChanged} />
+                )}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={itemSpace}>{showOtherNatInput}</FormItem>
+            </Col>
+          </Row>
 
-          {/*Not able to export/import as onChange method not working for Component props*/}
-          <FormItem {...formItemLayout} label="Religion">
-            <Row gutter={rowGutter} type="flex">
-              <Col>
-                <Select
-                  style={fieldWidth}
-                  defaultValue="BU"
-                  onChange={this.religionDdlChanged}
-                >
-                  <Option value="BU">Buddhism</Option>
-                  <Option value="IS">Islam</Option>
-                  <Option value="HI">Hinduism</Option>
-                  <Option value="CH">Christianity</Option>
-                  <Option value="OT">Others</Option>
-                </Select>
-              </Col>
-              <Col>{showOtherRelInput}</Col>
-            </Row>
-          </FormItem>
+          {/* Religion */}
+          <Row type="flex">
+            <Col span={labelSpace} style={{ textAlign: "right" }}>
+              <FormItem label="Religion" colon={true} />
+            </Col>
+            <Col>
+              <FormItem>
+                {getFieldDecorator("religionDdl")(
+                  <ReligionDdl changed={this.religionDdlChanged} />
+                )}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={itemSpace}>{showOtherRelInput}</FormItem>
+            </Col>
+          </Row>
 
+          {/* Marital Status */}
           <FormItem {...formItemLayout} label="Marital Status">
             {getFieldDecorator("mStatusDdl", this.mStatusDdlOpts)(mStatusDdl)}
           </FormItem>
 
+          {/* Education Level */}
           <FormItem {...formItemLayout} label="Education Level">
             {getFieldDecorator("eduLvlInput", this.eduLvlInputOpts)(
               eduLvlInput
@@ -198,16 +201,19 @@ class Page1 extends React.Component {
             {eduLvlInfo}
           </FormItem>
 
+          {/* Occupation */}
           <FormItem {...formItemLayout} label="Occupation">
             {getFieldDecorator("occupationInput", this.occupationInputOpts)(
               occupationInput
             )}
           </FormItem>
 
+          {/* Pass */}
           <FormItem {...formItemLayout} label="Singapore Pass">
             {getFieldDecorator("sgPassDdl", this.sgPassDdlOpts)(sgPassDdl)}
           </FormItem>
 
+          {/* ID Number*/}
           <FormItem {...formItemLayout} label="Identification Number">
             {getFieldDecorator("passNumInput", this.passNumInputOpts)(
               passNumInput

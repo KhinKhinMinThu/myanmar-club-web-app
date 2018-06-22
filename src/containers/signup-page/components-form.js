@@ -1,5 +1,5 @@
 import React from "react";
-import { Steps, Button } from "antd";
+import { Steps, Button, Icon } from "antd";
 
 import Page1 from "./page1";
 import Page2 from "./page2";
@@ -22,7 +22,18 @@ const stepActionStyles = {
 
 export const PageSteps = props => (
   <Steps current={props.current}>
-    {props.steps.map(item => <Step key={item.title} title={item.title} />)}
+    {props.steps.map(
+      item =>
+        item.content === 3 ? (
+          <Step
+            key={item.title}
+            title={item.title}
+            icon={<Icon type="smile-o" style={{ fontSize: 30 }} />}
+          />
+        ) : (
+          <Step key={item.title} title={item.title} />
+        )
+    )}
   </Steps>
 );
 
