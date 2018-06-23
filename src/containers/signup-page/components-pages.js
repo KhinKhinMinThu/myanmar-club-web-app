@@ -5,11 +5,9 @@ import {
   DatePicker,
   Select,
   Input,
-  InputNumber,
   Upload,
   Checkbox,
-  Row,
-  Col
+  Table
 } from "antd";
 import {
   CustomIcon,
@@ -124,9 +122,7 @@ export const sgPassDdl = (
     <Option value="WP">Work Permit</Option>
   </Select>
 );
-// export const passNumInput = (
-//   <Input style={fieldWidth} type="text" placeholder="NRIC/ FIN No." />
-// );
+
 export class PassNumInput extends React.Component {
   render() {
     return (
@@ -235,6 +231,7 @@ export class MobileNoInput extends React.Component {
   }
 }
 export const hobbiesInput = <TextArea style={fieldWidth} rows={2} />;
+
 export const uploadBtn = (
   // need to change action </upload.do> or something
   <Upload name="userpic" action="" listType="picture">
@@ -243,37 +240,33 @@ export const uploadBtn = (
     </Button>
   </Upload>
 );
-export const subComListChk = (
-  <Row>
-    <Col span={24}>
-      <Checkbox value="cultural">
-        ၿမန္မာ့ယဥ္ေက်းမႈအနုပညာ ထိန္းသိမ္းၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
-      </Checkbox>
-    </Col>
-    <Col span={24}>
-      <Checkbox value="knowledge">
-        စာေပ၊ ဗဟုသုတ၊ တတ္သိပညာ ၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
-      </Checkbox>
-    </Col>
-    <Col span={24}>
-      <Checkbox value="community">
-        စကၤာပူေရာက္ၿမန္မာမိသားစု၏ လူမႈအခက္အခဲမ်ားကူညီေစာင့္ေရွာက္ေရးႏွင့္
-        ေကာင္းမြန္ေသာ လူ႕ေဘာင္ဘဝ <br /> ၿမွင့္တင္ထိန္းသိမ္းေရး Sub-Committee
-      </Checkbox>
-    </Col>
-    <Col span={24}>
-      <Checkbox value="sport">
-        ၿမန္မာ့အားကစားက႑ ပံ့ပိုးကူညီေရး Sub-Committee
-      </Checkbox>
-    </Col>
-    <Col span={24}>
-      <Checkbox value="sponsorship">ရံပံုေငြရွာေဖြေရး Sub-Committee</Checkbox>
-    </Col>
-    <Col span={24}>
-      <Checkbox value="outreach">သတင္းႏွင့္ ၿပန္ၾကားေရး Sub-Committee</Checkbox>
-    </Col>
-  </Row>
+
+export const subComChk_CUTRL = (
+  <Checkbox>
+    ၿမန္မာ့ယဥ္ေက်းမႈအနုပညာ ထိန္းသိမ္းၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
+  </Checkbox>
 );
+export const subComChk_KNWLG = (
+  <Checkbox>
+    စာေပ၊ ဗဟုသုတ၊ တတ္သိပညာ ၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
+  </Checkbox>
+);
+export const subComChk_COMTY = (
+  <Checkbox>
+    စကၤာပူေရာက္ၿမန္မာမိသားစု၏ လူမႈအခက္အခဲမ်ားကူညီေစာင့္ေရွာက္ေရးႏွင့္
+    ေကာင္းမြန္ေသာ လူ႕ေဘာင္ဘဝ ၿမွင့္တင္ထိန္းသိမ္းေရး Sub-Committee
+  </Checkbox>
+);
+export const subComChk_SPORT = (
+  <Checkbox>ၿမန္မာ့အားကစားက႑ ပံ့ပိုးကူညီေရး Sub-Committee</Checkbox>
+);
+export const subComChk_SPOSR = (
+  <Checkbox>ရံပံုေငြရွာေဖြေရး Sub-Committee</Checkbox>
+);
+export const subComChk_OUTRH = (
+  <Checkbox>သတင္းႏွင့္ ၿပန္ၾကားေရး Sub-Committee</Checkbox>
+);
+
 //end
 
 // ******************************* page3 components
@@ -317,6 +310,44 @@ export class PaymentTypeRdo extends React.Component {
     );
   }
 }
+
+export const declarationInfo = (
+  <p style={{ lineHeight: 1.5 }}>
+    <u>
+      <b>Declaration by applicant (ေလွ်ာက္ထားသူမွ ခံဝန္ခ်က္) </b>
+    </u>
+    <br />
+    I declare that the above particulars given by me are true and correct and I
+    agree to abide by the Constitution of the society.
+    <br />
+    အထက္ေဖာ္ၿပပါ မိမိ၏ ကိုယ္ေရးအခ်က္အလက္မ်ားသည္ မွန္ကန္ပါသည္။ မိမိသည္
+    ၿမန္မာကလပ္(စကၤာပူ) အသင္း၏ ဖြဲ႕စည္းပံုစည္းမ်ဥ္းမ်ားကို လိုက္နာပါမည္။
+  </p>
+);
+const declarationChkList = [
+  {
+    label:
+      "True and Correct ( ေပးပို႕ထားေသာ ကိုယ္ေရးအခ်က္အလက္မ်ားမွာ မွန္ကန္ပါသည္)",
+    value: "1"
+  },
+  {
+    label:
+      "I will abide by the Constitution of the Society (အသင္း၏ စည္းမ်ဥ္းမ်ားကိုလိုက္နာပါမည္)",
+    value: "2"
+  }
+];
+export const declarationChk = <CheckboxGroup options={declarationChkList} />;
+export const contactInfo = (
+  <p style={{ lineHeight: 1.5 }}>
+    If you have any difficulties with online membership application, you are
+    invited to come to Myanmar Club Office at Peninsula Plaza #05-42 from 13:00
+    to 19:00 hour on every Saturday.
+    <br />
+    အကယ္၍ အြန္လိုင္းအသင္းဝင္ခြင့္ ေလွ်ာက္ထားၿခင္းႏွင့္ ပါတ္သက္၍ အခက္အခဲရွိပါက
+    ၿမန္မာကလပ္ ရံုးခန္း (ပင္နီဆူလာပလာဇာ၊ ၅ထပ္ အခန္းအမွတ္ ၄၁) သို႕ စေနေန႕မ်ားတြင္
+    ေန႕လည္ ၁နာရီမွ ညေန ၇နာရီအထိ ကိုယ္တိုင္လာေရာက္ ေဆာင္ရြက္ႏိုင္ပါသည္။
+  </p>
+);
 //end
 
 // ******************************* credinfo-form components
@@ -325,14 +356,38 @@ export const cardExpInput = (
   <MonthPicker
     style={fieldWidth}
     format={monthFormat}
-    placeholder="Select month"
+    placeholder="Select month and year"
   />
 );
-export const cardNumInput = <Input type="text" style={fieldWidth} />;
-export const cardExpInfo = <span style={extraInfoStyles}>MM-YYYY</span>;
-export const cardSecInput = (
-  <InputNumber style={fieldWidth} min={1} max={999} />
+export class CardNumInput extends React.Component {
+  render() {
+    return (
+      <Input
+        maxLength="16"
+        type="text"
+        style={fieldWidth}
+        onBlur={this.props.blurred}
+      />
+    );
+  }
+}
+export const cardNumInfo = (
+  <span style={extraInfoStyles}>Do not include space or dashes "-".</span>
 );
+export const cardExpInfo = <span style={extraInfoStyles}>MM-YYYY</span>;
+export class CardSecInput extends React.Component {
+  render() {
+    return (
+      <Input
+        maxLength="4"
+        type="text"
+        style={fieldWidth}
+        onBlur={this.props.blurred}
+      />
+    );
+  }
+}
+
 export class PaymentBtn extends React.Component {
   render() {
     return (
@@ -342,19 +397,57 @@ export class PaymentBtn extends React.Component {
     );
   }
 }
-export const declarationInfo = (
-  <p style={{ lineHeight: 1.5 }}>
-    <u>Declaration by applicant (ေလွ်ာက္ထားသူမွ ခံဝန္ခ်က္)</u>
-    I declare that the above particulars given by me are true and correct and I
-    agree to abide by the Constitution of the society. <br />
-    အထက္ေဖာ္ၿပပါ မိမိ၏ ကိုယ္ေရးအခ်က္အလက္မ်ားသည္ မွန္ကန္ပါသည္။ မိမိသည္
-    ၿမန္မာကလပ္(စကၤာပူ) အသင္း၏ ဖြဲ႕စည္းပံုစည္းမ်ဥ္းမ်ားကို လိုက္နာပါမည္။
-  </p>
-);
-const declarationChkList = [
-  { label: "True and Correct", value: "1" },
-  { label: "I will abide by the Constitution of the Society", value: "2" }
-];
-export const declarationChk = <CheckboxGroup options={declarationChkList} />;
+//end
 
+// ******************************* info components
+// *******************************
+//endimport { Table, Icon, Divider } from 'antd';
+
+const columns = [
+  { title: "", dataIndex: "NA", align: "right" },
+  { title: "Life", dataIndex: "LI", align: "right", width: "20%" },
+  { title: "Ordinary", dataIndex: "OR", align: "right", width: "20%" },
+  { title: "Student/ Worker", dataIndex: "SW", align: "right", width: "20%" }
+];
+
+const data = [
+  {
+    key: "1",
+    NA: "Entrance Fee",
+    LI: "SGD 50",
+    OR: "SGD 50",
+    SW: "Waive"
+  },
+  {
+    key: "2",
+    NA: "Annual Fee",
+    LI: "NA",
+    OR: "SGD 24",
+    SW: "SGD 24"
+  },
+  {
+    key: "3",
+    NA: "The Member",
+    LI: "SGD 300",
+    OR: "NA",
+    SW: "NA"
+  },
+  {
+    key: "4",
+    NA: "Total",
+    LI: "SGD 350",
+    OR: "SGD 74",
+    SW: "SGD 24"
+  }
+];
+export const feesTbl = (
+  <Table
+    style={{ border: "1px solid black" }}
+    columns={columns}
+    dataSource={data}
+    pagination={false}
+    size="small"
+    bordered={true}
+  />
+);
 //end

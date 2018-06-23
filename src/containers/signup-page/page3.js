@@ -4,15 +4,20 @@ import {
   cardStyles,
   formItemLayout,
   membershipTypeRdo,
-  PaymentTypeRdo,
   otherInput,
-  cardNumInput,
+  cardNumInfo,
   cardExpInfo,
   cardExpInput,
-  cardSecInput,
-  PaymentBtn,
   declarationInfo,
-  declarationChk
+  declarationChk,
+  contactInfo,
+  feesTbl
+} from "./components-pages";
+import {
+  PaymentTypeRdo,
+  CardNumInput,
+  CardSecInput,
+  PaymentBtn
 } from "./components-pages";
 import { Form, Card, Row, Col } from "antd";
 const FormItem = Form.Item;
@@ -20,9 +25,38 @@ const FormItem = Form.Item;
 class Page3 extends React.Component {
   state = { showDirectPayment: true };
 
-  handleConfirmOnChange = e => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  handleCardNumOnBlur = e => {
+    const value = e.target.value.trim();
+    /* 2 lines below are needed due to validator not being triggered for imported component.
+    work for normal <Input> tag without those lines.
+    */
+    this.props.form.setFieldsValue({ cardNumInput: value });
+    this.props.form.validateFields(["cardNumInput"], { force: true });
+  };
+  validateCardNum = (rule, value, callback) => {
+    if ((isNaN(value) || value.length !== 16) && value !== undefined) {
+      callback("The input is not a 16-digits card number!");
+    } else {
+      callback();
+    }
+  };
+  handleCardSecOnBlur = e => {
+    const value = e.target.value.trim();
+    /* 2 lines below are needed due to validator not being triggered for imported component.
+    work for normal <Input> tag without those lines.
+    */
+    this.props.form.setFieldsValue({ cardSecInput: value });
+    this.props.form.validateFields(["cardSecInput"], { force: true });
+  };
+  validateCardSec = (rule, value, callback) => {
+    if (
+      (isNaN(value) || (value.length > 0 && value.length < 3)) &&
+      value !== undefined
+    ) {
+      callback("The input is not a 3-4-digits security code!");
+    } else {
+      callback();
+    }
   };
   handleCreditCardForm = () => {
     console.log("handleCreditCardForm");
@@ -64,6 +98,9 @@ class Page3 extends React.Component {
       {
         required: true,
         message: "Please enter card number!"
+      },
+      {
+        validator: this.validateCardNum
       }
     ]
   };
@@ -80,7 +117,8 @@ class Page3 extends React.Component {
       {
         required: true,
         message: "Please enter card security code!"
-      }
+      },
+      { validator: this.validateCardSec }
     ]
   };
   declarationChkOpts = {
@@ -88,7 +126,7 @@ class Page3 extends React.Component {
       {
         type: "array",
         required: true,
-        message: "Please check all!",
+        message: "Please tick both chechboxes!",
         len: 2
       }
     ]
@@ -111,8 +149,9 @@ class Page3 extends React.Component {
 
                 <FormItem {...formItemLayout} label="Card Number">
                   {getFieldDecorator("cardNumInput", this.cardNumInputOpts)(
-                    cardNumInput
+                    <CardNumInput blurred={this.handleCardNumOnBlur} />
                   )}
+                  {cardNumInfo}
                 </FormItem>
 
                 <FormItem {...formItemLayout} label="Expiry Date">
@@ -124,7 +163,7 @@ class Page3 extends React.Component {
 
                 <FormItem {...formItemLayout} label="Security Code">
                   {getFieldDecorator("cardSecInput", this.cardSecInputOpts)(
-                    cardSecInput
+                    <CardSecInput blurred={this.handleCardSecOnBlur} />
                   )}
                 </FormItem>
                 <PaymentBtn clicked={this.handleCreditCardForm} />
@@ -134,23 +173,30 @@ class Page3 extends React.Component {
         </FormItem>
       );
     }
+
     return (
       <Card style={cardStyles}>
         <Form>
+          <Row>
+            <Col offset={6} span={12}>
+              <FormItem>{feesTbl}</FormItem>
+            </Col>
+          </Row>
+
+          {/* Membership Fee */}
           <FormItem {...formItemLayout} label="Membership Fees">
             {getFieldDecorator("membershipTypeRdo", this.membershipTypeRdoOpts)(
               membershipTypeRdo
             )}
           </FormItem>
-
+          {/* Payment Method*/}
           <FormItem {...formItemLayout} label="Payment Method">
             {getFieldDecorator("paymentTypeRdo")(
               <PaymentTypeRdo changed={this.toggleDirectPayment} />
             )}
           </FormItem>
-
           {creditCardForm}
-
+          {/* Declaration */}
           <Row>
             <Col offset={3}>
               {declarationInfo}
@@ -159,6 +205,12 @@ class Page3 extends React.Component {
                   declarationChk
                 )}
               </FormItem>
+            </Col>
+          </Row>
+          {/* Contact Info */}
+          <Row>
+            <Col offset={3}>
+              <FormItem>{contactInfo}</FormItem>
             </Col>
           </Row>
         </Form>

@@ -12,7 +12,12 @@ import {
   areaCodeDdl,
   hobbiesInput,
   uploadBtn,
-  subComListChk
+  subComChk_CUTRL,
+  subComChk_KNWLG,
+  subComChk_COMTY,
+  subComChk_SPORT,
+  subComChk_SPOSR,
+  subComChk_OUTRH
 } from "./components-pages";
 import {
   ConfirmPwInput,
@@ -31,6 +36,7 @@ class Page2 extends React.Component {
   };
 
   handleZipCodeOnBlur = e => {
+    //console.log("Testtt", this.props.form.getFieldValue("subComChk_CUTRL"));
     const value = e.target.value.trim();
     /* 2 lines below are needed due to validator not being triggered for imported component.
     work for normal <Input> tag without those lines.
@@ -177,6 +183,16 @@ class Page2 extends React.Component {
       }
     ]
   };
+  uploadBtnOpts = {
+    rules: [
+      {
+        required: true,
+        message: "Please upload your passport size photo!"
+      }
+    ],
+    valuePropName: "fileList",
+    getValueFromEvent: this.normFile
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -275,27 +291,32 @@ class Page2 extends React.Component {
           <FormItem {...formItemLayout} label="Hobbies">
             {getFieldDecorator("hobbiesInput")(hobbiesInput)}
           </FormItem>
-        </Form>
-        {/* calling this.norFile doesn't work if the code is separated in another
-        variable (e.g., uploadBtnOtps) 
-        getValueFromEvent only works when insert exactly here */}
-        <FormItem {...formItemLayout} label="Passport Size Photo">
-          {getFieldDecorator("uploadBtn", {
-            rules: [
-              {
-                required: true,
-                message: "Please upload your passport size photo!"
-              }
-            ],
-            valuePropName: "fileList",
-            getValueFromEvent: this.normFile
-          })(uploadBtn)}
-        </FormItem>
 
-        {/* Sub-Com Interests */}
-        <FormItem {...formItemLayout} label="Interested Sub-Committee(s)">
-          {getFieldDecorator("subComListChk")(subComListChk)}
-        </FormItem>
+          {/* Passport Size Photo*/}
+          <FormItem {...formItemLayout} label="Passport Size Photo">
+            {getFieldDecorator("uploadBtn", this.uploadBtnOpts)(uploadBtn)}
+          </FormItem>
+
+          {/* Sub-Com Interests */}
+          <Row type="flex">
+            <Col span={labelSpace} style={{ textAlign: "right" }}>
+              <FormItem label="Interested Sub-Committee(s)" colon={true} />
+            </Col>
+            <Col span={16} style={{ paddingTop: 10 }}>
+              {getFieldDecorator("subComChk_CUTRL")(subComChk_CUTRL)}
+              <br />
+              {getFieldDecorator("subComChk_KNWLG")(subComChk_KNWLG)}
+              <br />
+              {getFieldDecorator("subComChk_COMTY")(subComChk_COMTY)}
+              <br />
+              {getFieldDecorator("subComChk_SPORT")(subComChk_SPORT)}
+              <br />
+              {getFieldDecorator("subComChk_SPOSR")(subComChk_SPOSR)}
+              <br />
+              {getFieldDecorator("subComChk_OUTRH")(subComChk_OUTRH)}
+            </Col>
+          </Row>
+        </Form>
       </Card>
     );
   }
