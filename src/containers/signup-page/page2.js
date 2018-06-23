@@ -5,16 +5,22 @@ import {
   formItemLayout,
   addr1Input,
   addr2Input,
-  zipCodeInput,
   emailInput,
+  pwInput,
   pwInfo,
-  homeNoInput,
-  mobileNoInput,
+  fbAccInput,
+  areaCodeDdl,
   hobbiesInput,
   uploadBtn,
   subComListChk
 } from "./components-pages";
-import { Form, Card, Row, Col, Collapse, Input } from "antd";
+import {
+  ConfirmPwInput,
+  ZipCodeInput,
+  HomeNoInput,
+  MobileNoInput
+} from "./components-pages";
+import { Form, Card, Row, Col, Collapse } from "antd";
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 
@@ -23,6 +29,83 @@ class Page2 extends React.Component {
     confirmDirty: false,
     showPw: false
   };
+
+  handleZipCodeOnBlur = e => {
+    const value = e.target.value.trim();
+    /* 2 lines below are needed due to validator not being triggered for imported component.
+    work for normal <Input> tag without those lines.
+    */
+    this.props.form.setFieldsValue({ zipCodeInput: value });
+    this.props.form.validateFields(["zipCodeInput"], { force: true });
+  };
+  validateZipCode = (rule, value, callback) => {
+    if ((isNaN(value) || value.length !== 6) && value !== undefined) {
+      callback("The input is not a valid postal/zip code!");
+    } else {
+      callback();
+    }
+  };
+  handleConfirmOnChange = e => {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+    /* 2 lines below are needed due to validator not being triggered for imported component.
+    work for normal <Input> tag without those lines.
+    */
+    this.props.form.setFieldsValue({ confirmPwInput: value });
+    this.props.form.validateFields(["confirmPwInput"], { force: true });
+  };
+  validateToNxtPassword = (rule, value, callback) => {
+    //console.log("validateToNxtPassword => ", value);
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(["confirmPwInput"], { force: true });
+    }
+    callback();
+  };
+  validatetoFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    //console.log("validatetoFirstPassword =>", value);
+    if (value && value !== form.getFieldValue("pwInput")) {
+      callback("Two passwords that you enter is inconsistent!");
+    } else {
+      callback();
+    }
+  };
+  checkExpand = () => {
+    const doesShow = this.state.showPw;
+    this.setState({ showPw: !doesShow });
+  };
+  handleHomeNoOnBlur = e => {
+    const value = e.target.value.trim();
+    /* 2 lines below are needed due to validator not being triggered for imported component.
+    work for normal <Input> tag without those lines.
+    */
+    this.props.form.setFieldsValue({ homeNoInput: value });
+    this.props.form.validateFields(["homeNoInput"], { force: true });
+  };
+  validatePhoneNo = (rule, value, callback) => {
+    if (isNaN(value) && value !== undefined) {
+      callback("The input is not a valid phone number!");
+    } else {
+      callback();
+    }
+  };
+  handleMobileNoOnBlur = e => {
+    const value = e.target.value.trim();
+    /* 2 lines below are needed due to validator not being triggered for imported component.
+    work for normal <Input> tag without those lines.
+    */
+    this.props.form.setFieldsValue({ mobileNoInput: value });
+    this.props.form.validateFields(["mobileNoInput"], { force: true });
+  };
+  normFile = e => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
   addrInputOpts = {
     rules: [
       {
@@ -34,12 +117,11 @@ class Page2 extends React.Component {
   zipCodeInputOpts = {
     rules: [
       {
-        type: "number",
-        message: "The input is not valid postal/zip code! "
-      },
-      {
         required: true,
         message: "Please enter your postal/zip code!"
+      },
+      {
+        validator: this.validateZipCode
       }
     ]
   };
@@ -60,35 +142,27 @@ class Page2 extends React.Component {
       {
         required: true,
         message: "Please enter your password!"
+      },
+      {
+        validator: this.validateToNxtPassword
       }
-
-      // this validator is not called
-      // must place manually within return formItem tag
-
-      // {
-      //   validator: this.validateToNextPassword
-      // }
     ]
   };
-  cfrmPwInputOpts = {
+  confirmPwInputOpts = {
     rules: [
       {
         required: true,
         message: "Please enter your password!"
+      },
+      {
+        validator: this.validatetoFirstPassword
       }
-      // this validator is not called
-      // must place manually within return formItem tag
-
-      // {
-      //   validator: this.compareToFirstPassword
-      // }
     ]
   };
   homeNoInputOpts = {
     rules: [
       {
-        type: "number",
-        message: "The input is not valid phone number! "
+        validator: this.validatePhoneNo
       }
     ]
   };
@@ -99,110 +173,75 @@ class Page2 extends React.Component {
         message: "Please enter your mobile phone number!"
       },
       {
-        type: "number",
-        message: "The input is not valid phone number! "
+        validator: this.validatePhoneNo
       }
     ]
   };
 
-  handleConfirmOnChange = e => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-  compareToFirstPassword = (rule, value, callback) => {
-    //console.log("compareToFirstPassword");
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue("pwInput")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
-  validateToNextPassword = (rule, value, callback) => {
-    //console.log("validateToNextPassword");
-    const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(["cfrmPwInput"], { force: true });
-    }
-    callback();
-  };
-  checkExpand = () => {
-    const doesShow = this.state.showPw;
-    this.setState({ showPw: !doesShow });
-  };
-  normFile = e => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   render() {
     const { getFieldDecorator } = this.props.form;
-    const rowGutter = 6;
+    const labelSpace = 8;
+    const itemSpace = { marginLeft: 8 };
+
     let showPwInput = null;
     let showCfmPwInput = null;
     if (this.state.showPw) {
-      showPwInput = (
-        <FormItem {...formItemLayout} label="Password">
-          {getFieldDecorator("pwInput", {
-            ...this.pwInputOpts,
-            rules: [
-              ...this.pwInputOpts.rules,
-              { validator: this.validateToNextPassword }
-            ]
-          })(<Input type="password" />)}
-        </FormItem>
-      );
-      showCfmPwInput = (
-        <FormItem {...formItemLayout} label="Confirm Password">
-          {getFieldDecorator("cfrmPwInput", {
-            ...this.cfrmPwInputOpts,
-            rules: [
-              ...this.cfrmPwInputOpts.rules,
-              { validator: this.compareToFirstPassword }
-            ]
-          })(<Input type="password" onChange={this.handleConfirmOnChange} />)}
-        </FormItem>
-      );
+      showPwInput = getFieldDecorator("pwInput", this.pwInputOpts)(pwInput);
+
+      showCfmPwInput = getFieldDecorator(
+        "confirmPwInput",
+        this.confirmPwInputOpts
+      )(<ConfirmPwInput changed={this.handleConfirmOnChange} />);
     }
+    const prefixAreaCode = getFieldDecorator("areadCodeDdl", {
+      initialValue: "65"
+    })(areaCodeDdl);
+
     return (
       <Card style={cardStyles}>
         <Form>
-          <FormItem {...formItemLayout} label="Address">
-            <Row gutter={rowGutter} type="flex">
-              <Col>
+          {/* Address */}
+          <Row type="flex">
+            <Col span={labelSpace} style={{ textAlign: "right" }}>
+              <FormItem label="Address" colon={true} required={true} />
+            </Col>
+            <Col>
+              <FormItem>
                 {getFieldDecorator("addr1Input", this.addrInputOpts)(
                   addr1Input
                 )}
-              </Col>
-              <Col>{addr2Input}</Col>
-            </Row>
-          </FormItem>
+              </FormItem>
+            </Col>
+            <Col style={itemSpace}>
+              <FormItem>{getFieldDecorator("addr2Input")(addr2Input)}</FormItem>
+            </Col>
+          </Row>
 
+          {/* Postal Code */}
           <FormItem {...formItemLayout} label="Postal Code">
             {getFieldDecorator("zipCodeInput", this.zipCodeInputOpts)(
-              zipCodeInput
+              <ZipCodeInput blurred={this.handleZipCodeOnBlur} />
             )}
           </FormItem>
 
+          {/* Email Address */}
           <FormItem {...formItemLayout} label="Email Address">
             {getFieldDecorator("emailInput", this.emailInputOpts)(emailInput)}
           </FormItem>
 
-          {/*Not able to export/import as onChange/onBlur method not working for Component props*/}
+          {/* Passwords */}
           <FormItem>
             <Row>
               <Col offset={8}>
-                {/* width: 606 <2 addr input width + rowGutter: 6> */}
-                <Collapse style={{ maxWidth: 606 }} onChange={this.checkExpand}>
+                {/* width: to be in alignment with address inputs */}
+                <Collapse style={{ maxWidth: 608 }} onChange={this.checkExpand}>
                   <Panel header="Create a Myanmar Club Account...">
-                    {/* calling validator in "cfrmPwInputOpts/pwInputOpts" doesnt work. 
-                      Somehow the line "validator: this.compareToFirstPassword" must be
-                      written exactly here */}
-                    {showPwInput}
-                    {showCfmPwInput}
+                    <FormItem {...formItemLayout} label="Password">
+                      {showPwInput}
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="Confirm Password">
+                      {showCfmPwInput}
+                    </FormItem>
                     {pwInfo}
                   </Panel>
                 </Collapse>
@@ -210,18 +249,29 @@ class Page2 extends React.Component {
             </Row>
           </FormItem>
 
+          {/* Facebook Account */}
+          <FormItem {...formItemLayout} label="Facebook Account">
+            {getFieldDecorator("fbAccInput")(fbAccInput)}
+          </FormItem>
+
+          {/* Home Phone Number */}
           <FormItem {...formItemLayout} label="Home Phone Number">
             {getFieldDecorator("homeNoInput", this.homeNoInputOpts)(
-              homeNoInput
+              <HomeNoInput blurred={this.handleHomeNoOnBlur} />
             )}
           </FormItem>
 
+          {/* Mobiel Number */}
           <FormItem {...formItemLayout} label="Mobile Number">
             {getFieldDecorator("mobileNoInput", this.mobileNoInputOpts)(
-              mobileNoInput
+              <MobileNoInput
+                areadCodeBef={prefixAreaCode}
+                blurred={this.handleMobileNoOnBlur}
+              />
             )}
           </FormItem>
 
+          {/* Hobbies */}
           <FormItem {...formItemLayout} label="Hobbies">
             {getFieldDecorator("hobbiesInput")(hobbiesInput)}
           </FormItem>
@@ -242,6 +292,7 @@ class Page2 extends React.Component {
           })(uploadBtn)}
         </FormItem>
 
+        {/* Sub-Com Interests */}
         <FormItem {...formItemLayout} label="Interested Sub-Committee(s)">
           {getFieldDecorator("subComListChk")(subComListChk)}
         </FormItem>

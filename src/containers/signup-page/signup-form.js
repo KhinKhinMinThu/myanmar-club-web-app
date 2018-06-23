@@ -22,7 +22,7 @@ class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0
+      current: 1
     };
   }
   next = e => {

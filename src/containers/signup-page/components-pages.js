@@ -124,9 +124,21 @@ export const sgPassDdl = (
     <Option value="WP">Work Permit</Option>
   </Select>
 );
-export const passNumInput = (
-  <Input style={fieldWidth} type="text" placeholder="NRIC/ FIN No." />
-);
+// export const passNumInput = (
+//   <Input style={fieldWidth} type="text" placeholder="NRIC/ FIN No." />
+// );
+export class PassNumInput extends React.Component {
+  render() {
+    return (
+      <Input
+        style={fieldWidth}
+        type="text"
+        placeholder="NRIC/ FIN No."
+        onBlur={this.props.blurred}
+      />
+    );
+  }
+}
 export const passNumInfo = (
   <span style={extraInfoStyles}>S1234567Z, G1234567Z etc.</span>
 );
@@ -148,18 +160,29 @@ export const addr2Input = (
     placeholder="Street Address Line 2"
   />
 );
-export const zipCodeInput = (
-  <InputNumber
-    style={fieldWidth}
-    min={1}
-    max={999999}
-    placeholder="Postal/ Zip Code"
-  />
-);
+export class ZipCodeInput extends React.Component {
+  render() {
+    return (
+      <Input
+        maxLength="6"
+        style={fieldWidth}
+        type="text"
+        placeholder="Postal/ Zip Code"
+        onBlur={this.props.blurred}
+      />
+    );
+  }
+}
 export const emailInput = (
   <Input style={fieldWidth} type="text" placeholder="Email Address" />
 );
+export const pwInput = <Input type="password" />;
 
+export class ConfirmPwInput extends React.Component {
+  render() {
+    return <Input type="password" onChange={this.props.changed} />;
+  }
+}
 export const pwInfo = (
   <div>
     <CustomIcon type="exclamation-circle-o" />
@@ -186,22 +209,31 @@ export const areaCodeDdl = (
     <Option value="95">+95</Option>
   </Select>
 );
-export const homeNoInput = (
-  <InputNumber
-    style={fieldWidth}
-    min={1}
-    max={999999}
-    placeholder="Line Phone Number"
-  />
-);
-export const mobileNoInput = (
-  <InputNumber
-    style={fieldWidth}
-    min={1}
-    max={999999}
-    placeholder="Mobile Number"
-  />
-);
+export class HomeNoInput extends React.Component {
+  render() {
+    return (
+      <Input
+        style={{ width: 300 }}
+        type="text"
+        placeholder="Line Phone Number"
+        onBlur={this.props.blurred}
+      />
+    );
+  }
+}
+export class MobileNoInput extends React.Component {
+  render() {
+    return (
+      <Input
+        style={{ width: 300 }}
+        addonBefore={this.props.areadCodeBef}
+        type="text"
+        placeholder="Mobile Phone Number"
+        onBlur={this.props.blurred}
+      />
+    );
+  }
+}
 export const hobbiesInput = <TextArea style={fieldWidth} rows={2} />;
 export const uploadBtn = (
   // need to change action </upload.do> or something

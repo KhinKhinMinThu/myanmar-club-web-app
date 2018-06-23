@@ -14,10 +14,9 @@ import {
   eduLvlInfo,
   occupationInput,
   sgPassDdl,
-  passNumInput,
   passNumInfo
 } from "./components-pages";
-import { NationalityDdl, ReligionDdl } from "./components-pages";
+import { NationalityDdl, ReligionDdl, PassNumInput } from "./components-pages";
 import { Form, Card, Row, Col } from "antd";
 const FormItem = Form.Item;
 
@@ -45,6 +44,14 @@ class Page1 extends React.Component {
     if (value !== "OT" && doesShow) {
       this.setState({ showOtherRel: false });
     }
+  };
+  handlePassNumOnBlur = e => {
+    const value = e.target.value.trim();
+    /* 2 lines below are needed due to validator not being triggered for imported component.
+    work for normal <Input> tag without those lines.
+    */
+    this.props.form.setFieldsValue({ passNumInput: value });
+    this.props.form.validateFields(["passNumInput"], { force: true });
   };
 
   nameInputOpts = {
@@ -134,10 +141,8 @@ class Page1 extends React.Component {
                 )}
               </FormItem>
             </Col>
-            <Col>
-              <FormItem style={itemSpace}>
-                {getFieldDecorator("name2Input")(name2Input)}
-              </FormItem>
+            <Col style={itemSpace}>
+              <FormItem>{getFieldDecorator("name2Input")(name2Input)}</FormItem>
             </Col>
             <Col style={itemSpace}>
               <FormItem>{getFieldDecorator("name3Input")(name3Input)}</FormItem>
@@ -216,7 +221,7 @@ class Page1 extends React.Component {
           {/* ID Number*/}
           <FormItem {...formItemLayout} label="Identification Number">
             {getFieldDecorator("passNumInput", this.passNumInputOpts)(
-              passNumInput
+              <PassNumInput blurred={this.handlePassNumOnBlur} />
             )}
             {passNumInfo}
           </FormItem>
