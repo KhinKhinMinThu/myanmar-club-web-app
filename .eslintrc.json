@@ -2,11 +2,7 @@
   "parser": "babel-eslint",
   "extends": "airbnb",
   "plugins": ["react", "jsx-a11y", "import"],
-  "globals": {
-    "fetch": false,
-    "Headers": false,
-    "Request": false
-  },
+  "env": { "browser": true },
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
   }
