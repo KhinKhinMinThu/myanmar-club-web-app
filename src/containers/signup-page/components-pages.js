@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Radio,
   Button,
@@ -17,12 +18,15 @@ import {
   extraInfoStyles,
   radioStyle
 } from "../shared-components/common";
+
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 const MonthPicker = DatePicker.MonthPicker;
 const CheckboxGroup = Checkbox.Group;
+
+export const unicode = { fontFamily: "Myanmar3", fontSize: 14 };
 
 export const cardStyles = {
   borderRadius: 10,
@@ -242,29 +246,31 @@ export const uploadBtn = (
 );
 
 export const subComChk_CUTRL = (
-  <Checkbox>
-    ၿမန္မာ့ယဥ္ေက်းမႈအနုပညာ ထိန္းသိမ္းၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
+  <Checkbox style={unicode}>
+    မြန်မာ့ယဉ်ကျေးမှုအနုပညာ ထိန်းသိမ်းမြှင့်တင် ပျံ့ပွားရေး Sub-Committee
   </Checkbox>
 );
 export const subComChk_KNWLG = (
-  <Checkbox>
-    စာေပ၊ ဗဟုသုတ၊ တတ္သိပညာ ၿမွင့္တင္ ပ်ံ႕ပြားေရး Sub-Committee
+  <Checkbox style={unicode}>
+    စာပေ၊ ဗဟုသုတ၊ တတ်သိပညာ မြှင့်တင် ပျံ့ပွားရေး Sub-Committee
   </Checkbox>
 );
 export const subComChk_COMTY = (
-  <Checkbox>
-    စကၤာပူေရာက္ၿမန္မာမိသားစု၏ လူမႈအခက္အခဲမ်ားကူညီေစာင့္ေရွာက္ေရးႏွင့္
-    ေကာင္းမြန္ေသာ လူ႕ေဘာင္ဘဝ ၿမွင့္တင္ထိန္းသိမ္းေရး Sub-Committee
+  <Checkbox style={unicode}>
+    စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့်
+    ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး Sub-Committee
   </Checkbox>
 );
 export const subComChk_SPORT = (
-  <Checkbox>ၿမန္မာ့အားကစားက႑ ပံ့ပိုးကူညီေရး Sub-Committee</Checkbox>
+  <Checkbox style={unicode}>
+    မြန်မာ့အားကစားကဏ္ဍ ပံ့ပိုးကူညီရေး Sub-Committee
+  </Checkbox>
 );
 export const subComChk_SPOSR = (
-  <Checkbox>ရံပံုေငြရွာေဖြေရး Sub-Committee</Checkbox>
+  <Checkbox style={unicode}>ရံပုံငွေရှာဖွေရေး Sub-Committee</Checkbox>
 );
 export const subComChk_OUTRH = (
-  <Checkbox>သတင္းႏွင့္ ၿပန္ၾကားေရး Sub-Committee</Checkbox>
+  <Checkbox style={unicode}>သတင်းနှင့် ပြန်ကြားရေး Sub-Committee</Checkbox>
 );
 
 //end
@@ -274,7 +280,7 @@ export const subComChk_OUTRH = (
 export const membershipTypeRdo = (
   <RadioGroup name="membershipTypeRdo">
     <Radio style={radioStyle} value="TYP1">
-      Life (ရာသက္ပန္) <b>SGD 350</b>
+      Life <span style={unicode}>(ရာသက်ပန်)</span> <b>SGD 350</b>
     </Radio>
     <Radio style={radioStyle} value="TYP2">
       Singaporean/ PR/ EP Ordinary <b>SGD 74</b> + Member Card <b>SGD 5</b> (1st
@@ -290,8 +296,8 @@ export const membershipTypeRdo = (
       <b>SGD 29</b>
     </Radio>
     <Radio style={radioStyle} value="TYP5">
-      6 month Fees <b>SGD 12</b> (not entitled for Member Card / အသင္းဝင္ကဒ္ရမည္
-      မဟုတ္ပါ)
+      6 month Fees <b>SGD 12</b> (not entitled for Member Card /{" "}
+      <span style={unicode}>အသင်းဝင်ကဒ်ရမည် မဟုတ်ပါ)</span>
     </Radio>
   </RadioGroup>
 );
@@ -314,25 +320,40 @@ export class PaymentTypeRdo extends React.Component {
 export const declarationInfo = (
   <p style={{ lineHeight: 1.5 }}>
     <u>
-      <b>Declaration by applicant (ေလွ်ာက္ထားသူမွ ခံဝန္ခ်က္) </b>
+      <b>
+        Declaration by applicant{" "}
+        <span style={unicode}>(လျှောက်ထားသူမှ ခံဝန်ချက်) </span>
+      </b>
     </u>
     <br />
     I declare that the above particulars given by me are true and correct and I
     agree to abide by the Constitution of the society.
     <br />
-    အထက္ေဖာ္ၿပပါ မိမိ၏ ကိုယ္ေရးအခ်က္အလက္မ်ားသည္ မွန္ကန္ပါသည္။ မိမိသည္
-    ၿမန္မာကလပ္(စကၤာပူ) အသင္း၏ ဖြဲ႕စည္းပံုစည္းမ်ဥ္းမ်ားကို လိုက္နာပါမည္။
+    <span style={unicode}>
+      အထက်ဖော်ပြပါ မိမိ၏ ကိုယ်ရေးအချက်အလက်များသည် မှန်ကန်ပါသည်။ မိမိသည်
+      မြန်မာကလပ်(စင်္ကာပူ) အသင်း၏ ဖွဲ့စည်းပုံစည်းမျဉ်းများကို လိုက်နာပါမည်။
+    </span>
   </p>
 );
 const declarationChkList = [
   {
-    label:
-      "True and Correct ( ေပးပို႕ထားေသာ ကိုယ္ေရးအခ်က္အလက္မ်ားမွာ မွန္ကန္ပါသည္)",
+    label: (
+      <span>
+        True and Correct{" "}
+        <span style={unicode}>
+          (ပေးပို့ထားသော ကိုယ်ရေးအချက်အလက်များမှာ မှန်ကန်ပါသည်)
+        </span>
+      </span>
+    ),
     value: "1"
   },
   {
-    label:
-      "I will abide by the Constitution of the Society (အသင္း၏ စည္းမ်ဥ္းမ်ားကိုလိုက္နာပါမည္)",
+    label: (
+      <span>
+        I will abide by the Constitution of the Society{" "}
+        <span style={unicode}>(အသင်း၏ စည်းမျဉ်းများကိုလိုက်နာပါမည်)</span>
+      </span>
+    ),
     value: "2"
   }
 ];
@@ -343,9 +364,12 @@ export const contactInfo = (
     invited to come to Myanmar Club Office at Peninsula Plaza #05-42 from 13:00
     to 19:00 hour on every Saturday.
     <br />
-    အကယ္၍ အြန္လိုင္းအသင္းဝင္ခြင့္ ေလွ်ာက္ထားၿခင္းႏွင့္ ပါတ္သက္၍ အခက္အခဲရွိပါက
-    ၿမန္မာကလပ္ ရံုးခန္း (ပင္နီဆူလာပလာဇာ၊ ၅ထပ္ အခန္းအမွတ္ ၄၁) သို႕ စေနေန႕မ်ားတြင္
-    ေန႕လည္ ၁နာရီမွ ညေန ၇နာရီအထိ ကိုယ္တိုင္လာေရာက္ ေဆာင္ရြက္ႏိုင္ပါသည္။
+    <span style={unicode}>
+      အကယ်၍ အွန်လိုင်းအသင်းဝင်ခွင့် လျှောက်ထားခြင်းနှင့် ပါတ်သက်၍ အခက်အခဲရှိပါက
+      မြန်မာကလပ် ရုံးခန်း (ပင်နီဆူလာပလာဇာ၊ ၅ထပ် အခန်းအမှတ် ၄၁) သို့
+      စနေနေ့များတွင် နေ့လည် ၁နာရီမှ ညနေ ရနာရီအထိ ကိုယ်တိုင်လာရောက်
+      ဆောင်ရွက်နိုင်ပါသည်။
+    </span>
   </p>
 );
 //end
@@ -407,7 +431,7 @@ const columns = [
   { title: "", dataIndex: "NA", align: "right" },
   { title: "Life", dataIndex: "LI", align: "right", width: "20%" },
   { title: "Ordinary", dataIndex: "OR", align: "right", width: "20%" },
-  { title: "Student/ Worker", dataIndex: "SW", align: "right", width: "20%" }
+  { title: "Student/ Worker", dataIndex: "SW", align: "right", width: "30%" }
 ];
 
 const data = [

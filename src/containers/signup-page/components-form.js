@@ -1,6 +1,7 @@
 import React from "react";
 import { Steps, Button, Icon } from "antd";
 
+import PageInfo from "./page-info";
 import Page1 from "./page1";
 import Page2 from "./page2";
 import Page3 from "./page3";
@@ -39,13 +40,17 @@ export const PageSteps = props => (
 
 export class StepContent extends React.Component {
   validatePage = e => {
-    let result = false;
-    this.currentPage.validateFields((err, values) => {
-      if (!err) {
-        result = true;
-      }
-    });
+    let result = true;
+    if (this.currentStep !== 0) {
+      this.currentPage.validateFields((err, values) => {
+        if (err) {
+          result = false;
+        }
+      });
+    }
     return result;
+    //un-comment below line to bypass the validations
+    //return true;
   };
   render() {
     const { steps, current } = this.props;
@@ -55,7 +60,9 @@ export class StepContent extends React.Component {
     console.log("currentStep", this.currentStep);
 
     let page = null;
-    if (this.currentStep === 1) {
+    if (this.currentStep === 0) {
+      page = <PageInfo />;
+    } else if (this.currentStep === 1) {
       page = (
         <Page1
           ref={node => {

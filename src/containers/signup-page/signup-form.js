@@ -5,6 +5,10 @@ import { message } from "antd";
 
 const steps = [
   {
+    title: "Info Page",
+    content: 0
+  },
+  {
     title: "First Step",
     content: 1
   },
@@ -46,6 +50,8 @@ class SignupForm extends React.Component {
     if (result === true) {
       message.success("Processing complete!");
     }
+    // to display the next page from top
+    document.documentElement.scrollTop = 0;
   };
   render() {
     const { current } = this.state;
