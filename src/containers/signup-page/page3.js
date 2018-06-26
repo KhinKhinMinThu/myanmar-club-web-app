@@ -1,5 +1,9 @@
-import React from "react";
-import "antd/dist/antd.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import 'antd/dist/antd.css';
+import {
+  Form, Card, Row, Col,
+} from 'antd';
 import {
   cardStyles,
   formItemLayout,
@@ -11,160 +15,189 @@ import {
   declarationInfo,
   declarationChk,
   contactInfo,
-  feesTbl
-} from "./components-pages";
-import {
+  feesTbl,
   PaymentTypeRdo,
   CardNumInput,
   CardSecInput,
-  PaymentBtn
-} from "./components-pages";
-import { Form, Card, Row, Col } from "antd";
+  PaymentBtn,
+} from './components-pages';
+
 const FormItem = Form.Item;
 
 class Page3 extends React.Component {
-  state = { showDirectPayment: true };
-
-  handleCardNumOnBlur = e => {
-    const value = e.target.value.trim();
-    /* 2 lines below are needed due to validator not being triggered for imported component.
-    work for normal <Input> tag without those lines.
-    */
-    this.props.form.setFieldsValue({ cardNumInput: value });
-    this.props.form.validateFields(["cardNumInput"], { force: true });
-  };
-  validateCardNum = (rule, value, callback) => {
-    if ((isNaN(value) || value.length !== 16) && value !== undefined) {
-      callback("The input is not a 16-digits card number!");
-    } else {
-      callback();
-    }
-  };
-  handleCardSecOnBlur = e => {
-    const value = e.target.value.trim();
-    /* 2 lines below are needed due to validator not being triggered for imported component.
-    work for normal <Input> tag without those lines.
-    */
-    this.props.form.setFieldsValue({ cardSecInput: value });
-    this.props.form.validateFields(["cardSecInput"], { force: true });
-  };
-  validateCardSec = (rule, value, callback) => {
-    if (
-      (isNaN(value) || (value.length > 0 && value.length < 3)) &&
-      value !== undefined
-    ) {
-      callback("The input is not a 3-4-digits security code!");
-    } else {
-      callback();
-    }
-  };
-  handleCreditCardForm = () => {
-    console.log("handleCreditCardForm");
-
-    const form = this.props.form;
-    form.validateFields(
-      ["cardNameInput", "cardNumInput", "cardExpInput", "cardSecInput"],
-      { force: true }
-    );
-  };
-  toggleDirectPayment = e => {
-    const doesShow = this.state.showDirectPayment;
-    if (e.target.value === "DP" && !doesShow) {
-      this.setState({ showDirectPayment: true });
-    }
-    if (e.target.value !== "DP" && doesShow) {
-      this.setState({ showDirectPayment: false });
-    }
-  };
-
   membershipTypeRdoOpts = {
     rules: [
       {
         required: true,
-        message: "Please select your membership type!"
-      }
-    ]
+        message: 'Please select your membership type!',
+      },
+    ],
   };
+
   cardNameInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter cardholder name!"
-      }
-    ]
+        message: 'Please enter cardholder name!',
+      },
+    ],
   };
+
   cardNumInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter card number!"
+        message: 'Please enter card number!',
       },
       {
-        validator: this.validateCardNum
-      }
-    ]
+        validator: (rule, value, callback) => {
+          if (value !== undefined && value.length !== 0) {
+            if (Number.isNaN(Number(value)) || value.length < 16) {
+              callback('The input is not a 16-digits card number!');
+            } else {
+              callback();
+            }
+          } else {
+            callback();
+          }
+        },
+      },
+    ],
   };
+
   cardExpInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter card expiry month and year!"
-      }
-    ]
+        message: 'Please enter card expiry month and year!',
+      },
+    ],
   };
+
   cardSecInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter card security code!"
+        message: 'Please enter card security code!',
       },
-      { validator: this.validateCardSec }
-    ]
+      {
+        validator: (rule, value, callback) => {
+          if (value !== undefined && value.length !== 0) {
+            if (Number.isNaN(Number(value)) || value.length < 3) {
+              callback('The input is not a 3-4-digits security code!');
+            } else {
+              callback();
+            }
+          } else {
+            callback();
+          }
+        },
+      },
+    ],
   };
+
   declarationChkOpts = {
     rules: [
       {
-        type: "array",
+        type: 'array',
         required: true,
-        message: "Please tick both chechboxes!",
-        len: 2
+        message: 'Please tick both chechboxes!',
+        len: 2,
+      },
+    ],
+  };
+
+  static propTypes = {
+    form: PropTypes.shape({}).isRequired,
+  };
+
+  state = { showDirectPayment: true };
+
+  handleCardNumOnBlur = (e) => {
+    console.log('handleCardNumOnBlur');
+    const value = e.target.value.trim();
+    const { form } = this.props;
+
+    form.setFieldsValue({ cardNumInput: value });
+    form.validateFields(['cardNumInput'], { force: true });
+  };
+
+  validateCardNumInput = (rule, value, callback) => {
+    console.log('cardNumInputOpts validator');
+    if (value !== undefined && value.length !== 0) {
+      if (Number.isNaN(Number(value)) || value.length < 16) {
+        callback('The input is not a 16-digits card number!');
+      } else {
+        callback();
       }
-    ]
+    } else {
+      callback();
+    }
+  };
+
+  handleCardSecOnBlur = (e) => {
+    const value = e.target.value.trim();
+    const { form } = this.props;
+    form.setFieldsValue({ cardSecInput: value });
+    form.validateFields(['cardSecInput'], { force: true });
+  };
+
+  handleCreditCardForm = () => {
+    /* eslint-disable no-console */
+    console.log('handleCreditCardForm');
+
+    const { form } = this.props;
+    form.validateFields(['cardNameInput', 'cardNumInput', 'cardExpInput', 'cardSecInput'], {
+      force: true,
+    });
+  };
+
+  toggleDirectPayment = (e) => {
+    console.log('toggleDirectPayment');
+    const { showDirectPayment } = this.state;
+    const { form } = this.props;
+    if (e.target.value === 'DP' && !showDirectPayment) {
+      this.setState({ showDirectPayment: true });
+    }
+    if (e.target.value !== 'DP' && showDirectPayment) {
+      this.setState({ showDirectPayment: false });
+      form.setFieldsValue({ cardNumInput: undefined });
+    }
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
+    const { showDirectPayment } = this.state;
+
     let creditCardForm = null;
-    if (this.state.showDirectPayment) {
+    if (showDirectPayment) {
       creditCardForm = (
         <FormItem>
           <Row>
             <Col offset={8}>
               <Card>
                 <FormItem {...formItemLayout} label="Name on Card">
-                  {getFieldDecorator("cardNameInput", this.cardNameInputOpts)(
-                    otherInput
-                  )}
+                  {getFieldDecorator('cardNameInput', this.cardNameInputOpts)(otherInput)}
                 </FormItem>
 
                 <FormItem {...formItemLayout} label="Card Number">
-                  {getFieldDecorator("cardNumInput", this.cardNumInputOpts)(
-                    <CardNumInput blurred={this.handleCardNumOnBlur} />
+                  {getFieldDecorator('cardNumInput', this.cardNumInputOpts)(
+                  // getFieldDecorator('cardNumInput', testopts)(
+                    <CardNumInput blurred={this.handleCardNumOnBlur} />,
                   )}
                   {cardNumInfo}
                 </FormItem>
 
                 <FormItem {...formItemLayout} label="Expiry Date">
-                  {getFieldDecorator("cardExpInput", this.cardExpInputOpts)(
-                    cardExpInput
-                  )}
+                  {getFieldDecorator('cardExpInput', this.cardExpInputOpts)(cardExpInput)}
                   {cardExpInfo}
                 </FormItem>
 
                 <FormItem {...formItemLayout} label="Security Code">
-                  {getFieldDecorator("cardSecInput", this.cardSecInputOpts)(
-                    <CardSecInput blurred={this.handleCardSecOnBlur} />
-                  )}
+                  {/* getFieldDecorator('cardSecInput', this.cardSecInputOpts)(
+                    <CardSecInput blurred={this.handleCardSecOnBlur} />,
+                  ) */}
                 </FormItem>
                 <PaymentBtn clicked={this.handleCreditCardForm} />
               </Card>
@@ -179,20 +212,20 @@ class Page3 extends React.Component {
         <Form>
           <Row>
             <Col offset={6} span={12}>
-              <FormItem>{feesTbl}</FormItem>
+              <FormItem>
+                {feesTbl}
+              </FormItem>
             </Col>
           </Row>
 
           {/* Membership Fee */}
           <FormItem {...formItemLayout} label="Membership Fees">
-            {getFieldDecorator("membershipTypeRdo", this.membershipTypeRdoOpts)(
-              membershipTypeRdo
-            )}
+            {getFieldDecorator('membershipTypeRdo', this.membershipTypeRdoOpts)(membershipTypeRdo)}
           </FormItem>
-          {/* Payment Method*/}
+          {/* Payment Method */}
           <FormItem {...formItemLayout} label="Payment Method">
-            {getFieldDecorator("paymentTypeRdo")(
-              <PaymentTypeRdo changed={this.toggleDirectPayment} />
+            {getFieldDecorator('paymentTypeRdo')(
+              <PaymentTypeRdo changed={this.toggleDirectPayment} />,
             )}
           </FormItem>
           {creditCardForm}
@@ -201,16 +234,16 @@ class Page3 extends React.Component {
             <Col offset={3}>
               {declarationInfo}
               <FormItem>
-                {getFieldDecorator("declarationChk", this.declarationChkOpts)(
-                  declarationChk
-                )}
+                {getFieldDecorator('declarationChk', this.declarationChkOpts)(declarationChk)}
               </FormItem>
             </Col>
           </Row>
           {/* Contact Info */}
           <Row>
             <Col offset={3}>
-              <FormItem>{contactInfo}</FormItem>
+              <FormItem>
+                {contactInfo}
+              </FormItem>
             </Col>
           </Row>
         </Form>

@@ -1,5 +1,9 @@
-import React from "react";
-import "antd/dist/antd.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import 'antd/dist/antd.css';
+import {
+  Form, Card, Row, Col,
+} from 'antd';
 import {
   cardStyles,
   formItemLayout,
@@ -14,116 +18,135 @@ import {
   eduLvlInfo,
   occupationInput,
   sgPassDdl,
-  passNumInfo
-} from "./components-pages";
-import { NationalityDdl, ReligionDdl, PassNumInput } from "./components-pages";
-import { Form, Card, Row, Col } from "antd";
+  passNumInfo,
+  NationalityDdl,
+  ReligionDdl,
+  PassNumInput,
+} from './components-pages';
+
 const FormItem = Form.Item;
 
-class Page1 extends React.Component {
-  state = {
-    showOtherNat: false,
-    showOtherRel: false
-  };
-
-  nationalityDdlChanged = value => {
-    //console.log("nationalityDdlChanged", value);
-    const doesShow = this.state.showOtherNat;
-    if (value === "OT" && !doesShow) {
-      this.setState({ showOtherNat: true });
-    }
-    if (value !== "OT" && doesShow) {
-      this.setState({ showOtherNat: false });
-    }
-  };
-  religionDdlChanged = value => {
-    const doesShow = this.state.showOtherRel;
-    if (value === "OT" && !doesShow) {
-      this.setState({ showOtherRel: true });
-    }
-    if (value !== "OT" && doesShow) {
-      this.setState({ showOtherRel: false });
-    }
-  };
-  handlePassNumOnBlur = e => {
-    const value = e.target.value.trim();
-    /* 2 lines below are needed due to validator not being triggered for imported component.
-    work for normal <Input> tag without those lines.
-    */
-    this.props.form.setFieldsValue({ passNumInput: value });
-    this.props.form.validateFields(["passNumInput"], { force: true });
-  };
-
+const Page1 = class extends React.Component {
   nameInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter your name!"
-      }
-    ]
+        message: 'Please enter your name!',
+      },
+    ],
   };
-  genderRdoOpts = { initialValue: "M" };
+
+  genderRdoOpts = { initialValue: 'M' };
+
   dobInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter your date of birth!"
-      }
-    ]
+        message: 'Please enter your date of birth!',
+      },
+    ],
   };
+
   natInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please specify your nationality!"
-      }
-    ]
+        message: 'Please specify your nationality!',
+      },
+    ],
   };
-  mStatusDdlOpts = { initialValue: "SI" };
+
+  mStatusDdlOpts = { initialValue: 'SI' };
+
   eduLvlInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please ender your education level!"
-      }
-    ]
+        message: 'Please ender your education level!',
+      },
+    ],
   };
+
   occupationInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please ender your education level!"
-      }
-    ]
+        message: 'Please ender your education level!',
+      },
+    ],
   };
-  sgPassDdlOpts = { initialValue: "SP" };
+
+  sgPassDdlOpts = { initialValue: 'SP' };
+
   passNumInputOpts = {
     rules: [
       {
-        pattern: "^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$",
-        message: "The input is not a valid ID Number!"
+        pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
+        message: 'The input is not a valid ID Number!',
       },
       {
         required: true,
-        message: "Please enter your ID Number!"
-      }
-    ]
+        message: 'Please enter your ID Number!',
+      },
+    ],
+  };
+
+  static propTypes = {
+    form: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    form: PropTypes.shape({}),
+  };
+
+  state = {
+    showOtherNat: false,
+    showOtherRel: false,
+  };
+
+  nationalityDdlChanged = (value) => {
+    /* eslint-disable no-console */
+    // console.log("nationalityDdlChanged", value);
+    const { showOtherNat } = this.state;
+    if (value === 'OT' && !showOtherNat) {
+      this.setState({ showOtherNat: true });
+    }
+    if (value !== 'OT' && showOtherNat) {
+      this.setState({ showOtherNat: false });
+    }
+  };
+
+  religionDdlChanged = (value) => {
+    const { showOtherRel } = this.state;
+    if (value === 'OT' && !showOtherRel) {
+      this.setState({ showOtherRel: true });
+    }
+    if (value !== 'OT' && showOtherRel) {
+      this.setState({ showOtherRel: false });
+    }
+  };
+
+  handlePassNumOnBlur = (e) => {
+    const value = e.target.value.trim();
+    const { form } = this.props;
+    form.setFieldsValue({ passNumInput: value });
+    form.validateFields(['passNumInput'], { force: true });
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
+    const { showOtherNat, showOtherRel } = this.state;
     const labelSpace = 8;
     const itemSpace = { marginLeft: 8 };
 
     let showOtherNatInput = null;
     let showOtherRelInput = null;
-    if (this.state.showOtherNat) {
-      showOtherNatInput = getFieldDecorator("otherNatInput", this.natInputOpts)(
-        otherInput
-      );
+    if (showOtherNat) {
+      showOtherNatInput = getFieldDecorator('otherNatInput', this.natInputOpts)(otherInput);
     }
-    if (this.state.showOtherRel) {
-      showOtherRelInput = getFieldDecorator("otherRelInput")(otherInput);
+    if (showOtherRel) {
+      showOtherRelInput = getFieldDecorator('otherRelInput')(otherInput);
     }
 
     return (
@@ -131,97 +154,99 @@ class Page1 extends React.Component {
         <Form>
           <Row type="flex">
             {/* Name */}
-            <Col span={labelSpace} style={{ textAlign: "right" }}>
-              <FormItem label="Name" colon={true} required={true} />
+            <Col span={labelSpace} style={{ textAlign: 'right' }}>
+              <FormItem label="Name" colon required />
             </Col>
             <Col>
               <FormItem>
-                {getFieldDecorator("name1Input", this.nameInputOpts)(
-                  name1Input
-                )}
+                {getFieldDecorator('name1Input', this.nameInputOpts)(name1Input)}
               </FormItem>
             </Col>
             <Col style={itemSpace}>
-              <FormItem>{getFieldDecorator("name2Input")(name2Input)}</FormItem>
+              <FormItem>
+                {getFieldDecorator('name2Input')(name2Input)}
+              </FormItem>
             </Col>
             <Col style={itemSpace}>
-              <FormItem>{getFieldDecorator("name3Input")(name3Input)}</FormItem>
+              <FormItem>
+                {getFieldDecorator('name3Input')(name3Input)}
+              </FormItem>
             </Col>
           </Row>
 
           {/* Gender */}
           <FormItem {...formItemLayout} label="Gender">
-            {getFieldDecorator("genderRdo", this.genderRdoOpts)(genderRdo)}
+            {getFieldDecorator('genderRdo', this.genderRdoOpts)(genderRdo)}
           </FormItem>
 
           {/* Date of Birth */}
           <FormItem {...formItemLayout} label="Date of Birth">
-            {getFieldDecorator("dobInput", this.dobInputOpts)(dobInput)}
+            {getFieldDecorator('dobInput', this.dobInputOpts)(dobInput)}
           </FormItem>
 
           {/* Nationality */}
           <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: "right" }}>
-              <FormItem label="Nationality" colon={true} required={true} />
+            <Col span={labelSpace} style={{ textAlign: 'right' }}>
+              <FormItem label="Nationality" colon required />
             </Col>
             <Col>
               <FormItem>
-                {getFieldDecorator("nationalityDdl")(
-                  <NationalityDdl changed={this.nationalityDdlChanged} />
+                {getFieldDecorator('nationalityDdl')(
+                  <NationalityDdl changed={this.nationalityDdlChanged} />,
                 )}
               </FormItem>
             </Col>
             <Col>
-              <FormItem style={itemSpace}>{showOtherNatInput}</FormItem>
+              <FormItem style={itemSpace}>
+                {showOtherNatInput}
+              </FormItem>
             </Col>
           </Row>
 
           {/* Religion */}
           <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: "right" }}>
-              <FormItem label="Religion" colon={true} />
+            <Col span={labelSpace} style={{ textAlign: 'right' }}>
+              <FormItem label="Religion" colon />
             </Col>
             <Col>
               <FormItem>
-                {getFieldDecorator("religionDdl")(
-                  <ReligionDdl changed={this.religionDdlChanged} />
+                {getFieldDecorator('religionDdl')(
+                  <ReligionDdl changed={this.religionDdlChanged} />,
                 )}
               </FormItem>
             </Col>
             <Col>
-              <FormItem style={itemSpace}>{showOtherRelInput}</FormItem>
+              <FormItem style={itemSpace}>
+                {showOtherRelInput}
+              </FormItem>
             </Col>
           </Row>
 
           {/* Marital Status */}
           <FormItem {...formItemLayout} label="Marital Status">
-            {getFieldDecorator("mStatusDdl", this.mStatusDdlOpts)(mStatusDdl)}
+            {getFieldDecorator('mStatusDdl', this.mStatusDdlOpts)(mStatusDdl)}
           </FormItem>
 
           {/* Education Level */}
           <FormItem {...formItemLayout} label="Education Level">
-            {getFieldDecorator("eduLvlInput", this.eduLvlInputOpts)(
-              eduLvlInput
-            )}
+            {getFieldDecorator('eduLvlInput', this.eduLvlInputOpts)(eduLvlInput)}
             {eduLvlInfo}
           </FormItem>
 
           {/* Occupation */}
           <FormItem {...formItemLayout} label="Occupation">
-            {getFieldDecorator("occupationInput", this.occupationInputOpts)(
-              occupationInput
-            )}
+            {getFieldDecorator('occupationInput', this.occupationInputOpts)(occupationInput)}
           </FormItem>
 
           {/* Pass */}
           <FormItem {...formItemLayout} label="Singapore Pass">
-            {getFieldDecorator("sgPassDdl", this.sgPassDdlOpts)(sgPassDdl)}
+            {getFieldDecorator('sgPassDdl', this.sgPassDdlOpts)(sgPassDdl)}
           </FormItem>
 
-          {/* ID Number*/}
+          {/* ID Number */}
           <FormItem {...formItemLayout} label="Identification Number">
-            {getFieldDecorator("passNumInput", this.passNumInputOpts)(
-              <PassNumInput blurred={this.handlePassNumOnBlur} />
+            {getFieldDecorator('passNumInput', this.passNumInputOpts)(
+              <PassNumInput blurred={this.handlePassNumOnBlur} />,
             )}
             {passNumInfo}
           </FormItem>
@@ -229,6 +254,6 @@ class Page1 extends React.Component {
       </Card>
     );
   }
-}
+};
 
 export default Form.create()(Page1);

@@ -1,5 +1,9 @@
-import React from "react";
-import "antd/dist/antd.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import 'antd/dist/antd.css';
+import {
+  Form, Card, Row, Col, Collapse,
+} from 'antd';
 import {
   cardStyles,
   formItemLayout,
@@ -12,205 +16,245 @@ import {
   areaCodeDdl,
   hobbiesInput,
   uploadBtn,
-  subComChk_CUTRL,
-  subComChk_KNWLG,
-  subComChk_COMTY,
-  subComChk_SPORT,
-  subComChk_SPOSR,
-  subComChk_OUTRH
-} from "./components-pages";
-import {
+  subComChkCutrl,
+  subComChkKnwlg,
+  subComChkComty,
+  subComChkSport,
+  subComChkSposr,
+  subComChkOutrh,
   ConfirmPwInput,
   ZipCodeInput,
   HomeNoInput,
-  MobileNoInput
-} from "./components-pages";
-import { Form, Card, Row, Col, Collapse } from "antd";
+  MobileNoInput,
+} from './components-pages';
+
 const FormItem = Form.Item;
-const Panel = Collapse.Panel;
+const { Panel } = Collapse;
 
 class Page2 extends React.Component {
-  state = {
-    confirmDirty: false,
-    showPw: false
-  };
-
-  handleZipCodeOnBlur = e => {
-    //console.log("Testtt", this.props.form.getFieldValue("subComChk_CUTRL"));
-    const value = e.target.value.trim();
-    /* 2 lines below are needed due to validator not being triggered for imported component.
-    work for normal <Input> tag without those lines.
-    */
-    this.props.form.setFieldsValue({ zipCodeInput: value });
-    this.props.form.validateFields(["zipCodeInput"], { force: true });
-  };
-  validateZipCode = (rule, value, callback) => {
-    if ((isNaN(value) || value.length !== 6) && value !== undefined) {
-      callback("The input is not a valid postal/zip code!");
-    } else {
-      callback();
-    }
-  };
-  handleConfirmOnChange = e => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-    /* 2 lines below are needed due to validator not being triggered for imported component.
-    work for normal <Input> tag without those lines.
-    */
-    this.props.form.setFieldsValue({ confirmPwInput: value });
-    this.props.form.validateFields(["confirmPwInput"], { force: true });
-  };
-  validateToNxtPassword = (rule, value, callback) => {
-    //console.log("validateToNxtPassword => ", value);
-    const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(["confirmPwInput"], { force: true });
-    }
-    callback();
-  };
-  validatetoFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    //console.log("validatetoFirstPassword =>", value);
-    if (value && value !== form.getFieldValue("pwInput")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
-  checkExpand = () => {
-    const doesShow = this.state.showPw;
-    this.setState({ showPw: !doesShow });
-  };
-  handleHomeNoOnBlur = e => {
-    const value = e.target.value.trim();
-    /* 2 lines below are needed due to validator not being triggered for imported component.
-    work for normal <Input> tag without those lines.
-    */
-    this.props.form.setFieldsValue({ homeNoInput: value });
-    this.props.form.validateFields(["homeNoInput"], { force: true });
-  };
-  validatePhoneNo = (rule, value, callback) => {
-    if (isNaN(value) && value !== undefined) {
-      callback("The input is not a valid phone number!");
-    } else {
-      callback();
-    }
-  };
-  handleMobileNoOnBlur = e => {
-    const value = e.target.value.trim();
-    /* 2 lines below are needed due to validator not being triggered for imported component.
-    work for normal <Input> tag without those lines.
-    */
-    this.props.form.setFieldsValue({ mobileNoInput: value });
-    this.props.form.validateFields(["mobileNoInput"], { force: true });
-  };
-  normFile = e => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   addrInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter your address!"
-      }
-    ]
+        message: 'Please enter your address!',
+      },
+    ],
   };
+
   zipCodeInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter your postal/zip code!"
+        message: 'Please enter your postal/zip code!',
       },
       {
-        validator: this.validateZipCode
-      }
-    ]
+        // validator: this.validateZipCode,
+        validator: (rule, value, callback) => {
+          /* eslint-disable no-console */
+          // console.log('zipcode =>', value);
+          if (value !== undefined && value.length !== 0) {
+            if (Number.isNaN(Number(value)) || value.length < 6) {
+              callback('The input is not a valid postal/zip code!');
+            } else {
+              callback();
+            }
+          } else {
+            callback();
+          }
+        },
+      },
+    ],
   };
+
   emailInputOpts = {
     rules: [
       {
-        type: "email",
-        message: "The input is not valid email address! "
+        type: 'email',
+        message: 'The input is not valid email address! ',
       },
       {
         required: true,
-        message: "Please enter your email address!"
-      }
-    ]
+        message: 'Please enter your email address!',
+      },
+    ],
   };
+
   pwInputOpts = {
     rules: [
       {
-        required: true,
-        message: "Please enter your password!"
+        required: false,
+        message: 'Please enter your password!',
       },
       {
-        validator: this.validateToNxtPassword
-      }
-    ]
+        validator: null,
+      },
+    ],
   };
+
   confirmPwInputOpts = {
     rules: [
       {
-        required: true,
-        message: "Please enter your password!"
+        required: false,
+        message: 'Please enter your password!',
       },
       {
-        validator: this.validatetoFirstPassword
-      }
-    ]
+        validator: null,
+      },
+    ],
   };
+
   homeNoInputOpts = {
     rules: [
       {
-        validator: this.validatePhoneNo
-      }
-    ]
+        validator: (rule, value, callback) => {
+          if (value !== undefined && value.length !== 0) {
+            if (Number.isNaN(Number(value))) {
+              callback('The input is not a valid phone number!');
+            } else {
+              callback();
+            }
+          } else {
+            callback();
+          }
+        },
+      },
+    ],
   };
+
   mobileNoInputOpts = {
     rules: [
       {
         required: true,
-        message: "Please enter your mobile phone number!"
+        message: 'Please enter your mobile phone number!',
       },
       {
-        validator: this.validatePhoneNo
-      }
-    ]
+        validator: (rule, value, callback) => {
+          if (value !== undefined && value.length !== 0) {
+            if (Number.isNaN(Number(value))) {
+              callback('The input is not a valid phone number!');
+            } else {
+              callback();
+            }
+          } else {
+            callback();
+          }
+        },
+      },
+    ],
   };
+
   uploadBtnOpts = {
     rules: [
       {
-        required: true,
-        message: "Please upload your passport size photo!"
-      }
+        // required: true,
+        required: false,
+        message: 'Please upload your passport size photo!',
+      },
     ],
-    valuePropName: "fileList",
-    getValueFromEvent: this.normFile
+    valuePropName: 'fileList',
+    getValueFromEvent: (e) => {
+      /* eslint-disable no-console */
+      // console.log('Upload event:', e);
+      if (Array.isArray(e)) {
+        return e;
+      }
+      return e && e.fileList;
+    },
+  };
+
+  static propTypes = {
+    form: PropTypes.shape({}).isRequired,
+  };
+
+  state = {
+    confirmDirty: false,
+    showPw: false,
+  };
+
+  handleZipCodeOnBlur = (e) => {
+    const value = e.target.value.trim();
+    const { form } = this.props;
+    form.setFieldsValue({ zipCodeInput: value });
+    form.validateFields(['zipCodeInput'], { force: true });
+  };
+
+  handleConfirmOnChange = (e) => {
+    const { value } = e.target;
+    const { confirmDirty } = this.state;
+    this.setState({ confirmDirty: confirmDirty || !!value });
+    const { form } = this.props;
+    form.setFieldsValue({ confirmPwInput: value });
+    form.validateFields(['confirmPwInput'], { force: true });
+  };
+
+  validateToNxtPassword = (rule, value, callback) => {
+    /* eslint-disable no-console */
+    // console.log('validateToNxtPassword => ', value);
+    const { confirmDirty } = this.state;
+    const { form } = this.props;
+    if (value && confirmDirty) {
+      form.validateFields(['confirmPwInput'], { force: true });
+    }
+    callback();
+  };
+
+  validatetoFirstPassword = (rule, value, callback) => {
+    /* eslint-disable no-console */
+    // console.log('validatetoFirstPassword =>', value);
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('pwInput')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  };
+
+  checkExpand = (value) => {
+    const { showPw } = this.state;
+    const { form } = this.props;
+    this.setState({ showPw: !showPw });
+
+    if (value.length !== 0) {
+      // show
+      // console.log('SHOW THE PASSOWRD FIELDS');
+      this.pwInputOpts.rules[0].required = true;
+      this.pwInputOpts.rules[1].validator = this.validateToNxtPassword;
+      this.confirmPwInputOpts.rules[0].required = true;
+      this.confirmPwInputOpts.rules[1].validator = this.validatetoFirstPassword;
+    } else {
+      // hide
+      // console.log('HIDE THE PASSOWRD FIELDS');
+      this.pwInputOpts.rules[0].required = false;
+      this.pwInputOpts.rules[1].validator = null;
+      this.confirmPwInputOpts.rules[0].required = false;
+      this.confirmPwInputOpts.rules[1].validator = null;
+      form.setFieldsValue({ pwInput: '' });
+      form.setFieldsValue({ confirmPwInput: '' });
+    }
+  };
+
+  handleHomeNoOnBlur = (e) => {
+    const value = e.target.value.trim();
+    const { form } = this.props;
+    form.setFieldsValue({ homeNoInput: value });
+    form.validateFields(['homeNoInput'], { force: true });
+  };
+
+  handleMobileNoOnBlur = (e) => {
+    const value = e.target.value.trim();
+    const { form } = this.props;
+    form.setFieldsValue({ mobileNoInput: value });
+    form.validateFields(['mobileNoInput'], { force: true });
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
     const labelSpace = 8;
     const itemSpace = { marginLeft: 8 };
 
-    let showPwInput = null;
-    let showCfmPwInput = null;
-    if (this.state.showPw) {
-      showPwInput = getFieldDecorator("pwInput", this.pwInputOpts)(pwInput);
-
-      showCfmPwInput = getFieldDecorator(
-        "confirmPwInput",
-        this.confirmPwInputOpts
-      )(<ConfirmPwInput changed={this.handleConfirmOnChange} />);
-    }
-    const prefixAreaCode = getFieldDecorator("areadCodeDdl", {
-      initialValue: "65"
+    const prefixAreaCode = getFieldDecorator('areadCodeDdl', {
+      initialValue: '65',
     })(areaCodeDdl);
 
     return (
@@ -218,31 +262,31 @@ class Page2 extends React.Component {
         <Form>
           {/* Address */}
           <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: "right" }}>
-              <FormItem label="Address" colon={true} required={true} />
+            <Col span={labelSpace} style={{ textAlign: 'right' }}>
+              <FormItem label="Address" colon required />
             </Col>
             <Col>
               <FormItem>
-                {getFieldDecorator("addr1Input", this.addrInputOpts)(
-                  addr1Input
-                )}
+                {getFieldDecorator('addr1Input', this.addrInputOpts)(addr1Input)}
               </FormItem>
             </Col>
             <Col style={itemSpace}>
-              <FormItem>{getFieldDecorator("addr2Input")(addr2Input)}</FormItem>
+              <FormItem>
+                {getFieldDecorator('addr2Input')(addr2Input)}
+              </FormItem>
             </Col>
           </Row>
 
           {/* Postal Code */}
           <FormItem {...formItemLayout} label="Postal Code">
-            {getFieldDecorator("zipCodeInput", this.zipCodeInputOpts)(
-              <ZipCodeInput blurred={this.handleZipCodeOnBlur} />
+            {getFieldDecorator('zipCodeInput', this.zipCodeInputOpts)(
+              <ZipCodeInput blurred={this.handleZipCodeOnBlur} />,
             )}
           </FormItem>
 
           {/* Email Address */}
           <FormItem {...formItemLayout} label="Email Address">
-            {getFieldDecorator("emailInput", this.emailInputOpts)(emailInput)}
+            {getFieldDecorator('emailInput', this.emailInputOpts)(emailInput)}
           </FormItem>
 
           {/* Passwords */}
@@ -253,10 +297,12 @@ class Page2 extends React.Component {
                 <Collapse style={{ maxWidth: 608 }} onChange={this.checkExpand}>
                   <Panel header="Create a Myanmar Club Account...">
                     <FormItem {...formItemLayout} label="Password">
-                      {showPwInput}
+                      {getFieldDecorator('pwInput', this.pwInputOpts)(pwInput)}
                     </FormItem>
                     <FormItem {...formItemLayout} label="Confirm Password">
-                      {showCfmPwInput}
+                      {getFieldDecorator('confirmPwInput', this.confirmPwInputOpts)(
+                        <ConfirmPwInput changed={this.handleConfirmOnChange} />,
+                      )}
                     </FormItem>
                     {pwInfo}
                   </Panel>
@@ -267,53 +313,50 @@ class Page2 extends React.Component {
 
           {/* Facebook Account */}
           <FormItem {...formItemLayout} label="Facebook Account">
-            {getFieldDecorator("fbAccInput")(fbAccInput)}
+            {getFieldDecorator('fbAccInput')(fbAccInput)}
           </FormItem>
 
           {/* Home Phone Number */}
           <FormItem {...formItemLayout} label="Home Phone Number">
-            {getFieldDecorator("homeNoInput", this.homeNoInputOpts)(
-              <HomeNoInput blurred={this.handleHomeNoOnBlur} />
+            {getFieldDecorator('homeNoInput', this.homeNoInputOpts)(
+              <HomeNoInput blurred={this.handleHomeNoOnBlur} />,
             )}
           </FormItem>
 
           {/* Mobiel Number */}
           <FormItem {...formItemLayout} label="Mobile Number">
-            {getFieldDecorator("mobileNoInput", this.mobileNoInputOpts)(
-              <MobileNoInput
-                areadCodeBef={prefixAreaCode}
-                blurred={this.handleMobileNoOnBlur}
-              />
+            {getFieldDecorator('mobileNoInput', this.mobileNoInputOpts)(
+              <MobileNoInput areadCodeBef={prefixAreaCode} blurred={this.handleMobileNoOnBlur} />,
             )}
           </FormItem>
 
           {/* Hobbies */}
           <FormItem {...formItemLayout} label="Hobbies">
-            {getFieldDecorator("hobbiesInput")(hobbiesInput)}
+            {getFieldDecorator('hobbiesInput')(hobbiesInput)}
           </FormItem>
 
-          {/* Passport Size Photo*/}
+          {/* Passport Size Photo */}
           <FormItem {...formItemLayout} label="Passport Size Photo">
-            {getFieldDecorator("uploadBtn", this.uploadBtnOpts)(uploadBtn)}
+            {getFieldDecorator('uploadBtn', this.uploadBtnOpts)(uploadBtn)}
           </FormItem>
 
           {/* Sub-Com Interests */}
           <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: "right" }}>
-              <FormItem label="Interested Sub-Committee(s)" colon={true} />
+            <Col span={labelSpace} style={{ textAlign: 'right' }}>
+              <FormItem label="Interested Sub-Committee(s)" colon />
             </Col>
             <Col span={16} style={{ paddingTop: 10 }}>
-              {getFieldDecorator("subComChk_CUTRL")(subComChk_CUTRL)}
+              {getFieldDecorator('subComChk_CUTRL')(subComChkCutrl)}
               <br />
-              {getFieldDecorator("subComChk_KNWLG")(subComChk_KNWLG)}
+              {getFieldDecorator('subComChk_KNWLG')(subComChkKnwlg)}
               <br />
-              {getFieldDecorator("subComChk_COMTY")(subComChk_COMTY)}
+              {getFieldDecorator('subComChk_COMTY')(subComChkComty)}
               <br />
-              {getFieldDecorator("subComChk_SPORT")(subComChk_SPORT)}
+              {getFieldDecorator('subComChk_SPORT')(subComChkSport)}
               <br />
-              {getFieldDecorator("subComChk_SPOSR")(subComChk_SPOSR)}
+              {getFieldDecorator('subComChk_SPOSR')(subComChkSposr)}
               <br />
-              {getFieldDecorator("subComChk_OUTRH")(subComChk_OUTRH)}
+              {getFieldDecorator('subComChk_OUTRH')(subComChkOutrh)}
             </Col>
           </Row>
         </Form>

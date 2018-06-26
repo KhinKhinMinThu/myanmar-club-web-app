@@ -7,7 +7,7 @@ import Page1 from './page1';
 import Page2 from './page2';
 import Page3 from './page3';
 
-const Step = Steps.Step;
+const { Step } = Steps;
 
 // ******************************* signup-form components
 // *******************************
@@ -53,10 +53,10 @@ PageSteps.propTypes = {
 };
 
 export class StepContent extends React.Component {
-  validatePage = (e) => {
+  validatePage = () => {
     let result = true;
     if (this.currentStep !== 0) {
-      this.currentPage.validateFields((err, values) => {
+      this.currentPage.validateFieldsAndScroll((err) => {
         if (err) {
           result = false;
         }

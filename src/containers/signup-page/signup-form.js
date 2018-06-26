@@ -1,72 +1,79 @@
-import React from "react";
-import "antd/dist/antd.css";
-import { PageSteps, StepContent, StepAction } from "./components-form";
-import { message } from "antd";
+import React from 'react';
+import 'antd/dist/antd.css';
+import { message } from 'antd';
+import { PageSteps, StepContent, StepAction } from './components-form';
 
 const steps = [
   {
-    title: "Info Page",
-    content: 0
+    title: 'Info Page',
+    content: 0,
   },
   {
-    title: "First Step",
-    content: 1
+    title: 'First Step',
+    content: 1,
   },
   {
-    title: "Second Step",
-    content: 2
+    title: 'Second Step',
+    content: 2,
   },
   {
-    title: "Last Step",
-    content: 3
-  }
+    title: 'Last Step',
+    content: 3,
+  },
 ];
 
 class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0
+      current: 3,
     };
   }
-  next = e => {
-    const current = this.state.current + 1;
+
+  next = (e) => {
+    const { current } = this.state;
+    const nxtCurrent = current + 1;
+    // const current = this.state.current + 1;
     const result = this.stepContent.validatePage(e);
 
     if (result === true) {
-      this.setState({ current });
+      this.setState({ current: nxtCurrent });
     }
     // to display the next page from top
-    document.documentElement.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
   };
+
   prev = () => {
-    const current = this.state.current - 1;
-    this.setState({ current });
+    const { current } = this.state;
+    const prvCurrent = current - 1;
+    this.setState({ current: prvCurrent });
     // to display the previous page from top
-    document.documentElement.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
   };
-  completed = e => {
+
+  completed = (e) => {
     const result = this.stepContent.validatePage(e);
     if (result === true) {
-      message.success("Processing complete!");
+      message.success('Processing complete!');
     }
     // to display the next page from top
-    document.documentElement.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
   };
+
   render() {
     const { current } = this.state;
     return (
       <div>
         <PageSteps current={current} steps={steps} />
         <StepContent
-          ref={node => {
+          ref={(node) => {
             this.stepContent = node;
           }}
-          current={this.state.current}
+          current={current}
           steps={steps}
         />
         <StepAction
-          current={this.state.current}
+          current={current}
           steps={steps}
           prevClicked={this.prev}
           nxtClicked={this.next}
