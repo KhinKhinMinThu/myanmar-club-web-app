@@ -20,3 +20,13 @@
   justify-content: center;
   height: 100%;
 }
+
+/* Myamar Font Unicode: https://mmwebfonts.comquas.com/
+MMWebFonts can't support on Opera and Android Native Browser */
+@font-face {
+  font-family: "Myanmar3";
+  font-size: 50px;
+  src: local("Myanmar3"),
+    url("https://mmwebfonts.comquas.com/fonts/myanmar3.woff") format("woff"),
+    url("https://mmwebfonts.comquas.com/fonts/myanmar3.ttf") format("ttf");
+}
