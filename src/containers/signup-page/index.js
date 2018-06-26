@@ -1,7 +1,7 @@
-import React from "react";
-import { Card } from "antd";
-import SignupForm from "./signup-form";
-import { pageStyles } from "../shared-components/common";
+import React from 'react';
+import { Card } from 'antd';
+import SignupForm from './signup-form';
+import { pageStyles } from '../shared-components/common';
 
 const SignupPage = () => (
   <div className="signup-page">

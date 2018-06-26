@@ -25,7 +25,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const CheckboxGroup = Checkbox.Group;
 
 export const cardStyles = {
-  borderRadius: 10,
+      borderRadius: 10,
   textAlign: "left"
 };
 export const formItemLayout = {
