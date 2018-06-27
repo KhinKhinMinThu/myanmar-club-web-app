@@ -114,25 +114,12 @@ class Page3 extends React.Component {
   state = { showDirectPayment: true };
 
   handleCardNumOnBlur = (e) => {
-    console.log('handleCardNumOnBlur');
+    // console.log('handleCardNumOnBlur');
     const value = e.target.value.trim();
     const { form } = this.props;
 
     form.setFieldsValue({ cardNumInput: value });
     form.validateFields(['cardNumInput'], { force: true });
-  };
-
-  validateCardNumInput = (rule, value, callback) => {
-    console.log('cardNumInputOpts validator');
-    if (value !== undefined && value.length !== 0) {
-      if (Number.isNaN(Number(value)) || value.length < 16) {
-        callback('The input is not a 16-digits card number!');
-      } else {
-        callback();
-      }
-    } else {
-      callback();
-    }
   };
 
   handleCardSecOnBlur = (e) => {
@@ -144,8 +131,7 @@ class Page3 extends React.Component {
 
   handleCreditCardForm = () => {
     /* eslint-disable no-console */
-    console.log('handleCreditCardForm');
-
+    // console.log('handleCreditCardForm');
     const { form } = this.props;
     form.validateFields(['cardNameInput', 'cardNumInput', 'cardExpInput', 'cardSecInput'], {
       force: true,
@@ -153,15 +139,22 @@ class Page3 extends React.Component {
   };
 
   toggleDirectPayment = (e) => {
-    console.log('toggleDirectPayment');
+    // console.log('toggleDirectPayment');
     const { showDirectPayment } = this.state;
     const { form } = this.props;
+
     if (e.target.value === 'DP' && !showDirectPayment) {
       this.setState({ showDirectPayment: true });
+      // unhide and reset the fields with validator
+      form.getFieldDecorator('cardNumInput', { hidden: false });
+      form.getFieldDecorator('cardSecInput', { hidden: false });
+      form.resetFields(['cardNumInput', 'cardSecInput']);
     }
     if (e.target.value !== 'DP' && showDirectPayment) {
       this.setState({ showDirectPayment: false });
-      form.setFieldsValue({ cardNumInput: undefined });
+      // hide the fields with validator
+      form.getFieldDecorator('cardNumInput', { hidden: true });
+      form.getFieldDecorator('cardSecInput', { hidden: true });
     }
   };
 
@@ -183,7 +176,6 @@ class Page3 extends React.Component {
 
                 <FormItem {...formItemLayout} label="Card Number">
                   {getFieldDecorator('cardNumInput', this.cardNumInputOpts)(
-                  // getFieldDecorator('cardNumInput', testopts)(
                     <CardNumInput blurred={this.handleCardNumOnBlur} />,
                   )}
                   {cardNumInfo}
@@ -195,9 +187,9 @@ class Page3 extends React.Component {
                 </FormItem>
 
                 <FormItem {...formItemLayout} label="Security Code">
-                  {/* getFieldDecorator('cardSecInput', this.cardSecInputOpts)(
+                  {getFieldDecorator('cardSecInput', this.cardSecInputOpts)(
                     <CardSecInput blurred={this.handleCardSecOnBlur} />,
-                  ) */}
+                  )}
                 </FormItem>
                 <PaymentBtn clicked={this.handleCreditCardForm} />
               </Card>
@@ -222,13 +214,16 @@ class Page3 extends React.Component {
           <FormItem {...formItemLayout} label="Membership Fees">
             {getFieldDecorator('membershipTypeRdo', this.membershipTypeRdoOpts)(membershipTypeRdo)}
           </FormItem>
+
           {/* Payment Method */}
           <FormItem {...formItemLayout} label="Payment Method">
             {getFieldDecorator('paymentTypeRdo')(
               <PaymentTypeRdo changed={this.toggleDirectPayment} />,
             )}
           </FormItem>
+
           {creditCardForm}
+
           {/* Declaration */}
           <Row>
             <Col offset={3}>
@@ -238,6 +233,7 @@ class Page3 extends React.Component {
               </FormItem>
             </Col>
           </Row>
+
           {/* Contact Info */}
           <Row>
             <Col offset={3}>

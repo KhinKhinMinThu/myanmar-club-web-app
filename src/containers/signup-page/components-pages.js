@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// to ignore the warnings: Statless functions can't be givien refs.
+import { toClass } from 'recompose';
 import {
   Radio, Button, DatePicker, Select, Input, Upload, Checkbox, Table,
 } from 'antd';
@@ -166,7 +168,7 @@ export const addr1Input = (
 export const addr2Input = (
   <Input style={{ width: 300 }} type="text" placeholder="Street Address Line 2" />
 );
-export const ZipCodeInput = (props) => {
+export const ZipCodeInput = toClass((props) => {
   const { blurred } = props;
   return (
     <Input
@@ -177,16 +179,16 @@ export const ZipCodeInput = (props) => {
       onBlur={blurred}
     />
   );
-};
+});
 ZipCodeInput.propTypes = { blurred: PropTypes.func.isRequired };
 
 export const emailInput = <Input style={fieldWidth} type="text" placeholder="Email Address" />;
 export const pwInput = <Input type="password" />;
 
-export const ConfirmPwInput = (props) => {
+export const ConfirmPwInput = toClass((props) => {
   const { changed } = props;
   return <Input type="password" onChange={changed} />;
-};
+});
 ConfirmPwInput.propTypes = { changed: PropTypes.func.isRequired };
 
 export const pwInfo = (
@@ -221,15 +223,15 @@ export const areaCodeDdl = (
     </Option>
   </Select>
 );
-export const HomeNoInput = (props) => {
+export const HomeNoInput = toClass((props) => {
   const { blurred } = props;
   return (
     <Input style={{ width: 300 }} type="text" placeholder="Line Phone Number" onBlur={blurred} />
   );
-};
+});
 HomeNoInput.propTypes = { blurred: PropTypes.func.isRequired };
 
-export const MobileNoInput = (props) => {
+export const MobileNoInput = toClass((props) => {
   const { blurred, areadCodeBef } = props;
   return (
     <Input
@@ -240,7 +242,7 @@ export const MobileNoInput = (props) => {
       onBlur={blurred}
     />
   );
-};
+});
 MobileNoInput.propTypes = {
   blurred: PropTypes.func.isRequired,
   areadCodeBef: PropTypes.shape({}).isRequired,
@@ -354,7 +356,7 @@ export const membershipTypeRdo = (
     </Radio>
   </RadioGroup>
 );
-export const PaymentTypeRdo = (props) => {
+export const PaymentTypeRdo = toClass((props) => {
   const { changed } = props;
   return (
     <RadioGroup name="paymentTypeRdo" defaultValue="DP" onChange={changed}>
@@ -369,7 +371,7 @@ export const PaymentTypeRdo = (props) => {
       </RadioButton>
     </RadioGroup>
   );
-};
+});
 PaymentTypeRdo.propTypes = { changed: PropTypes.func.isRequired };
 
 export const declarationInfo = (
@@ -431,10 +433,10 @@ export const contactInfo = (
 export const cardExpInput = (
   <MonthPicker style={fieldWidth} format={monthFormat} placeholder="Select month and year" />
 );
-export const CardNumInput = (props) => {
+export const CardNumInput = toClass((props) => {
   const { blurred } = props;
   return <Input maxLength="16" type="text" style={fieldWidth} onBlur={blurred} />;
-};
+});
 CardNumInput.propTypes = { blurred: PropTypes.func.isRequired };
 
 export const cardNumInfo = (
@@ -448,10 +450,10 @@ export const cardExpInfo = (
     {'MM-YYYY'}
   </span>
 );
-export const CardSecInput = (props) => {
+export const CardSecInput = toClass((props) => {
   const { blurred } = props;
   return <Input maxLength="4" type="text" style={fieldWidth} onBlur={blurred} />;
-};
+});
 CardSecInput.propTypes = { blurred: PropTypes.func.isRequired };
 
 export const PaymentBtn = (props) => {

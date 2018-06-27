@@ -26,21 +26,18 @@ class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 3,
+      current: 0,
     };
   }
 
   next = (e) => {
     const { current } = this.state;
     const nxtCurrent = current + 1;
-    // const current = this.state.current + 1;
     const result = this.stepContent.validatePage(e);
 
     if (result === true) {
       this.setState({ current: nxtCurrent });
     }
-    // to display the next page from top
-    // document.documentElement.scrollTop = 0;
   };
 
   prev = () => {
@@ -56,8 +53,6 @@ class SignupForm extends React.Component {
     if (result === true) {
       message.success('Processing complete!');
     }
-    // to display the next page from top
-    // document.documentElement.scrollTop = 0;
   };
 
   render() {
