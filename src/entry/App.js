@@ -1,12 +1,11 @@
 import React from 'react';
-// import LoginPage from "./login-page";
-import SignupPage from '../containers/signup-page';
-// import LoginPage from "./login-page";
+import LoginPage from '../containers/login-page';
+// import SignupPage from '../containers/signup-page';
 
 const App = () => (
   <div className="App">
-    {/* <LoginPage /> */}
-    <SignupPage />
+    {/* <SignupPage />  */}
+    <LoginPage />
   </div>
 );
 

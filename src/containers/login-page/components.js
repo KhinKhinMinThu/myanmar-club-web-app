@@ -12,25 +12,24 @@ export const PasswordInput = (
 
 export const ForgotPasswordLink = (
   <a href="./forgotPassword.do" style={{ float: 'right' }}>
-    Forgot password
-    {' '}
+    {'Forgot password'}
   </a>
 );
 
 export const SignUpLink = (
   <a href="./singup.do" style={{ float: 'right' }}>
-    Sign up now!
+    {'Sign up now!'}
   </a>
 );
 
 export const RememberCheckbox = (
   <Checkbox style={{ float: 'left' }}>
-Remember me
+    {'Remember me'}
   </Checkbox>
 );
 
 export const LoginButton = (
   <FullWidthButton type="primary" htmlType="submit">
-    Log in
+    {'Log in'}
   </FullWidthButton>
 );
