@@ -166,35 +166,31 @@ class Page3 extends React.Component {
     let creditCardForm = null;
     if (showDirectPayment) {
       creditCardForm = (
-        <FormItem>
-          <Row>
-            <Col offset={8}>
-              <Card>
-                <FormItem {...formItemLayout} label="Name on Card">
-                  {getFieldDecorator('cardNameInput', this.cardNameInputOpts)(otherInput)}
-                </FormItem>
+        <FormItem {...formItemLayout} label=" " colon={false}>
+          <Card>
+            <FormItem {...formItemLayout} label="Name on Card">
+              {getFieldDecorator('cardNameInput', this.cardNameInputOpts)(otherInput)}
+            </FormItem>
 
-                <FormItem {...formItemLayout} label="Card Number">
-                  {getFieldDecorator('cardNumInput', this.cardNumInputOpts)(
-                    <CardNumInput blurred={this.handleCardNumOnBlur} />,
-                  )}
-                  {cardNumInfo}
-                </FormItem>
+            <FormItem {...formItemLayout} label="Card Number">
+              {getFieldDecorator('cardNumInput', this.cardNumInputOpts)(
+                <CardNumInput blurred={this.handleCardNumOnBlur} />,
+              )}
+              {cardNumInfo}
+            </FormItem>
 
-                <FormItem {...formItemLayout} label="Expiry Date">
-                  {getFieldDecorator('cardExpInput', this.cardExpInputOpts)(cardExpInput)}
-                  {cardExpInfo}
-                </FormItem>
+            <FormItem {...formItemLayout} label="Expiry Date">
+              {getFieldDecorator('cardExpInput', this.cardExpInputOpts)(cardExpInput)}
+              {cardExpInfo}
+            </FormItem>
 
-                <FormItem {...formItemLayout} label="Security Code">
-                  {getFieldDecorator('cardSecInput', this.cardSecInputOpts)(
-                    <CardSecInput blurred={this.handleCardSecOnBlur} />,
-                  )}
-                </FormItem>
-                <PaymentBtn clicked={this.handleCreditCardForm} />
-              </Card>
-            </Col>
-          </Row>
+            <FormItem {...formItemLayout} label="Security Code">
+              {getFieldDecorator('cardSecInput', this.cardSecInputOpts)(
+                <CardSecInput blurred={this.handleCardSecOnBlur} />,
+              )}
+            </FormItem>
+            <PaymentBtn clicked={this.handleCreditCardForm} />
+          </Card>
         </FormItem>
       );
     }
@@ -224,24 +220,29 @@ class Page3 extends React.Component {
 
           {creditCardForm}
 
-          {/* Declaration */}
-          <Row>
-            <Col offset={3}>
-              {declarationInfo}
-              <FormItem>
-                {getFieldDecorator('declarationChk', this.declarationChkOpts)(declarationChk)}
-              </FormItem>
-            </Col>
-          </Row>
+          <FormItem
+            {...{
+              labelCol: {
+                xs: { span: 24 },
+                sm: { span: 4 },
+              },
+              wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 20 },
+              },
+            }}
+            label=" "
+            colon={false}
+          >
+            {/* Declaration */}
+            {declarationInfo}
+            <FormItem>
+              {getFieldDecorator('declarationChk', this.declarationChkOpts)(declarationChk)}
+            </FormItem>
 
-          {/* Contact Info */}
-          <Row>
-            <Col offset={3}>
-              <FormItem>
-                {contactInfo}
-              </FormItem>
-            </Col>
-          </Row>
+            {/* Contact Info */}
+            {contactInfo}
+          </FormItem>
         </Form>
       </Card>
     );

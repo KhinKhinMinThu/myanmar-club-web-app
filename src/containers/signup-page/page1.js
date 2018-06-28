@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
-import {
-  Form, Card, Row, Col,
-} from 'antd';
+import { Form, Card, Col } from 'antd';
 import {
   cardStyles,
   formItemLayout,
@@ -137,8 +135,6 @@ const Page1 = class extends React.Component {
     const { form } = this.props;
     const { getFieldDecorator } = form;
     const { showOtherNat, showOtherRel } = this.state;
-    const labelSpace = 8;
-    const itemSpace = { marginLeft: 8 };
 
     let showOtherNatInput = null;
     let showOtherRelInput = null;
@@ -152,27 +148,24 @@ const Page1 = class extends React.Component {
     return (
       <Card style={cardStyles}>
         <Form>
-          <Row type="flex">
-            {/* Name */}
-            <Col span={labelSpace} style={{ textAlign: 'right' }}>
-              <FormItem label="Name" colon required />
-            </Col>
-            <Col>
+          {/* Name */}
+          <FormItem {...formItemLayout} label="Name" colon required>
+            <Col span={7}>
               <FormItem>
                 {getFieldDecorator('name1Input', this.nameInputOpts)(name1Input)}
               </FormItem>
             </Col>
-            <Col style={itemSpace}>
+            <Col span={7}>
               <FormItem>
                 {getFieldDecorator('name2Input')(name2Input)}
               </FormItem>
             </Col>
-            <Col style={itemSpace}>
+            <Col span={10}>
               <FormItem>
                 {getFieldDecorator('name3Input')(name3Input)}
               </FormItem>
             </Col>
-          </Row>
+          </FormItem>
 
           {/* Gender */}
           <FormItem {...formItemLayout} label="Gender">
@@ -185,42 +178,36 @@ const Page1 = class extends React.Component {
           </FormItem>
 
           {/* Nationality */}
-          <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: 'right' }}>
-              <FormItem label="Nationality" colon required />
-            </Col>
-            <Col>
+          <FormItem {...formItemLayout} label="Nationality" colon required>
+            <Col span={7}>
               <FormItem>
                 {getFieldDecorator('nationalityDdl')(
                   <NationalityDdl changed={this.nationalityDdlChanged} />,
                 )}
               </FormItem>
             </Col>
-            <Col>
-              <FormItem style={itemSpace}>
+            <Col span={17}>
+              <FormItem>
                 {showOtherNatInput}
               </FormItem>
             </Col>
-          </Row>
+          </FormItem>
 
           {/* Religion */}
-          <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: 'right' }}>
-              <FormItem label="Religion" colon />
-            </Col>
-            <Col>
+          <FormItem {...formItemLayout} label="Religion">
+            <Col span={7}>
               <FormItem>
                 {getFieldDecorator('religionDdl')(
                   <ReligionDdl changed={this.religionDdlChanged} />,
                 )}
               </FormItem>
             </Col>
-            <Col>
-              <FormItem style={itemSpace}>
+            <Col span={17}>
+              <FormItem>
                 {showOtherRelInput}
               </FormItem>
             </Col>
-          </Row>
+          </FormItem>
 
           {/* Marital Status */}
           <FormItem {...formItemLayout} label="Marital Status">

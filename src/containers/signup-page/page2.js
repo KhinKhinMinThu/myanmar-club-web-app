@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import {
-  Form, Card, Row, Col, Collapse,
+  Form, Card, Col, Collapse,
 } from 'antd';
 import {
   cardStyles,
@@ -212,6 +212,7 @@ class Page2 extends React.Component {
   checkExpand = (value) => {
     const { showPw } = this.state;
     const { form } = this.props;
+    console.log(form.getFieldValue('subComChkList'));
     this.setState({ showPw: !showPw });
 
     if (value.length !== 0) {
@@ -250,8 +251,6 @@ class Page2 extends React.Component {
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
-    const labelSpace = 8;
-    const itemSpace = { marginLeft: 8 };
 
     const prefixAreaCode = getFieldDecorator('areadCodeDdl', {
       initialValue: '65',
@@ -261,21 +260,18 @@ class Page2 extends React.Component {
       <Card style={cardStyles}>
         <Form>
           {/* Address */}
-          <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: 'right' }}>
-              <FormItem label="Address" colon required />
-            </Col>
-            <Col>
+          <FormItem {...formItemLayout} label="Address" colon required>
+            <Col span={10}>
               <FormItem>
                 {getFieldDecorator('addr1Input', this.addrInputOpts)(addr1Input)}
               </FormItem>
             </Col>
-            <Col style={itemSpace}>
+            <Col span={14}>
               <FormItem>
                 {getFieldDecorator('addr2Input')(addr2Input)}
               </FormItem>
             </Col>
-          </Row>
+          </FormItem>
 
           {/* Postal Code */}
           <FormItem {...formItemLayout} label="Postal Code">
@@ -290,25 +286,22 @@ class Page2 extends React.Component {
           </FormItem>
 
           {/* Passwords */}
-          <FormItem>
-            <Row>
-              <Col offset={8}>
-                {/* width: to be in alignment with address inputs */}
-                <Collapse style={{ maxWidth: 608 }} onChange={this.checkExpand}>
-                  <Panel header="Create a Myanmar Club Account...">
-                    <FormItem {...formItemLayout} label="Password">
-                      {getFieldDecorator('pwInput', this.pwInputOpts)(pwInput)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label="Confirm Password">
-                      {getFieldDecorator('confirmPwInput', this.confirmPwInputOpts)(
-                        <ConfirmPwInput changed={this.handleConfirmOnChange} />,
-                      )}
-                    </FormItem>
-                    {pwInfo}
-                  </Panel>
-                </Collapse>
-              </Col>
-            </Row>
+          <FormItem {...formItemLayout} label=" " colon={false}>
+            <Collapse onChange={this.checkExpand}>
+              <Panel header="Create a Myanmar Club Account...">
+                <FormItem {...formItemLayout} label="Password">
+                  {getFieldDecorator('pwInput', this.pwInputOpts)(pwInput)}
+                </FormItem>
+                <FormItem {...formItemLayout} label="Confirm Password">
+                  {getFieldDecorator('confirmPwInput', this.confirmPwInputOpts)(
+                    <ConfirmPwInput changed={this.handleConfirmOnChange} />,
+                  )}
+                </FormItem>
+                <Col offset={8}>
+                  {pwInfo}
+                </Col>
+              </Panel>
+            </Collapse>
           </FormItem>
 
           {/* Facebook Account */}
@@ -341,24 +334,38 @@ class Page2 extends React.Component {
           </FormItem>
 
           {/* Sub-Com Interests */}
-          <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: 'right' }}>
-              <FormItem label="Interested Sub-Committee(s)" colon />
+          <FormItem {...formItemLayout} label="Interested Sub-Committee(s)">
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_CUTRL')(subComChkCutrl)}
+              </FormItem>
             </Col>
-            <Col span={16} style={{ paddingTop: 10 }}>
-              {getFieldDecorator('subComChk_CUTRL')(subComChkCutrl)}
-              <br />
-              {getFieldDecorator('subComChk_KNWLG')(subComChkKnwlg)}
-              <br />
-              {getFieldDecorator('subComChk_COMTY')(subComChkComty)}
-              <br />
-              {getFieldDecorator('subComChk_SPORT')(subComChkSport)}
-              <br />
-              {getFieldDecorator('subComChk_SPOSR')(subComChkSposr)}
-              <br />
-              {getFieldDecorator('subComChk_OUTRH')(subComChkOutrh)}
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_KNWLG')(subComChkKnwlg)}
+              </FormItem>
             </Col>
-          </Row>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_COMTY')(subComChkComty)}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_SPORT')(subComChkSport)}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_SPOSR')(subComChkSposr)}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_OUTRH')(subComChkOutrh)}
+              </FormItem>
+            </Col>
+          </FormItem>
         </Form>
       </Card>
     );

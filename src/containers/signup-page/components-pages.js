@@ -57,7 +57,7 @@ export const genderRdo = (
 );
 export const dobInput = <DatePicker style={fieldWidth} format={dateFormat} />;
 
-export const NationalityDdl = (props) => {
+export const NationalityDdl = toClass((props) => {
   const { changed } = props;
   return (
     <Select style={fieldWidth} defaultValue="MM" onChange={changed}>
@@ -72,10 +72,10 @@ export const NationalityDdl = (props) => {
       </Option>
     </Select>
   );
-};
+});
 NationalityDdl.propTypes = { changed: PropTypes.func.isRequired };
 
-export const ReligionDdl = (props) => {
+export const ReligionDdl = toClass((props) => {
   const { changed } = props;
   return (
     <Select style={fieldWidth} placeholder="Select religion" onChange={changed}>
@@ -96,7 +96,7 @@ export const ReligionDdl = (props) => {
       </Option>
     </Select>
   );
-};
+});
 ReligionDdl.propTypes = { changed: PropTypes.func.isRequired };
 
 export const mStatusDdl = (
@@ -147,10 +147,18 @@ export const sgPassDdl = (
   </Select>
 );
 
-export const PassNumInput = (props) => {
+export const PassNumInput = toClass((props) => {
   const { blurred } = props;
-  return <Input style={fieldWidth} type="text" placeholder="NRIC/ FIN No." onBlur={blurred} />;
-};
+  return (
+    <Input
+      maxLength="9"
+      style={fieldWidth}
+      type="text"
+      placeholder="NRIC/ FIN No."
+      onBlur={blurred}
+    />
+  );
+});
 PassNumInput.propTypes = { blurred: PropTypes.func.isRequired };
 
 export const passNumInfo = (
@@ -251,7 +259,6 @@ MobileNoInput.propTypes = {
 export const hobbiesInput = <TextArea style={fieldWidth} rows={2} />;
 
 export const uploadBtn = (
-  // need to change action </upload.do> or something
   <Upload name="userpic" action="" listType="picture">
     <Button>
       <CustomIcon type="upload" />
@@ -265,6 +272,7 @@ export const subComChkCutrl = (
     {'မြန်မာ့ယဉ်ကျေးမှုအနုပညာ ထိန်းသိမ်းမြှင့်တင် ပျံ့ပွားရေး Sub-Committee'}
   </Checkbox>
 );
+
 export const subComChkKnwlg = (
   <Checkbox style={unicode}>
     {'စာပေ၊ ဗဟုသုတ၊ တတ်သိပညာ မြှင့်တင် ပျံ့ပွားရေး Sub-Committee'}
@@ -272,7 +280,11 @@ export const subComChkKnwlg = (
 );
 export const subComChkComty = (
   <Checkbox style={unicode}>
-    {'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး Sub-Committee'}
+    {'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး '}
+    <br />
+    <span style={{ marginLeft: 20 }}>
+      {'Sub-Committee'}
+    </span>
   </Checkbox>
 );
 export const subComChkSport = (
@@ -290,7 +302,6 @@ export const subComChkOutrh = (
     {'သတင်းနှင့် ပြန်ကြားရေး Sub-Committee'}
   </Checkbox>
 );
-
 // end
 
 // ******************************* page3 components
@@ -302,56 +313,25 @@ export const membershipTypeRdo = (
       <span style={unicode}>
         {'(ရာသက်ပန်) '}
       </span>
-      <b>
-        {'SGD 350'}
-      </b>
+      {'SGD 350'}
     </Radio>
     <Radio style={radioStyle} value="TYP2">
-      {'Singaporean/ PR/ EP Ordinary '}
-      <b>
-        {'SGD 74 '}
-      </b>
-      {'+ Member Card '}
-      <b>
-        {'SGD 5 '}
-      </b>
-      {'(1st time) = '}
-      <b>
-        {'SGD 79'}
-      </b>
+      {'Singaporean/ PR/ EP Ordinary SGD 74 '}
+      {'+ Member Card SGD 5 (1st time) = SGD 79'}
     </Radio>
     <Radio style={radioStyle} value="TYP3">
-      {'Other Passes '}
-      <b>
-        {'SGD 24 '}
-      </b>
-      {'+ Member Card '}
-      <b>
-        {'SGD 5 '}
-      </b>
-      {'(1st time) = '}
-      <b>
-        {'SGD 29 '}
-      </b>
+      {'Other Passes SGD 24 '}
+      {'+ Member Card SGD 5 (1st time) = SGD 29'}
     </Radio>
     <Radio style={radioStyle} value="TYP4">
-      {'Yearly Renewal Fees '}
-      <b>
-        {'SGD 24 '}
-      </b>
-      {'+ New Member Card '}
-      <b>
-        {'SGD 5 = SGD 29 '}
-      </b>
+      {'Yearly Renewal Fees SGD 24 '}
+      {'+ New Member Card SGD 5 = SGD 29'}
     </Radio>
     <Radio style={radioStyle} value="TYP5">
-      {'6 month Fees '}
-      <b>
-        {'SGD 12 '}
-      </b>
+      {'6 month Fees SGD 12 '}
       {'(not entitled for Member Card / '}
       <span style={unicode}>
-        {'အသင်းဝင်ကဒ်ရမည် မဟုတ်ပါ) '}
+        {'အသင်းဝင်ကဒ်ရမည် မဟုတ်ပါ)'}
       </span>
     </Radio>
   </RadioGroup>
@@ -376,19 +356,19 @@ PaymentTypeRdo.propTypes = { changed: PropTypes.func.isRequired };
 
 export const declarationInfo = (
   <p style={{ lineHeight: 1.5 }}>
-    <u>
-      <b>
-        {'Declaration by applicant '}
-        <span style={unicode}>
-          {'(လျှောက်ထားသူမှ ခံဝန်ချက်) '}
-        </span>
-      </b>
-    </u>
+    <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>
+      {'Declaration by applicant '}
+      <span style={unicode}>
+        {'(လျှောက်ထားသူမှ ခံဝန်ချက်)'}
+      </span>
+    </span>
     <br />
-    {'I declare that the above particulars given by me are true and correct and I agree to abide by the Constitution of the society.'}
+    {'I declare that the above particulars given by me are true and correct and '}
+    {'I agree to abide by the Constitution of the society.'}
     <br />
     <span style={unicode}>
-      {'အထက်ဖော်ပြပါ မိမိ၏ ကိုယ်ရေးအချက်အလက်များသည် မှန်ကန်ပါသည်။ မိမိသည် မြန်မာကလပ်(စင်္ကာပူ) အသင်း၏ ဖွဲ့စည်းပုံစည်းမျဉ်းများကို လိုက်နာပါမည်။'}
+      {'အထက်ဖော်ပြပါ မိမိ၏ ကိုယ်ရေးအချက်အလက်များသည် မှန်ကန်ပါသည်။'}
+      {'မိမိသည် မြန်မာကလပ်(စင်္ကာပူ) အသင်း၏ ဖွဲ့စည်းပုံစည်းမျဉ်းများကို လိုက်နာပါမည်။'}
     </span>
   </p>
 );
@@ -419,10 +399,14 @@ const declarationChkList = [
 export const declarationChk = <CheckboxGroup options={declarationChkList} />;
 export const contactInfo = (
   <p style={{ lineHeight: 1.5 }}>
-    {'If you have any difficulties with online membership application, you are invited to come to Myanmar Club Office at Peninsula Plaza #05-42 from 13:00 to 19:00 hour on every Saturday.'}
+    {'If you have any difficulties with online membership application, '}
+    {'you are invited to come to Myanmar Club Office '}
+    {'at Peninsula Plaza #05-42 from 13:00 to 19:00 hour on every Saturday.'}
     <br />
     <span style={unicode}>
-      {'အကယ်၍ အွန်လိုင်းအသင်းဝင်ခွင့် လျှောက်ထားခြင်းနှင့် ပါတ်သက်၍ အခက်အခဲရှိပါက မြန်မာကလပ် ရုံးခန်း (ပင်နီဆူလာပလာဇာ၊ ၅ထပ် အခန်းအမှတ် ၄၁) သို့ စနေနေ့များတွင် နေ့လည် ၁နာရီမှ ညနေ ရနာရီအထိ ကိုယ်တိုင်လာရောက် ဆောင်ရွက်နိုင်ပါသည်။'}
+      {'အကယ်၍ အွန်လိုင်းအသင်းဝင်ခွင့် လျှောက်ထားခြင်းနှင့် ပါတ်သက်၍ အခက်အခဲရှိပါက'}
+      {'မြန်မာကလပ် ရုံးခန်း (ပင်နီဆူလာပလာဇာ၊ ၅ထပ် အခန်းအမှတ် ၄၁) သို့ '}
+      {'စနေနေ့များတွင် နေ့လည် ၁နာရီမှ ညနေ ရနာရီအထိ ကိုယ်တိုင်လာရောက် ဆောင်ရွက်နိုင်ပါသည်။'}
     </span>
   </p>
 );

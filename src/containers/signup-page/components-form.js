@@ -53,6 +53,8 @@ PageSteps.propTypes = {
 };
 
 export class StepContent extends React.Component {
+  // un-comment below line to bypass the validations
+  // validatePage = () => true;
   validatePage = () => {
     let result = true;
     if (this.currentStep !== 0) {
@@ -64,8 +66,6 @@ export class StepContent extends React.Component {
     }
 
     return result;
-    // un-comment below line to bypass the validations
-    // return true;
   };
 
   render() {

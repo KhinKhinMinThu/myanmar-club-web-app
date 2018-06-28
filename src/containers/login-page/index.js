@@ -8,6 +8,8 @@ const cardStyles = {
   padding: '20px 5px 5px',
   borderRadius: 10,
   top: '20%',
+  marginLeft: 'auto',
+  marginRight: 'auto',
 };
 
 const LoginPage = () => (

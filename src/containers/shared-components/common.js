@@ -17,9 +17,12 @@ export const FullWidthButton = styled(Button)`
 
 export const pageStyles = {
   width: 1300,
+  minWidth: 1300,
   padding: '20px 5px 5px',
   borderRadius: 10,
   top: '5%',
+  marginLeft: 'auto',
+  marginRight: 'auto',
 };
 
 export const extraInfoStyles = {
@@ -30,8 +33,6 @@ export const extraInfoStyles = {
 
 export const radioStyle = {
   paddingTop: 6,
-  // border: "1px solid black",
   display: 'block',
-  // height: 30
   lineHeight: 2,
 };
