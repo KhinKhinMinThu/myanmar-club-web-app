@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import { Form } from 'antd';
+import { login } from '../../reducers/login';
 import {
   UsernameInput,
   PasswordInput,
@@ -13,7 +15,7 @@ import {
 
 const FormItem = Form.Item;
 
-class LoginForm extends React.Component {
+class LoginForm extends Component {
   usernameInputOpts = {
     rules: [
       {
@@ -39,7 +41,19 @@ class LoginForm extends React.Component {
 
   static propTypes = {
     form: PropTypes.shape({}).isRequired,
+    status: PropTypes.bool.isRequired,
+    networkErrorMsg: PropTypes.string.isRequired,
+    isPending: PropTypes.bool.isRequired,
+    performLogin: PropTypes.func.isRequired,
   };
+
+  componentDidUpdate() {
+    const { status, networkErrorMsg, isPending } = this.props;
+    if (isPending) return;
+    if (networkErrorMsg !== '');
+    else if (!status);
+    else; /* navigate to home page */
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -48,6 +62,9 @@ class LoginForm extends React.Component {
       if (!err) {
         /* eslint-disable no-console */
         console.log('Received values of form: ', values);
+        const { username, password } = values;
+        const { performLogin } = this.props;
+        performLogin({ username, password });
       }
     });
   };
@@ -76,4 +93,16 @@ class LoginForm extends React.Component {
   }
 }
 
-export default Form.create()(LoginForm);
+const mapStateToProps = (state) => {
+  const { isPending, status, networkErrorMsg } = state.login;
+  return {
+    isPending,
+    status,
+    networkErrorMsg,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { performLogin: login },
+)(Form.create()(LoginForm));
