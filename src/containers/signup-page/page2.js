@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import {
-  Form, Card, Col, Collapse,
+  Form, Card, Col, Collapse, Modal,
 } from 'antd';
 import {
   cardStyles,
@@ -15,7 +15,7 @@ import {
   fbAccInput,
   areaCodeDdl,
   hobbiesInput,
-  uploadBtn,
+  UploadBtn,
   subComChkCutrl,
   subComChkKnwlg,
   subComChkComty,
@@ -44,24 +44,12 @@ class Page2 extends React.Component {
   zipCodeInputOpts = {
     rules: [
       {
-        required: true,
-        message: 'Please enter your postal/zip code!',
+        pattern: '^([0-9]{6})$',
+        message: 'The input is not a valid postal/zip code!',
       },
       {
-        // validator: this.validateZipCode,
-        validator: (rule, value, callback) => {
-          /* eslint-disable no-console */
-          // console.log('zipcode =>', value);
-          if (value !== undefined && value.length !== 0) {
-            if (Number.isNaN(Number(value)) || value.length < 6) {
-              callback('The input is not a valid postal/zip code!');
-            } else {
-              callback();
-            }
-          } else {
-            callback();
-          }
-        },
+        required: true,
+        message: 'Please enter your postal/zip code!',
       },
     ],
   };
@@ -106,17 +94,8 @@ class Page2 extends React.Component {
   homeNoInputOpts = {
     rules: [
       {
-        validator: (rule, value, callback) => {
-          if (value !== undefined && value.length !== 0) {
-            if (Number.isNaN(Number(value))) {
-              callback('The input is not a valid phone number!');
-            } else {
-              callback();
-            }
-          } else {
-            callback();
-          }
-        },
+        pattern: '^([0-9]{6,})$',
+        message: 'The input is not a valid phone number!',
       },
     ],
   };
@@ -124,21 +103,12 @@ class Page2 extends React.Component {
   mobileNoInputOpts = {
     rules: [
       {
-        required: true,
-        message: 'Please enter your mobile phone number!',
+        pattern: '^([0-9]{6,})$',
+        message: 'The input is not a valid phone number!',
       },
       {
-        validator: (rule, value, callback) => {
-          if (value !== undefined && value.length !== 0) {
-            if (Number.isNaN(Number(value))) {
-              callback('The input is not a valid phone number!');
-            } else {
-              callback();
-            }
-          } else {
-            callback();
-          }
-        },
+        required: true,
+        message: 'Please enter your mobile phone number!',
       },
     ],
   };
@@ -151,15 +121,6 @@ class Page2 extends React.Component {
         message: 'Please upload your passport size photo!',
       },
     ],
-    valuePropName: 'fileList',
-    getValueFromEvent: (e) => {
-      /* eslint-disable no-console */
-      // console.log('Upload event:', e);
-      if (Array.isArray(e)) {
-        return e;
-      }
-      return e && e.fileList;
-    },
   };
 
   static propTypes = {
@@ -169,6 +130,16 @@ class Page2 extends React.Component {
   state = {
     confirmDirty: false,
     showPw: false,
+    previewVisible: false,
+    previewImage: '',
+    fileList: [
+      {
+        uid: -1,
+        name: 'xxx.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      },
+    ],
   };
 
   handleZipCodeOnBlur = (e) => {
@@ -248,10 +219,28 @@ class Page2 extends React.Component {
     form.validateFields(['mobileNoInput'], { force: true });
   };
 
+  handleImgPreviewOnCancel = () => this.setState({ previewVisible: false });
+
+  handleImgOnPreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  };
+
+  handleImgOnChange = ({ fileList }) => {
+    console.log('>>>>>', fileList);
+    // this.setState({ fileList });
+    if (fileList.length > 1) {
+      const newFile = fileList.slice(1);
+      this.setState({ fileList: newFile });
+    }
+  };
+
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
-
+    const { previewVisible, previewImage, fileList } = this.state;
     const prefixAreaCode = getFieldDecorator('areadCodeDdl', {
       initialValue: '65',
     })(areaCodeDdl);
@@ -330,8 +319,18 @@ class Page2 extends React.Component {
 
           {/* Passport Size Photo */}
           <FormItem {...formItemLayout} label="Passport Size Photo">
-            {getFieldDecorator('uploadBtn', this.uploadBtnOpts)(uploadBtn)}
+            {getFieldDecorator('uploadBtn', this.uploadBtnOpts)(
+              <UploadBtn
+                previewed={this.handleImgOnPreview}
+                changed={this.handleImgOnChange}
+                fileList={fileList}
+              />,
+            )}
           </FormItem>
+
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleImgPreviewOnCancel}>
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          </Modal>
 
           {/* Sub-Com Interests */}
           <FormItem {...formItemLayout} label="Interested Sub-Committee(s)">

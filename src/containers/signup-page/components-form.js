@@ -25,6 +25,7 @@ const stepActionStyles = {
 
 export const PageSteps = (props) => {
   const { current, steps } = props;
+
   return (
     <Steps current={current}>
       {steps.map(

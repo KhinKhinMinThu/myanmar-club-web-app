@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // to ignore the warnings: Statless functions can't be givien refs.
 import { toClass } from 'recompose';
 import {
-  Radio, Button, DatePicker, Select, Input, Upload, Checkbox, Table,
+  Radio, DatePicker, Select, Input, Upload, Checkbox, Table,
 } from 'antd';
 import {
   CustomIcon,
@@ -24,7 +24,6 @@ const CheckboxGroup = Checkbox.Group;
 export const unicode = { fontFamily: 'Myanmar3', fontSize: 14 };
 
 export const cardStyles = {
-  borderRadius: 10,
   textAlign: 'left',
 };
 export const formItemLayout = {
@@ -191,11 +190,11 @@ export const ZipCodeInput = toClass((props) => {
 ZipCodeInput.propTypes = { blurred: PropTypes.func.isRequired };
 
 export const emailInput = <Input style={fieldWidth} type="text" placeholder="Email Address" />;
-export const pwInput = <Input type="password" />;
+export const pwInput = <Input style={fieldWidth} type="password" />;
 
 export const ConfirmPwInput = toClass((props) => {
   const { changed } = props;
-  return <Input type="password" onChange={changed} />;
+  return <Input style={fieldWidth} type="password" onChange={changed} />;
 });
 ConfirmPwInput.propTypes = { changed: PropTypes.func.isRequired };
 
@@ -258,14 +257,34 @@ MobileNoInput.propTypes = {
 
 export const hobbiesInput = <TextArea style={fieldWidth} rows={2} />;
 
-export const uploadBtn = (
-  <Upload name="userpic" action="" listType="picture">
-    <Button>
-      <CustomIcon type="upload" />
-      {'Click to upload'}
-    </Button>
-  </Upload>
+const uploadButton = (
+  <div>
+    <CustomIcon type="plus" />
+    <div className="ant-upload-text">
+      {'Upload New Photo'}
+    </div>
+  </div>
 );
+export const UploadBtn = toClass((props) => {
+  const { previewed, changed, fileList } = props;
+  return (
+    <Upload
+      name="userpic"
+      action=""
+      listType="picture-card"
+      onPreview={previewed}
+      onChange={changed}
+      fileList={fileList}
+    >
+      {fileList.length >= 2 ? null : uploadButton}
+    </Upload>
+  );
+});
+UploadBtn.propTypes = {
+  previewed: PropTypes.func.isRequired,
+  changed: PropTypes.func.isRequired,
+  fileList: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export const subComChkCutrl = (
   <Checkbox style={unicode}>
@@ -280,7 +299,9 @@ export const subComChkKnwlg = (
 );
 export const subComChkComty = (
   <Checkbox style={unicode}>
-    {'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး '}
+    {
+      'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး '
+    }
     <br />
     <span style={{ marginLeft: 20 }}>
       {'Sub-Committee'}
