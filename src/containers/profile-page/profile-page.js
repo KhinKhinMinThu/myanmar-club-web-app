@@ -1,7 +1,6 @@
 import React from 'react';
-import 'antd/dist/antd.css';
 import {
-  Form, Card, Col, Modal,
+  Form, Card, Col, Modal, List,
 } from 'antd';
 import PropTypes from 'prop-types';
 import {
@@ -41,8 +40,9 @@ import {
   ZipCodeInput,
   HomeNoInput,
   MobileNoInput,
-} from '../signup-page/components-pages';
-import { SaveUpdateBtn } from './components';
+  SaveUpdateBtn,
+  ReqRenewalBtn,
+} from '../shared-components/member-info-components';
 
 const FormItem = Form.Item;
 
@@ -218,15 +218,10 @@ class Profile extends React.Component {
         message: 'Please upload your passport size photo!',
       },
     ],
-    // valuePropName: 'fileList',
-    // getValueFromEvent: (e) => {
-    //   /* eslint-disable no-console */
-    //   // console.log('Upload event:', e);
-    //   if (Array.isArray(e)) {
-    //     return e;
-    //   }
-    //   return e && e.fileList;
-    // },
+  };
+
+  subComChkOpts = {
+    valuePropName: 'checked',
   };
 
   static propTypes = {
@@ -245,6 +240,28 @@ class Profile extends React.Component {
         name: 'xxx.png',
         status: 'done',
         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      },
+    ],
+    membershipInfo: [
+      {
+        title: 'Membership Type :',
+        value: 'Life',
+      },
+      {
+        title: 'Membership Status :',
+        value: 'Active',
+      },
+      {
+        title: 'Join Date :',
+        value: '12-JUN-2018',
+      },
+      {
+        title: 'Expiry Date :',
+        value: '12-JUN-2019',
+      },
+      {
+        title: 'Last Payment Date :',
+        value: '12-JUN-2018',
       },
     ],
   };
@@ -341,7 +358,12 @@ class Profile extends React.Component {
     const { form } = this.props;
     const { getFieldDecorator } = form;
     const {
-      showOtherNat, showOtherRel, previewVisible, previewImage, fileList,
+      showOtherNat,
+      showOtherRel,
+      previewVisible,
+      previewImage,
+      fileList,
+      membershipInfo,
     } = this.state;
     const prefixAreaCode = getFieldDecorator('areadCodeDdl', {
       initialValue: '65',
@@ -485,7 +507,7 @@ class Profile extends React.Component {
                 <ConfirmPwInput changed={this.handleConfirmOnChange} />,
               )}
             </FormItem>
-            <Col offset={8}>
+            <Col xs={{ offset: 0 }} sm={{ offset: 8 }}>
               {pwInfo}
               <br />
             </Col>
@@ -533,34 +555,32 @@ class Profile extends React.Component {
             <FormItem {...formItemLayout} label="Interested Sub-Committee(s)">
               <Col>
                 <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('subComChkCutrl', {
-                    valuePropName: 'checked',
-                  })(subComChkCutrl)}
+                  {getFieldDecorator('subComChkCutrl', this.subComChkOpts)(subComChkCutrl)}
                 </FormItem>
               </Col>
               <Col>
                 <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('subComChkKnwlg')(subComChkKnwlg)}
+                  {getFieldDecorator('subComChkKnwlg', this.subComChkOpts)(subComChkKnwlg)}
                 </FormItem>
               </Col>
               <Col>
                 <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('subComChkComty')(subComChkComty)}
+                  {getFieldDecorator('subComChkComty', this.subComChkOpts)(subComChkComty)}
                 </FormItem>
               </Col>
               <Col>
                 <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('subComChkSport')(subComChkSport)}
+                  {getFieldDecorator('subComChkSport', this.subComChkOpts)(subComChkSport)}
                 </FormItem>
               </Col>
               <Col>
                 <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('subComChkSposr')(subComChkSposr)}
+                  {getFieldDecorator('subComChkSposr', this.subComChkOpts)(subComChkSposr)}
                 </FormItem>
               </Col>
               <Col>
                 <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('subComChkOutrh')(subComChkOutrh)}
+                  {getFieldDecorator('subComChkOutrh', this.subComChkOpts)(subComChkOutrh)}
                 </FormItem>
               </Col>
             </FormItem>
@@ -570,11 +590,28 @@ class Profile extends React.Component {
         </Card>
         <br />
         <Card style={cardStyles} title="Membership Information">
-          <header>
-            {' '}
-Member Information
-            {' '}
-          </header>
+          <List
+            size="small"
+            split={false}
+            bordered={false}
+            dataSource={membershipInfo}
+            renderItem={item => (
+              <List.Item>
+                <Col
+                  xs={{ span: 4 }}
+                  sm={{ span: 8 }}
+                  style={{ textAlign: 'right', paddingRight: 7 }}
+                >
+                  {item.title}
+                </Col>
+                <Col xs={{ span: 20 }} sm={{ span: 16 }} style={{ fontWeight: 'bold' }}>
+                  {item.value}
+                </Col>
+              </List.Item>
+            )}
+          />
+          <br />
+          <ReqRenewalBtn clicked={this.handleUpdateProfile} />
         </Card>
       </div>
     );

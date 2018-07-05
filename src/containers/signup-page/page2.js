@@ -26,7 +26,7 @@ import {
   ZipCodeInput,
   HomeNoInput,
   MobileNoInput,
-} from './components-pages';
+} from '../shared-components/member-info-components';
 
 const FormItem = Form.Item;
 const { Panel } = Collapse;
@@ -286,7 +286,7 @@ class Page2 extends React.Component {
                     <ConfirmPwInput changed={this.handleConfirmOnChange} />,
                   )}
                 </FormItem>
-                <Col offset={8}>
+                <Col xs={{ offset: 0 }} sm={{ offset: 8 }}>
                   {pwInfo}
                 </Col>
               </Panel>

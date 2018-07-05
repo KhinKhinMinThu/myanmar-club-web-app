@@ -6,19 +6,13 @@ import {
   Radio, DatePicker, Select, Input, Upload, Checkbox, Table,
 } from 'antd';
 import {
-  CustomIcon,
-  FullWidthButton,
-  monthFormat,
-  dateFormat,
-  extraInfoStyles,
-  radioStyle,
-} from '../shared-components/common';
+  CustomIcon, dateFormat, extraInfoStyles, radioStyle, FullWidthButton,
+} from './common';
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const { Option } = Select;
 const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 
 export const unicode = { fontFamily: 'Myanmar3', fontSize: 14 };
@@ -39,7 +33,7 @@ export const formItemLayout = {
 export const fieldWidth = { width: 200 };
 export const otherInput = <Input style={fieldWidth} type="text" />;
 
-// ******************************* page1 components
+// ******************************* page1 signup components
 // *******************************
 export const name1Input = <Input style={fieldWidth} type="text" placeholder="First Name" />;
 export const name2Input = <Input style={fieldWidth} type="text" placeholder="Middle Name" />;
@@ -167,7 +161,7 @@ export const passNumInfo = (
 );
 // end
 
-// ******************************* page2 components
+// ******************************* page2 signup components
 // *******************************
 export const addr1Input = (
   <Input style={{ width: 300 }} type="text" placeholder="Street Address Line 1" />
@@ -325,7 +319,7 @@ export const subComChkOutrh = (
 );
 // end
 
-// ******************************* page3 components
+// ******************************* page3 signup components
 // *******************************
 export const membershipTypeRdo = (
   <RadioGroup name="membershipTypeRdo">
@@ -433,48 +427,8 @@ export const contactInfo = (
 );
 // end
 
-// ******************************* credinfo-form components
+// ******************************* info page components
 // *******************************
-export const cardExpInput = (
-  <MonthPicker style={fieldWidth} format={monthFormat} placeholder="Select month and year" />
-);
-export const CardNumInput = toClass((props) => {
-  const { blurred } = props;
-  return <Input maxLength="16" type="text" style={fieldWidth} onBlur={blurred} />;
-});
-CardNumInput.propTypes = { blurred: PropTypes.func.isRequired };
-
-export const cardNumInfo = (
-  <span style={extraInfoStyles}>
-    {'Do not include space or dashes "-".'}
-  </span>
-);
-
-export const cardExpInfo = (
-  <span style={extraInfoStyles}>
-    {'MM-YYYY'}
-  </span>
-);
-export const CardSecInput = toClass((props) => {
-  const { blurred } = props;
-  return <Input maxLength="4" type="text" style={fieldWidth} onBlur={blurred} />;
-});
-CardSecInput.propTypes = { blurred: PropTypes.func.isRequired };
-
-export const PaymentBtn = (props) => {
-  const { clicked } = props;
-  return (
-    <FullWidthButton type="primary" onClick={clicked}>
-      {'Make Payment Now'}
-    </FullWidthButton>
-  );
-};
-PaymentBtn.propTypes = { clicked: PropTypes.func.isRequired };
-// end
-
-// ******************************* info components
-// *******************************
-// endimport { Table, Icon, Divider } from 'antd';
 
 const columns = [
   { title: '', dataIndex: 'NA', align: 'right' },
@@ -538,4 +492,27 @@ export const feesTbl = (
     bordered
   />
 );
+// end
+
+// ******************************* profile page components
+// *******************************
+export const SaveUpdateBtn = (props) => {
+  const { clicked } = props;
+  return (
+    <FullWidthButton type="primary" onClick={clicked}>
+      {'Save Update'}
+    </FullWidthButton>
+  );
+};
+SaveUpdateBtn.propTypes = { clicked: PropTypes.func.isRequired };
+
+export const ReqRenewalBtn = (props) => {
+  const { clicked } = props;
+  return (
+    <FullWidthButton type="primary" onClick={clicked}>
+      {'Request Membership Renewal'}
+    </FullWidthButton>
+  );
+};
+ReqRenewalBtn.propTypes = { clicked: PropTypes.func.isRequired };
 // end

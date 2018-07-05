@@ -7,8 +7,7 @@ const cardStyles = {
   height: 300,
   padding: '20px 5px 5px',
   borderRadius: 10,
-  top: '20%',
-  marginLeft: 'auto',
+  margin: 'auto',
   marginRight: 'auto',
 };
 

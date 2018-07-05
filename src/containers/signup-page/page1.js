@@ -20,7 +20,7 @@ import {
   NationalityDdl,
   ReligionDdl,
   PassNumInput,
-} from './components-pages';
+} from '../shared-components/member-info-components';
 
 const FormItem = Form.Item;
 

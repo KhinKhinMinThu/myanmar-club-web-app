@@ -10,9 +10,10 @@
   background: #ececec;
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
-.signup-page {
+.home-pages {
   background: #ececec;
   display: flex;
 }

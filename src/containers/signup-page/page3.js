@@ -9,18 +9,20 @@ import {
   formItemLayout,
   membershipTypeRdo,
   otherInput,
-  cardNumInfo,
-  cardExpInfo,
-  cardExpInput,
   declarationInfo,
   declarationChk,
   contactInfo,
   feesTbl,
   PaymentTypeRdo,
+} from '../shared-components/member-info-components';
+import {
   CardNumInput,
   CardSecInput,
   PaymentBtn,
-} from './components-pages';
+  cardNumInfo,
+  cardExpInfo,
+  cardExpInput,
+} from '../shared-components/creditcard-info-components';
 
 const FormItem = Form.Item;
 

@@ -4,7 +4,7 @@ import Profile from './profile-page';
 import { pageStyles } from '../shared-components/common';
 
 const ProfilePage = () => (
-  <div className="signup-page">
+  <div className="home-pages">
     <Card bordered={false} style={pageStyles}>
       <Profile />
     </Card>
