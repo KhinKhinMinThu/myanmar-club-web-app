@@ -14,7 +14,7 @@ const loginPersistConfig = {
   key: 'login',
   storage: localStorage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ['status'],
+  whitelist: [''],
 };
 
 const rootReducer = combineReducers({

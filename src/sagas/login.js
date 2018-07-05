@@ -1,29 +1,24 @@
-import axios from 'axios';
 import { put, call, takeLatest } from 'redux-saga/effects';
-import {
-  LOGIN, LOGIN_PENDING, LOGIN_STATUS, LOGIN_NETWORK_ERROR,
-} from '../reducers/login';
+import { LOGIN, LOGIN_PENDING, LOGIN_ERROR } from '../reducers/login';
+import api from './api';
 
-const loginFetch = userData => axios({
-  method: 'post',
-  url: 'http://10.1.52.193:8080/pentaho/j_spring_security_check',
-  headers: { 'content-type': 'application/x-www-form-urlencoded' },
-  params: {
-    j_username: userData.username,
-    j_password: userData.password,
-  },
+const postLogin = userData => api.post('/login', {
+  username: userData.username,
+  password: userData.password,
 });
 
-function* fetchLoginAsync(action) {
+function* asyncLogin(action) {
+  let errMsg;
   try {
     yield put({ type: LOGIN_PENDING });
-    const response = yield call(loginFetch, action.userData);
-    const status = !response.request.responseURL.includes('login_error');
-    yield put({ type: LOGIN_STATUS, status });
+    const response = yield call(postLogin, action.userData);
+    const status = response.data.isLoggedIn;
+    errMsg = status ? '' : 'wrong username/password';
   } catch (e) {
-    const networkErrorMsg = e.message;
-    yield put({ type: LOGIN_NETWORK_ERROR, networkErrorMsg });
+    errMsg = e.message;
+  } finally {
+    yield put({ type: LOGIN_ERROR, errMsg });
   }
 }
 
-export default takeLatest(LOGIN, fetchLoginAsync);
+export default takeLatest(LOGIN, asyncLogin);
