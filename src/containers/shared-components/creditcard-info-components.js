@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // to ignore the warnings: Statless functions can't be givien refs.
 import { toClass } from 'recompose';
 import { Input, DatePicker } from 'antd';
-import { FullWidthButton, monthFormat, extraInfoStyles } from './common';
+import { monthFormat, extraInfoStyles } from './common';
 import { fieldWidth } from './member-info-components';
 
 const { MonthPicker } = DatePicker;
@@ -35,14 +35,4 @@ export const CardSecInput = toClass((props) => {
   return <Input maxLength="4" type="text" style={fieldWidth} onBlur={blurred} />;
 });
 CardSecInput.propTypes = { blurred: PropTypes.func.isRequired };
-
-export const PaymentBtn = (props) => {
-  const { clicked } = props;
-  return (
-    <FullWidthButton type="primary" onClick={clicked}>
-      {'Make Payment Now'}
-    </FullWidthButton>
-  );
-};
-PaymentBtn.propTypes = { clicked: PropTypes.func.isRequired };
 // end

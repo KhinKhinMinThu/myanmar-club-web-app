@@ -6,7 +6,7 @@ import {
   Radio, DatePicker, Select, Input, Upload, Checkbox, Table,
 } from 'antd';
 import {
-  CustomIcon, dateFormat, extraInfoStyles, radioStyle, FullWidthButton,
+  CustomIcon, dateFormat, extraInfoStyles, radioStyle,
 } from './common';
 
 const RadioGroup = Radio.Group;
@@ -31,13 +31,9 @@ export const formItemLayout = {
   },
 };
 export const fieldWidth = { width: 200 };
-export const otherInput = <Input style={fieldWidth} type="text" />;
 
 // ******************************* page1 signup components
 // *******************************
-export const name1Input = <Input style={fieldWidth} type="text" placeholder="First Name" />;
-export const name2Input = <Input style={fieldWidth} type="text" placeholder="Middle Name" />;
-export const name3Input = <Input style={fieldWidth} type="text" placeholder="Last Name" />;
 export const genderRdo = (
   <RadioGroup name="genderRdo">
     <RadioButton value="M">
@@ -109,13 +105,11 @@ export const mStatusDdl = (
   </Select>
 );
 
-export const eduLvlInput = <Input style={fieldWidth} type="text" placeholder="Education Level" />;
 export const eduLvlInfo = (
   <span style={extraInfoStyles}>
     {'GCE A Level, Bachelor, Master, Doctoral (PhD) etc.'}
   </span>
 );
-export const occupationInput = <Input style={fieldWidth} type="text" placeholder="Job Title" />;
 
 export const sgPassDdl = (
   <Select style={fieldWidth} placeholder="Select pass type">
@@ -183,7 +177,6 @@ export const ZipCodeInput = toClass((props) => {
 });
 ZipCodeInput.propTypes = { blurred: PropTypes.func.isRequired };
 
-export const emailInput = <Input style={fieldWidth} type="text" placeholder="Email Address" />;
 export const pwInput = <Input style={fieldWidth} type="password" />;
 
 export const ConfirmPwInput = toClass((props) => {
@@ -211,9 +204,6 @@ export const pwInfo = (
   </div>
 );
 
-export const fbAccInput = (
-  <Input style={fieldWidth} type="text" placeholder="Facebook Profile Link" />
-);
 export const areaCodeDdl = (
   <Select style={{ width: 70 }}>
     <Option value="65">
@@ -492,27 +482,4 @@ export const feesTbl = (
     bordered
   />
 );
-// end
-
-// ******************************* profile page components
-// *******************************
-export const SaveUpdateBtn = (props) => {
-  const { clicked } = props;
-  return (
-    <FullWidthButton type="primary" onClick={clicked}>
-      {'Save Update'}
-    </FullWidthButton>
-  );
-};
-SaveUpdateBtn.propTypes = { clicked: PropTypes.func.isRequired };
-
-export const ReqRenewalBtn = (props) => {
-  const { clicked } = props;
-  return (
-    <FullWidthButton type="primary" onClick={clicked}>
-      {'Request Membership Renewal'}
-    </FullWidthButton>
-  );
-};
-ReqRenewalBtn.propTypes = { clicked: PropTypes.func.isRequired };
 // end

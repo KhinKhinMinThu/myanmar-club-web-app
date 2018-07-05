@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Steps, Button, Icon } from 'antd';
+import styled from 'styled-components';
+import { Steps, Icon, Button } from 'antd';
 
 import PageInfo from './page-info';
 import Page1 from './page1';
@@ -19,8 +20,10 @@ const stepsContentStyles = {
   padding: '18px',
 };
 const stepActionStyles = {
-  marginTop: '24px',
-  textAlign: 'right',
+  marginTop: '14px',
+  textAlign: 'center',
+  display: 'inline-block',
+  width: '100%',
 };
 
 export const PageSteps = (props) => {
@@ -123,6 +126,9 @@ StepContent.propTypes = {
   ).isRequired,
 };
 
+const HalfWidthButton = styled(Button)`
+  width: 49%;
+`;
 export const StepAction = (props) => {
   const {
     steps, current, prevClicked, nxtClicked, completedClicked,
@@ -130,19 +136,19 @@ export const StepAction = (props) => {
   return (
     <div style={stepActionStyles}>
       {current > 0 && (
-        <Button style={{ marginRight: 8 }} onClick={prevClicked}>
+        <HalfWidthButton style={{ marginRight: 8 }} onClick={prevClicked}>
           Previous
-        </Button>
+        </HalfWidthButton>
       )}
       {current < steps.length - 1 && (
-        <Button type="primary" htmlType="submit" onClick={nxtClicked}>
+        <HalfWidthButton type="primary" htmlType="submit" onClick={nxtClicked}>
           Next
-        </Button>
+        </HalfWidthButton>
       )}
       {current === steps.length - 1 && (
-        <Button type="primary" onClick={completedClicked}>
-          Done
-        </Button>
+        <HalfWidthButton type="primary" onClick={completedClicked}>
+          Apply for Membership
+        </HalfWidthButton>
       )}
     </div>
   );

@@ -4,15 +4,14 @@ import 'antd/dist/antd.css';
 import {
   Form, Card, Col, Collapse, Modal,
 } from 'antd';
+import { InputWithText } from '../shared-components/common';
 import {
   cardStyles,
   formItemLayout,
   addr1Input,
   addr2Input,
-  emailInput,
   pwInput,
   pwInfo,
-  fbAccInput,
   areaCodeDdl,
   hobbiesInput,
   UploadBtn,
@@ -271,7 +270,9 @@ class Page2 extends React.Component {
 
           {/* Email Address */}
           <FormItem {...formItemLayout} label="Email Address">
-            {getFieldDecorator('emailInput', this.emailInputOpts)(emailInput)}
+            {getFieldDecorator('emailInput', this.emailInputOpts)(
+              <InputWithText text="Email Address" />,
+            )}
           </FormItem>
 
           {/* Passwords */}
@@ -295,7 +296,9 @@ class Page2 extends React.Component {
 
           {/* Facebook Account */}
           <FormItem {...formItemLayout} label="Facebook Account">
-            {getFieldDecorator('fbAccInput')(fbAccInput)}
+            {getFieldDecorator('fbAccInput')(
+              <InputWithText text="Facebook Profile Link" />,
+            )}
           </FormItem>
 
           {/* Home Phone Number */}

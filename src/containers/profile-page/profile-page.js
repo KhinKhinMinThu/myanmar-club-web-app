@@ -1,21 +1,18 @@
 import React from 'react';
-import {
-  Form, Card, Col, Modal, List,
-} from 'antd';
 import PropTypes from 'prop-types';
+import {
+  Form, Card, Row, Col, Modal, List,
+} from 'antd';
+import {
+  BtnWithOnClick, BackBtn, blankInput, InputWithText,
+} from '../shared-components/common';
 import {
   cardStyles,
   formItemLayout,
-  name1Input,
-  name2Input,
-  name3Input,
   genderRdo,
   dobInput,
-  otherInput,
   mStatusDdl,
-  eduLvlInput,
   eduLvlInfo,
-  occupationInput,
   sgPassDdl,
   passNumInfo,
   NationalityDdl,
@@ -23,10 +20,8 @@ import {
   PassNumInput,
   addr1Input,
   addr2Input,
-  emailInput,
   pwInput,
   pwInfo,
-  fbAccInput,
   areaCodeDdl,
   hobbiesInput,
   UploadBtn,
@@ -40,8 +35,6 @@ import {
   ZipCodeInput,
   HomeNoInput,
   MobileNoInput,
-  SaveUpdateBtn,
-  ReqRenewalBtn,
 } from '../shared-components/member-info-components';
 
 const FormItem = Form.Item;
@@ -345,13 +338,16 @@ class Profile extends React.Component {
   handleUpdateProfile = (e) => {
     e.preventDefault();
     const { form } = this.props;
-    form.setFieldsValue({ subComChkCutrl: true });
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         /* eslint-disable no-console */
         console.log('Profile updated!', values);
       }
     });
+  };
+
+  handleRequestRenewal = () => {
+    console.log('request renewal!');
   };
 
   render() {
@@ -372,10 +368,10 @@ class Profile extends React.Component {
     let showOtherNatInput = null;
     let showOtherRelInput = null;
     if (showOtherNat) {
-      showOtherNatInput = getFieldDecorator('otherNatInput', this.natInputOpts)(otherInput);
+      showOtherNatInput = getFieldDecorator('otherNatInput', this.natInputOpts)(blankInput);
     }
     if (showOtherRel) {
-      showOtherRelInput = getFieldDecorator('otherRelInput')(otherInput);
+      showOtherRelInput = getFieldDecorator('otherRelInput')(blankInput);
     }
 
     return (
@@ -386,17 +382,19 @@ class Profile extends React.Component {
             <FormItem {...formItemLayout} label="Name" colon required>
               <Col span={7}>
                 <FormItem>
-                  {getFieldDecorator('name1Input', this.nameInputOpts)(name1Input)}
+                  {getFieldDecorator('name1Input', this.nameInputOpts)(
+                    <InputWithText text="First Name" />,
+                  )}
                 </FormItem>
               </Col>
               <Col span={7}>
                 <FormItem>
-                  {getFieldDecorator('name2Input')(name2Input)}
+                  {getFieldDecorator('name2Input')(<InputWithText text="Middle Name" />)}
                 </FormItem>
               </Col>
               <Col span={10}>
                 <FormItem>
-                  {getFieldDecorator('name3Input')(name3Input)}
+                  {getFieldDecorator('name3Input')(<InputWithText text="Last Name" />)}
                 </FormItem>
               </Col>
             </FormItem>
@@ -450,13 +448,17 @@ class Profile extends React.Component {
 
             {/* Education Level */}
             <FormItem {...formItemLayout} label="Education Level">
-              {getFieldDecorator('eduLvlInput', this.eduLvlInputOpts)(eduLvlInput)}
+              {getFieldDecorator('eduLvlInput', this.eduLvlInputOpts)(
+                <InputWithText text="Education Level" />,
+              )}
               {eduLvlInfo}
             </FormItem>
 
             {/* Occupation */}
             <FormItem {...formItemLayout} label="Occupation">
-              {getFieldDecorator('occupationInput', this.occupationInputOpts)(occupationInput)}
+              {getFieldDecorator('occupationInput', this.occupationInputOpts)(
+                <InputWithText text="Job Title" />,
+              )}
             </FormItem>
 
             {/* Pass */}
@@ -495,7 +497,9 @@ class Profile extends React.Component {
 
             {/* Email Address */}
             <FormItem {...formItemLayout} label="Email Address">
-              {getFieldDecorator('emailInput', this.emailInputOpts)(emailInput)}
+              {getFieldDecorator('emailInput', this.emailInputOpts)(
+                <InputWithText text="Email Address" />,
+              )}
             </FormItem>
 
             {/* Passwords */}
@@ -514,7 +518,7 @@ class Profile extends React.Component {
 
             {/* Facebook Account */}
             <FormItem {...formItemLayout} label="Facebook Account">
-              {getFieldDecorator('fbAccInput')(fbAccInput)}
+              {getFieldDecorator('fbAccInput')(<InputWithText text="Facebook Profile Link" />)}
             </FormItem>
 
             {/* Home Phone Number */}
@@ -585,10 +589,20 @@ class Profile extends React.Component {
               </Col>
             </FormItem>
 
-            <SaveUpdateBtn clicked={this.handleUpdateProfile} />
+            {/* Buttons */}
+            <Row gutter={8}>
+              <Col span={12}>
+                <BtnWithOnClick clicked={this.handleUpdateProfile} text="Save Update" />
+              </Col>
+              <Col span={12}>
+                <BackBtn clicked={this.handleUpdateProfile} />
+              </Col>
+            </Row>
           </Form>
         </Card>
         <br />
+
+        {/* Membership Information */}
         <Card style={cardStyles} title="Membership Information">
           <List
             size="small"
@@ -611,7 +625,7 @@ class Profile extends React.Component {
             )}
           />
           <br />
-          <ReqRenewalBtn clicked={this.handleUpdateProfile} />
+          <BtnWithOnClick clicked={this.handleRequestRenewal} text="Request Membership Renewal" />
         </Card>
       </div>
     );
