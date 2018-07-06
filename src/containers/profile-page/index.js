@@ -1,14 +1,14 @@
 import React from 'react';
 import { Card } from 'antd';
-import SignupForm from './signup-form';
+import Profile from './profile-page';
 import { pageStyles } from '../shared-components/common';
 
-const SignupPage = () => (
+const ProfilePage = () => (
   <div className="home-pages">
     <Card bordered={false} style={pageStyles}>
-      <SignupForm />
+      <Profile />
     </Card>
   </div>
 );
 
-export default SignupPage;
+export default ProfilePage;

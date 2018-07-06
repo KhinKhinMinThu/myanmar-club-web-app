@@ -37,6 +37,7 @@ class SignupForm extends React.Component {
 
     if (result === true) {
       this.setState({ current: nxtCurrent });
+      document.documentElement.scrollTop = 0;
     }
   };
 
@@ -44,14 +45,14 @@ class SignupForm extends React.Component {
     const { current } = this.state;
     const prvCurrent = current - 1;
     this.setState({ current: prvCurrent });
-    // to display the previous page from top
-    // document.documentElement.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   };
 
   completed = (e) => {
     const result = this.stepContent.validatePage(e);
     if (result === true) {
       message.success('Processing complete!');
+      document.documentElement.scrollTop = 0;
     }
   };
 

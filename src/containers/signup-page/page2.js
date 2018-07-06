@@ -2,20 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import {
-  Form, Card, Row, Col, Collapse,
+  Form, Card, Col, Collapse, Modal,
 } from 'antd';
+import { InputWithText } from '../shared-components/common';
 import {
   cardStyles,
   formItemLayout,
   addr1Input,
   addr2Input,
-  emailInput,
   pwInput,
   pwInfo,
-  fbAccInput,
   areaCodeDdl,
   hobbiesInput,
-  uploadBtn,
+  UploadBtn,
   subComChkCutrl,
   subComChkKnwlg,
   subComChkComty,
@@ -26,7 +25,7 @@ import {
   ZipCodeInput,
   HomeNoInput,
   MobileNoInput,
-} from './components-pages';
+} from '../shared-components/member-info-components';
 
 const FormItem = Form.Item;
 const { Panel } = Collapse;
@@ -44,24 +43,12 @@ class Page2 extends React.Component {
   zipCodeInputOpts = {
     rules: [
       {
-        required: true,
-        message: 'Please enter your postal/zip code!',
+        pattern: '^([0-9]{6})$',
+        message: 'The input is not a valid postal/zip code!',
       },
       {
-        // validator: this.validateZipCode,
-        validator: (rule, value, callback) => {
-          /* eslint-disable no-console */
-          // console.log('zipcode =>', value);
-          if (value !== undefined && value.length !== 0) {
-            if (Number.isNaN(Number(value)) || value.length < 6) {
-              callback('The input is not a valid postal/zip code!');
-            } else {
-              callback();
-            }
-          } else {
-            callback();
-          }
-        },
+        required: true,
+        message: 'Please enter your postal/zip code!',
       },
     ],
   };
@@ -106,17 +93,8 @@ class Page2 extends React.Component {
   homeNoInputOpts = {
     rules: [
       {
-        validator: (rule, value, callback) => {
-          if (value !== undefined && value.length !== 0) {
-            if (Number.isNaN(Number(value))) {
-              callback('The input is not a valid phone number!');
-            } else {
-              callback();
-            }
-          } else {
-            callback();
-          }
-        },
+        pattern: '^([0-9]{6,})$',
+        message: 'The input is not a valid phone number!',
       },
     ],
   };
@@ -124,21 +102,12 @@ class Page2 extends React.Component {
   mobileNoInputOpts = {
     rules: [
       {
-        required: true,
-        message: 'Please enter your mobile phone number!',
+        pattern: '^([0-9]{6,})$',
+        message: 'The input is not a valid phone number!',
       },
       {
-        validator: (rule, value, callback) => {
-          if (value !== undefined && value.length !== 0) {
-            if (Number.isNaN(Number(value))) {
-              callback('The input is not a valid phone number!');
-            } else {
-              callback();
-            }
-          } else {
-            callback();
-          }
-        },
+        required: true,
+        message: 'Please enter your mobile phone number!',
       },
     ],
   };
@@ -151,15 +120,6 @@ class Page2 extends React.Component {
         message: 'Please upload your passport size photo!',
       },
     ],
-    valuePropName: 'fileList',
-    getValueFromEvent: (e) => {
-      /* eslint-disable no-console */
-      // console.log('Upload event:', e);
-      if (Array.isArray(e)) {
-        return e;
-      }
-      return e && e.fileList;
-    },
   };
 
   static propTypes = {
@@ -169,6 +129,16 @@ class Page2 extends React.Component {
   state = {
     confirmDirty: false,
     showPw: false,
+    previewVisible: false,
+    previewImage: '',
+    fileList: [
+      {
+        uid: -1,
+        name: 'xxx.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      },
+    ],
   };
 
   handleZipCodeOnBlur = (e) => {
@@ -212,6 +182,7 @@ class Page2 extends React.Component {
   checkExpand = (value) => {
     const { showPw } = this.state;
     const { form } = this.props;
+    console.log(form.getFieldValue('subComChkList'));
     this.setState({ showPw: !showPw });
 
     if (value.length !== 0) {
@@ -247,12 +218,28 @@ class Page2 extends React.Component {
     form.validateFields(['mobileNoInput'], { force: true });
   };
 
+  handleImgPreviewOnCancel = () => this.setState({ previewVisible: false });
+
+  handleImgOnPreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  };
+
+  handleImgOnChange = ({ fileList }) => {
+    console.log('>>>>>', fileList);
+    // this.setState({ fileList });
+    if (fileList.length > 1) {
+      const newFile = fileList.slice(1);
+      this.setState({ fileList: newFile });
+    }
+  };
+
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
-    const labelSpace = 8;
-    const itemSpace = { marginLeft: 8 };
-
+    const { previewVisible, previewImage, fileList } = this.state;
     const prefixAreaCode = getFieldDecorator('areadCodeDdl', {
       initialValue: '65',
     })(areaCodeDdl);
@@ -261,21 +248,18 @@ class Page2 extends React.Component {
       <Card style={cardStyles}>
         <Form>
           {/* Address */}
-          <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: 'right' }}>
-              <FormItem label="Address" colon required />
-            </Col>
-            <Col>
+          <FormItem {...formItemLayout} label="Address" colon required>
+            <Col span={10}>
               <FormItem>
                 {getFieldDecorator('addr1Input', this.addrInputOpts)(addr1Input)}
               </FormItem>
             </Col>
-            <Col style={itemSpace}>
+            <Col span={14}>
               <FormItem>
                 {getFieldDecorator('addr2Input')(addr2Input)}
               </FormItem>
             </Col>
-          </Row>
+          </FormItem>
 
           {/* Postal Code */}
           <FormItem {...formItemLayout} label="Postal Code">
@@ -286,34 +270,35 @@ class Page2 extends React.Component {
 
           {/* Email Address */}
           <FormItem {...formItemLayout} label="Email Address">
-            {getFieldDecorator('emailInput', this.emailInputOpts)(emailInput)}
+            {getFieldDecorator('emailInput', this.emailInputOpts)(
+              <InputWithText text="Email Address" />,
+            )}
           </FormItem>
 
           {/* Passwords */}
-          <FormItem>
-            <Row>
-              <Col offset={8}>
-                {/* width: to be in alignment with address inputs */}
-                <Collapse style={{ maxWidth: 608 }} onChange={this.checkExpand}>
-                  <Panel header="Create a Myanmar Club Account...">
-                    <FormItem {...formItemLayout} label="Password">
-                      {getFieldDecorator('pwInput', this.pwInputOpts)(pwInput)}
-                    </FormItem>
-                    <FormItem {...formItemLayout} label="Confirm Password">
-                      {getFieldDecorator('confirmPwInput', this.confirmPwInputOpts)(
-                        <ConfirmPwInput changed={this.handleConfirmOnChange} />,
-                      )}
-                    </FormItem>
-                    {pwInfo}
-                  </Panel>
-                </Collapse>
-              </Col>
-            </Row>
+          <FormItem {...formItemLayout} label=" " colon={false}>
+            <Collapse onChange={this.checkExpand}>
+              <Panel header="Create a Myanmar Club Account...">
+                <FormItem {...formItemLayout} label="Password">
+                  {getFieldDecorator('pwInput', this.pwInputOpts)(pwInput)}
+                </FormItem>
+                <FormItem {...formItemLayout} label="Confirm Password">
+                  {getFieldDecorator('confirmPwInput', this.confirmPwInputOpts)(
+                    <ConfirmPwInput changed={this.handleConfirmOnChange} />,
+                  )}
+                </FormItem>
+                <Col xs={{ offset: 0 }} sm={{ offset: 8 }}>
+                  {pwInfo}
+                </Col>
+              </Panel>
+            </Collapse>
           </FormItem>
 
           {/* Facebook Account */}
           <FormItem {...formItemLayout} label="Facebook Account">
-            {getFieldDecorator('fbAccInput')(fbAccInput)}
+            {getFieldDecorator('fbAccInput')(
+              <InputWithText text="Facebook Profile Link" />,
+            )}
           </FormItem>
 
           {/* Home Phone Number */}
@@ -337,28 +322,52 @@ class Page2 extends React.Component {
 
           {/* Passport Size Photo */}
           <FormItem {...formItemLayout} label="Passport Size Photo">
-            {getFieldDecorator('uploadBtn', this.uploadBtnOpts)(uploadBtn)}
+            {getFieldDecorator('uploadBtn', this.uploadBtnOpts)(
+              <UploadBtn
+                previewed={this.handleImgOnPreview}
+                changed={this.handleImgOnChange}
+                fileList={fileList}
+              />,
+            )}
           </FormItem>
 
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleImgPreviewOnCancel}>
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          </Modal>
+
           {/* Sub-Com Interests */}
-          <Row type="flex">
-            <Col span={labelSpace} style={{ textAlign: 'right' }}>
-              <FormItem label="Interested Sub-Committee(s)" colon />
+          <FormItem {...formItemLayout} label="Interested Sub-Committee(s)">
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_CUTRL')(subComChkCutrl)}
+              </FormItem>
             </Col>
-            <Col span={16} style={{ paddingTop: 10 }}>
-              {getFieldDecorator('subComChk_CUTRL')(subComChkCutrl)}
-              <br />
-              {getFieldDecorator('subComChk_KNWLG')(subComChkKnwlg)}
-              <br />
-              {getFieldDecorator('subComChk_COMTY')(subComChkComty)}
-              <br />
-              {getFieldDecorator('subComChk_SPORT')(subComChkSport)}
-              <br />
-              {getFieldDecorator('subComChk_SPOSR')(subComChkSposr)}
-              <br />
-              {getFieldDecorator('subComChk_OUTRH')(subComChkOutrh)}
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_KNWLG')(subComChkKnwlg)}
+              </FormItem>
             </Col>
-          </Row>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_COMTY')(subComChkComty)}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_SPORT')(subComChkSport)}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_SPOSR')(subComChkSposr)}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem style={{ marginBottom: 0 }}>
+                {getFieldDecorator('subComChk_OUTRH')(subComChkOutrh)}
+              </FormItem>
+            </Col>
+          </FormItem>
         </Form>
       </Card>
     );

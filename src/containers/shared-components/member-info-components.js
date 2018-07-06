@@ -3,28 +3,21 @@ import PropTypes from 'prop-types';
 // to ignore the warnings: Statless functions can't be givien refs.
 import { toClass } from 'recompose';
 import {
-  Radio, Button, DatePicker, Select, Input, Upload, Checkbox, Table,
+  Radio, DatePicker, Select, Input, Upload, Checkbox, Table,
 } from 'antd';
 import {
-  CustomIcon,
-  FullWidthButton,
-  monthFormat,
-  dateFormat,
-  extraInfoStyles,
-  radioStyle,
-} from '../shared-components/common';
+  CustomIcon, dateFormat, extraInfoStyles, radioStyle,
+} from './common';
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const { Option } = Select;
 const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 
 export const unicode = { fontFamily: 'Myanmar3', fontSize: 14 };
 
 export const cardStyles = {
-  borderRadius: 10,
   textAlign: 'left',
 };
 export const formItemLayout = {
@@ -38,13 +31,9 @@ export const formItemLayout = {
   },
 };
 export const fieldWidth = { width: 200 };
-export const otherInput = <Input style={fieldWidth} type="text" />;
 
-// ******************************* page1 components
+// ******************************* page1 signup components
 // *******************************
-export const name1Input = <Input style={fieldWidth} type="text" placeholder="First Name" />;
-export const name2Input = <Input style={fieldWidth} type="text" placeholder="Middle Name" />;
-export const name3Input = <Input style={fieldWidth} type="text" placeholder="Last Name" />;
 export const genderRdo = (
   <RadioGroup name="genderRdo">
     <RadioButton value="M">
@@ -57,7 +46,7 @@ export const genderRdo = (
 );
 export const dobInput = <DatePicker style={fieldWidth} format={dateFormat} />;
 
-export const NationalityDdl = (props) => {
+export const NationalityDdl = toClass((props) => {
   const { changed } = props;
   return (
     <Select style={fieldWidth} defaultValue="MM" onChange={changed}>
@@ -72,10 +61,10 @@ export const NationalityDdl = (props) => {
       </Option>
     </Select>
   );
-};
+});
 NationalityDdl.propTypes = { changed: PropTypes.func.isRequired };
 
-export const ReligionDdl = (props) => {
+export const ReligionDdl = toClass((props) => {
   const { changed } = props;
   return (
     <Select style={fieldWidth} placeholder="Select religion" onChange={changed}>
@@ -96,7 +85,7 @@ export const ReligionDdl = (props) => {
       </Option>
     </Select>
   );
-};
+});
 ReligionDdl.propTypes = { changed: PropTypes.func.isRequired };
 
 export const mStatusDdl = (
@@ -116,13 +105,11 @@ export const mStatusDdl = (
   </Select>
 );
 
-export const eduLvlInput = <Input style={fieldWidth} type="text" placeholder="Education Level" />;
 export const eduLvlInfo = (
   <span style={extraInfoStyles}>
     {'GCE A Level, Bachelor, Master, Doctoral (PhD) etc.'}
   </span>
 );
-export const occupationInput = <Input style={fieldWidth} type="text" placeholder="Job Title" />;
 
 export const sgPassDdl = (
   <Select style={fieldWidth} placeholder="Select pass type">
@@ -147,10 +134,18 @@ export const sgPassDdl = (
   </Select>
 );
 
-export const PassNumInput = (props) => {
+export const PassNumInput = toClass((props) => {
   const { blurred } = props;
-  return <Input style={fieldWidth} type="text" placeholder="NRIC/ FIN No." onBlur={blurred} />;
-};
+  return (
+    <Input
+      maxLength="9"
+      style={fieldWidth}
+      type="text"
+      placeholder="NRIC/ FIN No."
+      onBlur={blurred}
+    />
+  );
+});
 PassNumInput.propTypes = { blurred: PropTypes.func.isRequired };
 
 export const passNumInfo = (
@@ -160,7 +155,7 @@ export const passNumInfo = (
 );
 // end
 
-// ******************************* page2 components
+// ******************************* page2 signup components
 // *******************************
 export const addr1Input = (
   <Input style={{ width: 300 }} type="text" placeholder="Street Address Line 1" />
@@ -182,12 +177,11 @@ export const ZipCodeInput = toClass((props) => {
 });
 ZipCodeInput.propTypes = { blurred: PropTypes.func.isRequired };
 
-export const emailInput = <Input style={fieldWidth} type="text" placeholder="Email Address" />;
-export const pwInput = <Input type="password" />;
+export const pwInput = <Input style={fieldWidth} type="password" />;
 
 export const ConfirmPwInput = toClass((props) => {
   const { changed } = props;
-  return <Input type="password" onChange={changed} />;
+  return <Input style={fieldWidth} type="password" onChange={changed} />;
 });
 ConfirmPwInput.propTypes = { changed: PropTypes.func.isRequired };
 
@@ -210,9 +204,6 @@ export const pwInfo = (
   </div>
 );
 
-export const fbAccInput = (
-  <Input style={fieldWidth} type="text" placeholder="Facebook Profile Link" />
-);
 export const areaCodeDdl = (
   <Select style={{ width: 70 }}>
     <Option value="65">
@@ -250,21 +241,41 @@ MobileNoInput.propTypes = {
 
 export const hobbiesInput = <TextArea style={fieldWidth} rows={2} />;
 
-export const uploadBtn = (
-  // need to change action </upload.do> or something
-  <Upload name="userpic" action="" listType="picture">
-    <Button>
-      <CustomIcon type="upload" />
-      {'Click to upload'}
-    </Button>
-  </Upload>
+const uploadButton = (
+  <div>
+    <CustomIcon type="plus" />
+    <div className="ant-upload-text">
+      {'Upload New Photo'}
+    </div>
+  </div>
 );
+export const UploadBtn = toClass((props) => {
+  const { previewed, changed, fileList } = props;
+  return (
+    <Upload
+      name="userpic"
+      action=""
+      listType="picture-card"
+      onPreview={previewed}
+      onChange={changed}
+      fileList={fileList}
+    >
+      {fileList.length >= 2 ? null : uploadButton}
+    </Upload>
+  );
+});
+UploadBtn.propTypes = {
+  previewed: PropTypes.func.isRequired,
+  changed: PropTypes.func.isRequired,
+  fileList: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export const subComChkCutrl = (
   <Checkbox style={unicode}>
     {'မြန်မာ့ယဉ်ကျေးမှုအနုပညာ ထိန်းသိမ်းမြှင့်တင် ပျံ့ပွားရေး Sub-Committee'}
   </Checkbox>
 );
+
 export const subComChkKnwlg = (
   <Checkbox style={unicode}>
     {'စာပေ၊ ဗဟုသုတ၊ တတ်သိပညာ မြှင့်တင် ပျံ့ပွားရေး Sub-Committee'}
@@ -272,7 +283,13 @@ export const subComChkKnwlg = (
 );
 export const subComChkComty = (
   <Checkbox style={unicode}>
-    {'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး Sub-Committee'}
+    {
+      'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး '
+    }
+    <br />
+    <span style={{ marginLeft: 20 }}>
+      {'Sub-Committee'}
+    </span>
   </Checkbox>
 );
 export const subComChkSport = (
@@ -290,10 +307,9 @@ export const subComChkOutrh = (
     {'သတင်းနှင့် ပြန်ကြားရေး Sub-Committee'}
   </Checkbox>
 );
-
 // end
 
-// ******************************* page3 components
+// ******************************* page3 signup components
 // *******************************
 export const membershipTypeRdo = (
   <RadioGroup name="membershipTypeRdo">
@@ -302,56 +318,25 @@ export const membershipTypeRdo = (
       <span style={unicode}>
         {'(ရာသက်ပန်) '}
       </span>
-      <b>
-        {'SGD 350'}
-      </b>
+      {'SGD 350'}
     </Radio>
     <Radio style={radioStyle} value="TYP2">
-      {'Singaporean/ PR/ EP Ordinary '}
-      <b>
-        {'SGD 74 '}
-      </b>
-      {'+ Member Card '}
-      <b>
-        {'SGD 5 '}
-      </b>
-      {'(1st time) = '}
-      <b>
-        {'SGD 79'}
-      </b>
+      {'Singaporean/ PR/ EP Ordinary SGD 74 '}
+      {'+ Member Card SGD 5 (1st time) = SGD 79'}
     </Radio>
     <Radio style={radioStyle} value="TYP3">
-      {'Other Passes '}
-      <b>
-        {'SGD 24 '}
-      </b>
-      {'+ Member Card '}
-      <b>
-        {'SGD 5 '}
-      </b>
-      {'(1st time) = '}
-      <b>
-        {'SGD 29 '}
-      </b>
+      {'Other Passes SGD 24 '}
+      {'+ Member Card SGD 5 (1st time) = SGD 29'}
     </Radio>
     <Radio style={radioStyle} value="TYP4">
-      {'Yearly Renewal Fees '}
-      <b>
-        {'SGD 24 '}
-      </b>
-      {'+ New Member Card '}
-      <b>
-        {'SGD 5 = SGD 29 '}
-      </b>
+      {'Yearly Renewal Fees SGD 24 '}
+      {'+ New Member Card SGD 5 = SGD 29'}
     </Radio>
     <Radio style={radioStyle} value="TYP5">
-      {'6 month Fees '}
-      <b>
-        {'SGD 12 '}
-      </b>
+      {'6 month Fees SGD 12 '}
       {'(not entitled for Member Card / '}
       <span style={unicode}>
-        {'အသင်းဝင်ကဒ်ရမည် မဟုတ်ပါ) '}
+        {'အသင်းဝင်ကဒ်ရမည် မဟုတ်ပါ)'}
       </span>
     </Radio>
   </RadioGroup>
@@ -376,19 +361,19 @@ PaymentTypeRdo.propTypes = { changed: PropTypes.func.isRequired };
 
 export const declarationInfo = (
   <p style={{ lineHeight: 1.5 }}>
-    <u>
-      <b>
-        {'Declaration by applicant '}
-        <span style={unicode}>
-          {'(လျှောက်ထားသူမှ ခံဝန်ချက်) '}
-        </span>
-      </b>
-    </u>
+    <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>
+      {'Declaration by applicant '}
+      <span style={unicode}>
+        {'(လျှောက်ထားသူမှ ခံဝန်ချက်)'}
+      </span>
+    </span>
     <br />
-    {'I declare that the above particulars given by me are true and correct and I agree to abide by the Constitution of the society.'}
+    {'I declare that the above particulars given by me are true and correct and '}
+    {'I agree to abide by the Constitution of the society.'}
     <br />
     <span style={unicode}>
-      {'အထက်ဖော်ပြပါ မိမိ၏ ကိုယ်ရေးအချက်အလက်များသည် မှန်ကန်ပါသည်။ မိမိသည် မြန်မာကလပ်(စင်္ကာပူ) အသင်း၏ ဖွဲ့စည်းပုံစည်းမျဉ်းများကို လိုက်နာပါမည်။'}
+      {'အထက်ဖော်ပြပါ မိမိ၏ ကိုယ်ရေးအချက်အလက်များသည် မှန်ကန်ပါသည်။'}
+      {'မိမိသည် မြန်မာကလပ်(စင်္ကာပူ) အသင်း၏ ဖွဲ့စည်းပုံစည်းမျဉ်းများကို လိုက်နာပါမည်။'}
     </span>
   </p>
 );
@@ -419,57 +404,21 @@ const declarationChkList = [
 export const declarationChk = <CheckboxGroup options={declarationChkList} />;
 export const contactInfo = (
   <p style={{ lineHeight: 1.5 }}>
-    {'If you have any difficulties with online membership application, you are invited to come to Myanmar Club Office at Peninsula Plaza #05-42 from 13:00 to 19:00 hour on every Saturday.'}
+    {'If you have any difficulties with online membership application, '}
+    {'you are invited to come to Myanmar Club Office '}
+    {'at Peninsula Plaza #05-42 from 13:00 to 19:00 hour on every Saturday.'}
     <br />
     <span style={unicode}>
-      {'အကယ်၍ အွန်လိုင်းအသင်းဝင်ခွင့် လျှောက်ထားခြင်းနှင့် ပါတ်သက်၍ အခက်အခဲရှိပါက မြန်မာကလပ် ရုံးခန်း (ပင်နီဆူလာပလာဇာ၊ ၅ထပ် အခန်းအမှတ် ၄၁) သို့ စနေနေ့များတွင် နေ့လည် ၁နာရီမှ ညနေ ရနာရီအထိ ကိုယ်တိုင်လာရောက် ဆောင်ရွက်နိုင်ပါသည်။'}
+      {'အကယ်၍ အွန်လိုင်းအသင်းဝင်ခွင့် လျှောက်ထားခြင်းနှင့် ပါတ်သက်၍ အခက်အခဲရှိပါက'}
+      {'မြန်မာကလပ် ရုံးခန်း (ပင်နီဆူလာပလာဇာ၊ ၅ထပ် အခန်းအမှတ် ၄၁) သို့ '}
+      {'စနေနေ့များတွင် နေ့လည် ၁နာရီမှ ညနေ ရနာရီအထိ ကိုယ်တိုင်လာရောက် ဆောင်ရွက်နိုင်ပါသည်။'}
     </span>
   </p>
 );
 // end
 
-// ******************************* credinfo-form components
+// ******************************* info page components
 // *******************************
-export const cardExpInput = (
-  <MonthPicker style={fieldWidth} format={monthFormat} placeholder="Select month and year" />
-);
-export const CardNumInput = toClass((props) => {
-  const { blurred } = props;
-  return <Input maxLength="16" type="text" style={fieldWidth} onBlur={blurred} />;
-});
-CardNumInput.propTypes = { blurred: PropTypes.func.isRequired };
-
-export const cardNumInfo = (
-  <span style={extraInfoStyles}>
-    {'Do not include space or dashes "-".'}
-  </span>
-);
-
-export const cardExpInfo = (
-  <span style={extraInfoStyles}>
-    {'MM-YYYY'}
-  </span>
-);
-export const CardSecInput = toClass((props) => {
-  const { blurred } = props;
-  return <Input maxLength="4" type="text" style={fieldWidth} onBlur={blurred} />;
-});
-CardSecInput.propTypes = { blurred: PropTypes.func.isRequired };
-
-export const PaymentBtn = (props) => {
-  const { clicked } = props;
-  return (
-    <FullWidthButton type="primary" onClick={clicked}>
-      {'Make Payment Now'}
-    </FullWidthButton>
-  );
-};
-PaymentBtn.propTypes = { clicked: PropTypes.func.isRequired };
-// end
-
-// ******************************* info components
-// *******************************
-// endimport { Table, Icon, Divider } from 'antd';
 
 const columns = [
   { title: '', dataIndex: 'NA', align: 'right' },

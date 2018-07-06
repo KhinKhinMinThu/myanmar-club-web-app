@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import 'antd/dist/antd.css';
 import {
-  Form, Card, Row, Col,
+  Form, Card, Row, Col, message,
 } from 'antd';
-import { BtnWithOnClick, blankInput } from '../shared-components/common';
+import {
+  pageStyles, BtnWithOnClick, BackBtn, blankInput,
+} from '../shared-components/common';
 import {
   cardStyles,
   formItemLayout,
   membershipTypeRdo,
-  declarationInfo,
-  declarationChk,
-  contactInfo,
   feesTbl,
   PaymentTypeRdo,
 } from '../shared-components/member-info-components';
@@ -25,7 +23,7 @@ import {
 
 const FormItem = Form.Item;
 
-class Page3 extends React.Component {
+class RenewalPage extends React.Component {
   membershipTypeRdoOpts = {
     rules: [
       {
@@ -79,17 +77,6 @@ class Page3 extends React.Component {
     ],
   };
 
-  declarationChkOpts = {
-    rules: [
-      {
-        type: 'array',
-        required: true,
-        message: 'Please tick both chechboxes!',
-        len: 2,
-      },
-    ],
-  };
-
   static propTypes = {
     form: PropTypes.shape({}).isRequired,
   };
@@ -113,8 +100,6 @@ class Page3 extends React.Component {
   };
 
   handleCreditCardForm = () => {
-    /* eslint-disable no-console */
-    // console.log('handleCreditCardForm');
     const { form } = this.props;
     form.validateFields(['cardNameInput', 'cardNumInput', 'cardExpInput', 'cardSecInput'], {
       force: true,
@@ -122,7 +107,6 @@ class Page3 extends React.Component {
   };
 
   toggleDirectPayment = (e) => {
-    // console.log('toggleDirectPayment');
     const { showDirectPayment } = this.state;
     const { form } = this.props;
 
@@ -139,6 +123,17 @@ class Page3 extends React.Component {
       form.getFieldDecorator('cardNumInput', { hidden: true });
       form.getFieldDecorator('cardSecInput', { hidden: true });
     }
+  };
+
+  handleRequestRenewal = (e) => {
+    e.preventDefault();
+    const { form } = this.props;
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        /* eslint-disable no-console */
+        console.log('Profile updated!', values);
+      }
+    });
   };
 
   render() {
@@ -179,56 +174,48 @@ class Page3 extends React.Component {
     }
 
     return (
-      <Card style={cardStyles}>
-        <Form>
-          <Row>
-            <Col offset={6} span={12}>
-              <FormItem>
-                {feesTbl}
+      <div className="home-pages">
+        <Card bordered={false} style={pageStyles}>
+          <Card style={cardStyles} title="Membership Fees">
+            <Form>
+              <Row>
+                <Col offset={6} span={12}>
+                  <FormItem>
+                    {feesTbl}
+                  </FormItem>
+                </Col>
+              </Row>
+
+              {/* Membership Fee */}
+              <FormItem {...formItemLayout} label="Membership Fees">
+                {getFieldDecorator('membershipTypeRdo', this.membershipTypeRdoOpts)(
+                  membershipTypeRdo,
+                )}
               </FormItem>
-            </Col>
-          </Row>
 
-          {/* Membership Fee */}
-          <FormItem {...formItemLayout} label="Membership Fees">
-            {getFieldDecorator('membershipTypeRdo', this.membershipTypeRdoOpts)(membershipTypeRdo)}
-          </FormItem>
+              {/* Payment Method */}
+              <FormItem {...formItemLayout} label="Payment Method">
+                {getFieldDecorator('paymentTypeRdo')(
+                  <PaymentTypeRdo changed={this.toggleDirectPayment} />,
+                )}
+              </FormItem>
 
-          {/* Payment Method */}
-          <FormItem {...formItemLayout} label="Payment Method">
-            {getFieldDecorator('paymentTypeRdo')(
-              <PaymentTypeRdo changed={this.toggleDirectPayment} />,
-            )}
-          </FormItem>
-
-          {creditCardForm}
-
-          <FormItem
-            {...{
-              labelCol: {
-                xs: { span: 24 },
-                sm: { span: 4 },
-              },
-              wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 20 },
-              },
-            }}
-            label=" "
-            colon={false}
-          >
-            {/* Declaration */}
-            {declarationInfo}
-            <FormItem>
-              {getFieldDecorator('declarationChk', this.declarationChkOpts)(declarationChk)}
-            </FormItem>
-
-            {/* Contact Info */}
-            {contactInfo}
-          </FormItem>
-        </Form>
-      </Card>
+              {creditCardForm}
+              <br />
+              <Row gutter={8}>
+                <Col span={12}>
+                  <BtnWithOnClick clicked={this.handleRequestRenewal} text="Request Renewal" />
+                </Col>
+                <Col span={12}>
+                  <BackBtn clicked={() => message.success('Processing complete!')} />
+                </Col>
+              </Row>
+            </Form>
+          </Card>
+        </Card>
+      </div>
     );
   }
 }
-export default Form.create()(Page3);
+
+export default Form.create({})(RenewalPage);
