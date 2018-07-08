@@ -47,8 +47,6 @@ class LoginForm extends Component {
     const { errMsg, isPending } = this.props;
     const isApiCall = prevProps.isPending === true && isPending === false;
 
-    console.log('errMsg ', errMsg, ' prevErrMsg ', prevProps.errMsg);
-
     if (!isApiCall) return;
     if (errMsg !== '') this.showError(errMsg);
     else message.success('redirect to home page!');
