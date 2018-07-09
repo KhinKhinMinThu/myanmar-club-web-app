@@ -4,6 +4,7 @@ import localStorage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import loginReducer from './login';
 import signupReducer from './signup';
+import routerReducer from './router';
 
 /**
  * LocalStorage: storage engine for storing redux state
@@ -15,12 +16,13 @@ const loginPersistConfig = {
   key: 'login',
   storage: localStorage,
   stateReconciler: autoMergeLevel2,
-  whitelist: [''],
+  whitelist: ['isLoggedIn'],
 };
 
 const rootReducer = combineReducers({
   login: persistReducer(loginPersistConfig, loginReducer),
   signup: signupReducer,
+  router: routerReducer,
 });
 
 export default rootReducer;
