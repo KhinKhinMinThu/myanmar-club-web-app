@@ -18,7 +18,7 @@ export default function (
     education: '',
     occupation: '',
     stayPass: 'SP',
-    id: '',
+    id: '1234',
   },
   action,
 ) {

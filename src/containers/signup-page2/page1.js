@@ -18,6 +18,13 @@ import { save } from '../../reducers/signup/signup-data';
 import { PageCard } from './styled-components';
 
 class Page1 extends Component {
+  componentDidMount() {
+    const { form, signupData } = this.props;
+    form.setFieldsValue({
+      ...signupData,
+    });
+  }
+
   componentDidUpdate(prevState) {
     const { isValidating } = this.props;
     const isPropChange = isValidating !== prevState.isValidating;
@@ -66,13 +73,13 @@ Page1.propTypes = {
   dispatchValidate: PropTypes.func.isRequired,
   dispatchNext: PropTypes.func.isRequired,
   dispatchSave: PropTypes.func.isRequired,
-  // signupData: PropTypes.shape({}).isRequired,
+  signupData: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
   currentStep: state.signup.ui.currentStep,
   isValidating: state.signup.ui.isValidating,
-  // singupData: state.signup.data,
+  signupData: state.signup.data,
 });
 
 const mapDispatchToProps = {
@@ -82,6 +89,7 @@ const mapDispatchToProps = {
 };
 
 const FormPage1 = Form.create()(Page1);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
