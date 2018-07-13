@@ -17,7 +17,7 @@ export const MenuItem = styled(Menu.Item)`
 `;
 
 export const MenuContainer = styled.div`
-  width: 200px;
+  width: 250px;
 `;
 export const FlexContainer = styled.div`
   display: flex;
