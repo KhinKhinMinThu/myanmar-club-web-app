@@ -15,17 +15,8 @@ const FormStepAction = ({
   currentStep, dispatchPrev, dispatchNext, dispatchValidate,
 }) => {
   const onClickNext = () => {
-    switch (currentStep) {
-      case 0:
-        dispatchNext();
-        break;
-      case 1:
-      case 2:
-        dispatchValidate(true);
-        break;
-      default:
-      // do nothing,
-    }
+    if (currentStep === 0) dispatchNext();
+    else if (currentStep === 1 || 2) dispatchValidate(true);
   };
   const onClickApply = () => {};
 

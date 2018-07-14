@@ -9,7 +9,7 @@ import {
   NationalitySelect,
   MaritalStatusSelect,
   EducationLevelTextInput,
-  OcupationTextInput,
+  OccupationTextInput,
   StayPassSelect,
   IDTextInput,
 } from './form-components';
@@ -19,10 +19,11 @@ import { PageCard } from './styled-components';
 
 class Page1 extends Component {
   componentDidMount() {
-    const { form, signupData } = this.props;
-    form.setFieldsValue({
-      ...signupData,
-    });
+    const {
+      form: { setFieldsValue },
+      signupData,
+    } = this.props;
+    setFieldsValue({ ...signupData });
   }
 
   componentDidUpdate(prevState) {
@@ -33,20 +34,27 @@ class Page1 extends Component {
 
   validatePage = () => {
     const {
-      form, dispatchValidate, dispatchNext, dispatchSave,
+      form: { validateFieldsAndScroll },
+      dispatchValidate,
+      dispatchNext,
+      dispatchSave,
     } = this.props;
 
-    form.validateFieldsAndScroll((err, values) => {
+    validateFieldsAndScroll((err, formValues) => {
       dispatchValidate(false);
-      if (err) return;
-      dispatchSave(values);
-      dispatchNext();
+
+      if (!err) {
+        dispatchSave(formValues);
+        dispatchNext();
+      }
     });
   };
 
   render() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+
     return (
       <PageCard>
         <Form>
@@ -56,7 +64,7 @@ class Page1 extends Component {
           <NationalitySelect decorator={getFieldDecorator} />
           <MaritalStatusSelect decorator={getFieldDecorator} />
           <EducationLevelTextInput decorator={getFieldDecorator} />
-          <OcupationTextInput decorator={getFieldDecorator} />
+          <OccupationTextInput decorator={getFieldDecorator} />
           <StayPassSelect decorator={getFieldDecorator} />
           <IDTextInput decorator={getFieldDecorator} />
         </Form>
@@ -68,6 +76,8 @@ class Page1 extends Component {
 Page1.propTypes = {
   form: PropTypes.shape({
     validateFieldsAndScroll: PropTypes.func.isRequired,
+    getFieldDecorator: PropTypes.func.isRequired,
+    setFieldsValue: PropTypes.func.isRequired,
   }).isRequired,
   isValidating: PropTypes.bool.isRequired,
   dispatchValidate: PropTypes.func.isRequired,
@@ -76,11 +86,17 @@ Page1.propTypes = {
   signupData: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = state => ({
-  currentStep: state.signup.ui.currentStep,
-  isValidating: state.signup.ui.isValidating,
-  signupData: state.signup.data,
-});
+const mapStateToProps = (state) => {
+  const {
+    ui: { currentStep, isValidating },
+    data,
+  } = state.signup;
+  return {
+    currentStep,
+    isValidating,
+    signupData: data,
+  };
+};
 
 const mapDispatchToProps = {
   dispatchValidate: validate,
@@ -88,9 +104,20 @@ const mapDispatchToProps = {
   dispatchSave: save,
 };
 
-const FormPage1 = Form.create()(Page1);
+const FormPage1 = Form.create({})(Page1);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(FormPage1);
+
+/*
+mapPropsToFields(props) {
+  const { signupData } = props;
+  const mappedToFields = {};
+  Object.keys(signupData).forEach((key) => {
+    mappedToFields[key] = Form.createFormField({ value: signupData[key] });
+  });
+  return mappedToFields;
+}
+*/

@@ -1,8 +1,8 @@
 export const SAVE = '[SIGNUP_DATA] SAVE';
 
-export const save = values => ({
+export const save = formValues => ({
   type: SAVE,
-  payload: values,
+  payload: formValues,
 });
 
 export default function (
@@ -11,14 +11,14 @@ export default function (
     middleName: '',
     lastName: '',
     gender: 'M',
-    dob: '',
+    dob: null,
     nationality: 'MM',
     otherNationality: '',
     maritalStatus: 'SI',
     education: '',
     occupation: '',
     stayPass: 'SP',
-    id: '1234',
+    id: '',
   },
   action,
 ) {

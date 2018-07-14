@@ -30,7 +30,8 @@ const PageInfo = () => (
     <Row>
       <Col offset={3} span={18}>
         <HightlightedText>
-          MEMBERSHIP FEES <MMText>(အသင်းသားအဖြစ် ပေးသွင်းရန်)</MMText>
+          MEMBERSHIP FEES
+          <MMText>(အသင်းသားအဖြစ် ပေးသွင်းရန်)</MMText>
         </HightlightedText>
         <br />
         {/* only use index as key if array is fixed and list won't be rerendered */}
