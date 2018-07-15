@@ -135,7 +135,7 @@ export default function (
         email_address: 'abc@gmail.com',
         mobile_phone: '12345678',
         role_names: ['Role1', 'Role2'],
-        membership_expiry: '12/01/2020',
+        membership_expiry: '12/02/2020',
         membership_status: 'Active',
         isec_member: '1',
       },
@@ -153,7 +153,7 @@ export default function (
     // end
 
     // to update to API
-    // roleId: 0,
+    membersToDelete: [],
     // transferFrom: [],
     // transferTo: [],
     // end
