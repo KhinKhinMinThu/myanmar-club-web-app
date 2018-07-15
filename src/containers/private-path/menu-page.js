@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  DASHBOARD, PROFILE, LOGOUT, ADMIN_ROLEMGMT,
+  DASHBOARD, PROFILE, LOGOUT, ADMIN_ROLEMGMT, ADMIN_ACCMGMT,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
 import MenuPanel from './components';
 import SignupPage2 from '../signup-page2';
 import Dashboard from './home-ex';
 import RoleManagementPage from '../admin-rolemgmt';
+import AccManagementPage from '../admin-accmgmt';
 
 class MenuPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
@@ -22,6 +23,8 @@ class MenuPage extends Component {
         return Dashboard;
       case ADMIN_ROLEMGMT:
         return RoleManagementPage;
+      case ADMIN_ACCMGMT:
+        return AccManagementPage;
       default:
         return Dashboard;
     }
@@ -34,7 +37,7 @@ class MenuPage extends Component {
 
     return (
       <FlexContainer>
-        <MenuPanel />
+        <MenuPanel selectedKeys={[pathname]} />
         <Page />
       </FlexContainer>
     );
