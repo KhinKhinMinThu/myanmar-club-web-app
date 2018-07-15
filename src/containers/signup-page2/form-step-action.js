@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { prev, next, validate } from '../../reducers/signup/signup-ui';
+import { prev, next, startValidate } from '../../reducers/signup/signup-ui';
 import { HalfWidthButton } from './styled-components';
 
 const stepActionStyles = {
@@ -12,11 +12,11 @@ const stepActionStyles = {
 };
 
 const FormStepAction = ({
-  currentStep, dispatchPrev, dispatchNext, dispatchValidate,
+  currentStep, dispatchPrev, dispatchNext, dispatchStartValidate,
 }) => {
   const onClickNext = () => {
     if (currentStep === 0) dispatchNext();
-    else if (currentStep === 1 || 2) dispatchValidate(true);
+    else if (currentStep === 1 || 2) dispatchStartValidate();
   };
   const onClickApply = () => {};
 
@@ -45,7 +45,7 @@ FormStepAction.propTypes = {
   currentStep: PropTypes.number.isRequired,
   dispatchNext: PropTypes.func.isRequired,
   dispatchPrev: PropTypes.func.isRequired,
-  dispatchValidate: PropTypes.func.isRequired,
+  dispatchStartValidate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -55,7 +55,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   dispatchNext: next,
   dispatchPrev: prev,
-  dispatchValidate: validate,
+  dispatchStartValidate: startValidate,
 };
 
 export default connect(

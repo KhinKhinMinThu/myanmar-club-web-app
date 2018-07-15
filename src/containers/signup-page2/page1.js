@@ -7,13 +7,14 @@ import {
   GenderRadio,
   DobDatePicker,
   NationalitySelect,
+  ReligionSelect,
   MaritalStatusSelect,
   EducationLevelTextInput,
   OccupationTextInput,
   StayPassSelect,
   IDTextInput,
 } from './form-components';
-import { validate, next } from '../../reducers/signup/signup-ui';
+import { endValidate, next } from '../../reducers/signup/signup-ui';
 import { save } from '../../reducers/signup/signup-data';
 import { PageCard } from './styled-components';
 
@@ -29,19 +30,19 @@ class Page1 extends Component {
   componentDidUpdate(prevState) {
     const { isValidating } = this.props;
     const isPropChange = isValidating !== prevState.isValidating;
-    if (isValidating && isPropChange) this.validatePage(true);
+    if (isValidating && isPropChange) this.validatePage();
   }
 
   validatePage = () => {
     const {
       form: { validateFieldsAndScroll },
-      dispatchValidate,
+      dispatchEndValidate,
       dispatchNext,
       dispatchSave,
     } = this.props;
 
     validateFieldsAndScroll((err, formValues) => {
-      dispatchValidate(false);
+      dispatchEndValidate();
 
       if (!err) {
         dispatchSave(formValues);
@@ -62,6 +63,7 @@ class Page1 extends Component {
           <GenderRadio decorator={getFieldDecorator} />
           <DobDatePicker decorator={getFieldDecorator} />
           <NationalitySelect decorator={getFieldDecorator} />
+          <ReligionSelect decorator={getFieldDecorator} />
           <MaritalStatusSelect decorator={getFieldDecorator} />
           <EducationLevelTextInput decorator={getFieldDecorator} />
           <OccupationTextInput decorator={getFieldDecorator} />
@@ -80,7 +82,7 @@ Page1.propTypes = {
     setFieldsValue: PropTypes.func.isRequired,
   }).isRequired,
   isValidating: PropTypes.bool.isRequired,
-  dispatchValidate: PropTypes.func.isRequired,
+  dispatchEndValidate: PropTypes.func.isRequired,
   dispatchNext: PropTypes.func.isRequired,
   dispatchSave: PropTypes.func.isRequired,
   signupData: PropTypes.shape({}).isRequired,
@@ -99,12 +101,12 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  dispatchValidate: validate,
+  dispatchEndValidate: endValidate,
   dispatchNext: next,
   dispatchSave: save,
 };
 
-const FormPage1 = Form.create({})(Page1);
+const FormPage1 = Form.create()(Page1);
 
 export default connect(
   mapStateToProps,
