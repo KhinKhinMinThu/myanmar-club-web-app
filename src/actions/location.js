@@ -5,7 +5,4 @@ export const SIGNUP = '/signup';
 export const PROFILE = '/profile';
 export const DASHBOARD = '/dashboard';
 export const ADMIN_ROLEMGMT = '/manage-roles';
-<<<<<<< HEAD
 export const ADMIN_ACCMGMT = '/manage-accounts';
-=======
->>>>>>> menu-page

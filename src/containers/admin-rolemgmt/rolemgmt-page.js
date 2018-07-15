@@ -9,11 +9,7 @@ import { ButtonContainer } from './styled-components';
 import { validate } from '../../reducers/rolemgmt/rolemgmt-ui';
 import { save } from '../../reducers/rolemgmt/rolemgmt-data';
 
-<<<<<<< HEAD
 class RoleManagement extends Component {
-=======
-class RoleManagment extends Component {
->>>>>>> menu-page
   data = [];
 
   ecMembersList = [];
@@ -107,11 +103,7 @@ class RoleManagment extends Component {
     );
   }
 }
-<<<<<<< HEAD
 RoleManagement.propTypes = {
-=======
-RoleManagment.propTypes = {
->>>>>>> menu-page
   form: PropTypes.shape({
     validateFieldsAndScroll: PropTypes.func.isRequired,
   }).isRequired,
@@ -120,17 +112,10 @@ RoleManagment.propTypes = {
   dispatchSave: PropTypes.func.isRequired,
   rolemgmtData: PropTypes.shape({}).isRequired,
 };
-<<<<<<< HEAD
 const FormRoleManagement = Form.create()(RoleManagement);
 
 const mapStateToProps = state => ({
   isValidating: state.rolemgmt.ui.isValidating,
-=======
-const FormRoleManagement = Form.create()(RoleManagment);
-
-const mapStateToProps = state => ({
-  isValidating: state.signup.ui.isValidating,
->>>>>>> menu-page
   rolemgmtData: state.rolemgmt.data,
 });
 
