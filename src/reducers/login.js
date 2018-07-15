@@ -1,10 +1,11 @@
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const LOGGEDIN = 'LOGGEDIN';
 export const LOGIN_PENDING = 'LOGIN_PENDING';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const login = userData => ({ type: LOGIN, userData });
-export const logout = () => ({ type: LOGOUT });
+export const logout = isLoggedIn => ({ type: LOGOUT, payload: isLoggedIn });
 
 /**
  * errMsg can be wrong password/username or network errors
@@ -15,6 +16,7 @@ export const logout = () => ({ type: LOGOUT });
 export default function (
   state = {
     isPending: false,
+    isLoggedIn: false,
     errMsg: null,
   },
   action,
@@ -36,6 +38,12 @@ export default function (
         ...state,
         isPending: false,
         errMsg: null,
+        isLoggedIn: action.payload,
+      };
+    case LOGGEDIN:
+      return {
+        ...state,
+        isLoggedIn: action.payload,
       };
     default:
       return state;
