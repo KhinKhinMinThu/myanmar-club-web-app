@@ -6,8 +6,11 @@ import loginReducer from './login';
 import signupReducer from './signup';
 import routerReducer from './router';
 import rolemgmtReducer from './rolemgmt';
+<<<<<<< HEAD
 import accmgmtReducer from './accmgmt';
 
+=======
+>>>>>>> menu-page
 /**
  * LocalStorage: storage engine for storing redux state
  * autoMergeLevel2: when restoring state during app launch,
@@ -25,7 +28,10 @@ const rootReducer = combineReducers({
   login: persistReducer(loginPersistConfig, loginReducer),
   signup: signupReducer,
   rolemgmt: rolemgmtReducer,
+<<<<<<< HEAD
   accmgmt: accmgmtReducer,
+=======
+>>>>>>> menu-page
   router: routerReducer,
 });
 
