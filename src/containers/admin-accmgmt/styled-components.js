@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Icon, Table, Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 // export const HalfWidthButton = styled(Button)`
 //   width: 49%;
@@ -12,6 +13,14 @@ export const TabIcon = styled(Icon)`
 export const TableActionIcon = styled(Icon)`
   margin-right: 16px;
   font-size: 18px;
+`;
+
+export const TableActionLink = styled(Link)`
+  color: #1da57a;
+  &:hover {
+    color: #1da57a;
+    opacity: 0.5;
+  }
 `;
 
 export const BoldText = styled.span`
@@ -35,6 +44,7 @@ export const FullWidthTable = styled(Table)`
 export const MarginLeftButton = styled(Button)`
   margin-left: 8px;
 `;
+
 // export const PageCard = styled(Card)`
 //   border-radius: 10;
 // `;

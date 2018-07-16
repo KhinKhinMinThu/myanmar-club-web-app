@@ -1,5 +1,6 @@
 import { Tabs, Button } from 'antd';
 import React from 'react';
+import { ADMIN_MEMBER_VIEW, ADMIN_MEMBER_EDIT } from '../../actions/location';
 import {
   TabIcon,
   BoldText,
@@ -7,6 +8,7 @@ import {
   SelectedText,
   MarginLeftButton,
   TableActionIcon,
+  TableActionLink,
 } from './styled-components';
 
 const { TabPane } = Tabs;
@@ -29,13 +31,14 @@ export const MemberTabs = ({ onChange, tabContents }) => {
   };
 
   const EcMembersPage = tabContents[0];
+  const ClubMembersPage = tabContents[1];
   return (
     <Tabs onChange={onChange} type="card">
       <TabPane tab={tabTitles.tab1} key="tab1">
         <EcMembersPage />
       </TabPane>
       <TabPane tab={tabTitles.tab2} key="tab2">
-        Content of Tab Pane 2
+        <ClubMembersPage />
       </TabPane>
     </Tabs>
   );
@@ -99,17 +102,14 @@ export const EcMembersTable = ({
       title: 'Action',
       key: 'action',
       // render: (text, record) => ()
-      render: () => (
+      render: record => (
         <span>
-          <a href="www.google.com">
+          <TableActionLink to={ADMIN_MEMBER_VIEW.concat('/').concat(record.id)}>
             <TableActionIcon type="folder-open" />
-          </a>
-          <a href="www.google.com">
+          </TableActionLink>
+          <TableActionLink to={ADMIN_MEMBER_EDIT.concat('/').concat(record.id)}>
             <TableActionIcon type="edit" />
-          </a>
-          <a href="www.google.com">
-            <TableActionIcon type="delete" />
-          </a>
+          </TableActionLink>
         </span>
       ),
     },
@@ -119,6 +119,88 @@ export const EcMembersTable = ({
     <FullWidthTable
       columns={columns}
       dataSource={ecMembersList}
+      rowSelection={rowSelection}
+      onChange={onChange}
+      bordered
+    />
+  );
+};
+
+export const ClubMembersTable = ({
+  clubMembersList, rowSelection, onChange, sortedInfo,
+}) => {
+  const columns = [
+    // dataIndex = databases column names
+    {
+      title: 'Id',
+      dataIndex: 'id',
+      key: 'id',
+      sorter: (a, b) => Number.parseInt(a.id, 10) - Number.parseInt(b.id, 10),
+      sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+    },
+    {
+      title: 'Email Address',
+      dataIndex: 'email_address',
+      key: 'email_address',
+      sorter: (a, b) => a.email_address.length - b.email_address.length,
+      sortOrder: sortedInfo.columnKey === 'email_address' && sortedInfo.order,
+    },
+    {
+      title: 'Mobile No',
+      dataIndex: 'mobile_phone',
+      key: 'mobile_phone',
+      sorter: (a, b) => a.mobile_phone.length - b.mobile_phone.length,
+      sortOrder: sortedInfo.columnKey === 'mobile_phone' && sortedInfo.order,
+    },
+    {
+      title: 'Membership Type',
+      dataIndex: 'membership_type',
+      key: 'membership_type',
+      sorter: (a, b) => a.membership_type.length - b.membership_type.length,
+      sortOrder: sortedInfo.columnKey === 'role_names' && sortedInfo.order,
+    },
+    {
+      title: 'Membership Expiry',
+      dataIndex: 'membership_expiry',
+      key: 'membership_expiry',
+      sorter: (a, b) => new Date(a.membership_expiry) - new Date(b.membership_expiry),
+      sortOrder: sortedInfo.columnKey === 'membership_expiry' && sortedInfo.order,
+    },
+    {
+      title: 'Status',
+      dataIndex: 'membership_status',
+      key: 'membership_status',
+      sorter: (a, b) => a.membership_status.length - b.membership_status.length,
+      sortOrder: sortedInfo.columnKey === 'membership_status' && sortedInfo.order,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      // render: (text, record) => ()
+      render: record => (
+        <span>
+          <TableActionLink to={ADMIN_MEMBER_VIEW.concat('/').concat(record.id)}>
+            <TableActionIcon type="folder-open" />
+          </TableActionLink>
+          <TableActionLink to={ADMIN_MEMBER_EDIT.concat('/').concat(record.id)}>
+            <TableActionIcon type="edit" />
+          </TableActionLink>
+        </span>
+      ),
+    },
+  ];
+
+  return (
+    <FullWidthTable
+      columns={columns}
+      dataSource={clubMembersList}
       rowSelection={rowSelection}
       onChange={onChange}
       bordered

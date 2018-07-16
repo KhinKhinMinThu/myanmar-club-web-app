@@ -2,7 +2,7 @@ import React from 'react';
 import { PageCard } from '../shared-components/common';
 import AccManagement from './accmgmt-page';
 
-const RoleManagementPage = () => (
+const AccountManagementPage = () => (
   <div className="home-pages">
     <PageCard bordered={false}>
       <AccManagement />
@@ -10,4 +10,4 @@ const RoleManagementPage = () => (
   </div>
 );
 
-export default RoleManagementPage;
+export default AccountManagementPage;

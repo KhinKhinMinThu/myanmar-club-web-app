@@ -1,43 +1,42 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MemberTabs } from './components';
-// import { BoldText } from './styled-components';
-import { validate } from '../../reducers/accmgmt/accmgmt-ui';
-import { save } from '../../reducers/accmgmt/accmgmt-data';
+import { validate, resetState } from '../../reducers/accmgmt/accmgmt-ui';
 import EcMembersPage from './ecmembers-page';
+import ClubMembersPage from './clubmembers-page';
 
 class AccManagement extends Component {
-  componentWillMount() {}
+  componentWillMount() {
+    const { dispatchResetState } = this.props;
+    dispatchResetState();
+  }
 
   componentDidUpdate() {}
 
   render() {
+    const { dispatchResetState } = this.props;
     return (
       <div>
         <MemberTabs
-          onChange={value => console.log('tab onchange', value)}
-          tabContents={[EcMembersPage]}
+          onChange={() => dispatchResetState()}
+          tabContents={[EcMembersPage, ClubMembersPage]}
         />
       </div>
     );
   }
 }
 AccManagement.propTypes = {
-  // isValidating: PropTypes.bool.isRequired,
-  // dispatchValidate: PropTypes.func.isRequired,
-  // dispatchSave: PropTypes.func.isRequired,
-  // accmgmtData: PropTypes.shape({}).isRequired,
+  dispatchResetState: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   isValidating: state.accmgmt.ui.isValidating,
-  // accmgmtData: state.accmgmt.data,
 });
 
 const mapDispatchToProps = {
   dispatchValidate: validate,
-  dispatchSave: save,
+  dispatchResetState: resetState,
 };
 
 export default connect(

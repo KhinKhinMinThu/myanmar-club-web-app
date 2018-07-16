@@ -1,16 +1,17 @@
 export const VALIDATE = '[ACCMGMT_UI] VALIDATE';
-export const EC_SELECTEDKEYS = '[ACCMGMT_UI] EC_SELECTEDKEYS';
+export const SELECTEDKEYS = '[ACCMGMT_UI] SELECTEDKEYS';
 export const DESELECTALL_LOADING = '[ACCMGMT_UI] DESELECTALL_LOADING';
 export const SELECTALL_LOADING = '[ACCMGMT_UI] SELECTALL_LOADING';
 export const SORTEDINFO = '[ACCMGMT_UI] SORTEDINFO';
+export const RESETSTATE = '[ACCMGMT_UI] RESETSTATE';
 
 export const validate = isValidating => ({
   type: VALIDATE,
   payload: isValidating,
 });
 
-export const setECSelectedKeys = selectedKeys => ({
-  type: EC_SELECTEDKEYS,
+export const setSelectedKeys = selectedKeys => ({
+  type: SELECTEDKEYS,
   payload: selectedKeys,
 });
 
@@ -26,13 +27,18 @@ export const setSelectAllLoading = isLoading => ({
 
 export const setSortedInfo = sortedInfo => ({ type: SORTEDINFO, payload: sortedInfo });
 
+export const resetState = () => ({ type: RESETSTATE });
+
+const initialState = {
+  isValidating: false,
+  selectedKeys: [],
+  deselectAllLoading: false,
+  selectAllLoading: false,
+  sortedInfo: null,
+};
 export default function (
   state = {
-    isValidating: false,
-    ecSelectedKeys: [],
-    deselectAllLoading: false,
-    selectAllLoading: false,
-    sortedInfo: null,
+    ...initialState,
   },
   action,
 ) {
@@ -42,10 +48,10 @@ export default function (
         ...state,
         isValidating: action.payload,
       };
-    case EC_SELECTEDKEYS:
+    case SELECTEDKEYS:
       return {
         ...state,
-        ecSelectedKeys: action.payload,
+        selectedKeys: action.payload,
       };
     case DESELECTALL_LOADING:
       return {
@@ -61,6 +67,10 @@ export default function (
       return {
         ...state,
         sortedInfo: action.payload,
+      };
+    case RESETSTATE:
+      return {
+        ...initialState,
       };
     default:
       return state;

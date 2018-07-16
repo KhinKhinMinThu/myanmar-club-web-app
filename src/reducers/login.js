@@ -3,10 +3,11 @@ export const LOGOUT = 'LOGOUT';
 export const LOGGEDIN = 'LOGGEDIN';
 export const LOGIN_PENDING = 'LOGIN_PENDING';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const ADMIN = 'LOGIN_ADMIN';
 
 export const login = userData => ({ type: LOGIN, userData });
 export const logout = isLoggedIn => ({ type: LOGOUT, payload: isLoggedIn });
-
+export const setAdmin = isAdmin => ({ type: ADMIN, payload: isAdmin });
 /**
  * errMsg can be wrong password/username or network errors
  * errMsg: null, means logout,
@@ -17,6 +18,7 @@ export default function (
   state = {
     isPending: false,
     isLoggedIn: false,
+    isAdmin: true,
     errMsg: null,
   },
   action,
@@ -44,6 +46,11 @@ export default function (
       return {
         ...state,
         isLoggedIn: action.payload,
+      };
+    case ADMIN:
+      return {
+        ...state,
+        isAdmin: action.payload,
       };
     default:
       return state;

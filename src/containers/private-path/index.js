@@ -3,23 +3,28 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router';
 import { LOGIN } from '../../actions/location';
-import MenuPage from './menu-page';
+import PrivateAdminPage from './private-admin-page';
+import PrivateMemberPage from './private-member-page';
 
-const PrivatePath = ({ isLoggedIn, ...props }) => (
+const PrivatePath = ({ isLoggedIn, isAdmin, ...props }) => (isLoggedIn ? (
   <Route
     {...props}
-    render={() => (isLoggedIn ? <MenuPage {...props} /> : <Redirect to={LOGIN} />)}
+    render={() => (isAdmin ? <PrivateAdminPage {...props} /> : <PrivateMemberPage {...props} />)}
   />
-);
+) : (
+  <Redirect to={LOGIN} />
+));
 
 PrivatePath.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { isLoggedIn } = state.login;
+  const { isLoggedIn, isAdmin } = state.login;
   return {
     isLoggedIn,
+    isAdmin,
   };
 };
 

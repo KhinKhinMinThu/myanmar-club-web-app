@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  EcMembersTable,
+  ClubMembersTable,
   DeSeletAllButton,
   SeletAllButton,
   SelectedMembers,
@@ -17,11 +17,11 @@ import {
 } from '../../reducers/accmgmt/accmgmt-ui';
 import { save } from '../../reducers/accmgmt/accmgmt-data';
 
-class EcMembersPage extends Component {
+class ClubMembersPage extends Component {
   componentWillMount() {
     const { accmgmtData } = this.props;
     const { membersData } = accmgmtData;
-    this.ecMembersList = this.prepareList(membersData.filter(item => item.isec_member === '1'));
+    this.clubMembersList = this.prepareList(membersData.filter(item => item.isec_member === '0'));
   }
 
   onClickDeselectAll = () => {
@@ -38,7 +38,7 @@ class EcMembersPage extends Component {
     dispatchSelectAllLoading(true);
     setTimeout(() => {
       dispatchSelectAllLoading(false);
-      dispatchSelectedKeys([...this.ecMembersList.map(item => item.key)]);
+      dispatchSelectedKeys([...this.clubMembersList.map(item => item.key)]);
     }, 1000);
   };
 
@@ -57,7 +57,7 @@ class EcMembersPage extends Component {
     const { selectedKeys } = accmgmtUI;
     dispatchSave({ membersToDelete: selectedKeys });
     // to remove the selected members from the table display
-    this.ecMembersList = this.ecMembersList.filter(item => !selectedKeys.includes(item.id));
+    this.clubMembersList = this.clubMembersList.filter(item => !selectedKeys.includes(item.id));
   };
 
   prepareList = (sourceList) => {
@@ -91,8 +91,8 @@ class EcMembersPage extends Component {
         <DeleteSeletedButton onClick={this.onClickDeleteSelected} hasSelected={hasSelected} />
         {hasSelected ? <SelectedMembers selectedNum={selectedKeys.length} /> : null}
         <FlexContainer>
-          <EcMembersTable
-            ecMembersList={this.ecMembersList}
+          <ClubMembersTable
+            clubMembersList={this.clubMembersList}
             rowSelection={rowSelection}
             onChange={this.onChange}
             sortedInfo={sortedInfo || {}}
@@ -103,7 +103,7 @@ class EcMembersPage extends Component {
   }
 }
 
-EcMembersPage.propTypes = {
+ClubMembersPage.propTypes = {
   // isValidating: PropTypes.bool.isRequired,
   dispatchSelectedKeys: PropTypes.func.isRequired,
   dispatchDeselectAllLoading: PropTypes.func.isRequired,
@@ -128,4 +128,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EcMembersPage);
+)(ClubMembersPage);

@@ -2,23 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-<<<<<<< HEAD
-  DASHBOARD, PROFILE, LOGOUT, ADMIN_ROLEMGMT, ADMIN_ACCMGMT,
-=======
-  DASHBOARD, PROFILE, LOGOUT, ADMIN_ROLEMGMT,
->>>>>>> menu-page
+  DASHBOARD,
+  PROFILE,
+  LOGOUT,
+  ADMIN_ROLEMGMT,
+  ADMIN_ACCMGMT,
+  ADMIN_MEMBER_VIEW,
+  ADMIN_MEMBER_EDIT,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
 import MenuPanel from './components';
 import SignupPage2 from '../signup-page2';
 import Dashboard from './home-ex';
 import RoleManagementPage from '../admin-rolemgmt';
-<<<<<<< HEAD
 import AccManagementPage from '../admin-accmgmt';
-=======
->>>>>>> menu-page
+import MemberProfile from '../admin-accmgmt/member-profile';
 
-class MenuPage extends Component {
+class PrivateAdminPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
   switchPage = (pathname) => {
     switch (pathname) {
@@ -30,34 +30,34 @@ class MenuPage extends Component {
         return Dashboard;
       case ADMIN_ROLEMGMT:
         return RoleManagementPage;
-<<<<<<< HEAD
       case ADMIN_ACCMGMT:
         return AccManagementPage;
-=======
->>>>>>> menu-page
+      case ADMIN_MEMBER_VIEW:
+      case ADMIN_MEMBER_EDIT:
+        return MemberProfile;
       default:
         return Dashboard;
     }
   };
 
   render() {
-    const { location } = this.props;
-    const { pathname } = location;
-    const Page = this.switchPage(pathname);
+    const { computedMatch } = this.props;
+    const { params } = computedMatch;
+    const { pathname } = params;
+    const Page = this.switchPage(`/${pathname}`);
+    console.log('private admin props:', this.props);
 
     return (
       <FlexContainer>
-        <MenuPanel selectedKeys={[pathname]} />
-        <Page />
+        <MenuPanel selectedKeys={[pathname]} isAdmin />
+        <Page {...this.props} />
       </FlexContainer>
     );
   }
 }
 
-MenuPage.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
+PrivateAdminPage.propTypes = {
+  computedMatch: PropTypes.shape({}).isRequired,
 };
 
-export default connect()(MenuPage);
+export default connect()(PrivateAdminPage);
