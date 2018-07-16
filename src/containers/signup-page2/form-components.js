@@ -69,7 +69,7 @@ export const LastNameTextInput = ({ decorator }) => (
 // gender
 export const GenderRadio = ({ decorator }) => (
   <FormItem {...layout} label="Gender">
-    {decorator('gender', { initialValue: 'M' })(
+    {decorator('gender')(
       <RadioGroup name="gender">
         <RadioButton value="M">Male</RadioButton>
         <RadioButton value="F">Female</RadioButton>
@@ -78,7 +78,6 @@ export const GenderRadio = ({ decorator }) => (
   </FormItem>
 );
 
-// dob
 export const DobDatePicker = ({ decorator }) => (
   <FormItem {...layout} label="Date of Birth">
     {decorator('dob', {
@@ -92,27 +91,33 @@ export const DobDatePicker = ({ decorator }) => (
   </FormItem>
 );
 
-// nationality
-export class NationalitySelect extends Component {
-  state = { showFormInput: false };
+class SelectOtherToggler extends Component {
+  state = { showTextInput: false };
 
   onSelect = (value) => {
     if (value === 'OT') {
-      this.setState({ showFormInput: true });
+      this.setState({ showTextInput: true });
     } else {
-      this.setState({ showFormInput: false });
+      this.setState({ showTextInput: false });
     }
   };
 
   render() {
-    const { decorator } = this.props;
-    const { showFormInput } = this.state;
-    return (
+    const { render } = this.props;
+    const { showTextInput } = this.state;
+    return render(showTextInput, this.onSelect);
+  }
+}
+
+// nationality
+export const NationalitySelect = ({ decorator }) => (
+  <SelectOtherToggler
+    render={(showTextInput, onSelect) => (
       <FormItem {...layout} label="Nationality" colon required>
         <Col span={7}>
           <FormItem>
-            {decorator('nationality', { initialValue: 'MM' })(
-              <FormSelect onChange={value => this.onSelect(value)}>
+            {decorator('nationality')(
+              <FormSelect onChange={value => onSelect(value)}>
                 <Option value="MM">Myanmar</Option>
                 <Option value="SG">Singaporean</Option>
                 <Option value="OT">Others</Option>
@@ -121,7 +126,7 @@ export class NationalitySelect extends Component {
           </FormItem>
         </Col>
         {/* show text input if nationality is others */}
-        {showFormInput && (
+        {showTextInput && (
           <Col span={17}>
             <FormItem>
               {decorator('otherNationality', {
@@ -136,17 +141,52 @@ export class NationalitySelect extends Component {
           </Col>
         )}
       </FormItem>
-    );
-  }
-}
+    )}
+  />
+);
 
 // religion
-// later test with HOC!!
+export const ReligionSelect = ({ decorator }) => (
+  <SelectOtherToggler
+    render={(showTextInput, onSelect) => (
+      <FormItem {...layout} label="Religion" colon required>
+        <Col span={7}>
+          <FormItem>
+            {decorator('religion')(
+              <FormSelect onChange={value => onSelect(value)}>
+                <Option value="BU">Buddhism</Option>
+                <Option value="IS">Islam</Option>
+                <Option value="HI">Hinduism</Option>
+                <Option value="CH">Christianity</Option>
+                <Option value="OT">Others</Option>
+              </FormSelect>,
+            )}
+          </FormItem>
+        </Col>
+        {/* show text input if religion is others */}
+        {showTextInput && (
+          <Col span={17}>
+            <FormItem>
+              {decorator('otherReligion', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please specify your religion!',
+                  },
+                ],
+              })(<FormInput type="text" />)}
+            </FormItem>
+          </Col>
+        )}
+      </FormItem>
+    )}
+  />
+);
 
 // marital status
 export const MaritalStatusSelect = ({ decorator }) => (
   <FormItem {...layout} label="Marital Status">
-    {decorator('maritalStatus', { initialValue: 'SI' })(
+    {decorator('maritalStatus')(
       <FormSelect placeholder="Select marital status">
         <Option value="SI">Single</Option>
         <Option value="MA">Married</Option>
@@ -173,7 +213,7 @@ export const EducationLevelTextInput = ({ decorator }) => (
 );
 
 // occupation
-export const OcupationTextInput = ({ decorator }) => (
+export const OccupationTextInput = ({ decorator }) => (
   <FormItem {...layout} label="Occupation">
     {decorator('occupation', {
       rules: [
@@ -189,7 +229,7 @@ export const OcupationTextInput = ({ decorator }) => (
 // stay pass
 export const StayPassSelect = ({ decorator }) => (
   <FormItem {...layout} label="Singapore Pass">
-    {decorator('stayPass', { initialValue: 'SP' })(
+    {decorator('stayPass')(
       <FormSelect placeholder="Select pass type">
         <Option value="SP">S Pass</Option>
         <Option value="EP">Employment Pass</Option>
@@ -220,3 +260,5 @@ export const IDTextInput = ({ decorator }) => (
     <ExtraInfoText>S1234567Z, G1234567Z etc.</ExtraInfoText>
   </FormItem>
 );
+
+// address

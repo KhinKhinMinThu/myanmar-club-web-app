@@ -1,12 +1,19 @@
 export const NEXT = '[SIGNUP_UI] NEXT';
 export const PREV = '[SIGNUP_UI] PREV';
-export const VALIDATE = '[SIGNUP_UI] VALIDATE';
+export const VALIDATE_START = '[SIGNUP_UI] VALIDATE_START';
+export const VALIDATE_END = '[SIGNUP_UI] VALIDATE_END';
 
 export const next = () => ({ type: NEXT });
 export const prev = () => ({ type: PREV });
-export const validate = isValidating => ({
-  type: VALIDATE,
-  payload: isValidating,
+
+export const startValidate = () => ({
+  type: VALIDATE_START,
+  payload: true,
+});
+
+export const endValidate = () => ({
+  type: VALIDATE_END,
+  payload: false,
 });
 
 export default function (
@@ -27,10 +34,15 @@ export default function (
         ...state,
         currentStep: state.currentStep - 1,
       };
-    case VALIDATE:
+    case VALIDATE_START:
       return {
         ...state,
-        isValidating: action.payload,
+        isValidating: true,
+      };
+    case VALIDATE_END:
+      return {
+        ...state,
+        isValidating: false,
       };
     default:
       return state;
