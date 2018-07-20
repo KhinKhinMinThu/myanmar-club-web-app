@@ -16,7 +16,7 @@ import SignupPage2 from '../signup-page2';
 import Dashboard from './home-ex';
 import RoleManagementPage from '../admin-rolemgmt';
 import AccManagementPage from '../admin-accmgmt';
-import MemberProfile from '../admin-accmgmt/member-profile';
+import MemberManagementPage from '../admin-member-profile';
 
 class PrivateAdminPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
@@ -34,15 +34,16 @@ class PrivateAdminPage extends Component {
         return AccManagementPage;
       case ADMIN_MEMBER_VIEW:
       case ADMIN_MEMBER_EDIT:
-        return MemberProfile;
+        return MemberManagementPage;
       default:
         return Dashboard;
     }
   };
 
   render() {
-    const { computedMatch } = this.props;
-    const { params } = computedMatch;
+    const {
+      computedMatch: { params },
+    } = this.props;
     const { pathname } = params;
     const Page = this.switchPage(`/${pathname}`);
     console.log('private admin props:', this.props);

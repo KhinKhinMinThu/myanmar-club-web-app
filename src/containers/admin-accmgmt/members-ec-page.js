@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Form } from 'antd';
 import {
   EcMembersTable,
   DeSeletAllButton,
@@ -65,6 +66,9 @@ class EcMembersPage extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
+      role_names: item.role_names.map(
+        (role, index) => (index === item.role_names.length - 1 ? `${role}` : `${role}, `),
+      ),
     }));
     return preparedList;
   };
@@ -78,8 +82,8 @@ class EcMembersPage extends Component {
       selectedRowKeys: selectedKeys,
       onChange: this.onSelectChange,
     };
-    const hasSelected = selectedKeys.length > 0;
 
+    const hasSelected = selectedKeys.length > 0;
     return (
       <div>
         <DeSeletAllButton
@@ -87,9 +91,11 @@ class EcMembersPage extends Component {
           hasSelected={hasSelected}
           loading={deselectAllLoading}
         />
+
         <SeletAllButton onClick={this.onClickSelectAll} loading={selectAllLoading} />
         <DeleteSeletedButton onClick={this.onClickDeleteSelected} hasSelected={hasSelected} />
         {hasSelected ? <SelectedMembers selectedNum={selectedKeys.length} /> : null}
+
         <FlexContainer>
           <EcMembersTable
             ecMembersList={this.ecMembersList}
@@ -104,7 +110,6 @@ class EcMembersPage extends Component {
 }
 
 EcMembersPage.propTypes = {
-  // isValidating: PropTypes.bool.isRequired,
   dispatchSelectedKeys: PropTypes.func.isRequired,
   dispatchDeselectAllLoading: PropTypes.func.isRequired,
   dispatchSelectAllLoading: PropTypes.func.isRequired,
@@ -125,7 +130,10 @@ const mapDispatchToProps = {
   dispatchSortedInfo: setSortedInfo,
   dispatchSave: save,
 };
+
+const FormEcMembersPage = Form.create()(EcMembersPage);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EcMembersPage);
+)(FormEcMembersPage);

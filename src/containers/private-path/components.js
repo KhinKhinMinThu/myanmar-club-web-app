@@ -17,8 +17,8 @@ const commonTitles = {
 };
 
 const adminTitles = {
-  ADMIN_ROLEMGMT: { icon: <MenuIcon type="setting" />, text: 'Role Management (Admin)' },
-  ADMIN_ACCMGMT: { icon: <MenuIcon type="user" />, text: 'Account Management (Admin)' },
+  ADMIN_ROLEMGMT: { icon: <MenuIcon type="setting" />, text: 'Role Management' },
+  ADMIN_ACCMGMT: { icon: <MenuIcon type="user" />, text: 'Account Management' },
 };
 
 const MenuPanel = ({
