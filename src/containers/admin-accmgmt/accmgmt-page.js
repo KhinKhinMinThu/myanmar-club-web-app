@@ -12,14 +12,15 @@ class AccManagement extends Component {
     dispatchResetState();
   }
 
-  render() {
+  onChange = () => {
     const { dispatchResetState } = this.props;
+    dispatchResetState();
+  };
+
+  render() {
     return (
       <div>
-        <MemberTabs
-          onChange={() => dispatchResetState()}
-          tabContents={[EcMembersPage, ClubMembersPage]}
-        />
+        <MemberTabs onChange={this.onChange} tabContents={[EcMembersPage, ClubMembersPage]} />
       </div>
     );
   }

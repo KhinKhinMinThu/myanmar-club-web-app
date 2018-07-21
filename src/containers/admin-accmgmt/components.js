@@ -1,4 +1,4 @@
-import { Tabs, Button } from 'antd';
+import { Tabs, Button, Form } from 'antd';
 import React from 'react';
 import { ADMIN_MEMBER_VIEW, ADMIN_MEMBER_EDIT } from '../../actions/location';
 import {
@@ -9,9 +9,21 @@ import {
   MarginLeftButton,
   TableActionIcon,
   TableActionLink,
+  SearchInput,
 } from './styled-components';
 
 const { TabPane } = Tabs;
+const FormItem = Form.Item;
+const layout = {
+  labelCol: {
+    xs: { span: 0 },
+    sm: { span: 0 },
+  },
+  wrapperCol: {
+    xs: { span: 8 },
+    sm: { span: 8 },
+  },
+};
 
 /* eslint react/prop-types: 0 */
 export const MemberTabs = ({ onChange, tabContents }) => {
@@ -45,7 +57,11 @@ export const MemberTabs = ({ onChange, tabContents }) => {
 };
 
 export const EcMembersTable = ({
-  ecMembersList, rowSelection, onChange, sortedInfo,
+  ecMembersList,
+  rowSelection,
+  onChange,
+  sortedInfo,
+  filteredInfo,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -60,6 +76,9 @@ export const EcMembersTable = ({
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+
+      filteredValue: filteredInfo.name || null,
+      onFilter: (value, record) => record.name.includes(value),
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
     },
@@ -127,7 +146,11 @@ export const EcMembersTable = ({
 };
 
 export const ClubMembersTable = ({
-  clubMembersList, rowSelection, onChange, sortedInfo,
+  clubMembersList,
+  rowSelection,
+  onChange,
+  sortedInfo,
+  filteredInfo,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -142,6 +165,8 @@ export const ClubMembersTable = ({
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      filteredValue: filteredInfo.name || null,
+      onFilter: (value, record) => record.name.includes(value),
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
     },
@@ -209,15 +234,21 @@ export const ClubMembersTable = ({
 };
 
 export const DeSeletAllButton = ({ onClick, hasSelected, loading }) => (
-  <Button type="primary" onClick={onClick} disabled={!hasSelected} loading={loading} ghost>
+  <MarginLeftButton
+    type="primary"
+    onClick={onClick}
+    disabled={!hasSelected}
+    loading={loading}
+    ghost
+  >
     Deselect All
-  </Button>
+  </MarginLeftButton>
 );
 
 export const SeletAllButton = ({ onClick, loading }) => (
-  <MarginLeftButton type="primary" onClick={onClick} loading={loading} ghost>
+  <Button type="primary" onClick={onClick} loading={loading} ghost>
     Select All
-  </MarginLeftButton>
+  </Button>
 );
 
 export const SelectedMembers = ({ selectedNum }) => (
@@ -227,5 +258,33 @@ export const SelectedMembers = ({ selectedNum }) => (
 export const DeleteSeletedButton = ({ onClick, hasSelected }) => (
   <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
     Delete Selected Member(s)
+  </MarginLeftButton>
+);
+
+export const SearchNamePanel = ({
+  onChange,
+  onPressEnter,
+  decorator,
+  onClickSearch,
+  onClickReset,
+}) => (
+  <FormItem {...layout}>
+    {decorator('searchName', { initialValue: null })(
+      <SearchInput placeholder="Search name" onChange={onChange} onPressEnter={onPressEnter} />,
+    )}
+    <SearchNameButton onClick={onClickSearch} />
+    <ResetButton onClick={onClickReset} />
+  </FormItem>
+);
+
+export const SearchNameButton = ({ onClick }) => (
+  <MarginLeftButton type="primary" onClick={onClick}>
+    Search
+  </MarginLeftButton>
+);
+
+export const ResetButton = ({ onClick }) => (
+  <MarginLeftButton type="primary" onClick={onClick} ghost>
+    Clear Search
   </MarginLeftButton>
 );

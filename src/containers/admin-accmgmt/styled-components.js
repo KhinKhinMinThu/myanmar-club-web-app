@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { Icon, Table, Button } from 'antd';
+import {
+  Icon, Table, Button, Input,
+} from 'antd';
 import { Link } from 'react-router-dom';
 
 // export const HalfWidthButton = styled(Button)`
@@ -33,8 +35,9 @@ export const SelectedText = styled.span`
 
 export const FlexContainer = styled.div`
   display: flex;
-  justify-content: center;
-  padding-top: 15px;
+  justify-content: left;
+  padding-bottom: 15px;
+  align-items: center;
 `;
 
 export const FullWidthTable = styled(Table)`
@@ -45,6 +48,6 @@ export const MarginLeftButton = styled(Button)`
   margin-left: 8px;
 `;
 
-// export const PageCard = styled(Card)`
-//   border-radius: 10;
-// `;
+export const SearchInput = styled(Input)`
+  width: 200px;
+`;

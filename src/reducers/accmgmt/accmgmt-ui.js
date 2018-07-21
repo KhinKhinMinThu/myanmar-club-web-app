@@ -3,6 +3,7 @@ export const SELECTEDKEYS = '[ACCMGMT_UI] SELECTEDKEYS';
 export const DESELECTALL_LOADING = '[ACCMGMT_UI] DESELECTALL_LOADING';
 export const SELECTALL_LOADING = '[ACCMGMT_UI] SELECTALL_LOADING';
 export const SORTEDINFO = '[ACCMGMT_UI] SORTEDINFO';
+export const FILTEREDINFO = '[ACCMGMT_UI] FILTEREDINFO';
 export const RESETSTATE = '[ACCMGMT_UI] RESETSTATE';
 
 export const validate = isValidating => ({
@@ -27,6 +28,8 @@ export const setSelectAllLoading = isLoading => ({
 
 export const setSortedInfo = sortedInfo => ({ type: SORTEDINFO, payload: sortedInfo });
 
+export const setFilteredInfo = filteredInfo => ({ type: FILTEREDINFO, payload: filteredInfo });
+
 export const resetState = () => ({ type: RESETSTATE });
 
 const initialState = {
@@ -35,6 +38,7 @@ const initialState = {
   deselectAllLoading: false,
   selectAllLoading: false,
   sortedInfo: null,
+  filteredInfo: null,
 };
 export default function (
   state = {
@@ -67,6 +71,11 @@ export default function (
       return {
         ...state,
         sortedInfo: action.payload,
+      };
+    case FILTEREDINFO:
+      return {
+        ...state,
+        filteredInfo: action.payload,
       };
     case RESETSTATE:
       return {
