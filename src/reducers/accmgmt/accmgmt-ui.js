@@ -4,6 +4,8 @@ export const DESELECTALL_LOADING = '[ACCMGMT_UI] DESELECTALL_LOADING';
 export const SELECTALL_LOADING = '[ACCMGMT_UI] SELECTALL_LOADING';
 export const SORTEDINFO = '[ACCMGMT_UI] SORTEDINFO';
 export const FILTEREDINFO = '[ACCMGMT_UI] FILTEREDINFO';
+export const MODALVISIBILITY = '[ACCMGMT_UI] MODALVISIBILITY';
+export const VIEWMEMBER = '[ACCMGMT_UI] VIEWMEMBER';
 export const RESETSTATE = '[ACCMGMT_UI] RESETSTATE';
 
 export const validate = isValidating => ({
@@ -30,6 +32,16 @@ export const setSortedInfo = sortedInfo => ({ type: SORTEDINFO, payload: sortedI
 
 export const setFilteredInfo = filteredInfo => ({ type: FILTEREDINFO, payload: filteredInfo });
 
+export const setModalVisibility = isModalVisible => ({
+  type: MODALVISIBILITY,
+  payload: isModalVisible,
+});
+
+export const setViewMember = viewMember => ({
+  type: VIEWMEMBER,
+  payload: viewMember,
+});
+
 export const resetState = () => ({ type: RESETSTATE });
 
 const initialState = {
@@ -39,6 +51,8 @@ const initialState = {
   selectAllLoading: false,
   sortedInfo: null,
   filteredInfo: null,
+  isModalVisible: false,
+  viewMember: [],
 };
 export default function (
   state = {
@@ -76,6 +90,16 @@ export default function (
       return {
         ...state,
         filteredInfo: action.payload,
+      };
+    case MODALVISIBILITY:
+      return {
+        ...state,
+        isModalVisible: action.payload,
+      };
+    case VIEWMEMBER:
+      return {
+        ...state,
+        viewMember: action.payload,
       };
     case RESETSTATE:
       return {

@@ -13,6 +13,8 @@ import {
   OccupationTextInput,
   StayPassSelect,
   IDTextInput,
+  SubCommitteeRadio,
+  RoleAssignTransfer,
   SaveButton,
   GoBackButton,
 } from './components';
@@ -21,19 +23,13 @@ import { save } from '../../reducers/membermgmt/membermgmt-data';
 import { startValidate, endValidate } from '../../reducers/membermgmt/membermgmt-ui';
 
 class MemberProfilePage extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const {
-      form: { setFieldsValue },
-      membermgmtData,
+      membermgmtData: { memberRoles, allRoles },
     } = this.props;
-    setFieldsValue({ ...membermgmtData });
+    this.dataSource = this.prepareList(allRoles);
+    this.targetKeys = memberRoles.map(item => `${item}`);
   }
-
-  //   componentDidUpdate(prevState) {
-  //     const { isValidating } = this.props;
-  //     const isPropChange = isValidating !== prevState.isValidating;
-  //     if (isValidating && isPropChange) this.validatePage();
-  //   }
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -46,10 +42,19 @@ class MemberProfilePage extends Component {
     validateFieldsAndScroll((err, formValues) => {
       dispatchEndValidate();
       if (!err) {
-        console.log('no error, formvalues saved');
-        dispatchSave(formValues);
+        dispatchSave({ ...formValues });
       }
     });
+  };
+
+  prepareList = (sourceList) => {
+    const preparedList = [];
+    sourceList.map(item => preparedList.push({
+      key: `${item.id}`,
+      title: `ID: ${item.id}`,
+      description: `ID: ${item.id} - ${item.name}`,
+    }));
+    return preparedList;
   };
 
   render() {
@@ -71,6 +76,14 @@ class MemberProfilePage extends Component {
         <OccupationTextInput decorator={getFieldDecorator} />
         <StayPassSelect decorator={getFieldDecorator} />
         <IDTextInput decorator={getFieldDecorator} />
+        Others details to be added!
+        <SubCommitteeRadio decorator={getFieldDecorator} />
+        <RoleAssignTransfer
+          dataSource={this.dataSource}
+          onChange={this.onChange}
+          decorator={getFieldDecorator}
+          targetKeys={this.targetKeys}
+        />
         <ButtonContainer>
           <SaveButton isValidating={isValidating} onClick={() => dispatchStartValidate(true)} />
           <GoBackButton onClick={() => console.log('clicked goback')} />
@@ -110,12 +123,12 @@ const mapDispatchToProps = {
   dispatchSave: save,
 };
 
-const FormPage1 = Form.create()(MemberProfilePage);
+const FormMemberProfilePage = Form.create()(MemberProfilePage);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormPage1);
+)(FormMemberProfilePage);
 
 /*
 mapPropsToFields(props) {

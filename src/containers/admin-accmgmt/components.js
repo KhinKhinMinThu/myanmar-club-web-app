@@ -1,6 +1,8 @@
-import { Tabs, Button, Form } from 'antd';
 import React from 'react';
-import { ADMIN_MEMBER_VIEW, ADMIN_MEMBER_EDIT } from '../../actions/location';
+import {
+  Tabs, Button, Form, Modal,
+} from 'antd';
+import { ADMIN_MEMBER_EDIT } from '../../actions/location';
 import {
   TabIcon,
   BoldText,
@@ -10,20 +12,12 @@ import {
   TableActionIcon,
   TableActionLink,
   SearchInput,
+  TableActionButton,
+  ModalItem,
 } from './styled-components';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
-const layout = {
-  labelCol: {
-    xs: { span: 0 },
-    sm: { span: 0 },
-  },
-  wrapperCol: {
-    xs: { span: 8 },
-    sm: { span: 8 },
-  },
-};
 
 /* eslint react/prop-types: 0 */
 export const MemberTabs = ({ onChange, tabContents }) => {
@@ -62,6 +56,7 @@ export const EcMembersTable = ({
   onChange,
   sortedInfo,
   filteredInfo,
+  showModal,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -123,9 +118,7 @@ export const EcMembersTable = ({
       // render: (text, record) => ()
       render: record => (
         <span>
-          <TableActionLink to={ADMIN_MEMBER_VIEW.concat('/').concat(record.id)}>
-            <TableActionIcon type="folder-open" />
-          </TableActionLink>
+          <TableActionButton icon="folder-open" onClick={() => showModal(record.id)} />
           <TableActionLink to={ADMIN_MEMBER_EDIT.concat('/').concat(record.id)}>
             <TableActionIcon type="edit" />
           </TableActionLink>
@@ -151,6 +144,7 @@ export const ClubMembersTable = ({
   onChange,
   sortedInfo,
   filteredInfo,
+  showModal,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -211,9 +205,7 @@ export const ClubMembersTable = ({
       // render: (text, record) => ()
       render: record => (
         <span>
-          <TableActionLink to={ADMIN_MEMBER_VIEW.concat('/').concat(record.id)}>
-            <TableActionIcon type="folder-open" />
-          </TableActionLink>
+          <TableActionButton icon="folder-open" onClick={() => showModal(record.id)} />
           <TableActionLink to={ADMIN_MEMBER_EDIT.concat('/').concat(record.id)}>
             <TableActionIcon type="edit" />
           </TableActionLink>
@@ -268,7 +260,18 @@ export const SearchNamePanel = ({
   onClickSearch,
   onClickReset,
 }) => (
-  <FormItem {...layout}>
+  <FormItem
+    {...{
+      labelCol: {
+        xs: { span: 0 },
+        sm: { span: 0 },
+      },
+      wrapperCol: {
+        xs: { span: 8 },
+        sm: { span: 8 },
+      },
+    }}
+  >
     {decorator('searchName', { initialValue: null })(
       <SearchInput placeholder="Search name" onChange={onChange} onPressEnter={onPressEnter} />,
     )}
@@ -288,3 +291,94 @@ export const ResetButton = ({ onClick }) => (
     Clear Search
   </MarginLeftButton>
 );
+
+export const MemberModal = ({ onCloseModal, isModalVisible, viewMember }) => {
+  const layout = {
+    labelCol: {
+      xs: { span: 12 },
+    },
+    wrapperCol: {
+      xs: { span: 12 },
+    },
+  };
+  return (
+    <Modal
+      title="Member's Details"
+      visible={isModalVisible}
+      style={{ top: 20 }}
+      onCancel={onCloseModal}
+      footer={[
+        <Button key="close" type="primary" onClick={onCloseModal}>
+          Close
+        </Button>,
+      ]}
+    >
+      <ModalItem {...layout} label="Member Id">
+        <BoldText>{viewMember.id}</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Name">
+        <BoldText>{viewMember.name}</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Gender">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Date of Birth">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Nationality">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Religion">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Marital Status">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Education Level">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Occupation">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Singapore Pass">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Identification Number">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Address">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Postal Code">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Email Address">
+        <BoldText>{viewMember.email_address}</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Facebook Account">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Home Phone Number">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Mobile Number">
+        <BoldText>{viewMember.mobile_phone}</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Hobbies">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Sub-Committee Member">
+        <BoldText>??</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Member Type">
+        <BoldText>{viewMember.membership_type}</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Member Status">
+        <BoldText>{viewMember.membership_status}</BoldText>
+      </ModalItem>
+      <ModalItem {...layout} label="Membership Expiry Date">
+        <BoldText>{viewMember.membership_expiry}</BoldText>
+      </ModalItem>
+    </Modal>
+  );
+};

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  Icon, Button, Input, DatePicker, Select,
+  Icon, Button, Input, DatePicker, Select, Radio,
 } from 'antd';
 
 export const TabIcon = styled(Icon)`
@@ -39,4 +39,26 @@ export const ButtonContainer = styled.div`
   text-align: center;
   display: inline-block;
   width: 100%;
+`;
+
+export const BoldUnderlineText = styled.span`
+  font-weight: bold;
+  text-decoration: underline;
+`;
+
+export const FlexContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+`;
+
+export const FormRadio = styled(Radio)`
+  padding-top: 6px;
+  display: block;
+  line-height: 2;
+`;
+
+export const MMText = styled.span`
+  font-family: Myanmar3;
+  text-align: justify;
 `;

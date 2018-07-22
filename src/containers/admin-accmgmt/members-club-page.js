@@ -9,6 +9,7 @@ import {
   SelectedMembers,
   DeleteSeletedButton,
   SearchNamePanel,
+  MemberModal,
 } from './components';
 import { FlexContainer } from './styled-components';
 import {
@@ -17,14 +18,17 @@ import {
   setSelectAllLoading,
   setSortedInfo,
   setFilteredInfo,
+  setModalVisibility,
+  setViewMember,
 } from '../../reducers/accmgmt/accmgmt-ui';
 import { save } from '../../reducers/accmgmt/accmgmt-data';
 
 class ClubMembersPage extends Component {
   // get the memberlist from API
   componentWillMount() {
-    const { accmgmtData } = this.props;
-    const { membersData } = accmgmtData;
+    const {
+      accmgmtData: { membersData },
+    } = this.props;
     this.clubMembersList = this.prepareList(membersData.filter(item => item.isec_member === '0'));
   }
 
@@ -97,6 +101,25 @@ class ClubMembersPage extends Component {
     }
   };
 
+  // handle close button on Modal pop-up
+  onCloseModal = () => {
+    const { dispatchModalVisibility } = this.props;
+    dispatchModalVisibility(false);
+  };
+
+  // handle open-folder icon click from table row
+  showModal = (id) => {
+    const {
+      accmgmtData: { membersData },
+      dispatchModalVisibility,
+      dispatchViewMember,
+    } = this.props;
+    const viewMember = membersData.find(item => item.id === id);
+
+    dispatchModalVisibility(true);
+    dispatchViewMember(viewMember);
+  };
+
   // add the key to member list
   prepareList = (sourceList) => {
     const preparedList = [];
@@ -118,6 +141,8 @@ class ClubMembersPage extends Component {
       selectAllLoading,
       sortedInfo,
       filteredInfo,
+      isModalVisible,
+      viewMember,
     } = accmgmtUI;
     const rowSelection = {
       selectedRowKeys: selectedKeys,
@@ -153,8 +178,14 @@ class ClubMembersPage extends Component {
             onChange={this.onChange}
             sortedInfo={sortedInfo || {}}
             filteredInfo={filteredInfo || {}}
+            showModal={id => this.showModal(id)}
           />
         </FlexContainer>
+        <MemberModal
+          isModalVisible={isModalVisible}
+          onCloseModal={this.onCloseModal}
+          viewMember={viewMember}
+        />
       </div>
     );
   }
@@ -167,6 +198,8 @@ ClubMembersPage.propTypes = {
   dispatchSelectAllLoading: PropTypes.func.isRequired,
   dispatchSortedInfo: PropTypes.func.isRequired,
   dispatchFilteredInfo: PropTypes.func.isRequired,
+  dispatchModalVisibility: PropTypes.func.isRequired,
+  dispatchViewMember: PropTypes.func.isRequired,
   dispatchSave: PropTypes.func.isRequired,
 
   accmgmtUI: PropTypes.shape({}).isRequired,
@@ -183,6 +216,8 @@ const mapDispatchToProps = {
   dispatchSelectAllLoading: setSelectAllLoading,
   dispatchSortedInfo: setSortedInfo,
   dispatchFilteredInfo: setFilteredInfo,
+  dispatchModalVisibility: setModalVisibility,
+  dispatchViewMember: setViewMember,
   dispatchSave: save,
 };
 

@@ -7,7 +7,6 @@ import {
   LOGOUT,
   ADMIN_ROLEMGMT,
   ADMIN_ACCMGMT,
-  ADMIN_MEMBER_VIEW,
   ADMIN_MEMBER_EDIT,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
@@ -32,7 +31,6 @@ class PrivateAdminPage extends Component {
         return RoleManagementPage;
       case ADMIN_ACCMGMT:
         return AccManagementPage;
-      case ADMIN_MEMBER_VIEW:
       case ADMIN_MEMBER_EDIT:
         return MemberManagementPage;
       default:

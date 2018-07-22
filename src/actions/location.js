@@ -6,5 +6,4 @@ export const PROFILE = '/profile';
 export const DASHBOARD = '/dashboard';
 export const ADMIN_ROLEMGMT = '/manage-roles';
 export const ADMIN_ACCMGMT = '/manage-accounts';
-export const ADMIN_MEMBER_VIEW = '/view-member';
 export const ADMIN_MEMBER_EDIT = '/edit-member';
