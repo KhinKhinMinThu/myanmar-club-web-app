@@ -33,7 +33,7 @@ class PrivateMemberPage extends Component {
 
     return (
       <FlexContainer>
-        <MenuPanel selectedKeys={[pathname]} isAdmin={false} />
+        <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin={false} />
         <Page {...this.props} />
       </FlexContainer>
     );

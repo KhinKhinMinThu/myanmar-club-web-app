@@ -45,10 +45,10 @@ class PrivateAdminPage extends Component {
     const { pathname } = params;
     const Page = this.switchPage(`/${pathname}`);
     console.log('private admin props:', this.props);
-
+    console.log('pathname:', pathname);
     return (
       <FlexContainer>
-        <MenuPanel selectedKeys={[pathname]} isAdmin />
+        <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin />
         <Page {...this.props} />
       </FlexContainer>
     );
