@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  MenuIcon, MainMenu, MenuItem, MenuContainer,
-} from './styled-components';
+import { MenuIcon, MainMenu, MenuItem } from './styled-components';
 import {
   DASHBOARD, PROFILE, LOGOUT, ADMIN_ROLEMGMT, ADMIN_ACCMGMT,
 } from '../../actions/location';
@@ -17,8 +15,8 @@ const commonTitles = {
 };
 
 const adminTitles = {
-  ADMIN_ROLEMGMT: { icon: <MenuIcon type="setting" />, text: 'Role Management' },
-  ADMIN_ACCMGMT: { icon: <MenuIcon type="user" />, text: 'Account Management' },
+  ADMIN_ROLEMGMT: { icon: <MenuIcon type="setting" />, text: 'A:Role Management' },
+  ADMIN_ACCMGMT: { icon: <MenuIcon type="user" />, text: 'A:Account Management' },
 };
 
 const MenuPanel = ({
@@ -33,34 +31,37 @@ const MenuPanel = ({
   };
 
   return (
-    <MenuContainer>
-      <MainMenu mode="inline" onClick={onClick} selectedKeys={selectedKeys}>
-        <MenuItem key={DASHBOARD}>
-          {commonTitles.DASHBOARD.icon}
-          {commonTitles.DASHBOARD.text}
+    <MainMenu
+      mode="inline"
+      onClick={onClick}
+      selectedKeys={selectedKeys}
+      style={{ width: '250px' }}
+    >
+      <MenuItem key={DASHBOARD}>
+        {commonTitles.DASHBOARD.icon}
+        {commonTitles.DASHBOARD.text}
+      </MenuItem>
+      <MenuItem key={PROFILE}>
+        {commonTitles.PROFILE.icon}
+        {commonTitles.PROFILE.text}
+      </MenuItem>
+      {isAdmin && (
+        <MenuItem key={ADMIN_ROLEMGMT}>
+          {adminTitles.ADMIN_ROLEMGMT.icon}
+          {adminTitles.ADMIN_ROLEMGMT.text}
         </MenuItem>
-        <MenuItem key={PROFILE}>
-          {commonTitles.PROFILE.icon}
-          {commonTitles.PROFILE.text}
+      )}
+      {isAdmin && (
+        <MenuItem key={ADMIN_ACCMGMT}>
+          {adminTitles.ADMIN_ACCMGMT.icon}
+          {adminTitles.ADMIN_ACCMGMT.text}
         </MenuItem>
-        {isAdmin && (
-          <MenuItem key={ADMIN_ROLEMGMT}>
-            {adminTitles.ADMIN_ROLEMGMT.icon}
-            {adminTitles.ADMIN_ROLEMGMT.text}
-          </MenuItem>
-        )}
-        {isAdmin && (
-          <MenuItem key={ADMIN_ACCMGMT}>
-            {adminTitles.ADMIN_ACCMGMT.icon}
-            {adminTitles.ADMIN_ACCMGMT.text}
-          </MenuItem>
-        )}
-        <MenuItem key={LOGOUT}>
-          {commonTitles.LOGOUT.icon}
-          {commonTitles.LOGOUT.text}
-        </MenuItem>
-      </MainMenu>
-    </MenuContainer>
+      )}
+      <MenuItem key={LOGOUT}>
+        {commonTitles.LOGOUT.icon}
+        {commonTitles.LOGOUT.text}
+      </MenuItem>
+    </MainMenu>
   );
 };
 

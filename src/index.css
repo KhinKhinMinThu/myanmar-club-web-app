@@ -4,6 +4,9 @@
 
 .App {
   height: 100%;
+  /* to hide the vertical scroll bar. 
+  V-scroll bar for individual pages will be displayed in .home-pages css */
+  overflow-y: hidden;
 }
 
 .login-page {
@@ -14,8 +17,10 @@
 }
 
 .home-pages {
-  background: #ececec;
+  width: 100%;
+  background: #ffffff;
   display: flex;
+  overflow-y: auto;
 }
 
 /* Myamar Font Unicode: https://mmwebfonts.comquas.com/
