@@ -168,8 +168,6 @@ export default function (
 
     // to update to API
     membersToDelete: [],
-    // transferFrom: [],
-    // transferTo: [],
     // end
   },
   action,

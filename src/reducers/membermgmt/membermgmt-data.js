@@ -9,7 +9,7 @@ export const save = formValues => ({
 
 export default function (
   state = {
-    memberId: 12,
+    memberId: 12, // need to change back to id
     firstName: 'Khin Khin',
     middleName: '-',
     lastName: 'Min Thu',
@@ -23,7 +23,7 @@ export default function (
     education: 'PRIMARY',
     occupation: 'STUDENT',
     stayPass: 'SP',
-    id: 'S1234567X',
+    id: 'S1234567X', // need to rename other than id
     memberRoles: [1, 2],
     allRoles: [
       {

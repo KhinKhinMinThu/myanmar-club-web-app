@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Tabs, Button, Form, Modal,
 } from 'antd';
-import { ADMIN_MEMBER_EDIT } from '../../actions/location';
+import { EDIT_MEMBER } from '../../actions/location';
 import {
   TabIcon,
   BoldText,
@@ -119,7 +119,7 @@ export const EcMembersTable = ({
       render: record => (
         <span>
           <TableActionButton icon="folder-open" onClick={() => showModal(record.id)} />
-          <TableActionLink to={ADMIN_MEMBER_EDIT.concat('/').concat(record.id)}>
+          <TableActionLink to={EDIT_MEMBER.concat('/').concat(record.id)}>
             <TableActionIcon type="edit" />
           </TableActionLink>
         </span>
@@ -206,7 +206,7 @@ export const ClubMembersTable = ({
       render: record => (
         <span>
           <TableActionButton icon="folder-open" onClick={() => showModal(record.id)} />
-          <TableActionLink to={ADMIN_MEMBER_EDIT.concat('/').concat(record.id)}>
+          <TableActionLink to={EDIT_MEMBER.concat('/').concat(record.id)}>
             <TableActionIcon type="edit" />
           </TableActionLink>
         </span>

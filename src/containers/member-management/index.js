@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageCard } from '../shared-components/common';
-import MemberManagement from './membermgmt-page';
+import MemberManagement from './member-management-page';
 
 const MemberManagementPage = props => (
   <div className="home-pages">

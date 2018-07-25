@@ -1,13 +1,13 @@
 import React from 'react';
 import { PageCard } from '../shared-components/common';
-import RoleManagement from './rolemgmt-page';
+import AccManagement from './account-management-page';
 
-const RoleManagementPage = () => (
+const AccountManagementPage = () => (
   <div className="home-pages">
     <PageCard bordered={false}>
-      <RoleManagement />
+      <AccManagement />
     </PageCard>
   </div>
 );
 
-export default RoleManagementPage;
+export default AccountManagementPage;

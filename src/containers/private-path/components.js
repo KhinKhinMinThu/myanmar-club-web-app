@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MenuIcon, MainMenu, MenuItem } from './styled-components';
 import {
-  DASHBOARD, PROFILE, LOGOUT, ADMIN_ROLEMGMT, ADMIN_ACCMGMT,
+  DASHBOARD,
+  PROFILE,
+  LOGOUT,
+  ROLE_MANAGEMENT,
+  ACCOUNT_MANAGEMENT,
+  CLAIM_MANAGEMENT,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -15,8 +20,9 @@ const commonTitles = {
 };
 
 const adminTitles = {
-  ADMIN_ROLEMGMT: { icon: <MenuIcon type="setting" />, text: 'A:Role Management' },
-  ADMIN_ACCMGMT: { icon: <MenuIcon type="user" />, text: 'A:Account Management' },
+  ROLE_MANAGEMENT: { icon: <MenuIcon type="setting" />, text: 'Roles Management' },
+  ACCOUNT_MANAGEMENT: { icon: <MenuIcon type="user" />, text: 'Accounts Management' },
+  CLAIM_MANAGEMENT: { icon: <MenuIcon type="calculator" />, text: 'Claims Management' },
 };
 
 const MenuPanel = ({
@@ -46,15 +52,21 @@ const MenuPanel = ({
         {commonTitles.PROFILE.text}
       </MenuItem>
       {isAdmin && (
-        <MenuItem key={ADMIN_ROLEMGMT}>
-          {adminTitles.ADMIN_ROLEMGMT.icon}
-          {adminTitles.ADMIN_ROLEMGMT.text}
+        <MenuItem key={ROLE_MANAGEMENT}>
+          {adminTitles.ROLE_MANAGEMENT.icon}
+          {adminTitles.ROLE_MANAGEMENT.text}
         </MenuItem>
       )}
       {isAdmin && (
-        <MenuItem key={ADMIN_ACCMGMT}>
-          {adminTitles.ADMIN_ACCMGMT.icon}
-          {adminTitles.ADMIN_ACCMGMT.text}
+        <MenuItem key={ACCOUNT_MANAGEMENT}>
+          {adminTitles.ACCOUNT_MANAGEMENT.icon}
+          {adminTitles.ACCOUNT_MANAGEMENT.text}
+        </MenuItem>
+      )}
+      {isAdmin && (
+        <MenuItem key={CLAIM_MANAGEMENT}>
+          {adminTitles.CLAIM_MANAGEMENT.icon}
+          {adminTitles.CLAIM_MANAGEMENT.text}
         </MenuItem>
       )}
       <MenuItem key={LOGOUT}>

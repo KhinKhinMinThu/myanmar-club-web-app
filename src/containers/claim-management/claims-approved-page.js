@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Form } from 'antd';
 import {
-  EcMembersTable,
+  ClaimsTable,
   DeSeletAllButton,
   SeletAllButton,
   SelectedMembers,
-  DeleteSeletedButton,
+  UnapproveSeletedButton,
   SearchNamePanel,
-  MemberModal,
+  ClaimModal,
 } from './components';
 import { FlexContainer } from './styled-components';
 import {
@@ -19,17 +19,18 @@ import {
   setSortedInfo,
   setFilteredInfo,
   setModalVisibility,
-  setViewMember,
-} from '../../reducers/accmgmt/accmgmt-ui';
-import { save } from '../../reducers/accmgmt/accmgmt-data';
+  setViewClaim,
+  resetState,
+} from '../../reducers/claimmgmt/claimmgmt-ui';
+import { save } from '../../reducers/claimmgmt/claimmgmt-data';
 
-class EcMembersPage extends Component {
+class ApprovedClaimsPage extends Component {
   // get the memberlist from API
   componentWillMount() {
     const {
-      accmgmtData: { membersData },
+      claimmgmtData: { claimsData },
     } = this.props;
-    this.ecMembersList = this.prepareList(membersData.filter(item => item.isec_member === '1'));
+    this.newClaimsList = this.prepareList(claimsData.filter(item => item.isApproved === '1'));
   }
 
   // handle de-select all button
@@ -48,7 +49,7 @@ class EcMembersPage extends Component {
     dispatchSelectAllLoading(true);
     setTimeout(() => {
       dispatchSelectAllLoading(false);
-      dispatchSelectedKeys([...this.ecMembersList.map(item => item.key)]);
+      dispatchSelectedKeys([...this.newClaimsList.map(item => item.key)]);
     }, 1000);
   };
 
@@ -66,14 +67,16 @@ class EcMembersPage extends Component {
   };
 
   // delete selected member accounts
-  onClickDeleteSelected = () => {
+  onClickUnApproveSelected = () => {
     const {
-      accmgmtUI: { selectedKeys },
+      claimmgmtUI: { selectedKeys },
       dispatchSave,
+      dispatchResetState,
     } = this.props;
-    dispatchSave({ membersToDelete: selectedKeys });
-    // to remove the selected members from the table display
-    this.ecMembersList = this.ecMembersList.filter(item => !selectedKeys.includes(item.id));
+    dispatchSave({ claimsToUnApprove: selectedKeys });
+    dispatchResetState();
+    // to remove the selected claims from the table display
+    this.newClaimsList = this.newClaimsList.filter(item => !selectedKeys.includes(item.id));
   };
 
   // handle input changes from searchName field
@@ -83,7 +86,7 @@ class EcMembersPage extends Component {
 
   // handle onClick from SearchName button and onPressEnter from input field
   onSearchName = () => {
-    const filters = this.searchNameValue ? { name: [this.searchNameValue] } : {};
+    const filters = this.searchNameValue ? { submittedBy: [this.searchNameValue] } : {};
     if (this.searchNameValue !== null) this.onChange({}, filters, {});
   };
 
@@ -110,14 +113,13 @@ class EcMembersPage extends Component {
   // handle open-folder icon click from table row
   showModal = (id) => {
     const {
-      accmgmtData: { membersData },
+      claimmgmtData: { claimsData },
       dispatchModalVisibility,
-      dispatchViewMember,
+      dispatchViewClaim,
     } = this.props;
-    const viewMember = membersData.find(item => item.id === id);
-
+    const viewClaim = claimsData.find(item => item.id === id);
     dispatchModalVisibility(true);
-    dispatchViewMember(viewMember);
+    dispatchViewClaim(viewClaim);
   };
 
   // add the key and format role_names of member list
@@ -126,16 +128,14 @@ class EcMembersPage extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
-      role_names: item.role_names.map(
-        (role, index) => (index === item.role_names.length - 1 ? `${role}` : `${role}, `),
-      ),
+      totalAmount: `SGD ${item.totalAmount}`,
     }));
     return preparedList;
   };
 
   render() {
     const {
-      accmgmtUI,
+      claimmgmtUI,
       form: { getFieldDecorator },
     } = this.props;
     const {
@@ -145,8 +145,8 @@ class EcMembersPage extends Component {
       sortedInfo,
       filteredInfo,
       isModalVisible,
-      viewMember,
-    } = accmgmtUI;
+      viewClaim,
+    } = claimmgmtUI;
     const rowSelection = {
       selectedRowKeys: selectedKeys,
       onChange: this.onSelectChange,
@@ -170,13 +170,16 @@ class EcMembersPage extends Component {
             hasSelected={hasSelected}
             loading={deselectAllLoading}
           />
-          <DeleteSeletedButton onClick={this.onClickDeleteSelected} hasSelected={hasSelected} />
+          <UnapproveSeletedButton
+            onClick={this.onClickUnApproveSelected}
+            hasSelected={hasSelected}
+          />
           {hasSelected ? <SelectedMembers selectedNum={selectedKeys.length} /> : null}
         </FlexContainer>
 
         <FlexContainer>
-          <EcMembersTable
-            ecMembersList={this.ecMembersList}
+          <ClaimsTable
+            newClaimsList={this.newClaimsList}
             rowSelection={rowSelection}
             onChange={this.onChange}
             sortedInfo={sortedInfo || {}}
@@ -184,17 +187,17 @@ class EcMembersPage extends Component {
             showModal={id => this.showModal(id)}
           />
         </FlexContainer>
-        <MemberModal
+        <ClaimModal
           isModalVisible={isModalVisible}
           onCloseModal={this.onCloseModal}
-          viewMember={viewMember}
+          viewClaim={viewClaim}
         />
       </div>
     );
   }
 }
 
-EcMembersPage.propTypes = {
+ApprovedClaimsPage.propTypes = {
   form: PropTypes.shape({}).isRequired,
   dispatchSelectedKeys: PropTypes.func.isRequired,
   dispatchDeselectAllLoading: PropTypes.func.isRequired,
@@ -202,16 +205,17 @@ EcMembersPage.propTypes = {
   dispatchSortedInfo: PropTypes.func.isRequired,
   dispatchFilteredInfo: PropTypes.func.isRequired,
   dispatchModalVisibility: PropTypes.func.isRequired,
-  dispatchViewMember: PropTypes.func.isRequired,
+  dispatchResetState: PropTypes.func.isRequired,
+  dispatchViewClaim: PropTypes.func.isRequired,
   dispatchSave: PropTypes.func.isRequired,
 
-  accmgmtUI: PropTypes.shape({}).isRequired,
-  accmgmtData: PropTypes.shape({}).isRequired,
+  claimmgmtUI: PropTypes.shape({}).isRequired,
+  claimmgmtData: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
-  accmgmtUI: state.accmgmt.ui,
-  accmgmtData: state.accmgmt.data,
+  claimmgmtUI: state.claimmgmt.ui,
+  claimmgmtData: state.claimmgmt.data,
 });
 const mapDispatchToProps = {
   dispatchSelectedKeys: setSelectedKeys,
@@ -220,13 +224,14 @@ const mapDispatchToProps = {
   dispatchSortedInfo: setSortedInfo,
   dispatchFilteredInfo: setFilteredInfo,
   dispatchModalVisibility: setModalVisibility,
-  dispatchViewMember: setViewMember,
+  dispatchViewClaim: setViewClaim,
+  dispatchResetState: resetState,
   dispatchSave: save,
 };
 
-const FormEcMembersPage = Form.create()(EcMembersPage);
+const FormApprovedClaimsPage = Form.create()(ApprovedClaimsPage);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormEcMembersPage);
+)(FormApprovedClaimsPage);

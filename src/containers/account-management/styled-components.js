@@ -4,10 +4,6 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 
-// export const HalfWidthButton = styled(Button)`
-//   width: 49%;
-// `;
-
 export const TabIcon = styled(Icon)`
   font-size: 16px;
 `;

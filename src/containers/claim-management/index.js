@@ -1,13 +1,13 @@
 import React from 'react';
 import { PageCard } from '../shared-components/common';
-import AccManagement from './accmgmt-page';
+import ClaimManagement from './claim-management-page';
 
-const AccountManagementPage = () => (
+const ClaimManagementPage = () => (
   <div className="home-pages">
     <PageCard bordered={false}>
-      <AccManagement />
+      <ClaimManagement />
     </PageCard>
   </div>
 );
 
-export default AccountManagementPage;
+export default ClaimManagementPage;
