@@ -16,6 +16,7 @@
 .home-pages {
   background: #ececec;
   display: flex;
+  width: 100%;
 }
 
 /* Myamar Font Unicode: https://mmwebfonts.comquas.com/

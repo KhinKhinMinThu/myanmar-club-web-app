@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { prev, next, startValidate } from '../../reducers/signup/signup-ui';
+import { prev, next, startValidate } from '../../reducers/user-info/ui';
 import { HalfWidthButton } from './styled-components';
 
 const stepActionStyles = {
@@ -12,7 +12,10 @@ const stepActionStyles = {
 };
 
 const FormStepAction = ({
-  currentStep, dispatchPrev, dispatchNext, dispatchStartValidate,
+  currentStep,
+  dispatchPrev,
+  dispatchNext,
+  dispatchStartValidate,
 }) => {
   const onClickNext = () => {
     if (currentStep === 0) dispatchNext();
@@ -23,12 +26,19 @@ const FormStepAction = ({
   return (
     <div style={stepActionStyles}>
       {currentStep > 0 && (
-        <HalfWidthButton style={{ marginRight: 8 }} onClick={() => dispatchPrev()}>
+        <HalfWidthButton
+          style={{ marginRight: 8 }}
+          onClick={() => dispatchPrev()}
+        >
           Previous
         </HalfWidthButton>
       )}
       {currentStep < 3 && (
-        <HalfWidthButton type="primary" htmlType="submit" onClick={() => onClickNext()}>
+        <HalfWidthButton
+          type="primary"
+          htmlType="submit"
+          onClick={() => onClickNext()}
+        >
           Next
         </HalfWidthButton>
       )}

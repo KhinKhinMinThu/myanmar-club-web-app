@@ -2,73 +2,144 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'antd';
 import PropTypes from 'prop-types';
-import {
-  FullNameTextInput,
-  GenderRadio,
-  DobDatePicker,
-  NationalitySelect,
-  ReligionSelect,
-  MaritalStatusSelect,
-  EducationLevelTextInput,
-  OccupationTextInput,
-  StayPassSelect,
-  IDTextInput,
-} from './form-components';
-import { endValidate, next } from '../../reducers/signup/signup-ui';
-import { save } from '../../reducers/signup/signup-data';
+
+// components
 import { PageCard } from './styled-components';
+import {
+  FormItemGroup,
+  FormInput,
+  FormDatePicker,
+  FormSelect,
+  FormRadio,
+} from './form-component';
+
+// config
+import formConfig, {
+  GROUP,
+  DATE_PICKER,
+  RADIO,
+  SELECT,
+  INPUT,
+  stepOneFormKeys,
+} from './form-config';
+
+// redux
+import { saveFields } from '../../reducers/user-info/data';
+import { endValidate } from '../../reducers/user-info/ui';
+
+// selectors
+import {
+  getAllData,
+  getIsNationaltiyOther,
+  getIsReligionOther,
+  getCurrentStep,
+  getIsValidating,
+} from '../../selectors';
 
 class Page1 extends Component {
   componentDidMount() {
     const {
-      form: { setFieldsValue },
-      signupData,
+      form, allData, isReligionOther, isNationalityOther,
     } = this.props;
-    setFieldsValue({ ...signupData });
+
+    stepOneFormKeys.forEach((formKey) => {
+      let value;
+
+      switch (formKey) {
+        case 'religion':
+          if (isReligionOther) value = 'OT';
+          break;
+        case 'nationality':
+          if (isNationalityOther) value = 'OT';
+          break;
+        case 'otherReligion':
+          if (isReligionOther) value = allData.religion;
+          break;
+        default:
+          value = allData[formKey];
+      }
+
+      form.setFieldsValue({
+        [formKey]: value,
+      });
+    });
   }
 
   componentDidUpdate(prevState) {
-    const { isValidating } = this.props;
-    const isPropChange = isValidating !== prevState.isValidating;
-    if (isValidating && isPropChange) this.validatePage();
-  }
-
-  validatePage = () => {
     const {
-      form: { validateFieldsAndScroll },
-      dispatchEndValidate,
-      dispatchNext,
-      dispatchSave,
+      form, isValidating, dpEndValidate, dpSaveFields,
     } = this.props;
+    const isPropChange = isValidating !== prevState.isValidating;
 
-    validateFieldsAndScroll((err, formValues) => {
-      dispatchEndValidate();
+    if (!isValidating || !isPropChange) return;
+
+    form.validateFieldsAndScroll((err, formValues) => {
+      dpEndValidate();
 
       if (!err) {
-        dispatchSave(formValues);
-        dispatchNext();
+        dpSaveFields(formValues);
       }
     });
+  }
+
+  onSelect = (formKey, value) => {
+    const { dpSaveFields } = this.props;
+    dpSaveFields({ [formKey]: value });
+  };
+
+  renderBasedOnInputType = (inputType, finalConfig) => {
+    switch (inputType) {
+      case INPUT:
+        return <FormInput {...finalConfig} />;
+      case SELECT:
+        return <FormSelect {...finalConfig} onChange={this.onSelect} />;
+      case RADIO:
+        return <FormRadio {...finalConfig} />;
+      case DATE_PICKER:
+        return <FormDatePicker {...finalConfig} />;
+      default:
+        return <div />;
+    }
+  };
+
+  renderFormItemGroup = (byId, config) => {
+    const { isReligionOther, isNationalityOther } = this.props;
+    const { decorator, ...groupConfig } = config;
+
+    return (
+      <FormItemGroup
+        {...groupConfig}
+        render={(componentId) => {
+          const { inputType, ...otherProps } = byId[componentId];
+          const finalConfig = { ...otherProps, decorator };
+
+          if (componentId === 'otherReligion' && !isReligionOther) return <div />;
+          if (componentId === 'otherNationality' && !isNationalityOther) return <div />;
+          return this.renderBasedOnInputType(inputType, finalConfig);
+        }}
+      />
+    );
   };
 
   render() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
+    const { form } = this.props;
+    const { getFieldDecorator: decorator } = form;
+    const { byId, stepOneIds } = formConfig;
 
     return (
       <PageCard>
         <Form>
-          <FullNameTextInput decorator={getFieldDecorator} />
-          <GenderRadio decorator={getFieldDecorator} />
-          <DobDatePicker decorator={getFieldDecorator} />
-          <NationalitySelect decorator={getFieldDecorator} />
-          <ReligionSelect decorator={getFieldDecorator} />
-          <MaritalStatusSelect decorator={getFieldDecorator} />
-          <EducationLevelTextInput decorator={getFieldDecorator} />
-          <OccupationTextInput decorator={getFieldDecorator} />
-          <StayPassSelect decorator={getFieldDecorator} />
-          <IDTextInput decorator={getFieldDecorator} />
+          {stepOneIds.map((id) => {
+            const { inputType, ...otherProps } = byId[id];
+            const config = { ...otherProps, decorator };
+
+            switch (inputType) {
+              case GROUP:
+                return this.renderFormItemGroup(byId, config);
+              default:
+                return this.renderBasedOnInputType(inputType, config);
+            }
+          })}
         </Form>
       </PageCard>
     );
@@ -76,50 +147,31 @@ class Page1 extends Component {
 }
 
 Page1.propTypes = {
-  form: PropTypes.shape({
-    validateFieldsAndScroll: PropTypes.func.isRequired,
-    getFieldDecorator: PropTypes.func.isRequired,
-    setFieldsValue: PropTypes.func.isRequired,
-  }).isRequired,
+  form: PropTypes.shape({}).isRequired,
   isValidating: PropTypes.bool.isRequired,
-  dispatchEndValidate: PropTypes.func.isRequired,
-  dispatchNext: PropTypes.func.isRequired,
-  dispatchSave: PropTypes.func.isRequired,
-  signupData: PropTypes.shape({}).isRequired,
+  dpEndValidate: PropTypes.func.isRequired,
+  dpSaveFields: PropTypes.func.isRequired,
+  allData: PropTypes.shape({}).isRequired,
+  isNationalityOther: PropTypes.bool.isRequired,
+  isReligionOther: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  const {
-    ui: { currentStep, isValidating },
-    data,
-  } = state.signup;
-  return {
-    currentStep,
-    isValidating,
-    signupData: data,
-  };
-};
+const mapStateToProps = state => ({
+  allData: getAllData(state),
+  isReligionOther: getIsReligionOther(state),
+  isNationalityOther: getIsNationaltiyOther(state),
+  isValidating: getIsValidating(state),
+  currentStep: getCurrentStep(state),
+});
 
 const mapDispatchToProps = {
-  dispatchEndValidate: endValidate,
-  dispatchNext: next,
-  dispatchSave: save,
+  dpSaveFields: saveFields,
+  dpEndValidate: endValidate,
 };
 
-const FormPage1 = Form.create()(Page1);
+const FormPage1 = Form.create({})(Page1);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(FormPage1);
-
-/*
-mapPropsToFields(props) {
-  const { signupData } = props;
-  const mappedToFields = {};
-  Object.keys(signupData).forEach((key) => {
-    mappedToFields[key] = Form.createFormField({ value: signupData[key] });
-  });
-  return mappedToFields;
-}
-*/

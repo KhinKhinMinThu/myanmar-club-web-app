@@ -12,6 +12,7 @@ const stepContentStyles = {
   backgroundColor: '#fafafa',
   textAlign: 'center',
   padding: '18px',
+  width: '100%',
 };
 
 const FormStepContent = ({ currentStep }) => {

@@ -7,6 +7,7 @@ import signupReducer from './signup';
 import routerReducer from './router';
 import rolemgmtReducer from './rolemgmt';
 import accmgmtReducer from './accmgmt';
+import userInfoReducer from './user-info';
 
 /**
  * LocalStorage: storage engine for storing redux state
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   rolemgmt: rolemgmtReducer,
   accmgmt: accmgmtReducer,
   router: routerReducer,
+  userInfo: userInfoReducer,
 });
 
 export default rootReducer;
