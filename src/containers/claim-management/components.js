@@ -21,13 +21,13 @@ export const ClaimTabs = ({ onChange, tabContents }) => {
   const tabTitles = {
     tab1: (
       <BoldText>
-        <TabIcon type="calculator" />
+        <TabIcon type="pay-circle-o" />
         New-Claims
       </BoldText>
     ),
     tab2: (
       <BoldText>
-        <TabIcon type="calculator" />
+        <TabIcon type="pay-circle-o" />
         Approved-Claims
       </BoldText>
     ),
@@ -83,8 +83,9 @@ export const ClaimsTable = ({
       title: 'Total Amount',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      sorter: (a, b) => a.totalAmount - b.totalAmount,
+      sorter: (a, b) => Number.parseFloat(a.totalAmount) - Number.parseFloat(b.totalAmount),
       sortOrder: sortedInfo.columnKey === 'totalAmount' && sortedInfo.order,
+      render: text => `SGD ${text}`,
     },
     {
       title: 'Photo Link',

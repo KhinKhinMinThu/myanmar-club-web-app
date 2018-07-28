@@ -9,6 +9,7 @@ import {
   ROLE_MANAGEMENT,
   ACCOUNT_MANAGEMENT,
   CLAIM_MANAGEMENT,
+  EVENT_TRANSACTION,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -22,7 +23,8 @@ const commonTitles = {
 const adminTitles = {
   ROLE_MANAGEMENT: { icon: <MenuIcon type="setting" />, text: 'Roles Management' },
   ACCOUNT_MANAGEMENT: { icon: <MenuIcon type="user" />, text: 'Accounts Management' },
-  CLAIM_MANAGEMENT: { icon: <MenuIcon type="calculator" />, text: 'Claims Management' },
+  CLAIM_MANAGEMENT: { icon: <MenuIcon type="pay-circle-o" />, text: 'Claims Management' },
+  EVENT_TRANSACTION: { icon: <MenuIcon type="calculator" />, text: 'Event Transactions' },
 };
 
 const MenuPanel = ({
@@ -67,6 +69,12 @@ const MenuPanel = ({
         <MenuItem key={CLAIM_MANAGEMENT}>
           {adminTitles.CLAIM_MANAGEMENT.icon}
           {adminTitles.CLAIM_MANAGEMENT.text}
+        </MenuItem>
+      )}
+      {isAdmin && (
+        <MenuItem key={EVENT_TRANSACTION}>
+          {adminTitles.EVENT_TRANSACTION.icon}
+          {adminTitles.EVENT_TRANSACTION.text}
         </MenuItem>
       )}
       <MenuItem key={LOGOUT}>

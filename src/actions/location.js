@@ -8,3 +8,4 @@ export const ROLE_MANAGEMENT = '/manage-roles';
 export const ACCOUNT_MANAGEMENT = '/manage-accounts';
 export const EDIT_MEMBER = '/edit-member';
 export const CLAIM_MANAGEMENT = '/manage-claims';
+export const EVENT_TRANSACTION = '/events-transactions';

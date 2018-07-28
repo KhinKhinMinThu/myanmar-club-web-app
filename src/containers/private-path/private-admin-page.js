@@ -9,6 +9,7 @@ import {
   ACCOUNT_MANAGEMENT,
   EDIT_MEMBER,
   CLAIM_MANAGEMENT,
+  EVENT_TRANSACTION,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
 import MenuPanel from './components';
@@ -18,6 +19,7 @@ import RoleManagementPage from '../role-management';
 import AccManagementPage from '../account-management';
 import MemberManagementPage from '../member-management';
 import ClaimManagementPage from '../claim-management';
+import EventTransactionPage from '../event-transaction';
 
 class PrivateAdminPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
@@ -37,6 +39,8 @@ class PrivateAdminPage extends Component {
         return MemberManagementPage;
       case CLAIM_MANAGEMENT:
         return ClaimManagementPage;
+      case EVENT_TRANSACTION:
+        return EventTransactionPage;
       default:
         return Dashboard;
     }

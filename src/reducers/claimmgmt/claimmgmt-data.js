@@ -18,19 +18,19 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '1', // approved
         submittedBy: 'Member Name',
-        submittedDate: '12/01/2020',
+        submittedDate: '12-01-2020',
       },
       {
         id: '2',
         eventDesc: 'Event Name/Description xyz',
         category: 'Catering',
-        totalAmount: '240.12',
+        totalAmount: '239.12',
         photoLink: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         remark:
           'long remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4     remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name 01',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '3',
@@ -41,7 +41,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '4',
@@ -52,7 +52,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '5',
@@ -63,7 +63,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '6',
@@ -74,7 +74,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '7',
@@ -85,7 +85,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '8',
@@ -96,7 +96,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '9',
@@ -107,7 +107,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '10',
@@ -118,7 +118,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '11',
@@ -129,7 +129,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '0', // not approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '12',
@@ -140,7 +140,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '1', // approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '13',
@@ -151,7 +151,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '1', // approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
       {
         id: '14',
@@ -162,7 +162,7 @@ export default function (
         remark: 'remarks 1 2 3 4',
         isApproved: '1', // approved
         submittedBy: 'Member Name',
-        submittedDate: '22/01/2020',
+        submittedDate: '22-01-2020',
       },
     ],
     // end

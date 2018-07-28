@@ -128,7 +128,6 @@ class ApprovedClaimsPage extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
-      totalAmount: `SGD ${item.totalAmount}`,
     }));
     return preparedList;
   };
