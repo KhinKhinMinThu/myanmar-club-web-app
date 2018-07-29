@@ -5,9 +5,8 @@ import {
 
 // index
 export const FormCard = styled(Card)`
-  width: 1300;
-  min-width: 1300;
-  padding: 20px 5px 5px;
+  width: 100%;
+  padding: 15px;
   border-radius: 10;
   top: 5%;
   margin-left: auto;
@@ -32,6 +31,7 @@ export const FlexContainer = styled.div`
 
 export const PageCard = styled(Card)`
   text-align: left;
+  width: 100%;
 `;
 
 export const BulletIcon = styled(Icon)`
@@ -52,7 +52,7 @@ export const HightlightedText = styled.div`
 `;
 
 // page1
-export const FormInput = styled(Input)`
+export const FormInput1 = styled(Input)`
   width: 200;
 `;
 

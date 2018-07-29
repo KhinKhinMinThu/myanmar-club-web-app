@@ -33,6 +33,7 @@ const rootReducer = combineReducers({
   claimmgmt: claimmgmtReducer,
   eventTransaction: eventTransactionReducer,
   router: routerReducer,
+  userInfo: userInfoReducer,
 });
 
 export default rootReducer;

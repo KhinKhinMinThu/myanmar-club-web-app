@@ -17,10 +17,10 @@ export default function (
     religion: 'BU',
     maritalStatus: 'SI',
     otherReligion: '',
-    education: '',
+    education: 'abc',
     occupation: '',
     stayPass: 'SP',
-    id: '',
+    id: '123',
   },
   action,
 ) {
