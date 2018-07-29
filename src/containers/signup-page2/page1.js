@@ -6,30 +6,40 @@ import PropTypes from 'prop-types';
 // components
 import { PageCard } from './styled-components';
 import {
-  FormItemGroup,
-  FormInput,
-  FormDatePicker,
-  FormSelect,
-  FormRadio,
+  FIGroup,
+  FICollapse,
+  FIInput,
+  FIDatePicker,
+  FISelect,
+  FIRadio,
+  FICheckBoxGroup,
+  FITextArea,
+  FIUpload,
+  NSelect,
 } from './form-component';
 
 // config
 import formConfig, {
-  GROUP,
-  DATE_PICKER,
-  RADIO,
-  SELECT,
-  INPUT,
+  FI_DATE_PICKER,
+  FI_RADIO,
+  FI_SELECT,
+  FI_INPUT,
+  FI_TEXT_AREA,
+  FI_GROUP,
+  FI_COLLAPSE,
+  FI_INPUT_ADDON,
+  FI_CHECKBOX_GROUP,
+  FI_UPLOAD,
   stepOneFormKeys,
 } from './form-config';
 
 // redux
 import { saveFields } from '../../reducers/user-info/data';
-import { endValidate } from '../../reducers/user-info/ui';
+import { endValidate, next } from '../../reducers/user-info/ui';
 
 // selectors
 import {
-  getAllData,
+  getUserInfo,
   getIsNationaltiyOther,
   getIsReligionOther,
   getCurrentStep,
@@ -39,35 +49,26 @@ import {
 class Page1 extends Component {
   componentDidMount() {
     const {
-      form, allData, isReligionOther, isNationalityOther,
+      form, userInfo, isNationalityOther, isReligionOther,
     } = this.props;
 
     stepOneFormKeys.forEach((formKey) => {
-      let value;
-
-      switch (formKey) {
-        case 'religion':
-          if (isReligionOther) value = 'OT';
-          break;
-        case 'nationality':
-          if (isNationalityOther) value = 'OT';
-          break;
-        case 'otherReligion':
-          if (isReligionOther) value = allData.religion;
-          break;
-        default:
-          value = allData[formKey];
-      }
+      if (formKey === 'otherNationality' && !isNationalityOther) return;
+      if (formKey === 'otherReligion' && !isReligionOther) return;
 
       form.setFieldsValue({
-        [formKey]: value,
+        [formKey]: userInfo[formKey],
       });
     });
   }
 
   componentDidUpdate(prevState) {
     const {
-      form, isValidating, dpEndValidate, dpSaveFields,
+      form,
+      isValidating,
+      dpEndValidate,
+      dpSaveFields,
+      dpNext,
     } = this.props;
     const isPropChange = isValidating !== prevState.isValidating;
 
@@ -75,9 +76,10 @@ class Page1 extends Component {
 
     form.validateFieldsAndScroll((err, formValues) => {
       dpEndValidate();
-
+      dpNext();
       if (!err) {
         dpSaveFields(formValues);
+        // dpNext();
       }
     });
   }
@@ -87,27 +89,33 @@ class Page1 extends Component {
     dpSaveFields({ [formKey]: value });
   };
 
-  renderBasedOnInputType = (inputType, finalConfig) => {
+  renderBasedOnType = (inputType, finalConfig) => {
     switch (inputType) {
-      case INPUT:
-        return <FormInput {...finalConfig} />;
-      case SELECT:
-        return <FormSelect {...finalConfig} onChange={this.onSelect} />;
-      case RADIO:
-        return <FormRadio {...finalConfig} />;
-      case DATE_PICKER:
-        return <FormDatePicker {...finalConfig} />;
+      case FI_INPUT:
+        return <FIInput {...finalConfig} />;
+      case FI_SELECT:
+        return <FISelect {...finalConfig} onChange={this.onSelect} />;
+      case FI_RADIO:
+        return <FIRadio {...finalConfig} />;
+      case FI_DATE_PICKER:
+        return <FIDatePicker {...finalConfig} />;
+      case FI_TEXT_AREA:
+        return <FITextArea {...finalConfig} />;
+      case FI_CHECKBOX_GROUP:
+        return <FICheckBoxGroup {...finalConfig} />;
+      case FI_UPLOAD:
+        return <FIUpload {...finalConfig} />;
       default:
         return <div />;
     }
   };
 
-  renderFormItemGroup = (byId, config) => {
+  renderFIGroup = (byId, config) => {
     const { isReligionOther, isNationalityOther } = this.props;
     const { decorator, ...groupConfig } = config;
 
     return (
-      <FormItemGroup
+      <FIGroup
         {...groupConfig}
         render={(componentId) => {
           const { inputType, ...otherProps } = byId[componentId];
@@ -115,10 +123,36 @@ class Page1 extends Component {
 
           if (componentId === 'otherReligion' && !isReligionOther) return <div />;
           if (componentId === 'otherNationality' && !isNationalityOther) return <div />;
-          return this.renderBasedOnInputType(inputType, finalConfig);
+          return this.renderBasedOnType(inputType, finalConfig);
         }}
       />
     );
+  };
+
+  renderFICollapse = (byId, config) => {
+    const { decorator, ...collapseConfig } = config;
+
+    return (
+      <FICollapse
+        {...collapseConfig}
+        render={(componentId) => {
+          const { inputType, ...otherProps } = byId[componentId];
+          const finalConfig = { ...otherProps, decorator };
+          return this.renderBasedOnType(inputType, finalConfig);
+        }}
+      />
+    );
+  };
+
+  renderInputAddon = (byId, config) => {
+    const { addOnId, decorator, ...inputProps } = config;
+
+    const { inputType, ...addOnProps } = byId[addOnId];
+    const addOnConfig = { ...addOnProps, decorator };
+    const addOnComponent = <NSelect {...addOnConfig} />;
+
+    const inputConfig = { ...inputProps, decorator, addOnComponent };
+    return this.renderBasedOnType(FI_INPUT, inputConfig);
   };
 
   render() {
@@ -134,10 +168,14 @@ class Page1 extends Component {
             const config = { ...otherProps, decorator };
 
             switch (inputType) {
-              case GROUP:
-                return this.renderFormItemGroup(byId, config);
+              case FI_GROUP:
+                return this.renderFIGroup(byId, config);
+              case FI_COLLAPSE:
+                return this.renderFICollapse(byId, config);
+              case FI_INPUT_ADDON:
+                return this.renderInputAddon(byId, config);
               default:
-                return this.renderBasedOnInputType(inputType, config);
+                return this.renderBasedOnType(inputType, config);
             }
           })}
         </Form>
@@ -151,13 +189,14 @@ Page1.propTypes = {
   isValidating: PropTypes.bool.isRequired,
   dpEndValidate: PropTypes.func.isRequired,
   dpSaveFields: PropTypes.func.isRequired,
-  allData: PropTypes.shape({}).isRequired,
+  dpNext: PropTypes.func.isRequired,
+  userInfo: PropTypes.shape({}).isRequired,
   isNationalityOther: PropTypes.bool.isRequired,
   isReligionOther: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  allData: getAllData(state),
+  userInfo: getUserInfo(state),
   isReligionOther: getIsReligionOther(state),
   isNationalityOther: getIsNationaltiyOther(state),
   isValidating: getIsValidating(state),
@@ -167,6 +206,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   dpSaveFields: saveFields,
   dpEndValidate: endValidate,
+  dpNext: next,
 };
 
 const FormPage1 = Form.create({})(Page1);

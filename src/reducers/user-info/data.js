@@ -11,13 +11,17 @@ const initialState = {
   lastName: '',
   gender: 'M',
   dob: null,
-  nationality: 'MMMM',
+  nationality: 'OT',
+  otherNationality: 'English',
   religion: 'BU',
+  otherReligion: '',
   maritalStatus: 'SI',
   education: '',
   occupation: '',
   stayPass: 'SP',
-  id: '',
+  id: 'G1142139T',
+  // step two
+  areaCode: '65',
 };
 
 export default function (state = initialState, action) {
@@ -32,15 +36,5 @@ export default function (state = initialState, action) {
   }
 }
 
-const IsInArray = (arr, keyword) => arr.some(i => i === keyword);
-
-export const getIsNationaltiyOther = (state) => {
-  const { nationality } = state;
-  return !IsInArray(['MM', 'SG'], nationality);
-};
-
-export const getIsReligionOther = (state) => {
-  const rlgs = ['BU', 'IS', 'HI', 'CH'];
-  const { religion } = state;
-  return !IsInArray(rlgs, religion);
-};
+export const getIsNationaltiyOther = state => state.nationality === 'OT';
+export const getIsReligionOther = state => state.religion === 'OT';
