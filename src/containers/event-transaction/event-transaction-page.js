@@ -10,6 +10,7 @@ import {
   setExpandedRowKeys,
   resetState,
   setDummyTransac,
+  setEditingKey,
 } from '../../reducers/event-transaction/event-transaction-ui';
 import { save, remove } from '../../reducers/event-transaction/event-transaction-data';
 
@@ -105,12 +106,48 @@ class EventTransaction extends Component {
     return preparedList;
   };
 
+  cancelTransaction = () => {
+    const { dispatchEditingKey } = this.props;
+    dispatchEditingKey(null);
+  };
+
+  editTransaction = (transacId) => {
+    const { dispatchEditingKey } = this.props;
+    dispatchEditingKey(transacId);
+  }
+
+  saveTransaction = (form, transacId) => {
+    console.log('no error', transacId, form);
+    const { dispatchEditingKey } = this.props;
+    dispatchEditingKey(transacId);
+    // form.validateFields((error, row) => {
+    //   if (!error) {
+    //     console.log('no error');
+    //   }
+    // const newData = [...this.state.data];
+    // const index = newData.findIndex(item => key === item.key);
+    // if (index > -1) {
+    //   const item = newData[index];
+    //   newData.splice(index, 1, {
+    //     ...item,
+    //     ...row,
+    //   });
+    //   this.setState({ data: newData, editingKey: '' });
+    // } else {
+    //   newData.push(row);
+    //   this.setState({ data: newData, editingKey: '' });
+    // }
+    // });
+  }
+
   render() {
     const {
       eventTransactionUI,
       form: { getFieldDecorator },
     } = this.props;
-    const { sortedInfo, filteredInfo, expandedRowKeys } = eventTransactionUI;
+    const {
+      sortedInfo, filteredInfo, expandedRowKeys, editingKey,
+    } = eventTransactionUI;
     return (
       <div>
         <SearchNamePanel
@@ -131,6 +168,10 @@ class EventTransaction extends Component {
             expandedRowKeys={expandedRowKeys}
             onExpand={this.onExpand}
             onClickAddRow={this.onClickAddRow}
+            cancelTransaction={this.cancelTransaction}
+            editTransaction={this.editTransaction}
+            saveTransaction={this.saveTransaction}
+            editingKey={editingKey}
           />
         </FlexContainer>
       </div>
@@ -145,6 +186,7 @@ EventTransaction.propTypes = {
   dispatchResetState: PropTypes.func.isRequired,
   dispatchExpandedRowKeys: PropTypes.func.isRequired,
   dispatchDummyTransac: PropTypes.func.isRequired,
+  dispatchEditingKey: PropTypes.func.isRequired,
   dispatchRemove: PropTypes.func.isRequired,
 
   eventTransactionUI: PropTypes.shape({}).isRequired,
@@ -161,6 +203,7 @@ const mapDispatchToProps = {
   dispatchExpandedRowKeys: setExpandedRowKeys,
   dispatchResetState: resetState,
   dispatchDummyTransac: setDummyTransac,
+  dispatchEditingKey: setEditingKey,
   dispatchSave: save,
   dispatchRemove: remove,
 };

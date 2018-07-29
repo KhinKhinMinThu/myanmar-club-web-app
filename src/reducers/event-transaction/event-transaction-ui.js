@@ -4,6 +4,7 @@ export const FILTEREDINFO = '[EVENTTRANSAC_UI] FILTEREDINFO';
 export const RESETSTATE = '[EVENTTRANSAC_UI] RESETSTATE';
 export const EXPANDEDROWKEYS = '[EVENTTRANSAC_UI] EXPANDEDROWKEYS';
 export const DUMMYTRANSAC = '[EVENTTRANSAC_UI] DUMMYTRANSAC';
+export const EDITINGKEY = '[EVENTTRANSAC_UI] EDITINGKEY';
 
 export const validate = isValidating => ({
   type: VALIDATE,
@@ -26,12 +27,18 @@ export const setDummyTransac = index => ({
   payload: index,
 });
 
+export const setEditingKey = editingKey => ({
+  type: EDITINGKEY,
+  payload: editingKey,
+});
+
 const initialState = {
   isValidating: false,
   sortedInfo: null,
   filteredInfo: null,
   expandedRowKeys: [],
   dummyTransacIndex: 0,
+  editingKey: null,
 };
 export default function (
   state = {
@@ -64,6 +71,11 @@ export default function (
       return {
         ...state,
         dummyTransacIndex: action.payload,
+      };
+    case EDITINGKEY:
+      return {
+        ...state,
+        editingKey: action.payload,
       };
     case RESETSTATE:
       return {

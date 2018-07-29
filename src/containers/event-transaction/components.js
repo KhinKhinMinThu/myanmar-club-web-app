@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Form, Row, Col, Popconfirm, Button,
 } from 'antd';
@@ -24,6 +24,10 @@ export const EventsTable = ({
   expandedRowKeys,
   onExpand,
   onClickAddRow,
+  cancelTransaction,
+  editTransaction,
+  saveTransaction,
+  editingKey,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -109,47 +113,143 @@ export const EventsTable = ({
           removeRecord={transacId => removeRecord(record.id, transacId)}
           transaction={record}
           onClickAddRow={type => onClickAddRow(record.id, type)}
+          cancelTransaction={transacId => cancelTransaction(transacId)}
+          editTransaction={transacId => editTransaction(transacId)}
+          saveTransaction={(form, transacId) => saveTransaction(form, transacId)}
+          editingKey={editingKey}
         />
       )}
     />
   );
 };
 
+const EditableContext = React.createContext();
+const EditableRow = ({ form, index, ...props }) => (
+  <EditableContext.Provider value={form}>
+    <tr {...props} />
+  </EditableContext.Provider>
+);
+const EditableFormRow = Form.create()(EditableRow);
+class EditableCell extends Component {
+  getInput = () => {
+    const { inputType } = this.props;
+    if (inputType === 'number') {
+      return <SearchInput />;
+    }
+    return <SearchInput />;
+  };
+
+  render() {
+    const {
+      editing, dataIndex, title, inputType, record, index, ...restProps
+    } = this.props;
+    return (
+      <EditableContext.Consumer>
+        {(form) => {
+          const { getFieldDecorator } = form;
+          return (
+            <td {...restProps}>
+              {editing ? (
+                <FormItem style={{ margin: 0 }}>
+                  {getFieldDecorator(dataIndex, {
+                    rules: [
+                      {
+                        required: true,
+                        message: `Please Input ${title}!`,
+                      },
+                    ],
+                    initialValue: record[dataIndex],
+                  })(this.getInput())}
+                </FormItem>
+              ) : (
+                restProps.children
+              )}
+            </td>
+          );
+        }}
+      </EditableContext.Consumer>
+    );
+  }
+}
+
 const TransactionTable = ({
-  transactionList, removeRecord, transaction, onClickAddRow,
+  transactionList,
+  removeRecord,
+  transaction,
+  onClickAddRow,
+  cancelTransaction,
+  editTransaction,
+  saveTransaction,
+  editingKey,
 }) => {
+  const isEditing = record => record.key === editingKey;
   const columns = [
     // dataIndex = databases column names
     {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
+      editable: true,
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
+      editable: true,
     },
     {
       title: '',
       key: '',
+
       // render: (text, record) => ()
-      render: record => (
-        <Popconfirm
-          title="Confirm to remove this transaction record?"
-          onConfirm={() => removeRecord(record.id)}
-        >
-          <TableActionButton icon="delete" />
-        </Popconfirm>
-      ),
+
+      render: (record) => {
+        const editable = isEditing(record);
+        return (
+          <div>
+            {editable ? (
+              <div>
+                <EditableContext.Consumer>
+                  {form => (
+                    <TableActionButton
+                      type="primary"
+                      onClick={() => saveTransaction(form, record.id)}
+                    >
+                      Save
+                    </TableActionButton>
+                  )}
+                </EditableContext.Consumer>
+                <Popconfirm
+                  title="Confirm to cancel?"
+                  onConfirm={() => cancelTransaction(record.id)}
+                >
+                  <TableActionButton type="primary" ghost>
+                    Cancel
+                  </TableActionButton>
+                </Popconfirm>
+              </div>
+            ) : (
+              <div>
+                <Popconfirm
+                  title="Confirm to remove this transaction record?"
+                  onConfirm={() => removeRecord(record.id)}
+                >
+                  <TableActionButton icon="delete" />
+                </Popconfirm>
+                <TableActionButton icon="edit" onClick={() => editTransaction(record.id)} />
+              </div>
+            )}
+          </div>
+        );
+      },
     },
   ];
+
   // add the key and format role_names of member list
   const preparedList = [];
   transactionList.map(item => preparedList.push({
     key: `${item.id}`,
     ...item,
-    amount: `SGD ${item.amount}`,
   }));
 
   const title1 = <BoldUnderlineText>INCOME</BoldUnderlineText>;
@@ -172,6 +272,29 @@ const TransactionTable = ({
     </BoldText>
   );
 
+  const components = {
+    body: {
+      row: EditableFormRow,
+      cell: EditableCell,
+    },
+  };
+
+  const editableColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: record => ({
+        record,
+        inputType: col.dataIndex === 'amount' ? 'number' : 'text',
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
+
   return (
     <RowWhiteBackground gutter={8}>
       <Col span={12}>
@@ -184,7 +307,8 @@ const TransactionTable = ({
               </Col>
             </Row>
           )}
-          columns={columns}
+          components={components}
+          columns={editableColumns}
           dataSource={preparedList.filter(item => item.type.toLowerCase() === 'income')}
           pagination={{ pageSize: 5 }}
           bordered
@@ -202,7 +326,8 @@ const TransactionTable = ({
               </Col>
             </Row>
           )}
-          columns={columns}
+          components={components}
+          columns={editableColumns}
           dataSource={preparedList.filter(item => item.type.toLowerCase() === 'expenditure')}
           pagination={{ pageSize: 5 }}
           bordered
@@ -213,6 +338,7 @@ const TransactionTable = ({
     </RowWhiteBackground>
   );
 };
+
 // export const DeSeletAllButton = ({ onClick, hasSelected, loading }) => (
 //   <MarginLeftButton
 //     type="primary"
