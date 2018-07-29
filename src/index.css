@@ -20,7 +20,7 @@
   width: 100%;
   background: #ffffff;
   display: flex;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 /* Myamar Font Unicode: https://mmwebfonts.comquas.com/

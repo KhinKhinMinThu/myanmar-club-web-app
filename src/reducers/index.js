@@ -9,6 +9,7 @@ import rolemgmtReducer from './rolemgmt';
 import accmgmtReducer from './accmgmt';
 import membermgmtReducer from './membermgmt';
 import claimmgmtReducer from './claimmgmt';
+import userInfoReducer from './user-info';
 
 /**
  * LocalStorage: storage engine for storing redux state
