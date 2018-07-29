@@ -5,18 +5,19 @@ import {
   DASHBOARD,
   PROFILE,
   LOGOUT,
-  ADMIN_ROLEMGMT,
-  ADMIN_ACCMGMT,
-  ADMIN_MEMBER_VIEW,
-  ADMIN_MEMBER_EDIT,
+  ROLE_MANAGEMENT,
+  ACCOUNT_MANAGEMENT,
+  EDIT_MEMBER,
+  CLAIM_MANAGEMENT,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
 import MenuPanel from './components';
 import SignupPage2 from '../signup-page2';
 import Dashboard from './home-ex';
-import RoleManagementPage from '../admin-rolemgmt';
-import AccManagementPage from '../admin-accmgmt';
-import MemberProfile from '../admin-accmgmt/member-profile';
+import RoleManagementPage from '../role-management';
+import AccManagementPage from '../account-management';
+import MemberManagementPage from '../member-management';
+import ClaimManagementPage from '../claim-management';
 
 class PrivateAdminPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
@@ -28,28 +29,30 @@ class PrivateAdminPage extends Component {
         return SignupPage2;
       case LOGOUT:
         return Dashboard;
-      case ADMIN_ROLEMGMT:
+      case ROLE_MANAGEMENT:
         return RoleManagementPage;
-      case ADMIN_ACCMGMT:
+      case ACCOUNT_MANAGEMENT:
         return AccManagementPage;
-      case ADMIN_MEMBER_VIEW:
-      case ADMIN_MEMBER_EDIT:
-        return MemberProfile;
+      case EDIT_MEMBER:
+        return MemberManagementPage;
+      case CLAIM_MANAGEMENT:
+        return ClaimManagementPage;
       default:
         return Dashboard;
     }
   };
 
   render() {
-    const { computedMatch } = this.props;
-    const { params } = computedMatch;
+    const {
+      computedMatch: { params },
+    } = this.props;
     const { pathname } = params;
     const Page = this.switchPage(`/${pathname}`);
     console.log('private admin props:', this.props);
-
+    console.log('pathname:', pathname);
     return (
       <FlexContainer>
-        <MenuPanel selectedKeys={[pathname]} isAdmin />
+        <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin />
         <Page {...this.props} />
       </FlexContainer>
     );

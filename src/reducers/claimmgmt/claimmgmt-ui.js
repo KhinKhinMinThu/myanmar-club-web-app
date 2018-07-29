@@ -1,12 +1,12 @@
-export const VALIDATE = '[ACCMGMT_UI] VALIDATE';
-export const SELECTEDKEYS = '[ACCMGMT_UI] SELECTEDKEYS';
-export const DESELECTALL_LOADING = '[ACCMGMT_UI] DESELECTALL_LOADING';
-export const SELECTALL_LOADING = '[ACCMGMT_UI] SELECTALL_LOADING';
-export const SORTEDINFO = '[ACCMGMT_UI] SORTEDINFO';
-export const FILTEREDINFO = '[ACCMGMT_UI] FILTEREDINFO';
-export const MODALVISIBILITY = '[ACCMGMT_UI] MODALVISIBILITY';
-export const VIEWMEMBER = '[ACCMGMT_UI] VIEWMEMBER';
-export const RESETSTATE = '[ACCMGMT_UI] RESETSTATE';
+export const VALIDATE = '[CLAIMMGMT_UI] VALIDATE';
+export const SELECTEDKEYS = '[CLAIMMGMT_UI] SELECTEDKEYS';
+export const DESELECTALL_LOADING = '[CLAIMMGMT_UI] DESELECTALL_LOADING';
+export const SELECTALL_LOADING = '[CLAIMMGMT_UI] SELECTALL_LOADING';
+export const SORTEDINFO = '[CLAIMMGMT_UI] SORTEDINFO';
+export const FILTEREDINFO = '[CLAIMMGMT_UI] FILTEREDINFO';
+export const MODALVISIBILITY = '[CLAIMMGMT_UI] MODALVISIBILITY';
+export const VIEWCLAIM = '[ACCMGMT_UI] VIEWCLAIM';
+export const RESETSTATE = '[CLAIMMGMT_UI] RESETSTATE';
 
 export const validate = isValidating => ({
   type: VALIDATE,
@@ -37,9 +37,9 @@ export const setModalVisibility = isModalVisible => ({
   payload: isModalVisible,
 });
 
-export const setViewMember = viewMember => ({
-  type: VIEWMEMBER,
-  payload: viewMember,
+export const setViewClaim = viewClaim => ({
+  type: VIEWCLAIM,
+  payload: viewClaim,
 });
 
 export const resetState = () => ({ type: RESETSTATE });
@@ -52,7 +52,7 @@ const initialState = {
   sortedInfo: null,
   filteredInfo: null,
   isModalVisible: false,
-  viewMember: [],
+  viewClaim: [],
 };
 export default function (
   state = {
@@ -96,10 +96,10 @@ export default function (
         ...state,
         isModalVisible: action.payload,
       };
-    case VIEWMEMBER:
+    case VIEWCLAIM:
       return {
         ...state,
-        viewMember: action.payload,
+        viewClaim: action.payload,
       };
     case RESETSTATE:
       return {

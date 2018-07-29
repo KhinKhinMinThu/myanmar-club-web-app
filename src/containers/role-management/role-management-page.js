@@ -36,13 +36,17 @@ class RoleManagement extends Component {
     const targetKeys = this.roleData
       .find(item => item.roleId === value)
       .ecMembers.map(item => `${item.id}`);
-    const { form } = this.props;
-    form.setFieldsValue({ roleTransfer: targetKeys });
+    const {
+      form: { setFieldsValue },
+    } = this.props;
+    setFieldsValue({ roleTransfer: targetKeys });
   };
 
   onChange = (targetKeys) => {
-    const { form } = this.props;
-    form.setFieldsValue({ roleTransfer: targetKeys });
+    const {
+      form: { setFieldsValue },
+    } = this.props;
+    setFieldsValue({ roleTransfer: targetKeys });
   };
 
   onSubmit = (e) => {

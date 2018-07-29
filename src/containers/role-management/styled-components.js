@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { Button, Select } from 'antd';
 
-export const RoleSelect = styled(Select)`
-  width: 200;
-`;
-
 export const HalfWidthButton = styled(Button)`
   width: 49%;
+`;
+
+export const RoleSelect = styled(Select)`
+  width: 200;
 `;
 
 export const BoldUnderlineText = styled.span`

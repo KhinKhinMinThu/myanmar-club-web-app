@@ -23,15 +23,17 @@ class PrivateMemberPage extends Component {
   };
 
   render() {
-    const { computedMatch } = this.props;
-    const { params } = computedMatch;
+    const {
+      computedMatch: { params },
+    } = this.props;
+
     const { pathname } = params;
     const Page = this.switchPage(`/${pathname}`);
     console.log('private member props:', this.props);
 
     return (
       <FlexContainer>
-        <MenuPanel selectedKeys={[pathname]} isAdmin={false} />
+        <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin={false} />
         <Page {...this.props} />
       </FlexContainer>
     );

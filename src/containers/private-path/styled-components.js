@@ -7,7 +7,6 @@ export const MenuIcon = styled(Icon)`
 
 export const MainMenu = styled(Menu)`
   height: 100vh;
-  width: 100%;
 `;
 
 export const MenuItem = styled(Menu.Item)`
@@ -16,9 +15,6 @@ export const MenuItem = styled(Menu.Item)`
   }
 `;
 
-export const MenuContainer = styled.div`
-  width: 250px;
-`;
 export const FlexContainer = styled.div`
   display: flex;
 `;
