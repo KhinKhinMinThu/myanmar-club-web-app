@@ -21,6 +21,7 @@ export const TableActionButton = styled(Button)`
     background-color: transparent;
     opacity: 0.5;
   }
+  font-size: 18px;
 `;
 // &:visited,
 // &:link,
@@ -36,9 +37,12 @@ export const SelectedText = styled.span`
 
 export const FlexContainer = styled.div`
   display: flex;
-  justify-content: left;
-  padding-bottom: 15px;
-  align-items: center;
+  text-align: right;
+`;
+
+export const HightlightedText = styled.div`
+  font-weight: bold;
+  color: red;
 `;
 
 export const RowWhiteBackground = styled(Row)`
@@ -56,6 +60,10 @@ export const MarginLeftButton = styled(Button)`
 
 export const SearchInput = styled(Input)`
   width: 200px;
+`;
+
+export const TableInput = styled(Input)`
+  width: 180px;
 `;
 
 export const ModalItem = styled(Form.Item)`

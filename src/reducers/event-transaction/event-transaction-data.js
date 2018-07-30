@@ -581,6 +581,7 @@ export default function (
     // to update to API
     eventId: null,
     transacIdToRemove: null,
+    transacDataToAdd: null,
     // end
   },
   action,

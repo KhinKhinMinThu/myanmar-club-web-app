@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Form, message } from 'antd';
 import { connect } from 'react-redux';
 import {
-  RoleNameSelect, RoleAssignTransfer, SaveButton, GoBackButton,
+  RoleNameSelect,
+  RoleAssignTransfer,
+  SaveButton,
+  GoBackButton,
 } from './components';
 import { ButtonContainer } from './styled-components';
 import { validate } from '../../reducers/rolemgmt/rolemgmt-ui';
@@ -17,7 +20,9 @@ class RoleManagement extends Component {
   componentWillMount() {
     const { rolemgmtData } = this.props;
     this.roleData = rolemgmtData.roleData;
-    this.dataSource = this.prepareList(this.roleData.find(item => item.roleId === 0).ecMembers);
+    this.dataSource = this.prepareList(
+      this.roleData.find(item => item.roleId === 0).executives,
+    );
 
     this.roleNameList = [];
     this.roleData
@@ -35,7 +40,7 @@ class RoleManagement extends Component {
     // set the targetKeys as the list of ecMembers for selected role
     const targetKeys = this.roleData
       .find(item => item.roleId === value)
-      .ecMembers.map(item => `${item.id}`);
+      .executives.map(item => `${item.id}`);
     const {
       form: { setFieldsValue },
     } = this.props;
@@ -60,15 +65,19 @@ class RoleManagement extends Component {
       // get the original list of selected role
       const affectedRole = this.roleData
         .find(item => item.roleId === roleId)
-        .ecMembers.map(item => `${item.id}`);
+        .executives.map(item => `${item.id}`);
       /* compare the changes:
         e.g role1 member ids = [1, 2, 3]
         roleTransfer member ids (right box) = [2, 4]
         transferTo: [4]
         transferFrom: [1, 3]
       */
-      const transferTo = roleTransfer.filter(item => !affectedRole.includes(item));
-      const transferFrom = affectedRole.filter(item => !roleTransfer.includes(item));
+      const transferTo = roleTransfer.filter(
+        item => !affectedRole.includes(item),
+      );
+      const transferFrom = affectedRole.filter(
+        item => !roleTransfer.includes(item),
+      );
       dispatchSave({ roleId, transferTo, transferFrom });
     });
   };
@@ -100,7 +109,10 @@ class RoleManagement extends Component {
           decorator={getFieldDecorator}
         />
         <ButtonContainer>
-          <SaveButton isValidating={isValidating} onClick={() => dispatchValidate(true)} />
+          <SaveButton
+            isValidating={isValidating}
+            onClick={() => dispatchValidate(true)}
+          />
           <GoBackButton onClick={() => console.log('clicked goback')} />
         </ButtonContainer>
       </Form>

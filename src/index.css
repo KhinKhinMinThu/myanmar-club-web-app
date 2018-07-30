@@ -23,6 +23,11 @@
   overflow-y: auto;
 }
 
+.editable-row .ant-form-explain {
+  position: absolute;
+  font-size: 12px;
+  margin-top: -4px;
+}
 /* Myamar Font Unicode: https://mmwebfonts.comquas.com/
 MMWebFonts can't support on Opera and Android Native Browser */
 @font-face {

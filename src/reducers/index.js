@@ -10,6 +10,7 @@ import accmgmtReducer from './accmgmt';
 import membermgmtReducer from './membermgmt';
 import claimmgmtReducer from './claimmgmt';
 import eventTransactionReducer from './event-transaction';
+import userInfoReducer from './user-info';
 
 /**
  * LocalStorage: storage engine for storing redux state

@@ -12,7 +12,10 @@ import {
   setDummyTransac,
   setEditingKey,
 } from '../../reducers/event-transaction/event-transaction-ui';
-import { save, remove } from '../../reducers/event-transaction/event-transaction-data';
+import {
+  save,
+  remove,
+} from '../../reducers/event-transaction/event-transaction-data';
 
 class EventTransaction extends Component {
   componentWillMount() {
@@ -29,7 +32,9 @@ class EventTransaction extends Component {
 
   // handle onClick from SearchName button and onPressEnter from input field
   onSearchName = () => {
-    const filters = this.searchNameValue ? { name: [this.searchNameValue] } : {};
+    const filters = this.searchNameValue
+      ? { name: [this.searchNameValue] }
+      : {};
     if (this.searchNameValue !== null) this.onChange({}, filters, {});
   };
 
@@ -60,8 +65,11 @@ class EventTransaction extends Component {
     const {
       eventTransactionUI: { dummyTransacIndex },
       dispatchDummyTransac,
+      dispatchEditingKey,
     } = this.props;
-    const { eventTransactions } = this.eventsList.find(item => item.id === eventId);
+    const { eventTransactions } = this.eventsList.find(
+      item => item.id === eventId,
+    );
     const key = dummyTransacIndex + 1;
     const newData = {
       key: `dummy${key}`,
@@ -72,7 +80,7 @@ class EventTransaction extends Component {
     };
     eventTransactions.push(newData);
     dispatchDummyTransac(key);
-    console.log(type, this.eventsList);
+    dispatchEditingKey(`dummy${key}`);
   };
 
   onExpand = (expanded, record) => {
@@ -85,8 +93,12 @@ class EventTransaction extends Component {
   };
 
   removeRecord = (eventId, transacId) => {
-    const { eventTransactions } = this.eventsList.find(item => item.id === eventId);
-    const index = eventTransactions.findIndex(transac => transac.id === transacId);
+    const { eventTransactions } = this.eventsList.find(
+      item => item.id === eventId,
+    );
+    const index = eventTransactions.findIndex(
+      transac => transac.id === transacId,
+    );
     eventTransactions.splice(index, 1);
 
     const { dispatchRemove } = this.props;
@@ -114,31 +126,26 @@ class EventTransaction extends Component {
   editTransaction = (transacId) => {
     const { dispatchEditingKey } = this.props;
     dispatchEditingKey(transacId);
-  }
+  };
 
-  saveTransaction = (form, transacId) => {
-    console.log('no error', transacId, form);
-    const { dispatchEditingKey } = this.props;
+  saveTransaction = (form, eventId, transacId) => {
+    const { dispatchEditingKey, dispatchSave } = this.props;
     dispatchEditingKey(transacId);
-    // form.validateFields((error, row) => {
-    //   if (!error) {
-    //     console.log('no error');
-    //   }
-    // const newData = [...this.state.data];
-    // const index = newData.findIndex(item => key === item.key);
-    // if (index > -1) {
-    //   const item = newData[index];
-    //   newData.splice(index, 1, {
-    //     ...item,
-    //     ...row,
-    //   });
-    //   this.setState({ data: newData, editingKey: '' });
-    // } else {
-    //   newData.push(row);
-    //   this.setState({ data: newData, editingKey: '' });
-    // }
-    // });
-  }
+    form.validateFieldsAndScroll((error, row) => {
+      if (error) {
+        return;
+      }
+
+      const { eventTransactions } = this.eventsList.find(
+        item => item.id === eventId,
+      );
+      const index = eventTransactions.findIndex(item => item.id === transacId);
+      const newData = { ...eventTransactions[index], ...row };
+      eventTransactions.splice(index, 1, newData);
+      dispatchEditingKey(null);
+      dispatchSave({ eventId, transacDataToAdd: newData });
+    });
+  };
 
   render() {
     const {
@@ -146,7 +153,10 @@ class EventTransaction extends Component {
       form: { getFieldDecorator },
     } = this.props;
     const {
-      sortedInfo, filteredInfo, expandedRowKeys, editingKey,
+      sortedInfo,
+      filteredInfo,
+      expandedRowKeys,
+      editingKey,
     } = eventTransactionUI;
     return (
       <div>
@@ -164,7 +174,8 @@ class EventTransaction extends Component {
             onChange={this.onChange}
             sortedInfo={sortedInfo || {}}
             filteredInfo={filteredInfo || {}}
-            removeRecord={(eventId, transacId) => this.removeRecord(eventId, transacId)}
+            removeRecord={(eventId, transacId) => this.removeRecord(eventId, transacId)
+            }
             expandedRowKeys={expandedRowKeys}
             onExpand={this.onExpand}
             onClickAddRow={this.onClickAddRow}
@@ -187,6 +198,7 @@ EventTransaction.propTypes = {
   dispatchExpandedRowKeys: PropTypes.func.isRequired,
   dispatchDummyTransac: PropTypes.func.isRequired,
   dispatchEditingKey: PropTypes.func.isRequired,
+  dispatchSave: PropTypes.func.isRequired,
   dispatchRemove: PropTypes.func.isRequired,
 
   eventTransactionUI: PropTypes.shape({}).isRequired,

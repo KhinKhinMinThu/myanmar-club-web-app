@@ -12,7 +12,7 @@ export default function (
       {
         roleId: 0,
         roleName: 'ECMEMBERS',
-        ecMembers: [
+        executives: [
           { id: 1, name: 'Member1' },
           { id: 2, name: 'Member2' },
           { id: 3, name: 'Member3' },
@@ -22,7 +22,7 @@ export default function (
       {
         roleId: 1,
         roleName: 'ROLE1',
-        ecMembers: [
+        executives: [
           { id: 1, name: 'Member1' },
           { id: 2, name: 'Member2' },
           { id: 3, name: 'Member3' },
@@ -31,7 +31,7 @@ export default function (
       {
         roleId: 2,
         roleName: 'ROLE2',
-        ecMembers: [{ id: 1, name: 'Member1' }, { id: 4, name: 'Member4' }],
+        executives: [{ id: 1, name: 'Member1' }, { id: 4, name: 'Member4' }],
       },
     ],
     // end

@@ -9,7 +9,9 @@ import {
   FullWidthTable,
   MarginLeftButton,
   SearchInput,
+  TableInput,
   RowWhiteBackground,
+  HightlightedText,
 } from './styled-components';
 
 const FormItem = Form.Item;
@@ -111,11 +113,11 @@ export const EventsTable = ({
         <TransactionTable
           transactionList={record.eventTransactions}
           removeRecord={transacId => removeRecord(record.id, transacId)}
-          transaction={record}
           onClickAddRow={type => onClickAddRow(record.id, type)}
           cancelTransaction={transacId => cancelTransaction(transacId)}
           editTransaction={transacId => editTransaction(transacId)}
-          saveTransaction={(form, transacId) => saveTransaction(form, transacId)}
+          saveTransaction={(form, transacId) => saveTransaction(form, record.id, transacId)
+          }
           editingKey={editingKey}
         />
       )}
@@ -131,17 +133,44 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends Component {
-  getInput = () => {
+  getInput = (title, record, dataIndex, decorator) => {
     const { inputType } = this.props;
+    const options = {
+      rules: [
+        {
+          required: true,
+          message: `Please enter ${title}!`,
+        },
+      ],
+      initialValue: record[dataIndex],
+    };
     if (inputType === 'number') {
-      return <SearchInput />;
+      options.rules.push({ validator: this.validateAmount });
     }
-    return <SearchInput />;
+    return (
+      <FormItem style={{ margin: 0 }}>
+        {decorator(dataIndex, options)(<TableInput />)}
+      </FormItem>
+    );
+  };
+
+  validateAmount = (rule, value, callback) => {
+    if (Number.isNaN(Number(value))) {
+      callback('Please enter a number!');
+    } else {
+      callback();
+    }
   };
 
   render() {
     const {
-      editing, dataIndex, title, inputType, record, index, ...restProps
+      editing,
+      dataIndex,
+      title,
+      inputType,
+      record,
+      index,
+      ...restProps
     } = this.props;
     return (
       <EditableContext.Consumer>
@@ -149,21 +178,9 @@ class EditableCell extends Component {
           const { getFieldDecorator } = form;
           return (
             <td {...restProps}>
-              {editing ? (
-                <FormItem style={{ margin: 0 }}>
-                  {getFieldDecorator(dataIndex, {
-                    rules: [
-                      {
-                        required: true,
-                        message: `Please Input ${title}!`,
-                      },
-                    ],
-                    initialValue: record[dataIndex],
-                  })(this.getInput())}
-                </FormItem>
-              ) : (
-                restProps.children
-              )}
+              {editing
+                ? this.getInput(title, record, dataIndex, getFieldDecorator)
+                : restProps.children}
             </td>
           );
         }}
@@ -175,7 +192,6 @@ class EditableCell extends Component {
 const TransactionTable = ({
   transactionList,
   removeRecord,
-  transaction,
   onClickAddRow,
   cancelTransaction,
   editTransaction,
@@ -183,6 +199,36 @@ const TransactionTable = ({
   editingKey,
 }) => {
   const isEditing = record => record.key === editingKey;
+  const saveButton = record => (
+    <EditableContext.Consumer>
+      {form => (
+        <TableActionButton
+          icon="save"
+          onClick={() => saveTransaction(form, record.id)}
+        />
+      )}
+    </EditableContext.Consumer>
+  );
+  const cancelButton = record => (
+    <Popconfirm
+      title="Confirm to cancel?"
+      onConfirm={() => cancelTransaction(record.id)}
+    >
+      <TableActionButton icon="close-circle-o" />
+    </Popconfirm>
+  );
+  const editButton = record => (
+    <TableActionButton icon="edit" onClick={() => editTransaction(record.id)} />
+  );
+  const deleteButton = record => (
+    <Popconfirm
+      title="Confirm to remove this transaction record?"
+      onConfirm={() => removeRecord(record.id)}
+    >
+      <TableActionButton icon="delete" />
+    </Popconfirm>
+  );
+
   const columns = [
     // dataIndex = databases column names
     {
@@ -200,43 +246,21 @@ const TransactionTable = ({
     {
       title: '',
       key: '',
-
+      width: 150,
       // render: (text, record) => ()
-
       render: (record) => {
         const editable = isEditing(record);
         return (
           <div>
             {editable ? (
               <div>
-                <EditableContext.Consumer>
-                  {form => (
-                    <TableActionButton
-                      type="primary"
-                      onClick={() => saveTransaction(form, record.id)}
-                    >
-                      Save
-                    </TableActionButton>
-                  )}
-                </EditableContext.Consumer>
-                <Popconfirm
-                  title="Confirm to cancel?"
-                  onConfirm={() => cancelTransaction(record.id)}
-                >
-                  <TableActionButton type="primary" ghost>
-                    Cancel
-                  </TableActionButton>
-                </Popconfirm>
+                {saveButton(record)}
+                {cancelButton(record)}
               </div>
             ) : (
               <div>
-                <Popconfirm
-                  title="Confirm to remove this transaction record?"
-                  onConfirm={() => removeRecord(record.id)}
-                >
-                  <TableActionButton icon="delete" />
-                </Popconfirm>
-                <TableActionButton icon="edit" onClick={() => editTransaction(record.id)} />
+                {editButton(record)}
+                {deleteButton(record)}
               </div>
             )}
           </div>
@@ -250,6 +274,7 @@ const TransactionTable = ({
   transactionList.map(item => preparedList.push({
     key: `${item.id}`,
     ...item,
+    amount: item.amount ? Number(item.amount) : item.amount,
   }));
 
   const title1 = <BoldUnderlineText>INCOME</BoldUnderlineText>;
@@ -259,18 +284,14 @@ const TransactionTable = ({
       Add row
     </Button>
   );
-  const totalIncome = (
-    <BoldText>
-      {'Total Income: SGD '}
-      {transaction.income}
-    </BoldText>
-  );
-  const totalExpenditure = (
-    <BoldText>
-      {'Total Expenditure: SGD '}
-      {transaction.expenditure}
-    </BoldText>
-  );
+
+  const reducer = (prev, next) => (typeof prev === 'object' ? prev.amount + next.amount : prev + next.amount);
+  const totalIncome = preparedList
+    .filter(item => item.type === 'income')
+    .reduce(reducer, 0);
+  const totalExpenditure = preparedList
+    .filter(item => item.type === 'expenditure')
+    .reduce(reducer, 0);
 
   const components = {
     body: {
@@ -296,82 +317,77 @@ const TransactionTable = ({
   });
 
   return (
-    <RowWhiteBackground gutter={8}>
-      <Col span={12}>
-        <FullWidthTable
-          title={() => (
-            <Row>
-              <Col span={8}>{title1}</Col>
-              <Col span={16} style={{ textAlign: 'right' }}>
-                {addRowButton('income')}
-              </Col>
-            </Row>
-          )}
-          components={components}
-          columns={editableColumns}
-          dataSource={preparedList.filter(item => item.type.toLowerCase() === 'income')}
-          pagination={{ pageSize: 5 }}
-          bordered
-          size="small"
-        />
-        {totalIncome}
-      </Col>
-      <Col span={12}>
-        <FullWidthTable
-          title={() => (
-            <Row>
-              <Col span={8}>{title2}</Col>
-              <Col span={16} style={{ textAlign: 'right' }}>
-                {addRowButton('expenditure')}
-              </Col>
-            </Row>
-          )}
-          components={components}
-          columns={editableColumns}
-          dataSource={preparedList.filter(item => item.type.toLowerCase() === 'expenditure')}
-          pagination={{ pageSize: 5 }}
-          bordered
-          size="small"
-        />
-        {totalExpenditure}
-      </Col>
+    <RowWhiteBackground>
+      <Row gutter={8}>
+        <Col span={12}>
+          <FullWidthTable
+            title={() => (
+              <Row>
+                <Col span={8}>{title1}</Col>
+                <Col span={16} style={{ textAlign: 'right' }}>
+                  {addRowButton('income')}
+                </Col>
+              </Row>
+            )}
+            components={components}
+            columns={editableColumns}
+            dataSource={preparedList.filter(
+              item => item.type.toLowerCase() === 'income',
+            )}
+            pagination={{ pageSize: 5 }}
+            bordered
+            size="middle"
+            rowClassName="editable-row"
+          />
+        </Col>
+        <Col span={12}>
+          <FullWidthTable
+            title={() => (
+              <Row>
+                <Col span={8}>{title2}</Col>
+                <Col span={16} style={{ textAlign: 'right' }}>
+                  {addRowButton('expenditure')}
+                </Col>
+              </Row>
+            )}
+            components={components}
+            columns={editableColumns}
+            dataSource={preparedList.filter(
+              item => item.type.toLowerCase() === 'expenditure',
+            )}
+            pagination={{ pageSize: 5 }}
+            bordered
+            size="middle"
+            rowClassName="editable-row"
+          />
+        </Col>
+      </Row>
+      <Row gutter={8}>
+        <Col span={12}>
+          <BoldText>
+            {'Total Income: SGD '}
+            {totalIncome.toFixed(2)}
+          </BoldText>
+        </Col>
+        <Col span={12}>
+          <BoldText>
+            {'Total Expenditure: SGD '}
+            {totalExpenditure.toFixed(2)}
+          </BoldText>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24} style={{ textAlign: 'right' }}>
+          <HightlightedText>
+            <br />
+            {'Total Balance: SGD '}
+            {(totalIncome - totalExpenditure).toFixed(2)}
+          </HightlightedText>
+        </Col>
+      </Row>
     </RowWhiteBackground>
   );
 };
-
-// export const DeSeletAllButton = ({ onClick, hasSelected, loading }) => (
-//   <MarginLeftButton
-//     type="primary"
-//     onClick={onClick}
-//     disabled={!hasSelected}
-//     loading={loading}
-//     ghost
-//   >
-//     Deselect All
-//   </MarginLeftButton>
-// );
-
-// export const SeletAllButton = ({ onClick, loading }) => (
-//   <Button type="primary" onClick={onClick} loading={loading} ghost>
-//     Select All
-//   </Button>
-// );
-
-// export const SelectedMembers = ({ selectedNum }) => (
-//   <SelectedText>Selected {selectedNum} member(s)</SelectedText>
-// );
-
-// export const ApproveSeletedButton = ({ onClick, hasSelected }) => (
-//   <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
-//     Approve Selected Claim(s)
-//   </MarginLeftButton>
-// );
-
-// export const UnapproveSeletedButton = ({ onClick, hasSelected }) => (
-//   <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
-//     Un-Approve Selected Claim(s)
-//   </MarginLeftButton>
-// );
 
 export const SearchNamePanel = ({
   onChange,
