@@ -5,7 +5,14 @@ import {
   MenuIcon, MainMenu, MenuItem, MenuContainer,
 } from './styled-components';
 import {
-  DASHBOARD, PROFILE, LOGOUT, ADMIN_ROLEMGMT, ADMIN_ACCMGMT,
+  DASHBOARD,
+  PROFILE,
+  LOGOUT,
+  ADMIN_ROLEMGMT,
+  ADMIN_ACCMGMT,
+  ADMIN_EVENT_CREATE,
+  ADMIN_EVENT_EDIT,
+  ADMIN_EVENT_VIEW,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -19,6 +26,9 @@ const commonTitles = {
 const adminTitles = {
   ADMIN_ROLEMGMT: { icon: <MenuIcon type="setting" />, text: 'Role Management (Admin)' },
   ADMIN_ACCMGMT: { icon: <MenuIcon type="user" />, text: 'Account Management (Admin)' },
+  ADMIN_EVENT_CREATE: { icon: <MenuIcon type="calendar" />, text: 'Create Event (Admin)' },
+  ADMIN_EVENT_EDIT: { icon: <MenuIcon type="edit" />, text: 'Edit Event (Admin)' },
+  ADMIN_EVENT_VIEW: { icon: <MenuIcon type="eye" />, text: 'View Event (Admin)' },
 };
 
 const MenuPanel = ({
@@ -53,6 +63,24 @@ const MenuPanel = ({
           <MenuItem key={ADMIN_ACCMGMT}>
             {adminTitles.ADMIN_ACCMGMT.icon}
             {adminTitles.ADMIN_ACCMGMT.text}
+          </MenuItem>
+        )}
+        {isAdmin && (
+          <MenuItem key={ADMIN_EVENT_CREATE}>
+            {adminTitles.ADMIN_EVENT_CREATE.icon}
+            {adminTitles.ADMIN_EVENT_CREATE.text}
+          </MenuItem>
+        )}
+        {isAdmin && (
+          <MenuItem key={ADMIN_EVENT_EDIT}>
+            {adminTitles.ADMIN_EVENT_EDIT.icon}
+            {adminTitles.ADMIN_EVENT_EDIT.text}
+          </MenuItem>
+        )}
+        {isAdmin && (
+          <MenuItem key={ADMIN_EVENT_VIEW}>
+            {adminTitles.ADMIN_EVENT_VIEW.icon}
+            {adminTitles.ADMIN_EVENT_VIEW.text}
           </MenuItem>
         )}
         <MenuItem key={LOGOUT}>

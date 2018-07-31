@@ -8,3 +8,6 @@ export const ADMIN_ROLEMGMT = '/manage-roles';
 export const ADMIN_ACCMGMT = '/manage-accounts';
 export const ADMIN_MEMBER_VIEW = '/view-member';
 export const ADMIN_MEMBER_EDIT = '/edit-member';
+export const ADMIN_EVENT_EDIT = '/edit-event';
+export const ADMIN_EVENT_CREATE = '/create-event';
+export const ADMIN_EVENT_VIEW = '/view-event';
