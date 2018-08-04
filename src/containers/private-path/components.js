@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MenuIcon, MainMenu, MenuItem } from './styled-components';
+import { MainMenu, MenuItem, MenuIcon } from './styled-components';
 import {
   DASHBOARD,
   PROFILE,
@@ -10,6 +10,10 @@ import {
   ACCOUNT_MANAGEMENT,
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
+  ADMIN_EVENT_CREATE,
+  ADMIN_EVENT_EDIT,
+  ADMIN_EVENT_VIEW,
+  ADMIN_EVENTREGISTRATION_VIEW,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -21,14 +25,46 @@ const commonTitles = {
 };
 
 const adminTitles = {
-  ROLE_MANAGEMENT: { icon: <MenuIcon type="setting" />, text: 'Roles Management' },
-  ACCOUNT_MANAGEMENT: { icon: <MenuIcon type="user" />, text: 'Accounts Management' },
-  CLAIM_MANAGEMENT: { icon: <MenuIcon type="pay-circle-o" />, text: 'Claims Management' },
-  EVENT_TRANSACTION: { icon: <MenuIcon type="calculator" />, text: 'Event Transactions' },
+  ROLE_MANAGEMENT: {
+    icon: <MenuIcon type="setting" />,
+    text: 'Roles Management',
+  },
+  ACCOUNT_MANAGEMENT: {
+    icon: <MenuIcon type="user" />,
+    text: 'Accounts Management',
+  },
+  CLAIM_MANAGEMENT: {
+    icon: <MenuIcon type="pay-circle-o" />,
+    text: 'Claims Management',
+  },
+  EVENT_TRANSACTION: {
+    icon: <MenuIcon type="calculator" />,
+    text: 'Event Transactions',
+  },
+  ADMIN_EVENT_CREATE: {
+    icon: <MenuIcon type="calendar" />,
+    text: 'Create Event (Admin)',
+  },
+  ADMIN_EVENT_EDIT: {
+    icon: <MenuIcon type="edit" />,
+    text: 'Edit Event (Admin)',
+  },
+  ADMIN_EVENT_VIEW: {
+    icon: <MenuIcon type="eye" />,
+    text: 'View Event (Admin)',
+  },
+  ADMIN_EVENTREGISTRATION_VIEW: {
+    icon: <MenuIcon type="table" />,
+    text: 'View Event Registration (Admin)',
+  },
 };
 
 const MenuPanel = ({
-  performLogout, updateLocation, currentLocation, selectedKeys, isAdmin,
+  performLogout,
+  updateLocation,
+  currentLocation,
+  selectedKeys,
+  isAdmin,
 }) => {
   const onClick = (e) => {
     if (e.key === LOGOUT) {
@@ -75,6 +111,30 @@ const MenuPanel = ({
         <MenuItem key={EVENT_TRANSACTION}>
           {adminTitles.EVENT_TRANSACTION.icon}
           {adminTitles.EVENT_TRANSACTION.text}
+        </MenuItem>
+      )}
+      {isAdmin && (
+        <MenuItem key={ADMIN_EVENT_CREATE}>
+          {adminTitles.ADMIN_EVENT_CREATE.icon}
+          {adminTitles.ADMIN_EVENT_CREATE.text}
+        </MenuItem>
+      )}
+      {isAdmin && (
+        <MenuItem key={ADMIN_EVENT_EDIT}>
+          {adminTitles.ADMIN_EVENT_EDIT.icon}
+          {adminTitles.ADMIN_EVENT_EDIT.text}
+        </MenuItem>
+      )}
+      {isAdmin && (
+        <MenuItem key={ADMIN_EVENT_VIEW}>
+          {adminTitles.ADMIN_EVENT_VIEW.icon}
+          {adminTitles.ADMIN_EVENT_VIEW.text}
+        </MenuItem>
+      )}
+      {isAdmin && (
+        <MenuItem key={ADMIN_EVENTREGISTRATION_VIEW}>
+          {adminTitles.ADMIN_EVENTREGISTRATION_VIEW.icon}
+          {adminTitles.ADMIN_EVENTREGISTRATION_VIEW.text}
         </MenuItem>
       )}
       <MenuItem key={LOGOUT}>
