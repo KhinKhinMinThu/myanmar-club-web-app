@@ -12,6 +12,7 @@ import {
   ADMIN_EVENT_CREATE,
   ADMIN_EVENT_VIEW,
   ADMIN_EVENT_EDIT,
+  ADMIN_EVENTREGISTRATION_VIEW,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
 import MenuPanel from './components';
@@ -23,6 +24,7 @@ import MemberProfile from '../admin-accmgmt/member-profile';
 import CreateNewEventPage from '../admin-createnewevent';
 import EditEventPage from '../admin-editevent';
 import ViewEventPage from '../admin-viewevent';
+import ViewEventRegistrationPage from '../admin-eventregistration';
 
 class PrivateAdminPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
@@ -47,6 +49,8 @@ class PrivateAdminPage extends Component {
         return EditEventPage;
       case ADMIN_EVENT_VIEW:
         return ViewEventPage;
+      case ADMIN_EVENTREGISTRATION_VIEW:
+        return ViewEventRegistrationPage;
       default:
         return Dashboard;
     }

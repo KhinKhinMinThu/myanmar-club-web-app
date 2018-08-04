@@ -171,7 +171,7 @@ const handleMobileNoOnBlur = (e) => {
 };
 
 export const areaCodeDdl = (
-  <Select style={{ width: 70 }}>
+  <Select defaultValue="65" style={{ width: 70 }}>
     <Option value="65">
       {'+65'}
     </Option>

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import {
-  Icon, Button, Card, Input, DatePicker, Select, TimePicker,
+  Icon, Button, Card, Input, DatePicker, Select, TimePicker, Table,
 } from 'antd';
+import { Link } from 'react-router-dom';
 
 // index
 export const FormCard = styled(Card)`
@@ -17,8 +18,8 @@ export const FormCard = styled(Card)`
 `;
 
 // form-step
-export const FormIcon = styled(Icon)`
-  font-size: 40;
+export const StepIcon = styled(Icon)`
+  font-size: 30;
 `;
 
 // form-step-action
@@ -27,9 +28,21 @@ export const HalfWidthButton = styled(Button)`
   margin-right: 40px;
 `;
 
-export const FormImage = styled(Image)`
-  height: 50px;
-  width: 80px;
+export const FullWidthTable = styled(Table)`
+  width: 100%;
+`;
+
+export const TableActionIcon = styled(Icon)`
+  margin-right: 16px;
+  font-size: 18px;
+`;
+
+export const TableActionLink = styled(Link)`
+  color: #1da57a;
+  &:hover {
+    color: #1da57a;
+    opacity: 0.5;
+  }
 `;
 
 // page-info

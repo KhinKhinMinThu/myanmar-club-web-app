@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form } from 'antd';
-import { HalfWidthButton } from './styled-components';
-import { eventData } from '../../reducers/eventmgmt/eventmgmt-data';
+import { HalfWidthButton, FullWidthTable, TableActionIcon } from './styled-components';
 // import { CustomIcon } from '../shared-components/common';
+import { eventData } from '../../reducers/eventmgmt/eventmgmt-data';
 
 const FormItem = Form.Item;
 
@@ -19,6 +19,7 @@ const layout = {
 
 /* eslint react/prop-types: 0 */
 // ALL FORM ITEM MUST PASS IN decorator!
+
 // Event Name
 export const EventName = ({ decorator }) => (
   <FormItem {...layout} label="Event Name">
@@ -119,52 +120,65 @@ export const EventPhoto = ({ decorator }) => (
   </FormItem>
 );
 
-export const EditEventButton = ({ isValidating, onClick }) => (
+export const BackButton = ({ isValidating, onClick }) => (
   <HalfWidthButton type="primary" htmlType="submit" loading={isValidating} onClick={onClick}>
-    Edit Event
+    Back
   </HalfWidthButton>
 );
 
-export const ViewRSVPButton = ({ isValidating, onClick }) => (
-  <HalfWidthButton type="primary" htmlType="submit" loading={isValidating} onClick={onClick}>
-    View RSVP
-  </HalfWidthButton>
-);
+export const EcMembersTable = ({ ecMembersList, onChange, sortedInfo }) => {
+  const columns = [
+    // dataIndex = databases column names
+    {
+      title: 'Id',
+      dataIndex: 'id',
+      key: 'id',
+      sorter: (a, b) => Number.parseInt(a.id, 10) - Number.parseInt(b.id, 10),
+      sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+    },
+    {
+      title: 'Email Address',
+      dataIndex: 'email_address',
+      key: 'email_address',
+      sorter: (a, b) => a.email_address.length - b.email_address.length,
+      sortOrder: sortedInfo.columnKey === 'email_address' && sortedInfo.order,
+    },
+    {
+      title: 'Mobile No',
+      dataIndex: 'mobile_phone',
+      key: 'mobile_phone',
+      sorter: (a, b) => a.mobile_phone.length - b.mobile_phone.length,
+      sortOrder: sortedInfo.columnKey === 'mobile_phone' && sortedInfo.order,
+    },
+    {
+      title: 'No. of Ticket(s)',
+      dataIndex: 'no_of_pax',
+      key: 'no_of_pax',
+      sorter: (a, b) => a.no_of_pax.length - b.no_of_pax.length,
+      sortOrder: sortedInfo.columnKey === 'no_of_pax' && sortedInfo.order,
+    },
+    {
+      title: 'Payment',
+      dataIndex: 'payment_type',
+      key: 'payment_type',
+      sorter: (a, b) => a.payment_type.length - b.payment_type.length,
+      sortOrder: sortedInfo.columnKey === 'payment_type' && sortedInfo.order,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: () => <TableActionIcon type="delete" />,
+    },
+  ];
 
-export const CloseButton = ({ isValidating, onClick }) => (
-  <HalfWidthButton type="primary" htmlType="submit" loading={isValidating} onClick={onClick}>
-    Close
-  </HalfWidthButton>
-);
-
-export const ShareFacebookButton = ({ isValidating, onClick, decorator }) => (
-  <FormItem {...layout} label="Share on facebook >" colon={false}>
-    {decorator('eventStatus')(
-      <HalfWidthButton
-        type="primary"
-        icon="facebook large"
-        htmlType="submit"
-        size="large"
-        shape="circle"
-        loading={isValidating}
-        onClick={onClick}
-      />,
-    )}
-  </FormItem>
-);
-
-export const NotifyMsgButton = ({ isValidating, onClick, decorator }) => (
-  <FormItem {...layout} label="Notify Club Members >" colon={false}>
-    {decorator('eventStatus')(
-      <HalfWidthButton
-        type="primary"
-        icon="message"
-        htmlType="submit"
-        size="large"
-        shape="circle"
-        loading={isValidating}
-        onClick={onClick}
-      />,
-    )}
-  </FormItem>
-);
+  return (
+    <FullWidthTable columns={columns} dataSource={ecMembersList} onChange={onChange} bordered />
+  );
+};

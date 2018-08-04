@@ -125,7 +125,9 @@ export const RefreshmentRadio = ({ decorator }) => (
   <FormItem {...layout} label="Refreshment Provided">
     {decorator('refreshment')(
       <RadioGroup name="refreshment">
-        <RadioButton value="yes">YES</RadioButton>
+        <RadioButton value="yes" defaultChecked>
+          YES
+        </RadioButton>
         <RadioButton value="no">No</RadioButton>
       </RadioGroup>,
     )}
@@ -168,7 +170,7 @@ const handleMobileNoOnBlur = (e) => {
 };
 
 const areaCodeDdl = (
-  <Select style={{ width: 70 }}>
+  <Select defaultValue="65" style={{ width: 70 }}>
     <Option value="65">+65</Option>
     <Option value="95">+95</Option>
   </Select>
@@ -308,13 +310,15 @@ EventPhoto.propTypes = {
 
 export const DeleteEventSwitch = ({ decorator }) => (
   <FormItem {...layout} label="Delete Event?">
-    {decorator('deleteEvent')(<Switch />)}
+    {decorator('deleteEvent')(<Switch checkedChildren="YES" unCheckedChildren="NO" />)}
   </FormItem>
 );
 
 export const EventStatusSwitch = ({ decorator }) => (
   <FormItem {...layout} label="Event Status">
-    {decorator('eventStatus')(<Switch defaultChecked />)}
+    {decorator('eventStatus')(
+      <Switch checkedChildren="Open" unCheckedChildren="Close" defaultChecked />,
+    )}
   </FormItem>
 );
 

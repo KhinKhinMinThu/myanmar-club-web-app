@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   EventName,
@@ -15,16 +16,23 @@ import {
   MobileNo,
   EventDescription,
   EventStatus,
-  ShareFacebookButton,
-  NotifyMsgButton,
-  EditEventButton,
-  CloseButton,
-  ViewRSVPButton,
+  BackButton,
+  EcMembersTable,
 } from './components';
 import { FormCard, FlexContainer } from './styled-components';
+import {
+  setSelectedKeys,
+  setDeSelectAllLoading,
+  setSelectAllLoading,
+  setSortedInfo,
+} from '../../reducers/eventmgmt/eventmgmt-ui';
+import { save } from '../../reducers/eventmgmt/eventmgmt-data';
 
-class ViewEvent extends Component {
+class ViewEventRegistration extends Component {
   componentDidMount() {
+    const { eventmgmtData } = this.props;
+    const { eventRSVPData } = eventmgmtData;
+    this.ecMembersList = this.prepareList(eventRSVPData);
     const {
       form: { setFieldsValue },
       eventData,
@@ -44,10 +52,25 @@ class ViewEvent extends Component {
     form.validateFieldsAndScroll();
   };
 
+  prepareList = (sourceList) => {
+    const preparedList = [];
+    sourceList.map(item => preparedList.push({
+      key: `${item.id}`,
+      ...item,
+    }));
+    return preparedList;
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
     } = this.props;
+    const { eventmgmtUI } = this.props;
+    const { selectedKeys, sortedInfo } = eventmgmtUI;
+    const rowSelection = {
+      selectedRowKeys: selectedKeys,
+      onChange: this.onSelectChange,
+    };
 
     return (
       <div>
@@ -66,12 +89,16 @@ class ViewEvent extends Component {
             <EmailAddress decorator={getFieldDecorator} />
             <MobileNo decorator={getFieldDecorator} />
             <EventStatus decorator={getFieldDecorator} />
-            <ShareFacebookButton decorator={getFieldDecorator} />
-            <NotifyMsgButton decorator={getFieldDecorator} />
             <FlexContainer>
-              <EditEventButton decorator={getFieldDecorator} />
-              <ViewRSVPButton decorator={getFieldDecorator} />
-              <CloseButton decorator={getFieldDecorator} />
+              <EcMembersTable
+                ecMembersList={this.ecMembersList}
+                rowSelection={rowSelection}
+                onChange={this.onChange}
+                sortedInfo={sortedInfo || {}}
+              />
+            </FlexContainer>
+            <FlexContainer>
+              <BackButton decorator={getFieldDecorator} />
             </FlexContainer>
           </FormCard>
         </Form>
@@ -80,14 +107,31 @@ class ViewEvent extends Component {
   }
 }
 
-ViewEvent.propTypes = {
+ViewEventRegistration.propTypes = {
   form: PropTypes.shape({
     getFieldDecorator: PropTypes.func.isRequired,
   }).isRequired,
   isValidating: PropTypes.bool.isRequired,
+  eventmgmtUI: PropTypes.shape({}).isRequired,
   eventData: PropTypes.shape({}).isRequired,
+  eventmgmtData: PropTypes.shape({}).isRequired,
 };
 
-const ViewEventPage = Form.create()(ViewEvent);
+const mapStateToProps = state => ({
+  eventmgmtUI: state.eventmgmt.ui,
+  eventmgmtData: state.eventmgmt.data,
+});
 
-export default ViewEventPage;
+const mapDispatchToProps = {
+  dispatchSelectedKeys: setSelectedKeys,
+  dispatchDeselectAllLoading: setDeSelectAllLoading,
+  dispatchSelectAllLoading: setSelectAllLoading,
+  dispatchSortedInfo: setSortedInfo,
+  dispatchSave: save,
+};
+const ViewEventRegistrationPage = Form.create()(ViewEventRegistration);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ViewEventRegistrationPage);

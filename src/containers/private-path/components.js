@@ -13,6 +13,7 @@ import {
   ADMIN_EVENT_CREATE,
   ADMIN_EVENT_EDIT,
   ADMIN_EVENT_VIEW,
+  ADMIN_EVENTREGISTRATION_VIEW,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -29,6 +30,10 @@ const adminTitles = {
   ADMIN_EVENT_CREATE: { icon: <MenuIcon type="calendar" />, text: 'Create Event (Admin)' },
   ADMIN_EVENT_EDIT: { icon: <MenuIcon type="edit" />, text: 'Edit Event (Admin)' },
   ADMIN_EVENT_VIEW: { icon: <MenuIcon type="eye" />, text: 'View Event (Admin)' },
+  ADMIN_EVENTREGISTRATION_VIEW: {
+    icon: <MenuIcon type="table" />,
+    text: 'View Event Registration (Admin)',
+  },
 };
 
 const MenuPanel = ({
@@ -81,6 +86,12 @@ const MenuPanel = ({
           <MenuItem key={ADMIN_EVENT_VIEW}>
             {adminTitles.ADMIN_EVENT_VIEW.icon}
             {adminTitles.ADMIN_EVENT_VIEW.text}
+          </MenuItem>
+        )}
+        {isAdmin && (
+          <MenuItem key={ADMIN_EVENTREGISTRATION_VIEW}>
+            {adminTitles.ADMIN_EVENTREGISTRATION_VIEW.icon}
+            {adminTitles.ADMIN_EVENTREGISTRATION_VIEW.text}
           </MenuItem>
         )}
         <MenuItem key={LOGOUT}>
