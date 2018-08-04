@@ -71,6 +71,15 @@ export const pageStyles = {
   marginLeft: 'auto',
   marginRight: 'auto',
 };
+export const cardStyles = {
+  width: 350,
+  height: 300,
+  padding: '20px 5px 5px',
+  borderRadius: 10,
+  top: '20%',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+};
 
 export const extraInfoStyles = {
   color: 'rgba(0, 0, 0, 0.4)',

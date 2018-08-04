@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
 import LoginForm from './login-form';
-
 const cardStyles = {
   width: 350,
   height: 300,
