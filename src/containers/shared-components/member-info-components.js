@@ -3,28 +3,21 @@ import PropTypes from 'prop-types';
 // to ignore the warnings: Statless functions can't be givien refs.
 import { toClass } from 'recompose';
 import {
-  Radio, Button, DatePicker, Select, Input, Upload, Checkbox, Table,
+  Radio, DatePicker, Select, Input, Upload, Checkbox, Table,
 } from 'antd';
 import {
-  CustomIcon,
-  FullWidthButton,
-  monthFormat,
-  dateFormat,
-  extraInfoStyles,
-  radioStyle,
-} from '../shared-components/common';
+  CustomIcon, dateFormat, extraInfoStyles, radioStyle,
+} from './common';
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const { Option } = Select;
 const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 
 export const unicode = { fontFamily: 'Myanmar3', fontSize: 14 };
 
 export const cardStyles = {
-  borderRadius: 10,
   textAlign: 'left',
 };
 export const formItemLayout = {
@@ -38,13 +31,9 @@ export const formItemLayout = {
   },
 };
 export const fieldWidth = { width: 200 };
-export const otherInput = <Input style={fieldWidth} type="text" />;
 
-// ******************************* page1 components
+// ******************************* page1 signup components
 // *******************************
-export const name1Input = <Input style={fieldWidth} type="text" placeholder="First Name" />;
-export const name2Input = <Input style={fieldWidth} type="text" placeholder="Middle Name" />;
-export const name3Input = <Input style={fieldWidth} type="text" placeholder="Last Name" />;
 export const genderRdo = (
   <RadioGroup name="genderRdo">
     <RadioButton value="M">
@@ -116,13 +105,11 @@ export const mStatusDdl = (
   </Select>
 );
 
-export const eduLvlInput = <Input style={fieldWidth} type="text" placeholder="Education Level" />;
 export const eduLvlInfo = (
   <span style={extraInfoStyles}>
     {'GCE A Level, Bachelor, Master, Doctoral (PhD) etc.'}
   </span>
 );
-export const occupationInput = <Input style={fieldWidth} type="text" placeholder="Job Title" />;
 
 export const sgPassDdl = (
   <Select style={fieldWidth} placeholder="Select pass type">
@@ -168,7 +155,7 @@ export const passNumInfo = (
 );
 // end
 
-// ******************************* page2 components
+// ******************************* page2 signup components
 // *******************************
 export const addr1Input = (
   <Input style={{ width: 300 }} type="text" placeholder="Street Address Line 1" />
@@ -190,12 +177,11 @@ export const ZipCodeInput = toClass((props) => {
 });
 ZipCodeInput.propTypes = { blurred: PropTypes.func.isRequired };
 
-export const emailInput = <Input style={fieldWidth} type="text" placeholder="Email Address" />;
-export const pwInput = <Input type="password" />;
+export const pwInput = <Input style={fieldWidth} type="password" />;
 
 export const ConfirmPwInput = toClass((props) => {
   const { changed } = props;
-  return <Input type="password" onChange={changed} />;
+  return <Input style={fieldWidth} type="password" onChange={changed} />;
 });
 ConfirmPwInput.propTypes = { changed: PropTypes.func.isRequired };
 
@@ -218,9 +204,6 @@ export const pwInfo = (
   </div>
 );
 
-export const fbAccInput = (
-  <Input style={fieldWidth} type="text" placeholder="Facebook Profile Link" />
-);
 export const areaCodeDdl = (
   <Select style={{ width: 70 }}>
     <Option value="65">
@@ -258,14 +241,34 @@ MobileNoInput.propTypes = {
 
 export const hobbiesInput = <TextArea style={fieldWidth} rows={2} />;
 
-export const uploadBtn = (
-  <Upload name="userpic" action="" listType="picture">
-    <Button>
-      <CustomIcon type="upload" />
-      {'Click to upload'}
-    </Button>
-  </Upload>
+const uploadButton = (
+  <div>
+    <CustomIcon type="plus" />
+    <div className="ant-upload-text">
+      {'Upload New Photo'}
+    </div>
+  </div>
 );
+export const UploadBtn = toClass((props) => {
+  const { previewed, changed, fileList } = props;
+  return (
+    <Upload
+      name="userpic"
+      action=""
+      listType="picture-card"
+      onPreview={previewed}
+      onChange={changed}
+      fileList={fileList}
+    >
+      {fileList.length >= 2 ? null : uploadButton}
+    </Upload>
+  );
+});
+UploadBtn.propTypes = {
+  previewed: PropTypes.func.isRequired,
+  changed: PropTypes.func.isRequired,
+  fileList: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export const subComChkCutrl = (
   <Checkbox style={unicode}>
@@ -280,7 +283,9 @@ export const subComChkKnwlg = (
 );
 export const subComChkComty = (
   <Checkbox style={unicode}>
-    {'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး '}
+    {
+      'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး '
+    }
     <br />
     <span style={{ marginLeft: 20 }}>
       {'Sub-Committee'}
@@ -304,7 +309,7 @@ export const subComChkOutrh = (
 );
 // end
 
-// ******************************* page3 components
+// ******************************* page3 signup components
 // *******************************
 export const membershipTypeRdo = (
   <RadioGroup name="membershipTypeRdo">
@@ -412,48 +417,8 @@ export const contactInfo = (
 );
 // end
 
-// ******************************* credinfo-form components
+// ******************************* info page components
 // *******************************
-export const cardExpInput = (
-  <MonthPicker style={fieldWidth} format={monthFormat} placeholder="Select month and year" />
-);
-export const CardNumInput = toClass((props) => {
-  const { blurred } = props;
-  return <Input maxLength="16" type="text" style={fieldWidth} onBlur={blurred} />;
-});
-CardNumInput.propTypes = { blurred: PropTypes.func.isRequired };
-
-export const cardNumInfo = (
-  <span style={extraInfoStyles}>
-    {'Do not include space or dashes "-".'}
-  </span>
-);
-
-export const cardExpInfo = (
-  <span style={extraInfoStyles}>
-    {'MM-YYYY'}
-  </span>
-);
-export const CardSecInput = toClass((props) => {
-  const { blurred } = props;
-  return <Input maxLength="4" type="text" style={fieldWidth} onBlur={blurred} />;
-});
-CardSecInput.propTypes = { blurred: PropTypes.func.isRequired };
-
-export const PaymentBtn = (props) => {
-  const { clicked } = props;
-  return (
-    <FullWidthButton type="primary" onClick={clicked}>
-      {'Make Payment Now'}
-    </FullWidthButton>
-  );
-};
-PaymentBtn.propTypes = { clicked: PropTypes.func.isRequired };
-// end
-
-// ******************************* info components
-// *******************************
-// endimport { Table, Icon, Divider } from 'antd';
 
 const columns = [
   { title: '', dataIndex: 'NA', align: 'right' },

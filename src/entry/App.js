@@ -1,19 +1,34 @@
 import React from 'react';
-// import LoginPage from "./login-page";
-// import SignupPage from '../containers/signup-page';
-// import LoginPage from '../containers/login-page';
-import ForgotpwdPage1 from '../containers/forgotpwd-page/forgotpwd-form1';
-import ForgotpwdPage2 from '../containers/forgotpwd-page/forgotpwd-form2';
-import ResetpwdPage from '../containers/resetpwd-page';
+
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import { ConnectedRouter } from 'connected-react-router';
+import { Route, Switch } from 'react-router'; // react-router v4
+import { persistor, store, history } from './store';
+import { LOGIN, SIGNUP } from '../actions/location';
+import LoginPage from '../containers/login-page';
+import SignupPage2 from '../containers/signup-page2';
+import PrivatePath from '../containers/private-path';
 
 const App = () => (
-  <div className="App">
-    {/* <LoginPage /> */}
-    <ForgotpwdPage1 />
-    <ForgotpwdPage2 />
-    <ResetpwdPage />
-    {/* <SignupPage /> */}
-  </div>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <ConnectedRouter history={history}>
+        <div className="App">
+          <Switch>
+            <Route name="LOGIN" path={LOGIN} component={LoginPage} />
+            <Route path={SIGNUP} component={SignupPage2} />
+            <PrivatePath exact path="/:pathname/:id?" />
+            {/*  for paths with more than 1 params
+            <PrivatePath name="TEST" exact path="/:pathname/:name?/:name2?" /> */}
+
+            {/* all other paths */}
+            <PrivatePath path="*" />
+          </Switch>
+        </div>
+      </ConnectedRouter>
+    </PersistGate>
+  </Provider>
 );
 
 export default App;

@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import {
   Form, Card, Row, Col,
 } from 'antd';
-import { cardStyles, feesTbl, unicode } from './components-pages';
+import { cardStyles, feesTbl, unicode } from '../shared-components/member-info-components';
 import { CustomIcon } from '../shared-components/common';
 
 const PageInfo = () => (

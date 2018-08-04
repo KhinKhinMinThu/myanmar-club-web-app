@@ -2,25 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import { Form, Card, Col } from 'antd';
+import { InputWithText, blankInput } from '../shared-components/common';
 import {
   cardStyles,
   formItemLayout,
-  name1Input,
-  name2Input,
-  name3Input,
   genderRdo,
   dobInput,
-  otherInput,
   mStatusDdl,
-  eduLvlInput,
   eduLvlInfo,
-  occupationInput,
   sgPassDdl,
   passNumInfo,
   NationalityDdl,
   ReligionDdl,
   PassNumInput,
-} from './components-pages';
+} from '../shared-components/member-info-components';
 
 const FormItem = Form.Item;
 
@@ -139,10 +134,10 @@ const Page1 = class extends React.Component {
     let showOtherNatInput = null;
     let showOtherRelInput = null;
     if (showOtherNat) {
-      showOtherNatInput = getFieldDecorator('otherNatInput', this.natInputOpts)(otherInput);
+      showOtherNatInput = getFieldDecorator('otherNatInput', this.natInputOpts)(blankInput);
     }
     if (showOtherRel) {
-      showOtherRelInput = getFieldDecorator('otherRelInput')(otherInput);
+      showOtherRelInput = getFieldDecorator('otherRelInput')(blankInput);
     }
 
     return (
@@ -152,17 +147,19 @@ const Page1 = class extends React.Component {
           <FormItem {...formItemLayout} label="Name" colon required>
             <Col span={7}>
               <FormItem>
-                {getFieldDecorator('name1Input', this.nameInputOpts)(name1Input)}
+                {getFieldDecorator('name1Input', this.nameInputOpts)(
+                  <InputWithText text="First Name" />,
+                )}
               </FormItem>
             </Col>
             <Col span={7}>
               <FormItem>
-                {getFieldDecorator('name2Input')(name2Input)}
+                {getFieldDecorator('name2Input')(<InputWithText text="Middle Name" />)}
               </FormItem>
             </Col>
             <Col span={10}>
               <FormItem>
-                {getFieldDecorator('name3Input')(name3Input)}
+                {getFieldDecorator('name3Input')(<InputWithText text="Last Name" />)}
               </FormItem>
             </Col>
           </FormItem>
@@ -216,13 +213,17 @@ const Page1 = class extends React.Component {
 
           {/* Education Level */}
           <FormItem {...formItemLayout} label="Education Level">
-            {getFieldDecorator('eduLvlInput', this.eduLvlInputOpts)(eduLvlInput)}
+            {getFieldDecorator('eduLvlInput', this.eduLvlInputOpts)(
+              <InputWithText text="Education Level" />,
+            )}
             {eduLvlInfo}
           </FormItem>
 
           {/* Occupation */}
           <FormItem {...formItemLayout} label="Occupation">
-            {getFieldDecorator('occupationInput', this.occupationInputOpts)(occupationInput)}
+            {getFieldDecorator('occupationInput', this.occupationInputOpts)(
+              <InputWithText text="Job Title" />,
+            )}
           </FormItem>
 
           {/* Pass */}

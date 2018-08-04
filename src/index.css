@@ -4,19 +4,30 @@
 
 .App {
   height: 100%;
+  /* to hide the vertical scroll bar. 
+  V-scroll bar for individual pages will be displayed in .home-pages css */
+  overflow-y: hidden;
 }
 
 .login-page {
   background: #ececec;
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
-.signup-page {
-  background: #ececec;
+.home-pages {
+  width: 100%;
+  background: #ffffff;
   display: flex;
+  overflow-y: auto;
 }
 
+.editable-row .ant-form-explain {
+  position: absolute;
+  font-size: 12px;
+  margin-top: -4px;
+}
 /* Myamar Font Unicode: https://mmwebfonts.comquas.com/
 MMWebFonts can't support on Opera and Android Native Browser */
 @font-face {
