@@ -11,6 +11,7 @@ import membermgmtReducer from './membermgmt';
 import claimmgmtReducer from './claimmgmt';
 import eventTransactionReducer from './event-transaction';
 import userInfoReducer from './user-info';
+import forgotPasswordReducer from './forgot-password';
 
 /**
  * LocalStorage: storage engine for storing redux state
@@ -28,6 +29,7 @@ const loginPersistConfig = {
 const rootReducer = combineReducers({
   login: persistReducer(loginPersistConfig, loginReducer),
   signup: signupReducer,
+  forgotpassword: forgotPasswordReducer,
   rolemgmt: rolemgmtReducer,
   accmgmt: accmgmtReducer,
   membermgmt: membermgmtReducer,

@@ -1,40 +1,46 @@
 import React from 'react';
-import { Input, Button } from 'antd';
-import { toClass } from 'recompose';
-import { FormInputIcon } from '../shared-components/common';
+import { Form } from 'antd';
+import {
+  FormInputIcon,
+  CustomInput,
+  FullWidthButton,
+} from './styled-components';
 
-export const EmailInput = toClass((props) => {
-  const { blurred } = props;
-  return (
-    <Input
-      prefix={<FormInputIcon type="mail" />}
-      type="text"
-      placeholder="Email Address"
-      onBlur={blurred}
-    />
-  );
-});
+const FormItem = Form.Item;
 
-export const ResetpwdButton = (
-  <Button type="primary" htmlType="submit" style={{ float: 'left' }}>
+/* eslint react/prop-types: 0 */
+export const EmailInput = ({ decorator }) => (
+  <FormItem>
+    {decorator('email', {
+      rules: [
+        {
+          type: 'email',
+          message: 'The input is not valid E-mail!',
+        },
+        {
+          required: true,
+          message: 'Please enter email address!',
+        },
+      ],
+    })(
+      <CustomInput
+        prefix={<FormInputIcon type="mail" />}
+        placeholder="Email Address"
+      />,
+    )}
+  </FormItem>
+);
+
+export const ResetButton = (
+  <FullWidthButton type="primary" htmlType="submit">
     Reset Password
-  </Button>
+  </FullWidthButton>
 );
 
-export const BackButton = (
-  <Button type="default" htmlType="submit" style={{ float: 'right' }}>
-    Back
-  </Button>
-);
+export const BackButton = <FullWidthButton>Back</FullWidthButton>;
 
 export const GoToLoginButton = (
-  <Button type="primary" htmlType="submit" style={{ float: 'left' }}>
-    Go To Login Page
-  </Button>
+  <FullWidthButton type="primary">Go To Login Page</FullWidthButton>
 );
 
-export const CloseButton = (
-  <Button type="default" htmlType="submit" style={{ float: 'right' }}>
-    Close
-  </Button>
-);
+export const CloseButton = <FullWidthButton>Close</FullWidthButton>;

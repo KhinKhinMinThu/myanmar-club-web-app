@@ -5,9 +5,10 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router'; // react-router v4
 import { persistor, store, history } from './store';
-import { LOGIN, SIGNUP } from '../actions/location';
+import { LOGIN, SIGNUP, FORGOTPASSWORD } from '../actions/location';
 import LoginPage from '../containers/login-page';
 import SignupPage2 from '../containers/signup-page2';
+import ForgotPasswordPage from '../containers/forgotpwd-page';
 import PrivatePath from '../containers/private-path';
 
 const App = () => (
@@ -16,8 +17,10 @@ const App = () => (
       <ConnectedRouter history={history}>
         <div className="App">
           <Switch>
-            <Route name="LOGIN" path={LOGIN} component={LoginPage} />
+            <Route path={LOGIN} component={LoginPage} />
             <Route path={SIGNUP} component={SignupPage2} />
+            <Route path={FORGOTPASSWORD} component={ForgotPasswordPage} />
+
             <PrivatePath exact path="/:pathname/:id?" />
             {/*  for paths with more than 1 params
             <PrivatePath name="TEST" exact path="/:pathname/:name?/:name2?" /> */}
