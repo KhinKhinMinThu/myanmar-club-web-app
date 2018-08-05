@@ -155,7 +155,7 @@ class EditableCell extends Component {
   };
 
   validateAmount = (rule, value, callback) => {
-    if (Number.isNaN(Number(value))) {
+    if (value && Number.isNaN(Number(value))) {
       callback('Please enter a number!');
     } else {
       callback();
@@ -410,7 +410,7 @@ export const SearchNamePanel = ({
   >
     {decorator('searchName', { initialValue: null })(
       <SearchInput
-        placeholder="Search submitted by"
+        placeholder="Search event name"
         onChange={onChange}
         onPressEnter={onPressEnter}
       />,

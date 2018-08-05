@@ -24,8 +24,7 @@ export const FullWidthButton = styled(Button)`
 
 export const PageCard = styled(Card)`
   height: 100vh;
-  width: 1300px;
-  min-width: 1300px;
+  width: 100%;
   padding: 20px 5px 5px;
 `;
 

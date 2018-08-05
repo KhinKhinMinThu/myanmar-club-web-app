@@ -10,10 +10,11 @@ import {
   EDIT_MEMBER,
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
-  ADMIN_EVENT_CREATE,
-  ADMIN_EVENT_VIEW,
-  ADMIN_EVENT_EDIT,
-  ADMIN_EVENTREGISTRATION_VIEW,
+  EVENT_MANAGEMENT,
+  EVENT_CREATION,
+  // EVENT_VIEW,
+  EVENT_EDIT,
+  // EVENTREGISTRATION_VIEW,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
 import MenuPanel from './components';
@@ -24,10 +25,11 @@ import AccManagementPage from '../account-management';
 import MemberManagementPage from '../member-management';
 import ClaimManagementPage from '../claim-management';
 import EventTransactionPage from '../event-transaction';
-import CreateNewEventPage from '../admin-createnewevent';
-import EditEventPage from '../admin-editevent';
-import ViewEventPage from '../admin-viewevent';
-import ViewEventRegistrationPage from '../admin-eventregistration';
+import EventCreation from '../event-creation';
+import EventManagementPage from '../event-management';
+import EventEditPage from '../event-edit';
+// import ViewEventPage from '../admin-viewevent';
+// import ViewEventRegistrationPage from '../admin-eventregistration';
 
 class PrivateAdminPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
@@ -49,14 +51,12 @@ class PrivateAdminPage extends Component {
         return ClaimManagementPage;
       case EVENT_TRANSACTION:
         return EventTransactionPage;
-      case ADMIN_EVENT_CREATE:
-        return CreateNewEventPage;
-      case ADMIN_EVENT_EDIT:
-        return EditEventPage;
-      case ADMIN_EVENT_VIEW:
-        return ViewEventPage;
-      case ADMIN_EVENTREGISTRATION_VIEW:
-        return ViewEventRegistrationPage;
+      case EVENT_MANAGEMENT:
+        return EventManagementPage;
+      case EVENT_CREATION:
+        return EventCreation;
+      case EVENT_EDIT:
+        return EventEditPage;
       default:
         return Dashboard;
     }

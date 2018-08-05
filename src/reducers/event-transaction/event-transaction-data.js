@@ -546,7 +546,7 @@ export default function (
         income: '1000.00',
         expenditure: '550.00',
         balance: '450.00',
-        createdBy: 'Member 01',
+        createdBy: 'Member 02',
         createdDate: '12-01-2020',
         eventTransactions: [
           {

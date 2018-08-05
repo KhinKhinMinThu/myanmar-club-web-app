@@ -10,10 +10,8 @@ import {
   ACCOUNT_MANAGEMENT,
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
-  ADMIN_EVENT_CREATE,
-  ADMIN_EVENT_EDIT,
-  ADMIN_EVENT_VIEW,
-  ADMIN_EVENTREGISTRATION_VIEW,
+  EVENT_MANAGEMENT,
+  EVENT_CREATION,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -41,21 +39,13 @@ const adminTitles = {
     icon: <MenuIcon type="calculator" />,
     text: 'Event Transactions',
   },
-  ADMIN_EVENT_CREATE: {
+  EVENT_MANAGEMENT: {
     icon: <MenuIcon type="calendar" />,
-    text: 'Create Event (Admin)',
+    text: 'Events Management',
   },
-  ADMIN_EVENT_EDIT: {
-    icon: <MenuIcon type="edit" />,
-    text: 'Edit Event (Admin)',
-  },
-  ADMIN_EVENT_VIEW: {
-    icon: <MenuIcon type="eye" />,
-    text: 'View Event (Admin)',
-  },
-  ADMIN_EVENTREGISTRATION_VIEW: {
-    icon: <MenuIcon type="table" />,
-    text: 'View Event Registration (Admin)',
+  EVENT_CREATION: {
+    icon: <MenuIcon type="file-add" />,
+    text: 'Create New Event',
   },
 };
 
@@ -114,29 +104,19 @@ const MenuPanel = ({
         </MenuItem>
       )}
       {isAdmin && (
-        <MenuItem key={ADMIN_EVENT_CREATE}>
-          {adminTitles.ADMIN_EVENT_CREATE.icon}
-          {adminTitles.ADMIN_EVENT_CREATE.text}
+        <MenuItem key={EVENT_MANAGEMENT}>
+          {adminTitles.EVENT_MANAGEMENT.icon}
+          {adminTitles.EVENT_MANAGEMENT.text}
         </MenuItem>
       )}
+
       {isAdmin && (
-        <MenuItem key={ADMIN_EVENT_EDIT}>
-          {adminTitles.ADMIN_EVENT_EDIT.icon}
-          {adminTitles.ADMIN_EVENT_EDIT.text}
+        <MenuItem key={EVENT_CREATION}>
+          {adminTitles.EVENT_CREATION.icon}
+          {adminTitles.EVENT_CREATION.text}
         </MenuItem>
       )}
-      {isAdmin && (
-        <MenuItem key={ADMIN_EVENT_VIEW}>
-          {adminTitles.ADMIN_EVENT_VIEW.icon}
-          {adminTitles.ADMIN_EVENT_VIEW.text}
-        </MenuItem>
-      )}
-      {isAdmin && (
-        <MenuItem key={ADMIN_EVENTREGISTRATION_VIEW}>
-          {adminTitles.ADMIN_EVENTREGISTRATION_VIEW.icon}
-          {adminTitles.ADMIN_EVENTREGISTRATION_VIEW.text}
-        </MenuItem>
-      )}
+
       <MenuItem key={LOGOUT}>
         {commonTitles.LOGOUT.icon}
         {commonTitles.LOGOUT.text}
