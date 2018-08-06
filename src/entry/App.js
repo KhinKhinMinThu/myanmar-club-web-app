@@ -1,15 +1,18 @@
 import React from 'react';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.css'; // do not remove this
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router'; // react-router v4
 import { persistor, store, history } from './store';
-import { LOGIN, SIGNUP, FORGOTPASSWORD } from '../actions/location';
+import {
+  DEFAULT, LOGIN, SIGNUP, FORGOTPASSWORD,
+} from '../actions/location';
 import LoginPage from '../containers/login-page';
 import SignupPage2 from '../containers/signup-page2';
 import ForgotPasswordPage from '../containers/forgotpwd-page';
 import PrivatePath from '../containers/private-path';
+import MainPage from '../containers/main-page';
 
 const App = () => (
   <Provider store={store}>
@@ -17,6 +20,7 @@ const App = () => (
       <ConnectedRouter history={history}>
         <div className="App">
           <Switch>
+            <Route exact path={DEFAULT} component={MainPage} />
             <Route path={LOGIN} component={LoginPage} />
             <Route path={SIGNUP} component={SignupPage2} />
             <Route path={FORGOTPASSWORD} component={ForgotPasswordPage} />

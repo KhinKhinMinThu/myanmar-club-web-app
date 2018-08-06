@@ -25,7 +25,7 @@ export const FullWidthButton = styled(Button)`
 export const PageCard = styled(Card)`
   height: 100vh;
   width: 100%;
-  padding: 20px 5px 5px;
+  padding: 0px 5px 5px;
 `;
 
 // to remove after refactoring signup/profile

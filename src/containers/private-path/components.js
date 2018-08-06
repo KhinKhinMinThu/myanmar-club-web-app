@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainMenu, MenuItem, MenuIcon } from './styled-components';
+import {
+  MainMenu, MenuItem, MenuIcon,
+} from './styled-components';
 import {
   DASHBOARD,
   PROFILE,
@@ -69,7 +71,7 @@ const MenuPanel = ({
       mode="inline"
       onClick={onClick}
       selectedKeys={selectedKeys}
-      style={{ width: '250px' }}
+      style={{ marginTop: 5 }}
     >
       <MenuItem key={DASHBOARD}>
         {commonTitles.DASHBOARD.icon}

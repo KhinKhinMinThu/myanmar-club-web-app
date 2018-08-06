@@ -8,7 +8,6 @@ import {
   FormDatePicker,
   FormTimePicker,
   FullWidthButton,
-  FormItemNoMargin,
 } from './styled-components';
 import { CustomIcon } from '../shared-components/common';
 
@@ -121,11 +120,11 @@ export const AddressInput = ({ decorator }) => (
       </FormItem>
     </Col>
     <Col span={14}>
-      <FormItemNoMargin>
+      <FormItem>
         {decorator('locationLine2')(
           <FormInput placeholder="Street Address Line 2..." />,
         )}
-      </FormItemNoMargin>
+      </FormItem>
     </Col>
   </FormItem>
 );
@@ -150,14 +149,14 @@ export const PostalCodeInput = ({ decorator }) => (
 
 // Refreshment
 export const RefreshmentRadio = ({ decorator }) => (
-  <FormItemNoMargin {...layout} label="Refreshment Provided">
+  <FormItem {...layout} label="Refreshment Provided" style={{ margin: 0 }}>
     {decorator('isRefreshmentProvided')(
       <RadioGroup name="refreshment">
         <RadioButton value="1">Yes</RadioButton>
         <RadioButton value="0">No</RadioButton>
       </RadioGroup>,
     )}
-  </FormItemNoMargin>
+  </FormItem>
 );
 
 const validateNumber = (rule, value, callback) => {
@@ -227,7 +226,7 @@ export const MobileNoInput = ({ decorator }) => {
     </Select>,
   );
   return (
-    <FormItemNoMargin {...layout} label="Mobile No">
+    <FormItem {...layout} label="Mobile No" style={{ margin: 0 }}>
       {decorator('mobilePhone', {
         rules: [
           {
@@ -242,7 +241,7 @@ export const MobileNoInput = ({ decorator }) => {
           style={{ width: 200 }}
         />,
       )}
-    </FormItemNoMargin>
+    </FormItem>
   );
 };
 
@@ -250,7 +249,8 @@ export const MobileNoInput = ({ decorator }) => {
 export const EventPhoto = ({
   decorator, onPreview, onChange, fileList,
 }) => (
-  <FormItemNoMargin {...layout} label="Event Photo">
+  // must use inline style due to layout
+  <FormItem {...layout} label="Event Photo" style={{ margin: 0 }}>
     {decorator('uploadBtn')(
       <Upload
         name="eventpic"
@@ -268,7 +268,7 @@ export const EventPhoto = ({
         )}
       </Upload>,
     )}
-  </FormItemNoMargin>
+  </FormItem>
 );
 
 export const EventPhotoModal = ({
@@ -282,7 +282,7 @@ export const EventPhotoModal = ({
 );
 
 export const DeleteEventSwitch = ({ decorator }) => (
-  <FormItem {...layout} label="Delete Event?">
+  <FormItem {...layout} label="Delete Event?" style={{ margin: 0 }}>
     {decorator('deleteEvent', { initialValue: false })(
       <Switch checkedChildren="Yes" unCheckedChildren="No" />,
     )}
@@ -290,7 +290,7 @@ export const DeleteEventSwitch = ({ decorator }) => (
 );
 
 export const EventStatusSwitch = ({ decorator }) => (
-  <FormItem {...layout} label="Event Status">
+  <FormItem {...layout} label="Event Status" style={{ margin: 0 }}>
     {decorator('eventStatus', { valuePropName: 'checked', initialValue: true })(
       <Switch checkedChildren="Open" unCheckedChildren="Closed" />,
     )}
