@@ -14,7 +14,6 @@ import {
   EVENT_CREATION,
   EVENT_VIEW,
   EVENT_EDIT,
-  // EVENTREGISTRATION_VIEW,
 } from '../../actions/location';
 import { FlexContainer } from './styled-components';
 import MenuPanel from './components';
@@ -29,7 +28,6 @@ import EventCreation from '../event-creation';
 import EventManagementPage from '../event-management';
 import EventEditPage from '../event-edit';
 import EventViewPage from '../event-view';
-// import ViewEventRegistrationPage from '../admin-eventregistration';
 
 class PrivateAdminPage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)

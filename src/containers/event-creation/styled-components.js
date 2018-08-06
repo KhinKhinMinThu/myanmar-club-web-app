@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import {
-  Button, Card, Input, DatePicker, TimePicker, Form,
+  Button,
+  Card,
+  Input,
+  DatePicker,
+  TimePicker,
+  Form,
+  Icon,
+  Table,
 } from 'antd';
 
 // index
@@ -30,6 +37,13 @@ export const FlexContainer = styled.div`
   margin-right: auto;
 `;
 
+export const FlexContainerLeft = styled.div`
+  display: flex;
+  justify-content: left;
+  padding-bottom: 15px;
+  align-items: center;
+`;
+
 export const FormInput = styled(Input)`
   width: 200px;
   margin-right: 8px;
@@ -54,4 +68,28 @@ export const FormItemNoMargin = styled(Form.Item)`
 
 export const ReadOnlyInput = styled(Input)`
   border: 0;
+`;
+
+export const TabIcon = styled(Icon)`
+  font-size: 16px;
+`;
+
+export const BoldText = styled.span`
+  font-weight: bold;
+`;
+
+export const SelectedText = styled.span`
+  margin-left: 8px;
+`;
+
+export const FullWidthTable = styled(Table)`
+  width: 100%;
+`;
+
+export const MarginLeftButton = styled(Button)`
+  margin-left: 8px;
+`;
+
+export const SearchInput = styled(Input)`
+  width: 200px;
 `;
