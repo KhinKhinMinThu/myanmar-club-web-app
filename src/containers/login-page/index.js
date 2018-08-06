@@ -1,20 +1,12 @@
 import React from 'react';
-import { Card } from 'antd';
-import LoginForm from './login-form';
-const cardStyles = {
-  width: 350,
-  height: 300,
-  padding: '20px 5px 5px',
-  borderRadius: 10,
-  margin: 'auto',
-  marginRight: 'auto',
-};
+import { LoginCard } from './styled-components';
+import Login from './login-form';
 
 const LoginPage = () => (
-  <div className="login-page">
-    <Card bordered={false} style={cardStyles}>
-      <LoginForm />
-    </Card>
+  <div className="public-pages">
+    <LoginCard bordered={false}>
+      <Login />
+    </LoginCard>
   </div>
 );
 

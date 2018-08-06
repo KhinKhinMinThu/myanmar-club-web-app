@@ -1,5 +1,5 @@
 import React from 'react';
-
+import 'antd/dist/antd.css';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { ConnectedRouter } from 'connected-react-router';

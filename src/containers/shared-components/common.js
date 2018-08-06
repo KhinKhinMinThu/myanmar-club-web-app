@@ -28,15 +28,6 @@ export const PageCard = styled(Card)`
   padding: 20px 5px 5px;
 `;
 
-export const SmallCard = styled(Card)`
-  height: 250px;
-  width: 450px;
-  min-width: 450px;
-  top: 20%;
-  padding: 20px 5px 5px;
-  border-radius: 10;
-`;
-
 // to remove after refactoring signup/profile
 export const BtnWithOnClick = (props) => {
   const { clicked, text } = props;

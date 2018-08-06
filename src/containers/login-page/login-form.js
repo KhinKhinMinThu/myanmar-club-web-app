@@ -1,48 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import 'antd/dist/antd.css';
 import { Form, message } from 'antd';
 import { login } from '../../reducers/login';
-import {
-  UsernameInput,
-  PasswordInput,
-  ForgotPasswordLink,
-  SignUpLink,
-  RememberCheckbox,
-  LoginButton,
-} from './components';
-
-const FormItem = Form.Item;
+import { UsernameInput, PasswordInput, Footer } from './components';
 
 class LoginForm extends Component {
-  // **** client side field checking **** //
-
-  usernameInputOpts = {
-    rules: [
-      {
-        required: true,
-        message: 'empty username!',
-      },
-    ],
-  };
-
-  passwordInputOpts = {
-    rules: [
-      {
-        required: true,
-        message: 'empty password!',
-      },
-    ],
-  };
-
-  // **** client side field checking ends **** //
-
-  rememberCheckboxOpts = {
-    valuePropName: 'checked',
-    initialValue: false,
-  };
-
   componentDidUpdate(prevProps) {
     const { errMsg, isPending } = this.props;
     const isApiCall = prevProps.isPending === true && isPending === false;
@@ -52,7 +15,7 @@ class LoginForm extends Component {
     else message.success('redirect to home page!');
   }
 
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault();
     const { form, performLogin } = this.props;
     form.validateFields((err, values) => {
@@ -81,24 +44,15 @@ class LoginForm extends Component {
   // **** server side field checking ends **** //
 
   render() {
-    const { form, isPending } = this.props;
-    const { getFieldDecorator } = form;
+    const {
+      form: { getFieldDecorator },
+      isPending,
+    } = this.props;
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormItem>
-          {getFieldDecorator('username', this.usernameInputOpts)(UsernameInput)}
-        </FormItem>
-
-        <FormItem>
-          {getFieldDecorator('password', this.passwordInputOpts)(PasswordInput)}
-        </FormItem>
-
-        <FormItem>
-          {getFieldDecorator('isRemembered', this.rememberCheckboxOpts)(RememberCheckbox)}
-          <ForgotPasswordLink />
-          <LoginButton isPending={isPending} />
-          <SignUpLink />
-        </FormItem>
+      <Form onSubmit={this.onSubmit}>
+        <UsernameInput decorator={getFieldDecorator} />
+        <PasswordInput decorator={getFieldDecorator} />
+        <Footer decorator={getFieldDecorator} isPending={isPending} />
       </Form>
     );
   }
