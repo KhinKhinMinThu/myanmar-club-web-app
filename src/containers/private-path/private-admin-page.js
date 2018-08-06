@@ -12,7 +12,7 @@ import {
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
   EVENT_CREATION,
-  // EVENT_VIEW,
+  EVENT_VIEW,
   EVENT_EDIT,
   // EVENTREGISTRATION_VIEW,
 } from '../../actions/location';
@@ -28,7 +28,7 @@ import EventTransactionPage from '../event-transaction';
 import EventCreation from '../event-creation';
 import EventManagementPage from '../event-management';
 import EventEditPage from '../event-edit';
-// import ViewEventPage from '../admin-viewevent';
+import EventViewPage from '../event-view';
 // import ViewEventRegistrationPage from '../admin-eventregistration';
 
 class PrivateAdminPage extends Component {
@@ -55,6 +55,8 @@ class PrivateAdminPage extends Component {
         return EventManagementPage;
       case EVENT_CREATION:
         return EventCreation;
+      case EVENT_VIEW:
+        return EventViewPage;
       case EVENT_EDIT:
         return EventEditPage;
       default:

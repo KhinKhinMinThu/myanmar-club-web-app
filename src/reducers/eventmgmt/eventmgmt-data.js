@@ -85,7 +85,7 @@ export default function (
         contactPerson: 'Name 01',
         emailAddress: 'abc@gmail.com',
         mobilePhone: '6512345678',
-        eventStatus: '0', // close
+        eventStatus: '1', // close
         createdBy: '',
         createdDate: '11-05-2018',
       },
@@ -99,7 +99,8 @@ export default function (
         locationLine2: 'xxxx',
         locationPostalCode: '123456',
         photoLink:
-          'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+          // 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flower_poster_2.jpg/1280px-Flower_poster_2.jpg',
         income: '',
         expenditure: '',
         balance: '',
@@ -214,8 +215,6 @@ export default function (
     emailAddress: null,
     mobilePhone: null,
     eventStatus: null,
-    createdBy: null,
-    createdDate: null,
     // end
   },
   action,

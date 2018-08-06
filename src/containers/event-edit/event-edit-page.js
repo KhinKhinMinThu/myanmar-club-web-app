@@ -39,6 +39,7 @@ class EventEdit extends Component {
         params: { id },
       },
     } = this.props;
+    this.eventId = id;
     console.log('eventId', id);
 
     const {
@@ -62,7 +63,7 @@ class EventEdit extends Component {
       emailAddress: eventData.emailAddress,
       areaCode: eventData.mobilePhone.substr(0, 2),
       mobilePhone: eventData.mobilePhone.substr(2),
-      eventStatus: eventData.eventStatus,
+      eventStatus: eventData.eventStatus === '1',
       startDate: this.formatDate(eventData.startDate),
       startTime: this.formatDate(eventData.startDate),
       endDate: this.formatDate(eventData.endDate),
@@ -72,19 +73,12 @@ class EventEdit extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const {
-      computedMatch: {
-        params: { id },
-      },
-      form,
-      dispatchSave,
-      dispatchRemove,
-    } = this.props;
+    const { form, dispatchSave, dispatchRemove } = this.props;
 
     // if user selects to delete event, it will be deleted without
     // updating the rest of the data even if the user changed anything else.
     if (form.getFieldValue('deleteEvent')) {
-      dispatchRemove({ eventsToDelete: [id] });
+      dispatchRemove({ eventsToDelete: [this.eventId] });
     } else {
       form.validateFieldsAndScroll((error, values) => {
         if (!error) {
