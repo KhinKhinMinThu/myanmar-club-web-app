@@ -80,15 +80,21 @@ class PrivatePage extends Component {
     return (
       <Layout>
         <Sider width={250} style={{ background: '#ffffff' }}>
-          <Header style={{ height: 70, background: '#ffffff' }}>
-            <a href={DEFAULT}>
+          <a href={DEFAULT}>
+            <Header
+              style={{
+                height: 70,
+                background: '#ffffff',
+                borderBottom: '3px solid #1DA57A',
+              }}
+            >
               <img
                 alt="logo"
                 src={logo}
-                style={{ width: 'auto', height: '70px' }}
+                style={{ width: 'auto', height: '65px' }}
               />
-            </a>
-          </Header>
+            </Header>
+          </a>
           <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin={isAdmin} />
         </Sider>
 
@@ -96,8 +102,8 @@ class PrivatePage extends Component {
           <Header
             style={{
               height: 70,
-              background: '#1DA57A',
-              borderBottom: '3px solid #000080',
+              background: '#312D2D',
+              borderBottom: '3px solid #1DA57A',
             }}
           >
             <HeaderText>Myanmar Club Web Portal</HeaderText>;

@@ -16,8 +16,8 @@ export const MenuItem = styled(Menu.Item)`
 `;
 
 export const HeaderText = styled.h1`
-  font-weight: bold;
   font-style: italic;
-  color: #000080;
+  font-family: Impact;
+  color: #ffffff;
   text-transform: uppercase;
 `;
