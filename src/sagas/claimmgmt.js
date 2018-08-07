@@ -36,7 +36,7 @@ function* asyncGetClaimsData() {
 
 const postApproveClaims = claimsToApprove => api.post('/approveClaims', claimsToApprove);
 
-const postUnapproveClaims = claimsToUnApprove => api.post('/unapproveClaims', claimsToUnApprove);
+const postUnapproveClaims = claimsToUnapprove => api.post('/unapproveClaims', claimsToUnapprove);
 
 function* asyncPostProcessClaims(action) {
   let errMsg;
@@ -48,11 +48,11 @@ function* asyncPostProcessClaims(action) {
       'Calling API.........',
       action.type,
       action.claimsToApprove,
-      action.claimsToUnApprove,
+      action.claimsToUnapprove,
     );
 
     if (action.type === POST_APPROVECLAIMS) response = yield call(postApproveClaims, action.claimsToApprove);
-    if (action.type === POST_UNAPPROVECLAIMS) response = yield call(postUnapproveClaims, action.claimsToUnApprove);
+    if (action.type === POST_UNAPPROVECLAIMS) response = yield call(postUnapproveClaims, action.claimsToUnapprove);
     const { errorMsg } = response.data;
     errMsg = errorMsg;
   } catch (e) {

@@ -26,9 +26,9 @@ export const postApproveClaims = claimsToApprove => ({
   type: POST_APPROVECLAIMS,
   claimsToApprove,
 });
-export const postUnApproveClaims = claimsToUnApprove => ({
+export const postUnApproveClaims = claimsToUnapprove => ({
   type: POST_UNAPPROVECLAIMS,
-  claimsToUnApprove,
+  claimsToUnapprove,
 });
 
 export default function (
