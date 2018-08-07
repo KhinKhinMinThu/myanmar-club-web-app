@@ -23,7 +23,6 @@ export const FullWidthButton = styled(Button)`
 `;
 
 export const PageCard = styled(Card)`
-  height: 100vh;
   width: 100%;
   padding: 0px 5px 5px;
 `;

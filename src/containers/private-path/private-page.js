@@ -93,7 +93,13 @@ class PrivatePage extends Component {
         </Sider>
 
         <Layout style={{ height: '100vh' }}>
-          <Header style={{ height: 70, background: '#1DA57A' }}>
+          <Header
+            style={{
+              height: 70,
+              background: '#1DA57A',
+              borderBottom: '3px solid #2F4F4F',
+            }}
+          >
             <HeaderText>Myanmar Club Web Portal</HeaderText>;
           </Header>
           <Page {...this.props} />
