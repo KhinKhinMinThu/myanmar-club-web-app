@@ -1,184 +1,80 @@
-export const SAVE = '[CLAIMMGMT_DATA] SAVE';
+// GET API call
+export const GET_CLAIMSDATA = '[CLAIMMGMT_DATA] GETCLAIMSDATA';
+export const APILOADING = '[CLAIMMGMT_UI] APILOADING';
+export const NEWCLAIMSDATA = '[CLAIMMGMT_DATA] NEWCLAIMSDATA';
+export const OLDCLAIMSDATA = '[CLAIMMGMT_DATA] OLDCLAIMSDATA';
+export const GET_ERROR = '[CLAIMMGMT_DATA] GET_ERROR';
+// end
 
-export const save = values => ({
-  type: SAVE,
-  payload: values,
+// POST to API
+export const POST_APILOADING = '[CLAIMMGMT_UI] POST_APILOADING';
+export const POST_APPROVECLAIMS = '[CLAIMMGMT_DATA] POST_APPROVECLAIMS';
+export const POST_UNAPPROVECLAIMS = '[CLAIMMGMT_DATA] POST_UNAPPROVECLAIMS';
+export const POST_ERROR = '[CLAIMMGMT_DATA] POST_ERROR';
+// end
+
+export const getClaimsData = () => ({ type: GET_CLAIMSDATA });
+export const setNewClaimsData = newClaimsList => ({
+  type: NEWCLAIMSDATA,
+  payload: newClaimsList,
+});
+export const setOldClaimsData = oldClaimsList => ({
+  type: OLDCLAIMSDATA,
+  payload: oldClaimsList,
+});
+export const postApproveClaims = claimsToApprove => ({
+  type: POST_APPROVECLAIMS,
+  claimsToApprove,
+});
+export const postUnApproveClaims = claimsToUnApprove => ({
+  type: POST_UNAPPROVECLAIMS,
+  claimsToUnApprove,
 });
 
 export default function (
   state = {
-    // to get the data from API
-    claimsData: [
-      {
-        id: '1',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '1', // approved
-        submittedBy: 'Member Name',
-        submittedDate: '12-01-2020',
-      },
-      {
-        id: '2',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '239.12',
-        photoLink: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        remark:
-          'long remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4     remarks 1 2 3 4 remarks 1 2 3 4 remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name 01',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '3',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '4',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '5',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '6',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '7',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '8',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '9',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '10',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '11',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '0', // not approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '12',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '1', // approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '13',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '1', // approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-      {
-        id: '14',
-        eventDesc: 'Event Name/Description xyz',
-        category: 'Catering',
-        totalAmount: '240.12',
-        photoLink: 'www.google.com',
-        remark: 'remarks 1 2 3 4',
-        isApproved: '1', // approved
-        submittedBy: 'Member Name',
-        submittedDate: '22-01-2020',
-      },
-    ],
-    // end
+    isApiLoading: false,
+    getErrMsg: null,
+    isPostApiLoading: false,
+    postErrMsg: null,
+    newClaimsList: null,
+    oldClaimsList: null,
 
-    // to update to API
-    claimsToApprove: [],
-    claimsToUnApprove: [],
-    // end
+    // claimsToApprove: [],
+    // claimsToUnApprove: [],
   },
   action,
 ) {
   switch (action.type) {
-    case SAVE:
+    case APILOADING:
       return {
         ...state,
-        ...action.payload,
+        isApiLoading: action.payload,
+      };
+    case NEWCLAIMSDATA:
+      return {
+        ...state,
+        newClaimsList: action.payload,
+      };
+    case OLDCLAIMSDATA:
+      return {
+        ...state,
+        oldClaimsList: action.payload,
+      };
+    case GET_ERROR:
+      return {
+        ...state,
+        getErrMsg: action.payload,
+      };
+    case POST_APILOADING:
+      return {
+        ...state,
+        isPostApiLoading: action.payload,
+      };
+    case POST_ERROR:
+      return {
+        ...state,
+        postErrMsg: action.payload,
       };
     default:
       return state;

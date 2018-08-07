@@ -1,3 +1,4 @@
+export const CURRENTTAB = '[CLAIMMGMT_UI] CURRENTTAB';
 export const VALIDATE = '[CLAIMMGMT_UI] VALIDATE';
 export const SELECTEDKEYS = '[CLAIMMGMT_UI] SELECTEDKEYS';
 export const DESELECTALL_LOADING = '[CLAIMMGMT_UI] DESELECTALL_LOADING';
@@ -7,6 +8,11 @@ export const FILTEREDINFO = '[CLAIMMGMT_UI] FILTEREDINFO';
 export const MODALVISIBILITY = '[CLAIMMGMT_UI] MODALVISIBILITY';
 export const VIEWCLAIM = '[ACCMGMT_UI] VIEWCLAIM';
 export const RESETSTATE = '[CLAIMMGMT_UI] RESETSTATE';
+
+export const setCurrentTab = currentTab => ({
+  type: CURRENTTAB,
+  payload: currentTab,
+});
 
 export const validate = isValidating => ({
   type: VALIDATE,
@@ -28,9 +34,15 @@ export const setSelectAllLoading = isLoading => ({
   payload: isLoading,
 });
 
-export const setSortedInfo = sortedInfo => ({ type: SORTEDINFO, payload: sortedInfo });
+export const setSortedInfo = sortedInfo => ({
+  type: SORTEDINFO,
+  payload: sortedInfo,
+});
 
-export const setFilteredInfo = filteredInfo => ({ type: FILTEREDINFO, payload: filteredInfo });
+export const setFilteredInfo = filteredInfo => ({
+  type: FILTEREDINFO,
+  payload: filteredInfo,
+});
 
 export const setModalVisibility = isModalVisible => ({
   type: MODALVISIBILITY,
@@ -57,10 +69,16 @@ const initialState = {
 export default function (
   state = {
     ...initialState,
+    currentTab: 'tab1',
   },
   action,
 ) {
   switch (action.type) {
+    case CURRENTTAB:
+      return {
+        ...state,
+        currentTab: action.payload,
+      };
     case VALIDATE:
       return {
         ...state,
@@ -103,6 +121,7 @@ export default function (
       };
     case RESETSTATE:
       return {
+        ...state,
         ...initialState,
       };
     default:

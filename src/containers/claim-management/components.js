@@ -10,7 +10,6 @@ import {
   SelectedText,
   MarginLeftButton,
   SearchInput,
-  ModalItem,
 } from './styled-components';
 
 const { TabPane } = Tabs;
@@ -49,7 +48,7 @@ export const ClaimTabs = ({ onChange, tabContents }) => {
 };
 
 export const ClaimsTable = ({
-  newClaimsList,
+  claimsList,
   rowSelection,
   onChange,
   sortedInfo,
@@ -118,7 +117,7 @@ export const ClaimsTable = ({
   return (
     <FullWidthTable
       columns={columns}
-      dataSource={newClaimsList}
+      dataSource={claimsList}
       rowSelection={rowSelection}
       onChange={onChange}
       bordered
@@ -148,23 +147,32 @@ export const SelectedMembers = ({ selectedNum }) => (
   <SelectedText>Selected {selectedNum} member(s)</SelectedText>
 );
 
-export const ApproveSeletedButton = ({ onClick, hasSelected }) => (
-  <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
+export const ApproveSeletedButton = ({ onClick, hasSelected, loading }) => (
+  <MarginLeftButton
+    type="primary"
+    onClick={onClick}
+    disabled={!hasSelected}
+    loading={loading}
+  >
     Approve Selected Claim(s)
   </MarginLeftButton>
 );
 
-export const UnapproveSeletedButton = ({ onClick, hasSelected }) => (
-  <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
+export const UnapproveSeletedButton = ({ onClick, hasSelected, loading }) => (
+  <MarginLeftButton
+    type="primary"
+    onClick={onClick}
+    disabled={!hasSelected}
+    loading={loading}
+  >
     Un-Approve Selected Claim(s)
   </MarginLeftButton>
 );
 
 export const SearchNamePanel = ({
   onChange,
-  onPressEnter,
   decorator,
-  onClickSearch,
+  onSearch,
   onClickReset,
 }) => (
   <FormItem
@@ -183,10 +191,10 @@ export const SearchNamePanel = ({
       <SearchInput
         placeholder="Search submitted by"
         onChange={onChange}
-        onPressEnter={onPressEnter}
+        onPressEnter={onSearch}
       />,
     )}
-    <SearchNameButton onClick={onClickSearch} />
+    <SearchNameButton onClick={onSearch} />
     <ResetButton onClick={onClickReset} />
   </FormItem>
 );
@@ -225,13 +233,13 @@ export const ClaimModal = ({ onCloseModal, isModalVisible, viewClaim }) => {
         </Button>,
       ]}
     >
-      <img alt="example" style={{ width: '100%' }} src={photoLink} />
-      <ModalItem {...layout} label="Photo Link">
+      <img alt="receipt" style={{ width: '100%' }} src={photoLink} />
+      <FormItem {...layout} label="Photo Link" style={{ margin: 0 }}>
         <a href={photoLink}>{photoLink}</a>
-      </ModalItem>
-      <ModalItem {...layout} label="Remark">
+      </FormItem>
+      <FormItem {...layout} label="Remark" style={{ margin: 0 }}>
         <BoldText>{remark}</BoldText>
-      </ModalItem>
+      </FormItem>
     </Modal>
   );
 };

@@ -18,6 +18,6 @@ export const MenuItem = styled(Menu.Item)`
 export const HeaderText = styled.h1`
   font-weight: bold;
   font-style: italic;
-  color: #2f4f4f;
+  color: #000080;
   text-transform: uppercase;
 `;
