@@ -92,6 +92,7 @@ class ApprovedClaimsPage extends Component {
   onClickReset = () => {
     const {
       dispatchFilteredInfo,
+      dispatchResetState,
       form: { resetFields },
     } = this.props;
 
@@ -100,9 +101,9 @@ class ApprovedClaimsPage extends Component {
       resetFields(['searchName']);
       this.searchNameValue = null;
     }
+    dispatchResetState();
   };
 
-  // add the key and format role_names of member list
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({

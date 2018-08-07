@@ -1,601 +1,72 @@
-export const SAVE = '[EVENTTRANSAC_DATA] SAVE';
-export const REMOVE = '[EVENTTRANSAC_DATA] REMOVE';
+// GET API call
+export const GET_EVENTTRANSACDATA = '[EVENTTRANSAC_DATA] GET_EVENTTRANSACDATA';
+export const GET_APILOADING = '[EVENTTRANSAC_DATA] GET_APILOADING';
+export const EVENTTRANSACDATA = '[EVENTTRANSAC_DATA] EVENTTRANSACDATA';
+export const GET_ERROR = '[EVENTTRANSAC_DATA] GET_ERROR';
+// end
 
-export const save = values => ({
-  type: SAVE,
-  payload: values,
+// POST to API
+export const POST_APILOADING = '[EVENTTRANSAC_DATA] POST_APILOADING';
+export const POST_DELETETRANCS = '[EVENTTRANSAC_DATA] POST_DELETETRANCS';
+export const POST_ADDTRANCS = '[EVENTTRANSAC_DATA] POST_ADDTRANCS';
+export const POST_ERROR = '[EVENTTRANSAC_DATA] POST_ERROR';
+// end
+
+export const getEventTranscData = () => ({ type: GET_EVENTTRANSACDATA });
+export const setEventTranscData = eventsData => ({
+  type: EVENTTRANSACDATA,
+  payload: eventsData,
 });
-
-export const remove = values => ({
-  type: REMOVE,
-  payload: values,
+export const postDeleteTransc = transacIdToRemove => ({
+  type: POST_DELETETRANCS,
+  transacIdToRemove,
+});
+export const postAddTransc = transacDataToAdd => ({
+  type: POST_ADDTRANCS,
+  transacDataToAdd,
 });
 
 export default function (
   state = {
-    // to get the data from API
-    eventsData: [
-      {
-        id: '1',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '2',
-        name: 'Event Name 02',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '3',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '4',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '5',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '6',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '7',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '8',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '9',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '10',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '11',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '12',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '13',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 01',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-      {
-        id: '14',
-        name: 'Event Name 01',
-        description: 'Event Description xyz',
-        startDate: '12-01-2020',
-        endDate: '12-01-2020',
-        location: 'BLK 111, CityHall, 123456',
-        eventStatus: '1', // open
-        income: '1000.00',
-        expenditure: '550.00',
-        balance: '450.00',
-        createdBy: 'Member 02',
-        createdDate: '12-01-2020',
-        eventTransactions: [
-          {
-            id: '11',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '12',
-            type: 'income',
-            category: 'ticket',
-            amount: '110.0',
-          },
-          {
-            id: '19',
-            type: 'expenditure',
-            category: 'catering',
-            amount: '110.0',
-          },
-          {
-            id: '21',
-            type: 'income',
-            category: 'donation',
-            amount: '110.0',
-          },
-        ],
-      },
-    ],
-    // end
+    isGetApiLoading: false,
+    getErrMsg: null,
+    isPostApiLoading: false,
+    postErrMsg: null,
+    eventsData: null,
 
     // to update to API
-    eventId: null,
-    transacIdToRemove: null,
-    transacDataToAdd: null,
+    // eventId: null,
+    // transacIdToRemove: null,
+    // transacDataToAdd: null,
     // end
   },
   action,
 ) {
   switch (action.type) {
-    case SAVE:
+    case GET_APILOADING:
       return {
         ...state,
-        ...action.payload,
+        isGetApiLoading: action.payload,
       };
-    case REMOVE:
+    case EVENTTRANSACDATA:
       return {
         ...state,
-        ...action.payload,
+        eventsData: action.payload,
+      };
+    case GET_ERROR:
+      return {
+        ...state,
+        getErrMsg: action.payload,
+      };
+    case POST_APILOADING:
+      return {
+        ...state,
+        isPostApiLoading: action.payload,
+      };
+    case POST_ERROR:
+      return {
+        ...state,
+        postErrMsg: action.payload,
       };
     default:
       return state;

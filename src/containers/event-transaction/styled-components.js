@@ -63,7 +63,7 @@ export const SearchInput = styled(Input)`
 `;
 
 export const TableInput = styled(Input)`
-  width: 180px;
+  width: 160px;
 `;
 
 export const ModalItem = styled(Form.Item)`
