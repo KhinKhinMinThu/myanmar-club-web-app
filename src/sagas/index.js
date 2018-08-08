@@ -10,6 +10,7 @@ import {
   postDeleteTranscSaga,
   postAddTranscSaga,
 } from './event-transaction';
+import postForgotPwdSaga from './forgot-password';
 
 export default function* rootSaga() {
   yield all([
@@ -22,5 +23,7 @@ export default function* rootSaga() {
     getEventTranscDataSaga,
     postDeleteTranscSaga,
     postAddTranscSaga,
+    // forgot-password
+    postForgotPwdSaga,
   ]);
 }

@@ -6,11 +6,16 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router'; // react-router v4
 import { persistor, store, history } from './store';
 import {
-  DEFAULT, LOGIN, SIGNUP, FORGOTPASSWORD,
+  DEFAULT,
+  LOGIN,
+  SIGNUP,
+  FORGOTPASSWORD,
+  // RESETPASSWORD,
 } from '../actions/location';
 import LoginPage from '../containers/login-page';
 import SignupPage2 from '../containers/signup-page2';
 import ForgotPasswordPage from '../containers/forgotpwd-page';
+// import ResetPasswordPage from '../containers/forgotpwd-page/reset-password';
 import PrivatePath from '../containers/private-path';
 import MainPage from '../containers/main-page';
 

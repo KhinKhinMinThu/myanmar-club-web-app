@@ -12,7 +12,7 @@ import {
   POST_ERROR,
 } from '../reducers/claimmgmt/claimmgmt-data';
 
-const getClaimsData = () => api.get('/getClaimsData');
+const getClaimsData = () => api.get('/claim/getClaimsData');
 
 function* asyncGetClaimsData() {
   let errMsg;
@@ -34,9 +34,9 @@ function* asyncGetClaimsData() {
   }
 }
 
-const postApproveClaims = claimsToApprove => api.post('/approveClaims', { claimsToApprove });
+const postApproveClaims = claimsToApprove => api.post('/claim/approveClaims', { claimsToApprove });
 
-const postUnapproveClaims = claimsToUnapprove => api.post('/unapproveClaims', claimsToUnapprove);
+const postUnapproveClaims = claimsToUnapprove => api.post('/claim/unapproveClaims', { claimsToUnapprove });
 
 function* asyncPostProcessClaims(action) {
   let errMsg;
