@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
+import { SUCCESS_UNAPPROVECLAIMS } from '../../actions/message';
 import {
   ClaimsTable,
   DeSeletAllButton,
@@ -22,15 +23,28 @@ import {
   setViewClaim,
   resetState,
 } from '../../reducers/claimmgmt/claimmgmt-ui';
-import { save } from '../../reducers/claimmgmt/claimmgmt-data';
+import {
+  postUnApproveClaims,
+  setNewClaimsData,
+  setOldClaimsData,
+} from '../../reducers/claimmgmt/claimmgmt-data';
 
 class ApprovedClaimsPage extends Component {
-  // get the memberlist from API
-  componentWillMount() {
+  componentDidUpdate(prevProps) {
     const {
-      claimmgmtData: { claimsData },
+      claimmgmtData: { isPostApiLoading, postErrMsg },
+      claimmgmtUI: { currentTab },
     } = this.props;
-    this.newClaimsList = this.prepareList(claimsData.filter(item => item.isApproved === '1'));
+    if (currentTab !== 'tab2') return;
+
+    const isApiPost = prevProps.claimmgmtData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (postErrMsg) {
+      message.error(postErrMsg);
+    } else {
+      message.success(SUCCESS_UNAPPROVECLAIMS);
+    }
   }
 
   // handle de-select all button
@@ -49,51 +63,36 @@ class ApprovedClaimsPage extends Component {
     dispatchSelectAllLoading(true);
     setTimeout(() => {
       dispatchSelectAllLoading(false);
-      dispatchSelectedKeys([...this.newClaimsList.map(item => item.key)]);
+      dispatchSelectedKeys([...this.claimsList.map(item => item.key)]);
     }, 1000);
-  };
-
-  // handle check-box selection in the table
-  onSelectChange = (selectedKeys) => {
-    const { dispatchSelectedKeys } = this.props;
-    dispatchSelectedKeys(selectedKeys);
-  };
-
-  // handle tabs change event
-  onChange = (pagination, filters, sorter) => {
-    const { dispatchSortedInfo, dispatchFilteredInfo } = this.props;
-    dispatchSortedInfo(sorter);
-    dispatchFilteredInfo(filters);
   };
 
   // delete selected member accounts
   onClickUnApproveSelected = () => {
     const {
       claimmgmtUI: { selectedKeys },
-      dispatchSave,
+      claimmgmtData: { newClaimsList, oldClaimsList },
+      performUnApproveClaims,
       dispatchResetState,
+      dispatchNewClaimsData,
+      dispatchOldClaimsData,
     } = this.props;
-    dispatchSave({ claimsToUnApprove: selectedKeys });
+
+    performUnApproveClaims({ claimsToUnapprove: selectedKeys });
     dispatchResetState();
-    // to remove the selected claims from the table display
-    this.newClaimsList = this.newClaimsList.filter(item => !selectedKeys.includes(item.id));
-  };
-
-  // handle input changes from searchName field
-  onChangeSearchName = (e) => {
-    this.searchNameValue = e.target.value;
-  };
-
-  // handle onClick from SearchName button and onPressEnter from input field
-  onSearchName = () => {
-    const filters = this.searchNameValue ? { submittedBy: [this.searchNameValue] } : {};
-    if (this.searchNameValue !== null) this.onChange({}, filters, {});
+    const updatedNewClaims = oldClaimsList.filter(item => selectedKeys.includes(item.id));
+    const updatedOldClaims = oldClaimsList.filter(
+      item => !selectedKeys.includes(item.id),
+    );
+    dispatchNewClaimsData([...newClaimsList, ...updatedNewClaims]);
+    dispatchOldClaimsData(updatedOldClaims);
   };
 
   // handle onClick from Reset button
   onClickReset = () => {
     const {
       dispatchFilteredInfo,
+      dispatchResetState,
       form: { resetFields },
     } = this.props;
 
@@ -102,27 +101,9 @@ class ApprovedClaimsPage extends Component {
       resetFields(['searchName']);
       this.searchNameValue = null;
     }
+    dispatchResetState();
   };
 
-  // handle close button on Modal pop-up
-  onCloseModal = () => {
-    const { dispatchModalVisibility } = this.props;
-    dispatchModalVisibility(false);
-  };
-
-  // handle open-folder icon click from table row
-  showModal = (id) => {
-    const {
-      claimmgmtData: { claimsData },
-      dispatchModalVisibility,
-      dispatchViewClaim,
-    } = this.props;
-    const viewClaim = claimsData.find(item => item.id === id);
-    dispatchModalVisibility(true);
-    dispatchViewClaim(viewClaim);
-  };
-
-  // add the key and format role_names of member list
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
@@ -134,36 +115,55 @@ class ApprovedClaimsPage extends Component {
 
   render() {
     const {
-      claimmgmtUI,
+      claimmgmtUI: {
+        selectedKeys,
+        deselectAllLoading,
+        selectAllLoading,
+        sortedInfo,
+        filteredInfo,
+        isModalVisible,
+        viewClaim,
+      },
+      claimmgmtData: { oldClaimsList, isPostApiLoading },
       form: { getFieldDecorator },
+      dispatchSelectedKeys,
+      dispatchSortedInfo,
+      dispatchFilteredInfo,
+      dispatchModalVisibility,
+      dispatchViewClaim,
     } = this.props;
-    const {
-      selectedKeys,
-      deselectAllLoading,
-      selectAllLoading,
-      sortedInfo,
-      filteredInfo,
-      isModalVisible,
-      viewClaim,
-    } = claimmgmtUI;
+
+    if (oldClaimsList) this.claimsList = this.prepareList(oldClaimsList);
+
     const rowSelection = {
       selectedRowKeys: selectedKeys,
-      onChange: this.onSelectChange,
+      // handle check-box selection in the table
+      onChange: keys => dispatchSelectedKeys(keys),
     };
     const hasSelected = selectedKeys.length > 0;
 
     return (
       <div>
         <SearchNamePanel
-          onChange={this.onChangeSearchName}
-          onPressEnter={this.onSearchName}
+          onChange={(e) => {
+            this.searchNameValue = e.target.value;
+          }}
           decorator={getFieldDecorator}
-          onClickSearch={this.onSearchName}
+          // handle onClick from SearchName button and onPressEnter from input field
+          onSearch={() => dispatchFilteredInfo(
+            this.searchNameValue
+              ? { submittedBy: [this.searchNameValue] }
+              : {},
+          )
+          }
           onClickReset={this.onClickReset}
         />
 
         <FlexContainer>
-          <SeletAllButton onClick={this.onClickSelectAll} loading={selectAllLoading} />
+          <SeletAllButton
+            onClick={this.onClickSelectAll}
+            loading={selectAllLoading}
+          />
           <DeSeletAllButton
             onClick={this.onClickDeselectAll}
             hasSelected={hasSelected}
@@ -172,23 +172,32 @@ class ApprovedClaimsPage extends Component {
           <UnapproveSeletedButton
             onClick={this.onClickUnApproveSelected}
             hasSelected={hasSelected}
+            loading={isPostApiLoading}
           />
-          {hasSelected ? <SelectedMembers selectedNum={selectedKeys.length} /> : null}
+          {hasSelected ? (
+            <SelectedMembers selectedNum={selectedKeys.length} />
+          ) : null}
         </FlexContainer>
 
         <FlexContainer>
           <ClaimsTable
-            newClaimsList={this.newClaimsList}
+            claimsList={this.claimsList}
             rowSelection={rowSelection}
-            onChange={this.onChange}
+            onChange={(pagination, filters, sorter) => {
+              dispatchSortedInfo(sorter);
+              dispatchFilteredInfo(filters);
+            }}
             sortedInfo={sortedInfo || {}}
             filteredInfo={filteredInfo || {}}
-            showModal={id => this.showModal(id)}
+            showModal={(id) => {
+              dispatchViewClaim(this.claimsList.find(item => item.id === id));
+              dispatchModalVisibility(true);
+            }}
           />
         </FlexContainer>
         <ClaimModal
           isModalVisible={isModalVisible}
-          onCloseModal={this.onCloseModal}
+          onCloseModal={() => dispatchModalVisibility(false)}
           viewClaim={viewClaim}
         />
       </div>
@@ -206,7 +215,10 @@ ApprovedClaimsPage.propTypes = {
   dispatchModalVisibility: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
   dispatchViewClaim: PropTypes.func.isRequired,
-  dispatchSave: PropTypes.func.isRequired,
+  performUnApproveClaims: PropTypes.func.isRequired,
+
+  dispatchNewClaimsData: PropTypes.func.isRequired,
+  dispatchOldClaimsData: PropTypes.func.isRequired,
 
   claimmgmtUI: PropTypes.shape({}).isRequired,
   claimmgmtData: PropTypes.shape({}).isRequired,
@@ -225,7 +237,10 @@ const mapDispatchToProps = {
   dispatchModalVisibility: setModalVisibility,
   dispatchViewClaim: setViewClaim,
   dispatchResetState: resetState,
-  dispatchSave: save,
+
+  dispatchNewClaimsData: setNewClaimsData,
+  dispatchOldClaimsData: setOldClaimsData,
+  performUnApproveClaims: postUnApproveClaims,
 };
 
 const FormApprovedClaimsPage = Form.create()(ApprovedClaimsPage);

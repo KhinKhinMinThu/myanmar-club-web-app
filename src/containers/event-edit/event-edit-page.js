@@ -100,6 +100,7 @@ class EventEdit extends Component {
             ...formValues,
             startDate,
             endDate,
+            id: this.eventId,
             mobilePhone: formValues.areaCode + formValues.mobilePhone,
             eventStatus: formValues.eventStatus ? '1' : '0',
           });

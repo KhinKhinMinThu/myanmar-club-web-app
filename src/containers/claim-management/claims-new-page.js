@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
+import { SUCCESS_APPROVECLAIMS } from '../../actions/message';
 import {
   ClaimsTable,
   DeSeletAllButton,
@@ -22,18 +23,30 @@ import {
   setViewClaim,
   resetState,
 } from '../../reducers/claimmgmt/claimmgmt-ui';
-import { save } from '../../reducers/claimmgmt/claimmgmt-data';
+import {
+  postApproveClaims,
+  setNewClaimsData,
+  setOldClaimsData,
+} from '../../reducers/claimmgmt/claimmgmt-data';
 
 class NewClaimsPage extends Component {
-  // get the memberlist from API
-  componentWillMount() {
+  componentDidUpdate(prevProps) {
     const {
-      claimmgmtData: { claimsData },
+      claimmgmtData: { isPostApiLoading, postErrMsg },
+      claimmgmtUI: { currentTab },
     } = this.props;
-    this.newClaimsList = this.prepareList(claimsData.filter(item => item.isApproved === '0'));
+    if (currentTab !== 'tab1') return;
+
+    const isApiPost = prevProps.claimmgmtData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (postErrMsg) {
+      message.error(postErrMsg);
+    } else {
+      message.success(SUCCESS_APPROVECLAIMS);
+    }
   }
 
-  // handle de-select all button
   onClickDeselectAll = () => {
     const { dispatchSelectedKeys, dispatchDeselectAllLoading } = this.props;
     dispatchDeselectAllLoading(true);
@@ -43,57 +56,41 @@ class NewClaimsPage extends Component {
     }, 1000);
   };
 
-  // handle select all button
   onClickSelectAll = () => {
     const { dispatchSelectedKeys, dispatchSelectAllLoading } = this.props;
     dispatchSelectAllLoading(true);
     setTimeout(() => {
       dispatchSelectAllLoading(false);
-      dispatchSelectedKeys([...this.newClaimsList.map(item => item.key)]);
+      dispatchSelectedKeys([...this.claimsList.map(item => item.key)]);
     }, 1000);
-  };
-
-  // handle check-box selection in the table
-  onSelectChange = (selectedKeys) => {
-    const { dispatchSelectedKeys } = this.props;
-    dispatchSelectedKeys(selectedKeys);
-  };
-
-  // handle tabs change event
-  onChange = (pagination, filters, sorter) => {
-    const { dispatchSortedInfo, dispatchFilteredInfo } = this.props;
-    dispatchSortedInfo(sorter);
-    dispatchFilteredInfo(filters);
   };
 
   // delete selected member accounts
   onClickApproveSelected = () => {
     const {
       claimmgmtUI: { selectedKeys },
-      dispatchSave,
+      claimmgmtData: { newClaimsList, oldClaimsList },
+      performApproveClaims,
       dispatchResetState,
+      dispatchNewClaimsData,
+      dispatchOldClaimsData,
     } = this.props;
-    dispatchSave({ claimsToApprove: selectedKeys });
+    performApproveClaims({ claimsToApprove: selectedKeys });
     dispatchResetState();
-    // to remove the selected claims from the table display
-    this.newClaimsList = this.newClaimsList.filter(item => !selectedKeys.includes(item.id));
-  };
+    const updatedNewClaims = newClaimsList.filter(
+      item => !selectedKeys.includes(item.id),
+    );
+    const updatedOldClaims = newClaimsList.filter(item => selectedKeys.includes(item.id));
 
-  // handle input changes from searchName field
-  onChangeSearchName = (e) => {
-    this.searchNameValue = e.target.value;
-  };
-
-  // handle onClick from SearchName button and onPressEnter from input field
-  onSearchName = () => {
-    const filters = this.searchNameValue ? { submittedBy: [this.searchNameValue] } : {};
-    if (this.searchNameValue !== null) this.onChange({}, filters, {});
+    dispatchNewClaimsData(updatedNewClaims);
+    dispatchOldClaimsData([...oldClaimsList, ...updatedOldClaims]);
   };
 
   // handle onClick from Reset button
   onClickReset = () => {
     const {
       dispatchFilteredInfo,
+      dispatchResetState,
       form: { resetFields },
     } = this.props;
 
@@ -102,27 +99,9 @@ class NewClaimsPage extends Component {
       resetFields(['searchName']);
       this.searchNameValue = null;
     }
+    dispatchResetState();
   };
 
-  // handle close button on Modal pop-up
-  onCloseModal = () => {
-    const { dispatchModalVisibility } = this.props;
-    dispatchModalVisibility(false);
-  };
-
-  // handle open-folder icon click from table row
-  showModal = (id) => {
-    const {
-      claimmgmtData: { claimsData },
-      dispatchModalVisibility,
-      dispatchViewClaim,
-    } = this.props;
-    const viewClaim = claimsData.find(item => item.id === id);
-    dispatchModalVisibility(true);
-    dispatchViewClaim(viewClaim);
-  };
-
-  // add the key and format role_names of member list
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
@@ -134,58 +113,89 @@ class NewClaimsPage extends Component {
 
   render() {
     const {
-      claimmgmtUI,
+      claimmgmtUI: {
+        selectedKeys,
+        deselectAllLoading,
+        selectAllLoading,
+        sortedInfo,
+        filteredInfo,
+        isModalVisible,
+        viewClaim,
+      },
+      claimmgmtData: { newClaimsList, isPostApiLoading },
       form: { getFieldDecorator },
+      dispatchSelectedKeys,
+      dispatchSortedInfo,
+      dispatchFilteredInfo,
+      dispatchModalVisibility,
+      dispatchViewClaim,
     } = this.props;
-    const {
-      selectedKeys,
-      deselectAllLoading,
-      selectAllLoading,
-      sortedInfo,
-      filteredInfo,
-      isModalVisible,
-      viewClaim,
-    } = claimmgmtUI;
+
+    if (newClaimsList) this.claimsList = this.prepareList(newClaimsList);
+
     const rowSelection = {
       selectedRowKeys: selectedKeys,
-      onChange: this.onSelectChange,
+      // handle check-box selection in the table
+      onChange: keys => dispatchSelectedKeys(keys),
     };
     const hasSelected = selectedKeys.length > 0;
 
     return (
       <div>
         <SearchNamePanel
-          onChange={this.onChangeSearchName}
-          onPressEnter={this.onSearchName}
+          onChange={(e) => {
+            this.searchNameValue = e.target.value;
+          }}
           decorator={getFieldDecorator}
-          onClickSearch={this.onSearchName}
+          // handle onClick from SearchName button and onPressEnter from input field
+          onSearch={() => dispatchFilteredInfo(
+            this.searchNameValue
+              ? { submittedBy: [this.searchNameValue] }
+              : {},
+          )
+          }
           onClickReset={this.onClickReset}
         />
 
         <FlexContainer>
-          <SeletAllButton onClick={this.onClickSelectAll} loading={selectAllLoading} />
+          <SeletAllButton
+            onClick={this.onClickSelectAll}
+            loading={selectAllLoading}
+          />
           <DeSeletAllButton
             onClick={this.onClickDeselectAll}
             hasSelected={hasSelected}
             loading={deselectAllLoading}
           />
-          <ApproveSeletedButton onClick={this.onClickApproveSelected} hasSelected={hasSelected} />
-          {hasSelected ? <SelectedMembers selectedNum={selectedKeys.length} /> : null}
+          <ApproveSeletedButton
+            onClick={this.onClickApproveSelected}
+            hasSelected={hasSelected}
+            loading={isPostApiLoading}
+          />
+          {hasSelected ? (
+            <SelectedMembers selectedNum={selectedKeys.length} />
+          ) : null}
         </FlexContainer>
 
         <FlexContainer>
           <ClaimsTable
-            newClaimsList={this.newClaimsList}
+            claimsList={this.claimsList}
             rowSelection={rowSelection}
-            onChange={this.onChange}
+            onChange={(pagination, filters, sorter) => {
+              dispatchSortedInfo(sorter);
+              dispatchFilteredInfo(filters);
+            }}
             sortedInfo={sortedInfo || {}}
             filteredInfo={filteredInfo || {}}
-            showModal={id => this.showModal(id)}
+            showModal={(id) => {
+              dispatchViewClaim(this.claimsList.find(item => item.id === id));
+              dispatchModalVisibility(true);
+            }}
           />
         </FlexContainer>
         <ClaimModal
           isModalVisible={isModalVisible}
-          onCloseModal={this.onCloseModal}
+          onCloseModal={() => dispatchModalVisibility(false)}
           viewClaim={viewClaim}
         />
       </div>
@@ -203,7 +213,10 @@ NewClaimsPage.propTypes = {
   dispatchModalVisibility: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
   dispatchViewClaim: PropTypes.func.isRequired,
-  dispatchSave: PropTypes.func.isRequired,
+  performApproveClaims: PropTypes.func.isRequired,
+
+  dispatchNewClaimsData: PropTypes.func.isRequired,
+  dispatchOldClaimsData: PropTypes.func.isRequired,
 
   claimmgmtUI: PropTypes.shape({}).isRequired,
   claimmgmtData: PropTypes.shape({}).isRequired,
@@ -222,7 +235,10 @@ const mapDispatchToProps = {
   dispatchModalVisibility: setModalVisibility,
   dispatchViewClaim: setViewClaim,
   dispatchResetState: resetState,
-  dispatchSave: save,
+
+  dispatchNewClaimsData: setNewClaimsData,
+  dispatchOldClaimsData: setOldClaimsData,
+  performApproveClaims: postApproveClaims,
 };
 
 const FormNewClaimsPage = Form.create()(NewClaimsPage);

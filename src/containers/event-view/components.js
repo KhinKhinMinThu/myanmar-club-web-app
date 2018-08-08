@@ -3,7 +3,6 @@ import { Tabs, Button, Form } from 'antd';
 import { EVENT_EDIT } from '../../actions/location';
 import {
   FullWidthButton,
-  FormItemNoMargin,
   ReadOnlyInput,
   TabIcon,
   BoldText,
@@ -60,9 +59,10 @@ const layout = {
   },
 };
 
+const noMargin = { margin: 0 };
 export const EventData = ({ decorator }) => (
   <div>
-    <FormItemNoMargin>
+    <FormItem>
       {decorator('photoLink', { valuePropName: 'src' })(
         <img
           alt="example"
@@ -74,53 +74,53 @@ export const EventData = ({ decorator }) => (
           }}
         />,
       )}
-    </FormItemNoMargin>
+    </FormItem>
 
-    <FormItemNoMargin {...layout} label="Event Name">
+    <FormItem {...layout} label="Event Name" style={noMargin}>
       {decorator('name')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Event Description">
+    </FormItem>
+    <FormItem {...layout} label="Event Description" style={noMargin}>
       {decorator('description')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Start Date/Time">
+    </FormItem>
+    <FormItem {...layout} label="Start Date/Time" style={noMargin}>
       {decorator('startDate')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="End Date/Time">
+    </FormItem>
+    <FormItem {...layout} label="End Date/Time" style={noMargin}>
       {decorator('endDate')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Location">
+    </FormItem>
+    <FormItem {...layout} label="Location" style={noMargin}>
       {decorator('location')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Postal Code">
+    </FormItem>
+    <FormItem {...layout} label="Postal Code" style={noMargin}>
       {decorator('locationPostalCode')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Event Status">
+    </FormItem>
+    <FormItem {...layout} label="Event Status" style={noMargin}>
       {decorator('eventStatus')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Ticket Fee (SGD)">
+    </FormItem>
+    <FormItem {...layout} label="Ticket Fee (SGD)" style={noMargin}>
       {decorator('ticketFee')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="No of Pax">
+    </FormItem>
+    <FormItem {...layout} label="No of Pax" style={noMargin}>
       {decorator('noOfPax')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Refreshment Provided">
+    </FormItem>
+    <FormItem {...layout} label="Refreshment Provided" style={noMargin}>
       {decorator('isRefreshmentProvided')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Contact Person">
+    </FormItem>
+    <FormItem {...layout} label="Contact Person" style={noMargin}>
       {decorator('contactPerson')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Email Address">
+    </FormItem>
+    <FormItem {...layout} label="Email Address" style={noMargin}>
       {decorator('emailAddress')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Mobile No">
+    </FormItem>
+    <FormItem {...layout} label="Mobile No" style={noMargin}>
       {decorator('mobilePhone')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Created By">
+    </FormItem>
+    <FormItem {...layout} label="Created By" style={noMargin}>
       {decorator('createdBy')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
-    <FormItemNoMargin {...layout} label="Created Date">
+    </FormItem>
+    <FormItem {...layout} label="Created Date" style={noMargin}>
       {decorator('createdDate')(<ReadOnlyInput readOnly />)}
-    </FormItemNoMargin>
+    </FormItem>
   </div>
 );
 
@@ -140,19 +140,19 @@ export const ViewRSVPButton = ({ eventId }) => (
 export const CloseButton = <FullWidthButton>Close</FullWidthButton>;
 
 export const ShareFacebookButton = ({ decorator }) => (
-  <FormItemNoMargin {...layout} label="Share on facebook >" colon={false}>
+  <FormItem {...layout} label="Share on facebook >" colon={false} style={noMargin}>
     {decorator('shareFaceBook')(
       <Button icon="facebook" shape="circle" type="primary" ghost />,
     )}
-  </FormItemNoMargin>
+  </FormItem>
 );
 
 export const NotifyMsgButton = ({ decorator }) => (
-  <FormItemNoMargin {...layout} label="Notify Club Members >" colon={false}>
+  <FormItem {...layout} label="Notify Club Members >" colon={false} style={noMargin}>
     {decorator('notifyMsg')(
       <Button icon="message" shape="circle" type="primary" ghost />,
     )}
-  </FormItemNoMargin>
+  </FormItem>
 );
 
 export const RegistrationTable = ({

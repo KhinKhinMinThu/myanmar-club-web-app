@@ -10,13 +10,14 @@ import {
   SelectedText,
   MarginLeftButton,
   SearchInput,
-  ModalItem,
 } from './styled-components';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
 
 /* eslint react/prop-types: 0 */
+
+// claim tabs
 export const ClaimTabs = ({ onChange, tabContents }) => {
   const tabTitles = {
     tab1: (
@@ -48,8 +49,81 @@ export const ClaimTabs = ({ onChange, tabContents }) => {
   );
 };
 
+// SearchNamePanel
+export const SearchNamePanel = ({
+  onChange,
+  decorator,
+  onSearch,
+  onClickReset,
+}) => (
+  <FormItem>
+    {decorator('searchName', { initialValue: null })(
+      <SearchInput
+        placeholder="Search submitted by"
+        onChange={onChange}
+        onPressEnter={onSearch}
+      />,
+    )}
+    <MarginLeftButton type="primary" onClick={onSearch}>
+      Search
+    </MarginLeftButton>
+    <MarginLeftButton type="primary" onClick={onClickReset} ghost>
+      Clear Search
+    </MarginLeftButton>
+  </FormItem>
+);
+
+// DeSeletAllButton
+export const DeSeletAllButton = ({ onClick, hasSelected, loading }) => (
+  <MarginLeftButton
+    type="primary"
+    onClick={onClick}
+    disabled={!hasSelected}
+    loading={loading}
+    ghost
+  >
+    Deselect All
+  </MarginLeftButton>
+);
+
+// SeletAllButton
+export const SeletAllButton = ({ onClick, loading }) => (
+  <Button type="primary" onClick={onClick} loading={loading} ghost>
+    Select All
+  </Button>
+);
+
+// ApproveSeletedButton
+export const ApproveSeletedButton = ({ onClick, hasSelected, loading }) => (
+  <MarginLeftButton
+    type="primary"
+    onClick={onClick}
+    disabled={!hasSelected}
+    loading={loading}
+  >
+    Approve Selected Claim(s)
+  </MarginLeftButton>
+);
+
+// UnapproveSeletedButton
+export const UnapproveSeletedButton = ({ onClick, hasSelected, loading }) => (
+  <MarginLeftButton
+    type="primary"
+    onClick={onClick}
+    disabled={!hasSelected}
+    loading={loading}
+  >
+    Un-Approve Selected Claim(s)
+  </MarginLeftButton>
+);
+
+// SelectedMembers
+export const SelectedMembers = ({ selectedNum }) => (
+  <SelectedText>Selected {selectedNum} member(s)</SelectedText>
+);
+
 export const ClaimsTable = ({
-  newClaimsList,
+  claimsList,
   rowSelection,
   onChange,
   sortedInfo,
@@ -118,90 +192,13 @@ export const ClaimsTable = ({
   return (
     <FullWidthTable
       columns={columns}
-      dataSource={newClaimsList}
+      dataSource={claimsList}
       rowSelection={rowSelection}
       onChange={onChange}
       bordered
     />
   );
 };
-
-export const DeSeletAllButton = ({ onClick, hasSelected, loading }) => (
-  <MarginLeftButton
-    type="primary"
-    onClick={onClick}
-    disabled={!hasSelected}
-    loading={loading}
-    ghost
-  >
-    Deselect All
-  </MarginLeftButton>
-);
-
-export const SeletAllButton = ({ onClick, loading }) => (
-  <Button type="primary" onClick={onClick} loading={loading} ghost>
-    Select All
-  </Button>
-);
-
-export const SelectedMembers = ({ selectedNum }) => (
-  <SelectedText>Selected {selectedNum} member(s)</SelectedText>
-);
-
-export const ApproveSeletedButton = ({ onClick, hasSelected }) => (
-  <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
-    Approve Selected Claim(s)
-  </MarginLeftButton>
-);
-
-export const UnapproveSeletedButton = ({ onClick, hasSelected }) => (
-  <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
-    Un-Approve Selected Claim(s)
-  </MarginLeftButton>
-);
-
-export const SearchNamePanel = ({
-  onChange,
-  onPressEnter,
-  decorator,
-  onClickSearch,
-  onClickReset,
-}) => (
-  <FormItem
-    {...{
-      labelCol: {
-        xs: { span: 0 },
-        sm: { span: 0 },
-      },
-      wrapperCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
-      },
-    }}
-  >
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder="Search submitted by"
-        onChange={onChange}
-        onPressEnter={onPressEnter}
-      />,
-    )}
-    <SearchNameButton onClick={onClickSearch} />
-    <ResetButton onClick={onClickReset} />
-  </FormItem>
-);
-
-export const SearchNameButton = ({ onClick }) => (
-  <MarginLeftButton type="primary" onClick={onClick}>
-    Search
-  </MarginLeftButton>
-);
-
-export const ResetButton = ({ onClick }) => (
-  <MarginLeftButton type="primary" onClick={onClick} ghost>
-    Clear Search
-  </MarginLeftButton>
-);
 
 export const ClaimModal = ({ onCloseModal, isModalVisible, viewClaim }) => {
   const layout = {
@@ -225,13 +222,13 @@ export const ClaimModal = ({ onCloseModal, isModalVisible, viewClaim }) => {
         </Button>,
       ]}
     >
-      <img alt="example" style={{ width: '100%' }} src={photoLink} />
-      <ModalItem {...layout} label="Photo Link">
+      <img alt="receipt" style={{ width: '100%' }} src={photoLink} />
+      <FormItem {...layout} label="Photo Link" style={{ margin: 0 }}>
         <a href={photoLink}>{photoLink}</a>
-      </ModalItem>
-      <ModalItem {...layout} label="Remark">
+      </FormItem>
+      <FormItem {...layout} label="Remark" style={{ margin: 0 }}>
         <BoldText>{remark}</BoldText>
-      </ModalItem>
+      </FormItem>
     </Modal>
   );
 };

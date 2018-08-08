@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  Icon, Table, Button, Input, Form,
+  Icon, Table, Button, Input,
 } from 'antd';
 
 export const TabIcon = styled(Icon)`
@@ -51,8 +51,4 @@ export const MarginLeftButton = styled(Button)`
 
 export const SearchInput = styled(Input)`
   width: 200px;
-`;
-
-export const ModalItem = styled(Form.Item)`
-  margin-bottom: 0px;
 `;

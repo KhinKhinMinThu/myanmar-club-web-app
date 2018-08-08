@@ -4,7 +4,7 @@ import {
   LOGIN, LOGIN_PENDING, LOGIN_ERROR, LOGGEDIN,
 } from '../reducers/login';
 import api from './api';
-import { DEFAULT } from '../actions/location';
+import { DASHBOARD } from '../actions/location';
 
 const postLogin = userData => api.post('/login', {
   username: userData.username,
@@ -23,7 +23,7 @@ function* asyncLogin(action) {
     errMsg = e.message;
   } finally {
     yield put({ type: LOGIN_ERROR, errMsg });
-    yield put(push(DEFAULT)); // default path
+    yield put(push(DASHBOARD)); // home path
   }
 }
 

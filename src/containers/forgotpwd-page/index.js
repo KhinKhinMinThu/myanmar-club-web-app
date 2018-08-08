@@ -1,12 +1,12 @@
 import React from 'react';
-import { SmallCard } from '../shared-components/common';
+import { ForgotPwdCard } from './styled-components';
 import ForgotPassword from './forgot-password-page';
 
 const ForgotPasswordPage = () => (
   <div className="public-pages">
-    <SmallCard bordered={false}>
+    <ForgotPwdCard bordered={false}>
       <ForgotPassword />
-    </SmallCard>
+    </ForgotPwdCard>
   </div>
 );
 

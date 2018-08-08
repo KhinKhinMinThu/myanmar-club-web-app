@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form } from 'antd';
 import { connect } from 'react-redux';
+import {
+  Form, message, Spin, Alert,
+} from 'antd';
+import {
+  SUCCESS_DELETEEVENTTRANSC,
+  SUCCESS_ADDEVENTTRANSC,
+} from '../../actions/message';
+
 import { EventsTable, SearchNamePanel } from './components';
 import { FlexContainer } from './styled-components';
 import {
@@ -13,37 +20,43 @@ import {
   setEditingKey,
 } from '../../reducers/event-transaction/event-transaction-ui';
 import {
-  save,
-  remove,
+  getEventTranscData,
+  postDeleteEventTransc,
+  postAddEventTransc,
 } from '../../reducers/event-transaction/event-transaction-data';
 
 class EventTransaction extends Component {
-  componentWillMount() {
-    const {
-      eventTransactionData: { eventsData },
-    } = this.props;
-    this.eventsList = this.prepareList(eventsData);
+  componentDidMount() {
+    const { dispatchResetState, performGetEventTranscData } = this.props;
+    dispatchResetState();
+    performGetEventTranscData();
   }
 
-  // handle input changes from searchName field
-  onChangeSearchName = (e) => {
-    this.searchNameValue = e.target.value;
-  };
+  componentWillUpdate(nextProps) {
+    const {
+      eventTransactionData: { isGetApiLoading },
+    } = this.props;
+    this.isApiCalled = !nextProps.eventTransactionData.isGetApiLoading && isGetApiLoading;
+  }
 
-  // handle onClick from SearchName button and onPressEnter from input field
-  onSearchName = () => {
-    const filters = this.searchNameValue
-      ? { name: [this.searchNameValue] }
-      : {};
-    if (this.searchNameValue !== null) this.onChange({}, filters, {});
-  };
+  componentDidUpdate(prevProps) {
+    const {
+      eventTransactionData: { isPostApiLoading, postErrMsg },
+    } = this.props;
 
-  // handle table change event
-  onChange = (pagination, filters, sorter) => {
-    const { dispatchSortedInfo, dispatchFilteredInfo } = this.props;
-    dispatchSortedInfo(sorter);
-    dispatchFilteredInfo(filters);
-  };
+    const isApiPost = prevProps.eventTransactionData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (this.actionType) {
+      if (postErrMsg) {
+        message.error(postErrMsg);
+      } else {
+        if (this.actionType === 'save') message.success(SUCCESS_ADDEVENTTRANSC);
+        if (this.actionType === 'delete') message.success(SUCCESS_DELETEEVENTTRANSC);
+      }
+    }
+    this.actionType = null;
+  }
 
   // handle onClick from Reset button
   onClickReset = () => {
@@ -67,9 +80,9 @@ class EventTransaction extends Component {
       dispatchDummyTransac,
       dispatchEditingKey,
     } = this.props;
-    const { eventTransactions } = this.eventsList.find(
-      item => item.id === eventId,
-    );
+    const event = this.eventsList.find(item => item.id === eventId);
+    const { eventTransactions } = event;
+
     const key = dummyTransacIndex + 1;
     const newData = {
       key: `dummy${key}`,
@@ -83,32 +96,21 @@ class EventTransaction extends Component {
     dispatchEditingKey(`dummy${key}`);
   };
 
-  onExpand = (expanded, record) => {
-    const { dispatchExpandedRowKeys } = this.props;
-    const keys = [];
-    if (expanded) {
-      keys.push(record.id);
-    }
-    dispatchExpandedRowKeys(keys);
-  };
+  deleteTransaction = (eventId, transacId) => {
+    this.actionType = 'delete';
+    const event = this.eventsList.find(item => item.id === eventId);
+    const { eventTransactions } = event;
+    const index = eventTransactions.findIndex(item => item.id === transacId);
 
-  removeRecord = (eventId, transacId) => {
-    const { eventTransactions } = this.eventsList.find(
-      item => item.id === eventId,
-    );
-    const index = eventTransactions.findIndex(
-      transac => transac.id === transacId,
-    );
     eventTransactions.splice(index, 1);
 
-    const { dispatchRemove } = this.props;
-    dispatchRemove({
+    const { performDeleteTransc } = this.props;
+    performDeleteTransc({
       eventId,
       transacIdToRemove: transacId,
     });
   };
 
-  // add the key and format role_names of member list
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
@@ -118,74 +120,97 @@ class EventTransaction extends Component {
     return preparedList;
   };
 
-  cancelTransaction = () => {
-    const { dispatchEditingKey } = this.props;
-    dispatchEditingKey(null);
-  };
-
-  editTransaction = (transacId) => {
-    const { dispatchEditingKey } = this.props;
-    dispatchEditingKey(transacId);
-  };
-
   saveTransaction = (form, eventId, transacId) => {
-    const { dispatchEditingKey, dispatchSave } = this.props;
+    this.actionType = 'save';
+    const { dispatchEditingKey, performAddTransc } = this.props;
     dispatchEditingKey(transacId);
     form.validateFieldsAndScroll((error, row) => {
-      if (error) {
-        return;
-      }
+      if (error) return;
 
-      const { eventTransactions } = this.eventsList.find(
-        item => item.id === eventId,
-      );
+      const event = this.eventsList.find(item => item.id === eventId);
+      const { eventTransactions } = event;
       const index = eventTransactions.findIndex(item => item.id === transacId);
       const newData = { ...eventTransactions[index], ...row };
+
       eventTransactions.splice(index, 1, newData);
+
       dispatchEditingKey(null);
-      dispatchSave({ eventId, transacDataToAdd: newData });
+      performAddTransc({ eventId, transacDataToAdd: newData });
     });
   };
 
   render() {
     const {
-      eventTransactionUI,
+      eventTransactionUI: {
+        sortedInfo,
+        filteredInfo,
+        expandedRowKeys,
+        editingKey,
+      },
+      eventTransactionData: {
+        eventsData,
+        isGetApiLoading,
+        getErrMsg, isPostApiLoading,
+      },
       form: { getFieldDecorator },
+      dispatchSortedInfo,
+      dispatchFilteredInfo,
+      dispatchExpandedRowKeys,
+      dispatchEditingKey,
     } = this.props;
-    const {
-      sortedInfo,
-      filteredInfo,
-      expandedRowKeys,
-      editingKey,
-    } = eventTransactionUI;
-    return (
-      <div>
-        <SearchNamePanel
-          onChange={this.onChangeSearchName}
-          onPressEnter={this.onSearchName}
-          decorator={getFieldDecorator}
-          onClickSearch={this.onSearchName}
-          onClickReset={this.onClickReset}
-        />
 
-        <FlexContainer>
-          <EventsTable
-            eventsList={this.eventsList}
-            onChange={this.onChange}
-            sortedInfo={sortedInfo || {}}
-            filteredInfo={filteredInfo || {}}
-            removeRecord={(eventId, transacId) => this.removeRecord(eventId, transacId)
-            }
-            expandedRowKeys={expandedRowKeys}
-            onExpand={this.onExpand}
-            onClickAddRow={this.onClickAddRow}
-            cancelTransaction={this.cancelTransaction}
-            editTransaction={this.editTransaction}
-            saveTransaction={this.saveTransaction}
-            editingKey={editingKey}
+    if (eventsData) this.eventsList = this.prepareList(eventsData);
+
+    return (
+      <Spin spinning={isGetApiLoading} size="large">
+        {this.isApiCalled && getErrMsg ? (
+          <Alert
+            message="Error"
+            description={getErrMsg}
+            type="error"
+            showIcon
           />
-        </FlexContainer>
-      </div>
+        ) : (
+          <div>
+            <SearchNamePanel
+              onChange={(e) => {
+                this.searchNameValue = e.target.value;
+              }}
+              decorator={getFieldDecorator}
+              onSearch={() => dispatchFilteredInfo(
+                this.searchNameValue ? { name: [this.searchNameValue] } : {},
+              )
+              }
+              onClickReset={this.onClickReset}
+            />
+
+            <FlexContainer>
+              <EventsTable
+                eventsList={this.eventsList}
+                onChange={(pagination, filters, sorter) => {
+                  dispatchSortedInfo(sorter);
+                  dispatchFilteredInfo(filters);
+                }}
+                sortedInfo={sortedInfo || {}}
+                filteredInfo={filteredInfo || {}}
+                deleteTransaction={(eventId, transacId) => this.deleteTransaction(eventId, transacId)
+                }
+                expandedRowKeys={expandedRowKeys}
+                onExpand={(expanded, record) => {
+                  const keys = expanded ? [record.id] : [];
+                  dispatchExpandedRowKeys(keys);
+                }}
+                onClickAddRow={this.onClickAddRow}
+                cancelTransaction={() => dispatchEditingKey(null)}
+                editTransaction={transacId => dispatchEditingKey(transacId)}
+                saveTransaction={this.saveTransaction}
+                editingKey={editingKey}
+                isPostApiLoading={isPostApiLoading}
+              />
+            </FlexContainer>
+          </div>
+        )}
+      </Spin>
     );
   }
 }
@@ -198,8 +223,10 @@ EventTransaction.propTypes = {
   dispatchExpandedRowKeys: PropTypes.func.isRequired,
   dispatchDummyTransac: PropTypes.func.isRequired,
   dispatchEditingKey: PropTypes.func.isRequired,
-  dispatchSave: PropTypes.func.isRequired,
-  dispatchRemove: PropTypes.func.isRequired,
+
+  performGetEventTranscData: PropTypes.func.isRequired,
+  performAddTransc: PropTypes.func.isRequired,
+  performDeleteTransc: PropTypes.func.isRequired,
 
   eventTransactionUI: PropTypes.shape({}).isRequired,
   eventTransactionData: PropTypes.shape({}).isRequired,
@@ -216,8 +243,10 @@ const mapDispatchToProps = {
   dispatchResetState: resetState,
   dispatchDummyTransac: setDummyTransac,
   dispatchEditingKey: setEditingKey,
-  dispatchSave: save,
-  dispatchRemove: remove,
+
+  performGetEventTranscData: getEventTranscData,
+  performAddTransc: postAddEventTransc,
+  performDeleteTransc: postDeleteEventTransc,
 };
 
 const FormEventTransactionPage = Form.create()(EventTransaction);

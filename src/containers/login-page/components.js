@@ -1,40 +1,68 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Input, Checkbox } from 'antd';
-import { FormInputIcon, FullWidthButton } from '../shared-components/common';
+import { Form } from 'antd';
+import { SIGNUP, FORGOTPASSWORD } from '../../actions/location';
+import {
+  FormInputIcon,
+  CustomInput,
+  CustomCheckbox,
+  CustomLinkRight,
+  CustomLinkLeft,
+  FullWidthButton,
+} from './styled-components';
 
-export const UsernameInput = (
-  <Input prefix={<FormInputIcon type="user" />} placeholder="Username" />
+const FormItem = Form.Item;
+/* eslint react/prop-types: 0 */
+export const UsernameInput = ({ decorator }) => (
+  <FormItem>
+    {decorator('username', {
+      rules: [
+        {
+          required: true,
+          message: 'Please enter username!',
+        },
+      ],
+    })(
+      <CustomInput
+        prefix={<FormInputIcon type="user" />}
+        placeholder="Username"
+      />,
+    )}
+  </FormItem>
 );
 
-export const PasswordInput = (
-  <Input prefix={<FormInputIcon type="lock" />} type="password" placeholder="Password" />
-);
-
-export const RememberCheckbox = (
-  <Checkbox style={{ float: 'left' }}>
-    {'Remember me'}
-  </Checkbox>
-);
-
-export const ForgotPasswordLink = () => (
-  <a href="./forgotPassword.do" style={{ float: 'right' }} type="primary">
-    {'Forgot password'}
-  </a>
-);
-
-export const SignUpLink = () => (
-  <a href="./singup.do" style={{ float: 'right' }}>
-    {'Sign up now!'}
-  </a>
+export const PasswordInput = ({ decorator }) => (
+  <FormItem>
+    {decorator('password', {
+      rules: [
+        {
+          required: true,
+          message: 'Please enter password!',
+        },
+      ],
+    })(
+      <CustomInput
+        prefix={<FormInputIcon type="lock" />}
+        type="password"
+        placeholder="Password"
+      />,
+    )}
+  </FormItem>
 );
 
 export const LoginButton = ({ isPending }) => (
   <FullWidthButton type="primary" htmlType="submit" loading={isPending}>
-    {'Log in'}
+    Login
   </FullWidthButton>
 );
 
-LoginButton.propTypes = {
-  isPending: PropTypes.bool.isRequired,
-};
+export const Footer = ({ decorator, isPending }) => (
+  <FormItem>
+    {decorator('isRemembered', {
+      valuePropName: 'checked',
+      initialValue: false,
+    })(<CustomCheckbox>Remember me</CustomCheckbox>)}
+    <LoginButton isPending={isPending} />
+    <CustomLinkRight href={FORGOTPASSWORD}>Forgot password</CustomLinkRight>
+    <CustomLinkLeft href={SIGNUP}>Signup now!</CustomLinkLeft>
+  </FormItem>
+);

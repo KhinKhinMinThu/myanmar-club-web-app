@@ -15,6 +15,9 @@ export const MenuItem = styled(Menu.Item)`
   }
 `;
 
-export const FlexContainer = styled.div`
-  display: flex;
+export const HeaderText = styled.h1`
+  font-style: italic;
+  font-family: Impact;
+  color: #ffffff;
+  text-transform: uppercase;
 `;

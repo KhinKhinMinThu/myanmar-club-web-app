@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 import {
-  Button,
-  Card,
-  Input,
-  DatePicker,
-  TimePicker,
-  Form,
-  Icon,
-  Table,
+  Button, Card, Input, DatePicker, TimePicker, Icon, Table,
 } from 'antd';
 
 // index
@@ -60,10 +53,6 @@ export const FormDatePicker = styled(DatePicker)`
 
 export const FormTimePicker = styled(TimePicker)`
   width: 200px;
-`;
-
-export const FormItemNoMargin = styled(Form.Item)`
-  margin-bottom: 0px;
 `;
 
 export const ReadOnlyInput = styled(Input)`

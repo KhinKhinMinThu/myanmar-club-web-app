@@ -23,18 +23,8 @@ export const FullWidthButton = styled(Button)`
 `;
 
 export const PageCard = styled(Card)`
-  height: 100vh;
   width: 100%;
-  padding: 20px 5px 5px;
-`;
-
-export const SmallCard = styled(Card)`
-  height: 250px;
-  width: 450px;
-  min-width: 450px;
-  top: 20%;
-  padding: 20px 5px 5px;
-  border-radius: 10;
+  padding: 0px 5px 5px;
 `;
 
 // to remove after refactoring signup/profile

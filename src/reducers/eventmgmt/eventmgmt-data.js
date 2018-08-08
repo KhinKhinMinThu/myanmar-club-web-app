@@ -350,6 +350,7 @@ export default function (
     // to update to API
     eventsToDelete: [],
     eventRSVPToDelete: [],
+    id: null,
     name: null,
     description: null,
     startDate: null,

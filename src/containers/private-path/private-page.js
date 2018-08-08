@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Layout } from 'antd';
+import { HeaderText } from './styled-components';
 import {
+  DEFAULT,
   DASHBOARD,
   PROFILE,
   LOGOUT,
@@ -15,7 +18,7 @@ import {
   EVENT_VIEW,
   EVENT_EDIT,
 } from '../../actions/location';
-import { FlexContainer } from './styled-components';
+import logo from '../../images/logo.jpg';
 import MenuPanel from './components';
 import SignupPage2 from '../signup-page2';
 import Dashboard from './home-ex';
@@ -29,7 +32,9 @@ import EventManagementPage from '../event-management';
 import EventEditPage from '../event-edit';
 import EventViewPage from '../event-view';
 
-class PrivateAdminPage extends Component {
+const { Header, Sider } = Layout;
+
+class PrivatePage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
   switchPage = (pathname) => {
     switch (pathname) {
@@ -58,6 +63,7 @@ class PrivateAdminPage extends Component {
       case EVENT_EDIT:
         return EventEditPage;
       default:
+        // should return to error page
         return Dashboard;
     }
   };
@@ -65,22 +71,53 @@ class PrivateAdminPage extends Component {
   render() {
     const {
       computedMatch: { params },
+      isAdmin,
     } = this.props;
     const { pathname } = params;
     const Page = this.switchPage(`/${pathname}`);
-    console.log('private admin props:', this.props);
+    console.log('private props:', this.props);
     console.log('pathname:', pathname);
     return (
-      <FlexContainer>
-        <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin />
-        <Page {...this.props} />
-      </FlexContainer>
+      <Layout>
+        <Sider width={250} style={{ background: '#ffffff' }}>
+          <a href={DEFAULT}>
+            <Header
+              style={{
+                height: 70,
+                background: '#ffffff',
+                borderBottom: '3px solid #1DA57A',
+              }}
+            >
+              <img
+                alt="logo"
+                src={logo}
+                style={{ width: 'auto', height: '65px' }}
+              />
+            </Header>
+          </a>
+          <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin={isAdmin} />
+        </Sider>
+
+        <Layout style={{ height: '100vh' }}>
+          <Header
+            style={{
+              height: 70,
+              background: '#312D2D',
+              borderBottom: '3px solid #1DA57A',
+            }}
+          >
+            <HeaderText>Myanmar Club Web Portal</HeaderText>;
+          </Header>
+          <Page {...this.props} />
+        </Layout>
+      </Layout>
     );
   }
 }
 
-PrivateAdminPage.propTypes = {
+PrivatePage.propTypes = {
   computedMatch: PropTypes.shape({}).isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
-export default connect()(PrivateAdminPage);
+export default connect()(PrivatePage);

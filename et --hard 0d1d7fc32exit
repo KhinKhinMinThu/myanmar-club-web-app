@@ -1,0 +1,235 @@
+[33mcommit 8f0fddd77db2e45a916ec5d68e9bc569ee80fa29[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Aug 6 19:30:38 2018 +0800
+
+    trying to get back my working codes T^T
+
+[33mcommit 9317e8d4ac6a8dcfd9000f928b8ee4d17f83027b[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Aug 6 14:39:40 2018 +0800
+
+    revised event rsvp page
+
+[33mcommit 35c1b3582a8670e5bc2151f80ecb1fc3d96a8520[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Aug 6 13:26:44 2018 +0800
+
+    revised view event page
+
+[33mcommit a125db327d41787dfe14edc169451ac22f2e23ae[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Aug 6 03:08:47 2018 +0800
+
+    revised event create & edit pages, implemented event management page
+
+[33mcommit 2087ae9e24b1287bee8ac59823b646a9e535c811[m
+Merge: 35f1345 48e72cb
+Author: s10142884 <ambialynn@gmail.com>
+Date:   Sat Aug 4 22:54:19 2018 +0800
+
+    merged event pages to master
+
+[33mcommit 48e72cb0f0f568063051e29b8244052364b8536c[m[33m ([m[1;31morigin/eventmgmt-pages[m[33m)[m
+Author: s10142884 <ambialynn@gmail.com>
+Date:   Sat Aug 4 21:10:18 2018 +0800
+
+    implemented view event pages
+
+[33mcommit 35f1345f3252ff3a4094c237a8f8aff32c046bed[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sat Aug 4 16:32:04 2018 +0800
+
+    changed forgot password page
+
+[33mcommit 47f5ea365822c82fd28e4f30b7278f074ad42585[m
+Merge: f0f8828 8a1cf2b
+Author: Khin Khin Min Thu <39859640+KhinKhinMinThu@users.noreply.github.com>
+Date:   Sat Aug 4 12:10:44 2018 +0800
+
+    Merge pull request #3 from hskyaw-2015/forgotresetpw-page
+    
+    Implemented UI for forgot pw and reset pw pages
+
+[33mcommit 8a1cf2bfef066d98d8f6d077b0e6f6ce078e1584[m[33m ([m[1;31morigin/forgotresetpw-page[m[33m)[m
+Merge: 59f5c37 f0f8828
+Author: Khin Khin Min Thu <39859640+KhinKhinMinThu@users.noreply.github.com>
+Date:   Sat Aug 4 12:10:31 2018 +0800
+
+    Merge branch 'master' into forgotresetpw-page
+
+[33mcommit e424a5d326174dca8b36d8f43205cc9944ddc339[m
+Author: s10142884 <ambialynn@gmail.com>
+Date:   Tue Jul 31 11:24:18 2018 +0800
+
+    implemented create and edit event pages
+
+[33mcommit f0f88284b1ac3872de5861ca3ae167122c7ce031[m
+Merge: 09c74a9 58810a9
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Jul 30 16:01:39 2018 +0800
+
+    fixed merge conflicts'
+
+[33mcommit 09c74a9770a6a048573f1ad648d9f97bf929a7a4[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Jul 30 15:58:13 2018 +0800
+
+    implemented event finance page
+
+[33mcommit 58810a97f2e04b838e3e77c23cedc09d8afbe9c3[m
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Sun Jul 29 15:23:14 2018 +0800
+
+    solved merged conflicts
+
+[33mcommit a015e6040c4f0f135e79e1c230018b899c549652[m
+Merge: 8819420 e729b28
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sun Jul 29 15:20:13 2018 +0800
+
+    Merge branch 'master' of github.com:hskyaw-2015/myanmar-club-web-app
+
+[33mcommit 88194203bec449e4404fcb62374895dee9dce233[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sun Jul 29 15:19:56 2018 +0800
+
+    commit before pulling
+
+[33mcommit e729b289612ccd2639d74e3ad3933e3ca869adec[m
+Merge: ad40745 4bc19cb
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Sun Jul 29 14:52:15 2018 +0800
+
+    solved merged conflicts
+
+[33mcommit ad40745c310d05bda2971f8a4d9f7f61360b7f71[m
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Sun Jul 29 14:49:13 2018 +0800
+
+    implemented signup config page2
+
+[33mcommit 9894c388390800dee4e12878a8a59c1f1938eb71[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sat Jul 28 13:00:22 2018 +0800
+
+    in-progress implementing event finance page
+
+[33mcommit f2d23849e8e0a6d5184c277efbc1c68a1f40b7e0[m
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Fri Jul 27 10:46:03 2018 +0800
+
+    refactored signup page1 with config
+
+[33mcommit 4bc19cb8179473ddee4f871b304048ecc8582f11[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Wed Jul 25 16:58:25 2018 +0800
+
+    implemented claim managment UI. renamed UI filenames <mgmt> to managment
+
+[33mcommit cde68ce72197bf25090ed1e0ed3598bf16ec9aeb[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Tue Jul 24 14:05:52 2018 +0800
+
+    fixed page overflow display to keep the right-border of menu penal
+
+[33mcommit 06c4185f66288bb31834eb6e84e3e7fc6e449c8c[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sun Jul 22 18:32:25 2018 +0800
+
+    corrected menu item to match the path name
+
+[33mcommit 06d5b2a66f59e6b21296f766569343ebfd9e9182[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sun Jul 22 13:53:30 2018 +0800
+
+    implemented view member details from admin account management page
+
+[33mcommit 04b82b15dd01e78a28e329428c4477c22ffa5b6c[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sat Jul 21 12:33:57 2018 +0800
+
+    implemented 'search by name' feature for member accounts in Admin Account Managment
+
+[33mcommit 351460a3928401121d608714fbbc665fd528de35[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Fri Jul 20 18:23:35 2018 +0800
+
+    in-progress account management for admin: renamed page contents and added new folder for member-profile admin view
+
+[33mcommit 4bdccc641d7e5d279a8bfdc6c666ac7373bbf7bc[m
+Merge: 9107d41 fcbeb74
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Jul 16 14:16:48 2018 +0800
+
+    fixed merge conflicts
+
+[33mcommit 9107d41de02cf2bc033d272bc2bc5265a4933d2f[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Mon Jul 16 13:53:02 2018 +0800
+
+    implemented routing for admin & non-admin, in-progress account management, left to implement member profile for admin
+
+[33mcommit fcbeb7401a97ed9e210a8a05b2003927fea6312b[m
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Sun Jul 15 17:27:59 2018 +0800
+
+    fixed merged errors
+
+[33mcommit 919d7a574bf2c1bc64cfd4fe1aa028f3f039a038[m
+Merge: c4af80e cb892b8
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Sun Jul 15 17:10:27 2018 +0800
+
+    Merge branch 'master' of https://github.com/hskyaw-2015/myanmar-club-web-app
+
+[33mcommit c4af80ed67c2cb5f5f3ab1780ebdf492acbc0085[m
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Sun Jul 15 17:06:59 2018 +0800
+
+    added religion select for singup page 1 and updated validate-start and validate-end for better redu devtool debuggin
+
+[33mcommit cb892b8e68bee532142b64e15bf7c10c39876289[m
+Merge: bff9f52 d2e9c6e
+Author: Kyaw Htet Soe <kyawhtetsoe007@gmail.com>
+Date:   Sun Jul 15 15:40:03 2018 +0800
+
+    Merge pull request #6 from hskyaw-2015/admin-accmgmt
+    
+    Admin accmgmt
+
+[33mcommit d2e9c6eb669d009e49605c89553dc0cb5f3217c3[m[33m ([m[1;31morigin/admin-accmgmt[m[33m)[m
+Merge: aca530d 8dbc14c
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sun Jul 15 15:18:55 2018 +0800
+
+    in-progress admin account management for EC members
+
+[33mcommit bff9f52276e48fb655ccb3d8362353fa95e7210a[m
+Merge: 85256a3 aca530d
+Author: Khin Khin Min Thu <39859640+KhinKhinMinThu@users.noreply.github.com>
+Date:   Sun Jul 15 15:13:24 2018 +0800
+
+    Merge pull request #5 from hskyaw-2015/admin-accmgmt
+    
+    in-progress implementign admin account management for EC-Members
+
+[33mcommit 85256a31e771cb1911fc34be48cb97206b4203ed[m
+Merge: 7970560 3f8be69
+Author: Khin Khin Min Thu <39859640+KhinKhinMinThu@users.noreply.github.com>
+Date:   Sun Jul 15 15:12:47 2018 +0800
+
+    Merge pull request #4 from hskyaw-2015/admin-rolemgmt
+    
+    Admin rolemgmt
+
+[33mcommit 76f69f6312c2b3d4e347744ba8dd2c73847c5117[m
+Author: Kyaw Htet Soe <kyaw.htetsoe@myrepublic.net>
+Date:   Sun Jul 15 03:51:38 2018 +0800
+
+    fixed form values storing to redux signup page1
+
+[33mcommit aca530d46f2b14f239130eacb5d4cd99f61d8a6e[m
+Author: Khin Khin Min Thu <kmtkhin.2016@sis.smu.edu.sg>
+Date:   Sun Jul 15 01:58:40 2018 +0800
+
+    in-progress implementign admin account management for EC-Member
