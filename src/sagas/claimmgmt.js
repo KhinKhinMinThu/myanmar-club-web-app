@@ -34,7 +34,7 @@ function* asyncGetClaimsData() {
   }
 }
 
-const postApproveClaims = claimsToApprove => api.post('/approveClaims', claimsToApprove);
+const postApproveClaims = claimsToApprove => api.post('/approveClaims', { claimsToApprove });
 
 const postUnapproveClaims = claimsToUnapprove => api.post('/unapproveClaims', claimsToUnapprove);
 

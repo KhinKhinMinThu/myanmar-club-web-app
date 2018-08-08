@@ -75,7 +75,7 @@ class NewClaimsPage extends Component {
       dispatchNewClaimsData,
       dispatchOldClaimsData,
     } = this.props;
-    performApproveClaims(selectedKeys);
+    performApproveClaims({ claimsToApprove: selectedKeys });
     dispatchResetState();
     const updatedNewClaims = newClaimsList.filter(
       item => !selectedKeys.includes(item.id),
