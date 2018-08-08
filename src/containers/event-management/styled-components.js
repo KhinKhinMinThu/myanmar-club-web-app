@@ -33,7 +33,7 @@ export const FlexContainer = styled.div`
 `;
 
 export const FullWidthTable = styled(Table)`
-  width: 100%;
+  width: 99%;
 `;
 
 export const MarginLeftButton = styled(Button)`
@@ -42,4 +42,13 @@ export const MarginLeftButton = styled(Button)`
 
 export const SearchInput = styled(Input)`
   width: 200px;
+`;
+
+export const Header2Text = styled.h2`
+  font-style: italic;
+  font-family: Impact;
+  color: #312d2d;
+  text-transform: uppercase;
+  float: right;
+  margin-right: 100px;
 `;

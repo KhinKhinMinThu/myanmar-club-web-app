@@ -133,7 +133,7 @@ export const EventsTable = ({
       dataIndex: 'name',
       key: 'name',
       filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.includes(value),
+      onFilter: (value, record) => record.name.toLowerCase().includes(value),
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       width: '11%',

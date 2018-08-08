@@ -112,8 +112,8 @@ class EventTransaction extends Component {
     const eventTransc = eventTransactions[index];
 
     eventTransactions.splice(index, 1);
-
-    if (!transacId.includes('dummy') && !eventTransc.category) {
+    console.log(transacId, eventTransc.category);
+    if (!transacId.includes('dummy') && eventTransc.category !== null) {
       performDeleteTransc({
         eventId,
         transacIdToRemove: transacId,
@@ -190,7 +190,9 @@ class EventTransaction extends Component {
               }}
               decorator={getFieldDecorator}
               onSearch={() => dispatchFilteredInfo(
-                this.searchNameValue ? { name: [this.searchNameValue] } : {},
+                this.searchNameValue
+                  ? { name: [this.searchNameValue.toLowerCase()] }
+                  : {},
               )
               }
               onClickReset={this.onClickReset}

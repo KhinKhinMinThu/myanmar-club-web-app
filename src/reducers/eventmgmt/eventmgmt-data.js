@@ -1,354 +1,47 @@
-export const SAVE = '[EVENTMGMT_DATA] SAVE';
-export const REMOVE = '[EVENTMGMT_DATA] REMOVE';
+// GET API call
+export const GET_EVENTSDATA = '[EVENTMGMT_DATA] GET_EVENTSDATA';
+export const GET_APILOADING = '[EVENTMGMT_DATA] GET_APILOADING';
+export const EVENTSDATA = '[EVENTMGMT_DATA] EVENTSDATA';
+export const GET_ERROR = '[EVENTMGMT_DATA] GET_ERROR';
+// end
 
-export const save = values => ({
-  type: SAVE,
-  payload: values,
+// POST to API
+export const POST_APILOADING = '[EVENTMGMT_DATA] POST_APILOADING';
+export const POST_DELETEEVENT = '[EVENTMGMT_DATA] POST_DELETEEVENT';
+export const POST_ERROR = '[EVENTMGMT_DATA] POST_ERROR';
+// end
+
+export const getEventsData = () => ({ type: GET_EVENTSDATA });
+export const setEventsData = eventsData => ({
+  type: EVENTSDATA,
+  payload: eventsData,
+});
+export const postDeleteEvent = eventsToDelete => ({
+  type: POST_DELETEEVENT,
+  eventsToDelete,
 });
 
-export const remove = values => ({
-  type: REMOVE,
-  payload: values,
+// detele this!
+export const remove = eventsToDelete => ({
+  type: POST_DELETEEVENT,
+  eventsToDelete,
+});
+// detele this!
+export const save = eventsToDelete => ({
+  type: POST_DELETEEVENT,
+  eventsToDelete,
 });
 
 export default function (
   state = {
-    // to get the data from API
-    eventsData: [
-      {
-        id: '1',
-        name: ' xxxxxx event A',
-        description: 'this is a cool event',
-        startDate: '11-06-2018 11:59:00',
-        endDate: '11-06-2018 13:00:00',
-        locationLine1: 'xxxx',
-        locationLine2: 'xxxx',
-        locationPostalCode: '123456',
-        photoLink:
-          'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        income: '',
-        expenditure: '',
-        balance: '',
-        ticketFee: '20.00',
-        noOfPax: '150',
-        isRefreshmentProvided: '0', // not provided
-        contactPerson: 'Name 01',
-        emailAddress: 'abc@gmail.com',
-        mobilePhone: '6512345678',
-        eventStatus: '0', // close
-        createdBy: '',
-        createdDate: '11-05-2018',
-        eventRSVPData: [
-          {
-            id: '1',
-            name: 'Name 1',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '2',
-            name: 'Name 2',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '3',
-            name: 'Name 3',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '1',
-            paymentType: 'Cash Payment',
-          },
-          {
-            id: '4',
-            name: 'Name 4',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '5',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '5',
-            name: 'Name 5',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '6',
-            name: 'Name 6',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '7',
-            name: 'Name 7',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '4',
-            paymentType: 'Cash Payment',
-          },
-        ],
-      },
-      {
-        id: '2',
-        name: ' xxxxxx event B',
-        description: 'this is a cool event',
-        startDate: '11-06-2018 11:59:00',
-        endDate: '11-06-2018 13:00:00',
-        locationLine1: 'xxxx',
-        locationLine2: 'xxxx',
-        locationPostalCode: '123456',
-        photoLink:
-          'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        income: '',
-        expenditure: '',
-        balance: '',
-        ticketFee: '20.00',
-        noOfPax: '150',
-        isRefreshmentProvided: '0', // not provided
-        contactPerson: 'Name 01',
-        emailAddress: 'abc@gmail.com',
-        mobilePhone: '6512345678',
-        eventStatus: '1', // close
-        createdBy: '',
-        createdDate: '11-05-2018',
-        eventRSVPData: [
-          {
-            id: '1',
-            name: 'Name 1',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '2',
-            name: 'Name 2',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '3',
-            name: 'Name 3',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '1',
-            paymentType: 'Cash Payment',
-          },
-          {
-            id: '4',
-            name: 'Name 4',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '5',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '5',
-            name: 'Name 5',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '6',
-            name: 'Name 6',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '7',
-            name: 'Name 7',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '4',
-            paymentType: 'Cash Payment',
-          },
-        ],
-      },
-      {
-        id: '3',
-        name: ' xxxxxx event C',
-        description: 'this is a cool event',
-        startDate: '11-06-2018 11:59:00',
-        endDate: '11-06-2018 13:00:00',
-        locationLine1: 'xxxx',
-        locationLine2: 'xxxx',
-        locationPostalCode: '123456',
-        photoLink:
-          // 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flower_poster_2.jpg/1280px-Flower_poster_2.jpg',
-        income: '',
-        expenditure: '',
-        balance: '',
-        ticketFee: '20.00',
-        noOfPax: '150',
-        isRefreshmentProvided: '0', // not provided
-        contactPerson: 'Name 01',
-        emailAddress: 'abc@gmail.com',
-        mobilePhone: '6512345678',
-        eventStatus: '0', // close
-        createdBy: '',
-        createdDate: '11-05-2018',
-        eventRSVPData: [
-          {
-            id: '1',
-            name: 'Name 1',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '2',
-            name: 'Name 2',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '3',
-            name: 'Name 3',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '1',
-            paymentType: 'Cash Payment',
-          },
-          {
-            id: '4',
-            name: 'Name 4',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '5',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '5',
-            name: 'Name 5',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '6',
-            name: 'Name 6',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '7',
-            name: 'Name 7',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '4',
-            paymentType: 'Cash Payment',
-          },
-        ],
-      },
-      {
-        id: '4',
-        name: ' xxxxxx event D',
-        description: 'this is a cool event',
-        startDate: '11-06-2018 11:59:00',
-        endDate: '11-06-2018 13:00:00',
-        locationLine1: 'xxxx',
-        locationLine2: 'xxxx',
-        locationPostalCode: '123456',
-        photoLink:
-          'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        income: '',
-        expenditure: '',
-        balance: '',
-        ticketFee: '20.00',
-        noOfPax: '150',
-        isRefreshmentProvided: '0', // not provided
-        contactPerson: 'Name 01',
-        emailAddress: 'abc@gmail.com',
-        mobilePhone: '9512345678',
-        eventStatus: '0', // close
-        createdBy: '',
-        createdDate: '11-05-2018',
-        eventRSVPData: [
-          {
-            id: '11',
-            name: 'Name 11',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '2',
-            name: 'Name 2',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '3',
-            name: 'Name 3',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '1',
-            paymentType: 'Cash Payment',
-          },
-          {
-            id: '4',
-            name: 'Name 4',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '5',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '5',
-            name: 'Name 5',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '2',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '6',
-            name: 'Name 6',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '3',
-            paymentType: 'Bank Transfer',
-          },
-          {
-            id: '7',
-            name: 'Name 7',
-            emailAddress: 'abc@gmail.com',
-            mobilePhone: '12345678',
-            noOfPax: '4',
-            paymentType: 'Cash Payment',
-          },
-        ],
-      },
-    ],
-    // end
+    isGetApiLoading: false,
+    getErrMsg: null,
+    isPostApiLoading: false,
+    postErrMsg: null,
+    eventsData: null,
 
     // to update to API
-    eventsToDelete: [],
+    //    eventsToDelete: [],
     eventRSVPToDelete: [],
     id: null,
     name: null,
@@ -370,11 +63,30 @@ export default function (
   action,
 ) {
   switch (action.type) {
-    case SAVE:
-    case REMOVE:
+    case GET_APILOADING:
       return {
         ...state,
-        ...action.payload,
+        isGetApiLoading: action.payload,
+      };
+    case EVENTSDATA:
+      return {
+        ...state,
+        eventsData: action.payload,
+      };
+    case GET_ERROR:
+      return {
+        ...state,
+        getErrMsg: action.payload,
+      };
+    case POST_APILOADING:
+      return {
+        ...state,
+        isPostApiLoading: action.payload,
+      };
+    case POST_ERROR:
+      return {
+        ...state,
+        postErrMsg: action.payload,
       };
     default:
       return state;

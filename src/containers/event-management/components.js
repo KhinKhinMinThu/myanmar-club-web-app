@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form } from 'antd';
+import { Button } from 'antd';
 import { EVENT_VIEW, EVENT_EDIT } from '../../actions/location';
 import {
   FullWidthTable,
@@ -7,12 +7,13 @@ import {
   MarginLeftButton,
   TableActionIcon,
   TableActionLink,
-  SearchInput,
+  Header2Text,
 } from './styled-components';
 
-const FormItem = Form.Item;
-
 /* eslint react/prop-types: 0 */
+export const PageTitle = () => <Header2Text>Event Managment Page</Header2Text>;
+
+// EventsTable
 export const EventsTable = ({
   eventsList,
   rowSelection,
@@ -21,22 +22,21 @@ export const EventsTable = ({
   filteredInfo,
 }) => {
   const columns = [
-    // dataIndex = databases column names
     {
       title: 'Id',
       dataIndex: 'id',
       key: 'id',
-      sorter: (a, b) => Number.parseInt(a.id, 10) - Number.parseInt(b.id, 10),
-      sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+      width: '3%',
     },
     {
       title: 'Event Name',
       dataIndex: 'name',
       key: 'name',
       filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.includes(value),
+      onFilter: (value, record) => record.name.toLowerCase().includes(value),
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+      width: '11%',
     },
     {
       title: 'Event Description',
@@ -44,6 +44,7 @@ export const EventsTable = ({
       key: 'description',
       sorter: (a, b) => a.description.length - b.description.length,
       sortOrder: sortedInfo.columnKey === 'description' && sortedInfo.order,
+      width: '22%',
     },
     {
       title: 'Start Date',
@@ -51,6 +52,7 @@ export const EventsTable = ({
       key: 'startDate',
       sorter: (a, b) => new Date(a.startDate) - new Date(b.startDate),
       sortOrder: sortedInfo.columnKey === 'startDate' && sortedInfo.order,
+      width: '10%',
     },
     {
       title: 'End Date',
@@ -58,6 +60,7 @@ export const EventsTable = ({
       key: 'endDate',
       sorter: (a, b) => new Date(a.endDate) - new Date(b.endDate),
       sortOrder: sortedInfo.columnKey === 'endDate' && sortedInfo.order,
+      width: '10%',
     },
     {
       title: 'Location',
@@ -65,6 +68,7 @@ export const EventsTable = ({
       key: 'location',
       sorter: (a, b) => a.location.length - b.location.length,
       sortOrder: sortedInfo.columnKey === 'location' && sortedInfo.order,
+      width: '22%',
     },
     {
       title: 'Status',
@@ -73,10 +77,12 @@ export const EventsTable = ({
       sorter: (a, b) => a.eventStatus.length - b.eventStatus.length,
       sortOrder: sortedInfo.columnKey === 'eventStatus' && sortedInfo.order,
       render: text => (text === '1' ? 'Open' : 'Closed'),
+      width: '11%',
     },
     {
       title: 'Action',
       key: 'action',
+      width: '10%',
       // render: (text, record) => ()
       render: record => (
         <span>
@@ -98,6 +104,8 @@ export const EventsTable = ({
       rowSelection={rowSelection}
       onChange={onChange}
       bordered
+      size="small"
+      pagination={{ position: 'top' }}
     />
   );
 };
@@ -124,51 +132,17 @@ export const SelectedEvents = ({ selectedNum }) => (
   <SelectedText>Selected {selectedNum} event(s)</SelectedText>
 );
 
-export const DeleteSeletedButton = ({ onClick, hasSelected }) => (
-  <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
-    Delete Selected Event(s)
-  </MarginLeftButton>
-);
-
-export const SearchNamePanel = ({
-  onChange,
-  onPressEnter,
-  decorator,
-  onClickSearch,
-  onClickReset,
+export const DeleteSeletedButton = ({
+  onClick,
+  hasSelected,
+  isPostApiLoading,
 }) => (
-  <FormItem
-    {...{
-      labelCol: {
-        xs: { span: 0 },
-        sm: { span: 0 },
-      },
-      wrapperCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
-      },
-    }}
+  <MarginLeftButton
+    type="primary"
+    onClick={onClick}
+    disabled={!hasSelected}
+    loading={isPostApiLoading}
   >
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder="Search event name"
-        onChange={onChange}
-        onPressEnter={onPressEnter}
-      />,
-    )}
-    <SearchNameButton onClick={onClickSearch} />
-    <ResetButton onClick={onClickReset} />
-  </FormItem>
-);
-
-export const SearchNameButton = ({ onClick }) => (
-  <MarginLeftButton type="primary" onClick={onClick}>
-    Search
-  </MarginLeftButton>
-);
-
-export const ResetButton = ({ onClick }) => (
-  <MarginLeftButton type="primary" onClick={onClick} ghost>
-    Clear Search
+    Delete Selected Event(s)
   </MarginLeftButton>
 );
