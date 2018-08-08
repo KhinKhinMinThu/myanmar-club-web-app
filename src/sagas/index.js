@@ -5,7 +5,11 @@ import {
   postApproveClaimsSaga,
   postUnapproveClaimsSaga,
 } from './claimmgmt';
-import { getEventTranscDataSaga } from './event-transaction';
+import {
+  getEventTranscDataSaga,
+  postDeleteTranscSaga,
+  postAddTranscSaga,
+} from './event-transaction';
 
 export default function* rootSaga() {
   yield all([
@@ -16,5 +20,7 @@ export default function* rootSaga() {
     postUnapproveClaimsSaga,
     // event-transaction
     getEventTranscDataSaga,
+    postDeleteTranscSaga,
+    postAddTranscSaga,
   ]);
 }

@@ -21,8 +21,8 @@ import {
 } from '../../reducers/event-transaction/event-transaction-ui';
 import {
   getEventTranscData,
-  postDeleteTransc,
-  postAddTransc,
+  postDeleteEventTransc,
+  postAddEventTransc,
 } from '../../reducers/event-transaction/event-transaction-data';
 
 class EventTransaction extends Component {
@@ -37,6 +37,25 @@ class EventTransaction extends Component {
       eventTransactionData: { isGetApiLoading },
     } = this.props;
     this.isApiCalled = !nextProps.eventTransactionData.isGetApiLoading && isGetApiLoading;
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      eventTransactionData: { isPostApiLoading, postErrMsg },
+    } = this.props;
+
+    const isApiPost = prevProps.eventTransactionData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (this.actionType) {
+      if (postErrMsg) {
+        message.error(postErrMsg);
+      } else {
+        if (this.actionType === 'save') message.success(SUCCESS_ADDEVENTTRANSC);
+        if (this.actionType === 'delete') message.success(SUCCESS_DELETEEVENTTRANSC);
+      }
+    }
+    this.actionType = null;
   }
 
   // handle onClick from Reset button
@@ -61,9 +80,9 @@ class EventTransaction extends Component {
       dispatchDummyTransac,
       dispatchEditingKey,
     } = this.props;
-    const { eventTransactions } = this.eventsList.find(
-      item => item.id === eventId,
-    );
+    const event = this.eventsList.find(item => item.id === eventId);
+    const { eventTransactions } = event;
+
     const key = dummyTransacIndex + 1;
     const newData = {
       key: `dummy${key}`,
@@ -77,20 +96,19 @@ class EventTransaction extends Component {
     dispatchEditingKey(`dummy${key}`);
   };
 
-  removeTransaction = (eventId, transacId) => {
-    const { eventTransactions } = this.eventsList.find(
-      item => item.id === eventId,
-    );
-    const index = eventTransactions.findIndex(
-      transac => transac.id === transacId,
-    );
+  deleteTransaction = (eventId, transacId) => {
+    this.actionType = 'delete';
+    const event = this.eventsList.find(item => item.id === eventId);
+    const { eventTransactions } = event;
+    const index = eventTransactions.findIndex(item => item.id === transacId);
+
     eventTransactions.splice(index, 1);
 
-    // const { dispatchRemove } = this.props;
-    // dispatchRemove({
-    //   eventId,
-    //   transacIdToRemove: transacId,
-    // });
+    const { performDeleteTransc } = this.props;
+    performDeleteTransc({
+      eventId,
+      transacIdToRemove: transacId,
+    });
   };
 
   prepareList = (sourceList) => {
@@ -103,23 +121,22 @@ class EventTransaction extends Component {
   };
 
   saveTransaction = (form, eventId, transacId) => {
-    console.log(transacId);
-    // const { dispatchEditingKey, dispatchSave } = this.props;
-    // dispatchEditingKey(transacId);
-    // form.validateFieldsAndScroll((error, row) => {
-    //   if (error) {
-    //     return;
-    //   }
+    this.actionType = 'save';
+    const { dispatchEditingKey, performAddTransc } = this.props;
+    dispatchEditingKey(transacId);
+    form.validateFieldsAndScroll((error, row) => {
+      if (error) return;
 
-    //   const { eventTransactions } = this.eventsList.find(
-    //     item => item.id === eventId,
-    //   );
-    //   const index = eventTransactions.findIndex(item => item.id === transacId);
-    //   const newData = { ...eventTransactions[index], ...row };
-    //   eventTransactions.splice(index, 1, newData);
-    //   dispatchEditingKey(null);
-    //   dispatchSave({ eventId, transacDataToAdd: newData });
-    // });
+      const event = this.eventsList.find(item => item.id === eventId);
+      const { eventTransactions } = event;
+      const index = eventTransactions.findIndex(item => item.id === transacId);
+      const newData = { ...eventTransactions[index], ...row };
+
+      eventTransactions.splice(index, 1, newData);
+
+      dispatchEditingKey(null);
+      performAddTransc({ eventId, transacDataToAdd: newData });
+    });
   };
 
   render() {
@@ -133,7 +150,7 @@ class EventTransaction extends Component {
       eventTransactionData: {
         eventsData,
         isGetApiLoading,
-        getErrMsg /* isPostApiLoading */,
+        getErrMsg, isPostApiLoading,
       },
       form: { getFieldDecorator },
       dispatchSortedInfo,
@@ -176,7 +193,7 @@ class EventTransaction extends Component {
                 }}
                 sortedInfo={sortedInfo || {}}
                 filteredInfo={filteredInfo || {}}
-                removeRecord={(eventId, transacId) => this.removeTransaction(eventId, transacId)
+                deleteTransaction={(eventId, transacId) => this.deleteTransaction(eventId, transacId)
                 }
                 expandedRowKeys={expandedRowKeys}
                 onExpand={(expanded, record) => {
@@ -188,6 +205,7 @@ class EventTransaction extends Component {
                 editTransaction={transacId => dispatchEditingKey(transacId)}
                 saveTransaction={this.saveTransaction}
                 editingKey={editingKey}
+                isPostApiLoading={isPostApiLoading}
               />
             </FlexContainer>
           </div>
@@ -227,8 +245,8 @@ const mapDispatchToProps = {
   dispatchEditingKey: setEditingKey,
 
   performGetEventTranscData: getEventTranscData,
-  performAddTransc: postAddTransc,
-  performDeleteTransc: postDeleteTransc,
+  performAddTransc: postAddEventTransc,
+  performDeleteTransc: postDeleteEventTransc,
 };
 
 const FormEventTransactionPage = Form.create()(EventTransaction);

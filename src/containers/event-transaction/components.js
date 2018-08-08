@@ -112,7 +112,7 @@ export const EventsTable = ({
   onChange,
   sortedInfo,
   filteredInfo,
-  removeTransaction,
+  deleteTransaction,
   expandedRowKeys,
   onExpand,
   onClickAddRow,
@@ -120,6 +120,7 @@ export const EventsTable = ({
   editTransaction,
   saveTransaction,
   editingKey,
+  isPostApiLoading,
 }) => {
   const columns = [
     {
@@ -201,13 +202,15 @@ export const EventsTable = ({
       expandedRowRender={record => (
         <TransactionTable
           transactionList={record.eventTransactions}
-          removeRecord={transacId => removeTransaction(record.id, transacId)}
+          deleteTransaction={transacId => deleteTransaction(record.id, transacId)
+          }
           onClickAddRow={type => onClickAddRow(record.id, type)}
           cancelTransaction={transacId => cancelTransaction(transacId)}
           editTransaction={transacId => editTransaction(transacId)}
           saveTransaction={(form, transacId) => saveTransaction(form, record.id, transacId)
           }
           editingKey={editingKey}
+          isPostApiLoading={isPostApiLoading}
         />
       )}
     />
@@ -215,10 +218,14 @@ export const EventsTable = ({
 };
 
 // SaveButton for TransactionTable
-export const SaveButton = ({ record, action }) => (
+export const SaveButton = ({ record, action, loading }) => (
   <EditableContext.Consumer>
     {form => (
-      <TableActionButton icon="save" onClick={() => action(form, record.id)} />
+      <TableActionButton
+        icon="save"
+        onClick={() => action(form, record.id)}
+        loading={loading}
+      />
     )}
   </EditableContext.Consumer>
 );
@@ -266,12 +273,13 @@ const totalBalance = preparedList => totalIncome(preparedList) - totalExpenditur
 // TransactionTable
 const TransactionTable = ({
   transactionList,
-  removeTransaction,
+  deleteTransaction,
   onClickAddRow,
   cancelTransaction,
   editTransaction,
   saveTransaction,
   editingKey,
+  isPostApiLoading,
 }) => {
   const isEditing = record => record.key === editingKey;
   const columns = [
@@ -300,13 +308,17 @@ const TransactionTable = ({
           <div>
             {editable ? (
               <div>
-                <SaveButton record={record} action={saveTransaction} />
+                <SaveButton
+                  record={record}
+                  action={saveTransaction}
+                  loading={isPostApiLoading}
+                />
                 <CancelButton record={record} action={cancelTransaction} />
               </div>
             ) : (
               <div>
                 <EditButton record={record} action={editTransaction} />
-                <DeleteButton record={record} action={removeTransaction} />
+                <DeleteButton record={record} action={deleteTransaction} />
               </div>
             )}
           </div>

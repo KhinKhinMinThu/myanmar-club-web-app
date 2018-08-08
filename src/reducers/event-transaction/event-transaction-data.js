@@ -7,8 +7,8 @@ export const GET_ERROR = '[EVENTTRANSAC_DATA] GET_ERROR';
 
 // POST to API
 export const POST_APILOADING = '[EVENTTRANSAC_DATA] POST_APILOADING';
-export const POST_DELETETRANCS = '[EVENTTRANSAC_DATA] POST_DELETETRANCS';
-export const POST_ADDTRANCS = '[EVENTTRANSAC_DATA] POST_ADDTRANCS';
+export const POST_DELETETRANSC = '[EVENTTRANSAC_DATA] POST_DELETETRANSC';
+export const POST_ADDTRANSC = '[EVENTTRANSAC_DATA] POST_ADDTRANSC';
 export const POST_ERROR = '[EVENTTRANSAC_DATA] POST_ERROR';
 // end
 
@@ -17,13 +17,13 @@ export const setEventTranscData = eventsData => ({
   type: EVENTTRANSACDATA,
   payload: eventsData,
 });
-export const postDeleteTransc = transacIdToRemove => ({
-  type: POST_DELETETRANCS,
-  transacIdToRemove,
+export const postDeleteEventTransc = eventTranscToDelete => ({
+  type: POST_DELETETRANSC,
+  eventTranscToDelete,
 });
-export const postAddTransc = transacDataToAdd => ({
-  type: POST_ADDTRANCS,
-  transacDataToAdd,
+export const postAddEventTransc = eventTranscToAdd => ({
+  type: POST_ADDTRANSC,
+  eventTranscToAdd,
 });
 
 export default function (
