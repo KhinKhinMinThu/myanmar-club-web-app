@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Layout } from 'antd';
+import { Layout, Anchor } from 'antd';
 import { HeaderText } from './styled-components';
 import {
   DEFAULT,
@@ -32,7 +32,11 @@ import EventManagementPage from '../event-management';
 import EventEditPage from '../event-edit';
 import EventViewPage from '../event-view';
 
-const { Header, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
+const logoImage = (
+  <img alt="logo" src={logo} style={{ width: 'auto', height: '65px' }} />
+);
+const siderWidth = 230;
 
 class PrivatePage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
@@ -77,9 +81,16 @@ class PrivatePage extends Component {
     const Page = this.switchPage(`/${pathname}`);
     console.log('private props:', this.props);
     console.log('pathname:', pathname);
+
     return (
-      <Layout>
-        <Sider width={250} style={{ background: '#ffffff' }}>
+      <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
+        <Sider
+          width={siderWidth}
+          style={{
+            background: '#ffffff',
+            height: '100vh',
+          }}
+        >
           <a href={DEFAULT}>
             <Header
               style={{
@@ -88,17 +99,18 @@ class PrivatePage extends Component {
                 borderBottom: '3px solid #1DA57A',
               }}
             >
-              <img
-                alt="logo"
-                src={logo}
-                style={{ width: 'auto', height: '65px' }}
-              />
+              {logoImage}
             </Header>
           </a>
-          <MenuPanel selectedKeys={['/'.concat(pathname)]} isAdmin={isAdmin} />
+          <Anchor>
+            <MenuPanel
+              selectedKeys={['/'.concat(pathname)]}
+              isAdmin={isAdmin}
+            />
+          </Anchor>
         </Sider>
 
-        <Layout style={{ height: '100vh' }}>
+        <Layout>
           <Header
             style={{
               height: 70,
@@ -108,7 +120,15 @@ class PrivatePage extends Component {
           >
             <HeaderText>Myanmar Club Web Portal</HeaderText>;
           </Header>
-          <Page {...this.props} />
+          <Content
+            style={{
+              margin: '5px',
+              background: '#ffffff',
+              padding: '10px 10px 10px 10px',
+            }}
+          >
+            <Page {...this.props} />
+          </Content>
         </Layout>
       </Layout>
     );

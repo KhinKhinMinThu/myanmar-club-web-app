@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  Icon, Table, Button, Input, Form, Row,
+  Icon, Table, Button, Input, Form,
 } from 'antd';
 
 export const TabIcon = styled(Icon)`
@@ -35,23 +35,13 @@ export const SelectedText = styled.span`
   margin-left: 8px;
 `;
 
-export const FlexContainer = styled.div`
-  display: flex;
-  text-align: right;
-`;
-
 export const HightlightedText = styled.div`
   font-weight: bold;
   color: red;
 `;
 
-export const RowWhiteBackground = styled(Row)`
-  background-color: white;
-  padding: 8px;
-`;
-
 export const FullWidthTable = styled(Table)`
-  width: 100%;
+  width: 99%;
 `;
 
 export const MarginLeftButton = styled(Button)`

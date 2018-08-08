@@ -5,10 +5,6 @@ export const MenuIcon = styled(Icon)`
   font-size: 16px;
 `;
 
-export const MainMenu = styled(Menu)`
-  height: 100vh;
-`;
-
 export const MenuItem = styled(Menu.Item)`
   &:hover {
     background: rgba(216, 230, 223, 0.5);

@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  MainMenu, MenuItem, MenuIcon,
-} from './styled-components';
+import { Menu } from 'antd';
+import { MenuItem, MenuIcon } from './styled-components';
 import {
   DASHBOARD,
   PROFILE,
@@ -67,11 +66,13 @@ const MenuPanel = ({
   };
 
   return (
-    <MainMenu
+    <Menu
       mode="inline"
       onClick={onClick}
       selectedKeys={selectedKeys}
-      style={{ marginTop: 5 }}
+      style={{
+        marginTop: 5,
+      }}
     >
       <MenuItem key={DASHBOARD}>
         {commonTitles.DASHBOARD.icon}
@@ -123,7 +124,7 @@ const MenuPanel = ({
         {commonTitles.LOGOUT.icon}
         {commonTitles.LOGOUT.text}
       </MenuItem>
-    </MainMenu>
+    </Menu>
   );
 };
 
