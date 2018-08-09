@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { Form, Row, Col } from 'antd';
+import { TIME_FORMAT_DB, DATE_FORMAT } from '../../../actions/constants';
+
 import {
   EventData,
   EditEventButton,
-  CloseButton,
   ShareFacebookButton,
   NotifyMsgButton,
 } from './components';
-import { EventCard } from '../event-creation/styled-components';
+import { EventCard } from '../shared-styled';
+import { BackButton } from '../shared-components';
 
 class EventPage extends Component {
   render() {
@@ -57,7 +60,7 @@ class EventPage extends Component {
               <EditEventButton eventId={this.eventId} />
             </Col>
             <Col {...actionColLayout}>
-              <CloseButton />
+              <BackButton />
             </Col>
           </Row>
         </EventCard>
@@ -73,6 +76,23 @@ EventPage.propTypes = {
 const mapStateToProps = state => ({
   eventmgmtData: state.eventmgmt.data,
 });
+
+const formatDate = (strDate) => {
+  if (strDate) {
+    const date = moment(new Date(strDate)).format(DATE_FORMAT) === '01-01-1900'
+      ? '/'
+      : moment(new Date(strDate))
+        .format(DATE_FORMAT)
+        .toString();
+    const time = moment(new Date(strDate)).format(TIME_FORMAT_DB) === '00:00:00'
+      ? '/'
+      : moment(new Date(strDate))
+        .format(TIME_FORMAT_DB)
+        .toString();
+    return date.concat(' ', time);
+  }
+  return null;
+};
 
 const mapPropsToFields = ({
   computedMatch: { params },
@@ -102,8 +122,12 @@ const mapPropsToFields = ({
     eventStatus: Form.createFormField({
       value: eventData.eventStatus === '1' ? 'Open' : 'Closed',
     }),
-    startDate: Form.createFormField({ value: eventData.startDate }),
-    endDate: Form.createFormField({ value: eventData.endDate }),
+    startDate: Form.createFormField({
+      value: formatDate(eventData.startDate),
+    }),
+    endDate: Form.createFormField({
+      value: formatDate(eventData.endDate),
+    }),
     createdBy: Form.createFormField({ value: eventData.createdBy }),
     createdDate: Form.createFormField({ value: eventData.createdDate }),
   };

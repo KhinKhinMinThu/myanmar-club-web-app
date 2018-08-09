@@ -2,32 +2,17 @@ import React from 'react';
 import {
   Tabs, Button, Form, Input,
 } from 'antd';
-import { EVENT_EDIT } from '../../actions/location';
+import { EVENT_EDIT } from '../../../actions/location';
 import {
   TabIcon,
   BoldText,
   FullWidthTable,
-} from '../event-creation/styled-components';
+  FullButton,
+} from '../shared-styled';
+import { layout } from '../shared-components';
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
-const layout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-    md: { span: 24 },
-    lg: { span: 8 },
-    xl: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-    md: { span: 24 },
-    lg: { span: 16 },
-    xl: { span: 16 },
-  },
-  style: { margin: 0 },
-};
 const readOnlyInput = {
   style: {
     border: 0,
@@ -39,7 +24,6 @@ const readOnlyInput = {
   readOnly: true,
   size: 'small',
 };
-const fullButton = { style: { width: '100% ' } };
 
 /* eslint react/prop-types: 0 */
 // ALL FORM ITEM MUST PASS IN decorator!
@@ -90,65 +74,59 @@ export const EventData = ({ decorator }) => (
       )}
     </FormItem>
 
-    <FormItem {...layout} label="Event Name">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Name">
       {decorator('name')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Event Description">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Description">
       {decorator('description')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Start Date/Time">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Start Date/Time">
       {decorator('startDate')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="End Date/Time">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="End Date/Time">
       {decorator('endDate')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Location">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Location">
       {decorator('location')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Postal Code">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Postal Code">
       {decorator('locationPostalCode')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Event Status">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Status">
       {decorator('eventStatus')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Ticket Fee (SGD)">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Ticket Fee (SGD)">
       {decorator('ticketFee')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="No of Pax">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="No of Pax">
       {decorator('noOfPax')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Refreshment Provided">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Refreshment Provided">
       {decorator('isRefreshmentProvided')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Contact Person">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Contact Person">
       {decorator('contactPerson')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Email Address">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Email Address">
       {decorator('emailAddress')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Mobile No">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Created By">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created By">
       {decorator('createdBy')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Created Date">
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created Date">
       {decorator('createdDate')(<Input {...readOnlyInput} />)}
     </FormItem>
   </Form>
 );
 
 export const EditEventButton = ({ eventId }) => (
-  <Button
-    {...fullButton}
-    type="primary"
-    href={EVENT_EDIT.concat('/').concat(eventId)}
-  >
+  <FullButton type="primary" href={EVENT_EDIT.concat('/').concat(eventId)}>
     Edit Event
-  </Button>
+  </FullButton>
 );
-
-export const CloseButton = () => <Button {...fullButton}>Close</Button>;
 
 export const ShareFacebookButton = () => (
   <Button icon="facebook" shape="circle" type="primary" ghost />

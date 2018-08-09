@@ -9,6 +9,8 @@ export const GET_ERROR = '[EVENTMGMT_DATA] GET_ERROR';
 export const POST_APILOADING = '[EVENTMGMT_DATA] POST_APILOADING';
 export const POST_DELETEEVENT = '[EVENTMGMT_DATA] POST_DELETEEVENT';
 export const POST_DELETERSVP = '[EVENTMGMT_DATA] POST_DELETERSVP';
+export const POST_NEWEVENT = '[EVENTMGMT_DATA] POST_NEWEVENT';
+export const POST_UPDATEEVENT = '[EVENTMGMT_DATA] POST_UPDATEEVENT';
 export const POST_ERROR = '[EVENTMGMT_DATA] POST_ERROR';
 // end
 
@@ -25,16 +27,13 @@ export const postDeleteRSVP = eventRSVPToDelete => ({
   type: POST_DELETERSVP,
   eventRSVPToDelete,
 });
-
-// delete
-export const save = eventRSVPToDelete => ({
-  type: POST_DELETERSVP,
-  eventRSVPToDelete,
+export const postNewEvent = newEventToAdd => ({
+  type: POST_NEWEVENT,
+  newEventToAdd,
 });
-// delete
-export const remove = eventRSVPToDelete => ({
-  type: POST_DELETERSVP,
-  eventRSVPToDelete,
+export const postUpdateEvent = eventToUpdate => ({
+  type: POST_UPDATEEVENT,
+  eventToUpdate,
 });
 
 export default function (
@@ -44,23 +43,6 @@ export default function (
     isPostApiLoading: false,
     postErrMsg: null,
     eventsData: null,
-
-    id: null,
-    name: null,
-    description: null,
-    startDate: null,
-    endDate: null,
-    locationLine1: null,
-    locationLine2: null,
-    locationPostalCode: null,
-    ticketFee: null,
-    noOfPax: null,
-    isRefreshmentProvided: null,
-    contactPerson: null,
-    emailAddress: null,
-    mobilePhone: null,
-    eventStatus: null,
-    // end
   },
   action,
 ) {

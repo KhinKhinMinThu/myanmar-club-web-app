@@ -8,6 +8,8 @@ import {
   POST_APILOADING,
   POST_DELETEEVENT,
   POST_DELETERSVP,
+  POST_NEWEVENT,
+  POST_UPDATEEVENT,
   POST_ERROR,
 } from '../reducers/eventmgmt/eventmgmt-data';
 
@@ -37,6 +39,40 @@ const postDeleteRSVP = eventRSVPToDelete => api.post('/event/deleteRegistrations
   eventRSVPToDelete,
 });
 
+const postNewEvent = newEventToAdd => api.post('/event/createEvent', {
+  name: newEventToAdd.name,
+  description: newEventToAdd.description,
+  startDate: newEventToAdd.startDate,
+  endDate: newEventToAdd.endDate,
+  locationLine1: newEventToAdd.locationLine1,
+  locationLine2: newEventToAdd.locationLine2,
+  locationPostalCode: newEventToAdd.locationPostalCode,
+  ticketFee: newEventToAdd.ticketFee,
+  noOfPax: newEventToAdd.noOfPax,
+  isRefreshmentProvided: newEventToAdd.isRefreshmentProvided,
+  contactPerson: newEventToAdd.contactPerson,
+  emailAddress: newEventToAdd.emailAddress,
+  mobilePhone: newEventToAdd.mobilePhone,
+  eventStatus: newEventToAdd.eventStatus,
+});
+const postUpdateEvent = eventToUpdate => api.post('/event/updateEvent', {
+  id: eventToUpdate.id,
+
+  name: eventToUpdate.name,
+  description: eventToUpdate.description,
+  startDate: eventToUpdate.startDate,
+  endDate: eventToUpdate.endDate,
+  locationLine1: eventToUpdate.locationLine1,
+  locationLine2: eventToUpdate.locationLine2,
+  locationPostalCode: eventToUpdate.locationPostalCode,
+  ticketFee: eventToUpdate.ticketFee,
+  noOfPax: eventToUpdate.noOfPax,
+  isRefreshmentProvided: eventToUpdate.isRefreshmentProvided,
+  contactPerson: eventToUpdate.contactPerson,
+  emailAddress: eventToUpdate.emailAddress,
+  mobilePhone: eventToUpdate.mobilePhone,
+  eventStatus: eventToUpdate.eventStatus,
+});
 function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
@@ -48,10 +84,14 @@ function* asyncPostProcessEvents(action) {
       action.type,
       action.eventsToDelete,
       action.eventRSVPToDelete,
+      action.newEventToAdd,
+      action.eventToUpdate,
     );
 
     if (action.type === POST_DELETEEVENT) yield call(postDeleteEvent, action.eventsToDelete);
     if (action.type === POST_DELETERSVP) yield call(postDeleteRSVP, action.eventRSVPToDelete);
+    if (action.type === POST_NEWEVENT) yield call(postNewEvent, action.newEventToAdd);
+    if (action.type === POST_UPDATEEVENT) yield call(postUpdateEvent, action.eventToUpdate);
 
     const { errorMsg } = response.data;
     errMsg = errorMsg;
@@ -70,5 +110,13 @@ export const postDeleteEventSaga = takeLatest(
 );
 export const postDeleteRSVPSaga = takeLatest(
   POST_DELETERSVP,
+  asyncPostProcessEvents,
+);
+export const postNewEventSaga = takeLatest(
+  POST_NEWEVENT,
+  asyncPostProcessEvents,
+);
+export const postUpdateEventSaga = takeLatest(
+  POST_UPDATEEVENT,
   asyncPostProcessEvents,
 );

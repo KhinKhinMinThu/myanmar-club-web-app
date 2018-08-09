@@ -8,8 +8,8 @@ import { EventViewTabs } from './components';
 import {
   resetState,
   setCurrentTab,
-} from '../../reducers/eventmgmt/eventmgmt-ui';
-import { getEventsData } from '../../reducers/eventmgmt/eventmgmt-data';
+} from '../../../reducers/eventmgmt/eventmgmt-ui';
+import { getEventsData } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 import EventPage from './event-page';
 import RegistrationListPage from './event-rsvp-page';

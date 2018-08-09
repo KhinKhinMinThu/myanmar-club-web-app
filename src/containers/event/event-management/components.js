@@ -1,43 +1,17 @@
 import React from 'react';
-import { Button, Form } from 'antd';
-import { EVENT_CREATION, EVENT_VIEW, EVENT_EDIT } from '../../actions/location';
+import { Button } from 'antd';
+import {
+  EVENT_CREATION,
+  EVENT_VIEW,
+  EVENT_EDIT,
+} from '../../../actions/location';
 import {
   FullWidthTable,
-  SelectedText,
-  MarginLeftButton,
   TableActionIcon,
   TableActionLink,
-  SearchInput,
-} from './styled-components';
-
-const FormItem = Form.Item;
+} from '../shared-styled';
 
 /* eslint react/prop-types: 0 */
-// SearchNamePanel
-export const SearchNamePanel = ({
-  onChange,
-  decorator,
-  onSearch,
-  onClickReset,
-  placeHolder,
-}) => (
-  <FormItem style={{ marginBottom: 3 }}>
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder={placeHolder}
-        onChange={onChange}
-        onPressEnter={onSearch}
-      />,
-    )}
-    <MarginLeftButton type="primary" onClick={onSearch}>
-      Search
-    </MarginLeftButton>
-    <MarginLeftButton type="primary" onClick={onClickReset} ghost>
-      Clear Search
-    </MarginLeftButton>
-  </FormItem>
-);
-
 // EventsTable
 export const EventsTable = ({
   eventsList,
@@ -137,46 +111,6 @@ export const EventsTable = ({
     />
   );
 };
-
-export const DeSeletAllButton = ({ onClick, hasSelected, loading }) => (
-  <MarginLeftButton
-    type="primary"
-    onClick={onClick}
-    disabled={!hasSelected}
-    loading={loading}
-    ghost
-  >
-    Deselect All
-  </MarginLeftButton>
-);
-
-export const SeletAllButton = ({ onClick, loading }) => (
-  <Button type="primary" onClick={onClick} loading={loading} ghost>
-    Select All
-  </Button>
-);
-
-export const SelectedInfo = ({ selectedNum, placeHolder }) => (
-  <SelectedText>
-    Selected {selectedNum} {placeHolder}(s)
-  </SelectedText>
-);
-
-export const DeleteSeletedButton = ({
-  onClick,
-  hasSelected,
-  isPostApiLoading,
-  placeHolder,
-}) => (
-  <MarginLeftButton
-    type="primary"
-    onClick={onClick}
-    disabled={!hasSelected}
-    loading={isPostApiLoading}
-  >
-    {placeHolder}
-  </MarginLeftButton>
-);
 
 export const CreateNewEventButton = () => (
   <Button type="primary" icon="file-add" href={EVENT_CREATION}>

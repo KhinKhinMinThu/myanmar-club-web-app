@@ -7,10 +7,11 @@ import {
 import {
   SUCCESS_DELETEEVENTTRANSC,
   SUCCESS_ADDEVENTTRANSC,
-} from '../../actions/message';
+  SHOWFOR,
+} from '../../../actions/message';
 
 import { EventsTable } from './components';
-import { SearchNamePanel } from '../event-management/components';
+import { SearchNamePanel } from '../shared-components';
 
 import {
   setSortedInfo,
@@ -19,13 +20,13 @@ import {
   resetState,
   setDummyTransac,
   setEditingKey,
-} from '../../reducers/event-transaction/event-transaction-ui';
+} from '../../../reducers/event-transaction/event-transaction-ui';
 import {
   getEventTranscData,
   setEventTranscData,
   postDeleteEventTransc,
   postAddEventTransc,
-} from '../../reducers/event-transaction/event-transaction-data';
+} from '../../../reducers/event-transaction/event-transaction-data';
 
 class EventTransaction extends Component {
   componentDidMount() {
@@ -51,10 +52,10 @@ class EventTransaction extends Component {
 
     if (this.actionType) {
       if (postErrMsg) {
-        message.error(postErrMsg);
+        message.error(postErrMsg, SHOWFOR);
       } else {
-        if (this.actionType === 'save') message.success(SUCCESS_ADDEVENTTRANSC);
-        if (this.actionType === 'delete') message.success(SUCCESS_DELETEEVENTTRANSC);
+        if (this.actionType === 'save') message.success(SUCCESS_ADDEVENTTRANSC, SHOWFOR);
+        if (this.actionType === 'delete') message.success(SUCCESS_DELETEEVENTTRANSC, SHOWFOR);
       }
     }
     this.actionType = null;

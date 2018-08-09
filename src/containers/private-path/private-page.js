@@ -26,11 +26,11 @@ import RoleManagementPage from '../role-management';
 import AccManagementPage from '../account-management';
 import MemberManagementPage from '../member-management';
 import ClaimManagementPage from '../claim-management';
-import EventTransactionPage from '../event-transaction';
-import EventCreation from '../event-creation';
-import EventManagementPage from '../event-management';
-import EventEditPage from '../event-edit';
-import EventViewPage from '../event-view';
+import EventTransactionPage from '../event/event-transaction';
+import EventCreation from '../event/event-creation';
+import EventManagementPage from '../event/event-management';
+import EventEditPage from '../event/event-edit';
+import EventViewPage from '../event/event-view';
 
 const { Header, Content, Sider } = Layout;
 const logoImage = (

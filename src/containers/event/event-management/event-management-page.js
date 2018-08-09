@@ -4,15 +4,16 @@ import { connect } from 'react-redux';
 import {
   Form, message, Spin, Alert, Row, Col,
 } from 'antd';
-import { SUCCESS_DELETEEVENT } from '../../actions/message';
+
+import { SUCCESS_DELETEEVENT, SHOWFOR } from '../../../actions/message';
+import { EventsTable } from './components';
 import {
-  EventsTable,
   DeSeletAllButton,
   SeletAllButton,
   SelectedInfo,
   DeleteSeletedButton,
   SearchNamePanel,
-} from './components';
+} from '../shared-components';
 
 import {
   setSelectedKeys,
@@ -21,12 +22,12 @@ import {
   setSortedInfo,
   setFilteredInfo,
   resetState,
-} from '../../reducers/eventmgmt/eventmgmt-ui';
+} from '../../../reducers/eventmgmt/eventmgmt-ui';
 import {
   getEventsData,
   setEventsData,
   postDeleteEvent,
-} from '../../reducers/eventmgmt/eventmgmt-data';
+} from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventManagementPage extends Component {
   componentDidMount() {
@@ -51,9 +52,9 @@ class EventManagementPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg);
+      message.error(postErrMsg, SHOWFOR);
     } else {
-      message.success(SUCCESS_DELETEEVENT);
+      message.success(SUCCESS_DELETEEVENT, SHOWFOR);
     }
   }
 
@@ -198,7 +199,10 @@ class EventManagementPage extends Component {
                   placeHolder="Delete Selected Event(s)"
                 />
                 {hasSelected ? (
-                  <SelectedInfo selectedNum={selectedKeys.length} placeHolder="event" />
+                  <SelectedInfo
+                    selectedNum={selectedKeys.length}
+                    placeHolder="event"
+                  />
                 ) : null}
               </Col>
               <Col span={24}>

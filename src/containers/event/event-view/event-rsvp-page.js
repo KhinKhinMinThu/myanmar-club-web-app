@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   Form, Row, Col, message,
 } from 'antd';
-import { SUCCESS_DELETERSVP } from '../../actions/message';
+import { SUCCESS_DELETERSVP, SHOWFOR } from '../../../actions/message';
 import { RegistrationTable } from './components';
 import {
   DeSeletAllButton,
@@ -12,7 +12,7 @@ import {
   SelectedInfo,
   DeleteSeletedButton,
   SearchNamePanel,
-} from '../event-management/components';
+} from '../shared-components';
 import {
   setSelectedKeys,
   setDeSelectAllLoading,
@@ -20,11 +20,11 @@ import {
   setSortedInfo,
   setFilteredInfo,
   resetState,
-} from '../../reducers/eventmgmt/eventmgmt-ui';
+} from '../../../reducers/eventmgmt/eventmgmt-ui';
 import {
   setEventsData,
   postDeleteRSVP,
-} from '../../reducers/eventmgmt/eventmgmt-data';
+} from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventRSVPPage extends Component {
   componentDidUpdate(prevProps) {
@@ -36,9 +36,9 @@ class EventRSVPPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg);
+      message.error(postErrMsg, SHOWFOR);
     } else {
-      message.success(SUCCESS_DELETERSVP);
+      message.success(SUCCESS_DELETERSVP, SHOWFOR);
     }
   }
 

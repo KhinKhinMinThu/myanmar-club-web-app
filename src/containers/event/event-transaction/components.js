@@ -9,7 +9,7 @@ import {
   FullWidthTable,
   TableInput,
   HightlightedText,
-} from './styled-components';
+} from '../shared-styled';
 
 const FormItem = Form.Item;
 
