@@ -1,17 +1,41 @@
 import React from 'react';
-import { Button } from 'antd';
-import { EVENT_VIEW, EVENT_EDIT } from '../../actions/location';
+import { Button, Form } from 'antd';
+import { EVENT_CREATION, EVENT_VIEW, EVENT_EDIT } from '../../actions/location';
 import {
   FullWidthTable,
   SelectedText,
   MarginLeftButton,
   TableActionIcon,
   TableActionLink,
-  Header2Text,
+  SearchInput,
 } from './styled-components';
 
+const FormItem = Form.Item;
+
 /* eslint react/prop-types: 0 */
-export const PageTitle = () => <Header2Text>Event Managment Page</Header2Text>;
+// SearchNamePanel
+export const SearchNamePanel = ({
+  onChange,
+  decorator,
+  onSearch,
+  onClickReset,
+}) => (
+  <FormItem style={{ marginBottom: 3 }}>
+    {decorator('searchName', { initialValue: null })(
+      <SearchInput
+        placeholder="Search event name"
+        onChange={onChange}
+        onPressEnter={onSearch}
+      />,
+    )}
+    <MarginLeftButton type="primary" onClick={onSearch}>
+      Search
+    </MarginLeftButton>
+    <MarginLeftButton type="primary" onClick={onClickReset} ghost>
+      Clear Search
+    </MarginLeftButton>
+  </FormItem>
+);
 
 // EventsTable
 export const EventsTable = ({
@@ -105,7 +129,10 @@ export const EventsTable = ({
       onChange={onChange}
       bordered
       size="small"
-      pagination={{ position: 'top' }}
+      pagination={{
+        position: 'top',
+        showTotal: () => <CreateNewEventButton />,
+      }}
     />
   );
 };
@@ -145,4 +172,10 @@ export const DeleteSeletedButton = ({
   >
     Delete Selected Event(s)
   </MarginLeftButton>
+);
+
+export const CreateNewEventButton = () => (
+  <Button type="primary" icon="file-add" href={EVENT_CREATION}>
+    Create a New Event
+  </Button>
 );

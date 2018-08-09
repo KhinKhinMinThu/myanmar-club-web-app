@@ -7,8 +7,6 @@ import {
   BoldText,
   BoldUnderlineText,
   FullWidthTable,
-  MarginLeftButton,
-  SearchInput,
   TableInput,
   HightlightedText,
 } from './styled-components';
@@ -16,30 +14,6 @@ import {
 const FormItem = Form.Item;
 
 /* eslint react/prop-types: 0 */
-// SearchNamePanel
-export const SearchNamePanel = ({
-  onChange,
-  decorator,
-  onSearch,
-  onClickReset,
-}) => (
-  <FormItem style={{ margin: 0 }}>
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder="Search event name"
-        onChange={onChange}
-        onPressEnter={onSearch}
-      />,
-    )}
-    <MarginLeftButton type="primary" onClick={onSearch}>
-      Search
-    </MarginLeftButton>
-    <MarginLeftButton type="primary" onClick={onClickReset} ghost>
-      Clear Search
-    </MarginLeftButton>
-  </FormItem>
-);
-
 // EditableContext
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (

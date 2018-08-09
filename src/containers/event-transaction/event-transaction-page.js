@@ -9,8 +9,9 @@ import {
   SUCCESS_ADDEVENTTRANSC,
 } from '../../actions/message';
 
-import { EventsTable, SearchNamePanel } from './components';
-// import { FixedContainer } from './styled-components';
+import { EventsTable } from './components';
+import { SearchNamePanel } from '../event-management/components';
+
 import {
   setSortedInfo,
   setFilteredInfo,
@@ -184,20 +185,25 @@ class EventTransaction extends Component {
           />
         ) : (
           <div>
-            <SearchNamePanel
-              onChange={(e) => {
-                this.searchNameValue = e.target.value;
-              }}
-              decorator={getFieldDecorator}
-              onSearch={() => dispatchFilteredInfo(
-                this.searchNameValue
-                  ? { name: [this.searchNameValue.toLowerCase()] }
-                  : {},
-              )
-              }
-              onClickReset={this.onClickReset}
-            />
+            <div className="pageHeaderContainer">
+              <h2>Event Transactions Page</h2>
+            </div>
             <Row type="flex" justify="start">
+              <Col span={24}>
+                <SearchNamePanel
+                  onChange={(e) => {
+                    this.searchNameValue = e.target.value;
+                  }}
+                  decorator={getFieldDecorator}
+                  onSearch={() => dispatchFilteredInfo(
+                    this.searchNameValue
+                      ? { name: [this.searchNameValue.toLowerCase()] }
+                      : {},
+                  )
+                  }
+                  onClickReset={this.onClickReset}
+                />
+              </Col>
               <Col>
                 <EventsTable
                   eventsList={this.eventsList}

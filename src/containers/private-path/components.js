@@ -12,7 +12,6 @@ import {
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
-  EVENT_CREATION,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -43,10 +42,6 @@ const adminTitles = {
   EVENT_MANAGEMENT: {
     icon: <MenuIcon type="calendar" />,
     text: 'Events Management',
-  },
-  EVENT_CREATION: {
-    icon: <MenuIcon type="file-add" />,
-    text: 'Create New Event',
   },
 };
 
@@ -112,14 +107,6 @@ const MenuPanel = ({
           {adminTitles.EVENT_MANAGEMENT.text}
         </MenuItem>
       )}
-
-      {isAdmin && (
-        <MenuItem key={EVENT_CREATION}>
-          {adminTitles.EVENT_CREATION.icon}
-          {adminTitles.EVENT_CREATION.text}
-        </MenuItem>
-      )}
-
       <MenuItem key={LOGOUT}>
         {commonTitles.LOGOUT.icon}
         {commonTitles.LOGOUT.text}

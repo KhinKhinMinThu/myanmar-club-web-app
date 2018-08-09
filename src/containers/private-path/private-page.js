@@ -40,7 +40,7 @@ const siderWidth = 230;
 
 class PrivatePage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
-  switchPage = (pathname) => {
+  switchPage = (pathname, isAdmin) => {
     switch (pathname) {
       case DASHBOARD:
         return Dashboard;
@@ -48,6 +48,17 @@ class PrivatePage extends Component {
         return SignupPage2;
       case LOGOUT:
         return Dashboard;
+      default:
+        if (isAdmin) {
+          return this.switchAdminPage(pathname);
+        }
+        // should return to error page
+        return Dashboard;
+    }
+  };
+
+  switchAdminPage = (pathname) => {
+    switch (pathname) {
       case ROLE_MANAGEMENT:
         return RoleManagementPage;
       case ACCOUNT_MANAGEMENT:
@@ -78,7 +89,7 @@ class PrivatePage extends Component {
       isAdmin,
     } = this.props;
     const { pathname } = params;
-    const Page = this.switchPage(`/${pathname}`);
+    const Page = this.switchPage(`/${pathname}`, isAdmin);
     console.log('private props:', this.props);
     console.log('pathname:', pathname);
 

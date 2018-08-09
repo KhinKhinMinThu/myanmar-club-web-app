@@ -6,14 +6,13 @@ import {
 } from 'antd';
 import { SUCCESS_DELETEEVENT } from '../../actions/message';
 import {
-  PageTitle,
   EventsTable,
   DeSeletAllButton,
   SeletAllButton,
   SelectedEvents,
   DeleteSeletedButton,
+  SearchNamePanel,
 } from './components';
-import { SearchNamePanel } from '../event-transaction/components';
 
 import {
   setSelectedKeys,
@@ -168,8 +167,11 @@ class EventManagementPage extends Component {
           />
         ) : (
           <div>
+            <div className="pageHeaderContainer">
+              <h2>Event Managment Page</h2>
+            </div>
             <Row type="flex" justify="start">
-              <Col span={12}>
+              <Col span={24}>
                 <SearchNamePanel
                   onChange={(e) => {
                     this.searchNameValue = e.target.value;
@@ -184,11 +186,6 @@ class EventManagementPage extends Component {
                   onClickReset={this.onClickReset}
                 />
               </Col>
-              <Col span={12}>
-                <PageTitle />
-              </Col>
-            </Row>
-            <Row type="flex" justify="start" style={{ marginTop: 3 }}>
               <Col span={24}>
                 <SeletAllButton
                   onClick={this.onClickSelectAll}
