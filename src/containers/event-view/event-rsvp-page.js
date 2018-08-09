@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form } from 'antd';
 import {
-  RegistrationTable,
+  Form, Row, Col, message,
+} from 'antd';
+import { SUCCESS_DELETERSVP } from '../../actions/message';
+import { RegistrationTable } from './components';
+import {
   DeSeletAllButton,
   SeletAllButton,
-  SelectedRegistrations,
+  SelectedInfo,
   DeleteSeletedButton,
   SearchNamePanel,
-} from './components';
-import { FlexContainerLeft } from '../event-creation/styled-components';
+} from '../event-management/components';
 import {
   setSelectedKeys,
   setDeSelectAllLoading,
@@ -19,21 +21,25 @@ import {
   setFilteredInfo,
   resetState,
 } from '../../reducers/eventmgmt/eventmgmt-ui';
-import { remove } from '../../reducers/eventmgmt/eventmgmt-data';
+import {
+  setEventsData,
+  postDeleteRSVP,
+} from '../../reducers/eventmgmt/eventmgmt-data';
 
-class EventManagementPage extends Component {
-  // get the eventlist from API
-  componentWillMount() {
+class EventRSVPPage extends Component {
+  componentDidUpdate(prevProps) {
     const {
-      eventmgmtData: { eventsData },
-      computedMatch: {
-        params: { id },
-      },
+      eventmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
-    this.eventId = id;
-    console.log('eventId', id);
-    const eventData = eventsData.find(item => item.id === id);
-    this.registrationList = this.prepareList(eventData.eventRSVPData);
+
+    const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (postErrMsg) {
+      message.error(postErrMsg);
+    } else {
+      message.success(SUCCESS_DELETERSVP);
+    }
   }
 
   // handle de-select all button
@@ -56,51 +62,36 @@ class EventManagementPage extends Component {
     }, 1000);
   };
 
-  // handle check-box selection in the table
-  onSelectChange = (selectedKeys) => {
-    const { dispatchSelectedKeys } = this.props;
-    dispatchSelectedKeys(selectedKeys);
-  };
-
-  // handle tabs change event
-  onChange = (pagination, filters, sorter) => {
-    const { dispatchSortedInfo, dispatchFilteredInfo } = this.props;
-    dispatchSortedInfo(sorter);
-    dispatchFilteredInfo(filters);
-  };
-
-  // delete selected events
+  // delete selected rsvp
   onClickDeleteSelected = () => {
     const {
+      computedMatch: {
+        params: { id },
+      },
+      eventmgmtData: { eventsData },
       eventmgmtUI: { selectedKeys },
-      dispatchRemove,
+      performDeleteRSVP,
+      dispatchSetEventsData,
       dispatchResetState,
     } = this.props;
-    dispatchRemove({ eventRSVPToDelete: selectedKeys });
+    performDeleteRSVP({ eventRSVPToDelete: selectedKeys });
+
+    const event = eventsData.find(item => item.id === id);
+    const { eventRSVPData } = event;
+
+    selectedKeys.forEach((item) => {
+      const index = eventRSVPData.findIndex(rsvp => rsvp.id === item);
+      if (index !== -1) eventRSVPData.splice(index, 1);
+    });
+    dispatchSetEventsData(eventsData);
     dispatchResetState();
-    // to remove the selected event from the table display
-    this.registrationList = this.registrationList.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-  };
-
-  // handle input changes from searchName field
-  onChangeSearchName = (e) => {
-    this.searchNameValue = e.target.value;
-  };
-
-  // handle onClick from SearchName button and onPressEnter from input field
-  onSearchName = () => {
-    const filters = this.searchNameValue
-      ? { name: [this.searchNameValue] }
-      : {};
-    if (this.searchNameValue !== null) this.onChange({}, filters, {});
   };
 
   // handle onClick from Reset button
   onClickReset = () => {
     const {
       dispatchFilteredInfo,
+      dispatchResetState,
       form: { resetFields },
     } = this.props;
 
@@ -109,9 +100,9 @@ class EventManagementPage extends Component {
       resetFields(['searchName']);
       this.searchNameValue = null;
     }
+    dispatchResetState();
   };
 
-  // add the key and format role_names of member list
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
@@ -123,66 +114,94 @@ class EventManagementPage extends Component {
 
   render() {
     const {
-      eventmgmtUI,
+      computedMatch: {
+        params: { id },
+      },
+      eventmgmtUI: {
+        selectedKeys,
+        deselectAllLoading,
+        selectAllLoading,
+        sortedInfo,
+        filteredInfo,
+      },
+      eventmgmtData: { eventsData, isPostApiLoading },
       form: { getFieldDecorator },
+      dispatchSortedInfo,
+      dispatchFilteredInfo,
+      dispatchSelectedKeys,
     } = this.props;
-    const {
-      selectedKeys,
-      deselectAllLoading,
-      selectAllLoading,
-      sortedInfo,
-      filteredInfo,
-    } = eventmgmtUI;
+
     const rowSelection = {
       selectedRowKeys: selectedKeys,
-      onChange: this.onSelectChange,
+      onChange: keys => dispatchSelectedKeys(keys),
     };
     const hasSelected = selectedKeys.length > 0;
 
+    const eventData = eventsData ? eventsData.find(item => item.id === id) : {};
+    this.registrationList = this.prepareList(eventData.eventRSVPData);
+
     return (
       <div>
-        <SearchNamePanel
-          onChange={this.onChangeSearchName}
-          onPressEnter={this.onSearchName}
-          decorator={getFieldDecorator}
-          onClickSearch={this.onSearchName}
-          onClickReset={this.onClickReset}
-        />
-
-        <FlexContainerLeft>
-          <SeletAllButton
-            onClick={this.onClickSelectAll}
-            loading={selectAllLoading}
-          />
-          <DeSeletAllButton
-            onClick={this.onClickDeselectAll}
-            hasSelected={hasSelected}
-            loading={deselectAllLoading}
-          />
-          <DeleteSeletedButton
-            onClick={this.onClickDeleteSelected}
-            hasSelected={hasSelected}
-          />
-          {hasSelected ? (
-            <SelectedRegistrations selectedNum={selectedKeys.length} />
-          ) : null}
-        </FlexContainerLeft>
-
-        <FlexContainerLeft>
-          <RegistrationTable
-            registrationList={this.registrationList}
-            rowSelection={rowSelection}
-            onChange={this.onChange}
-            sortedInfo={sortedInfo || {}}
-            filteredInfo={filteredInfo || {}}
-          />
-        </FlexContainerLeft>
+        <Row type="flex" justify="start">
+          <Col span={24}>
+            <SearchNamePanel
+              onChange={(e) => {
+                this.searchNameValue = e.target.value;
+              }}
+              onPressEnter={this.onSearchName}
+              decorator={getFieldDecorator}
+              onSearch={() => dispatchFilteredInfo(
+                this.searchNameValue
+                  ? { name: [this.searchNameValue.toLowerCase()] }
+                  : {},
+              )
+              }
+              onClickReset={this.onClickReset}
+              placeHolder="Search name"
+            />
+          </Col>
+          <Col span={24}>
+            <SeletAllButton
+              onClick={this.onClickSelectAll}
+              loading={selectAllLoading}
+            />
+            <DeSeletAllButton
+              onClick={this.onClickDeselectAll}
+              hasSelected={hasSelected}
+              loading={deselectAllLoading}
+            />
+            <DeleteSeletedButton
+              onClick={this.onClickDeleteSelected}
+              hasSelected={hasSelected}
+              isPostApiLoading={isPostApiLoading}
+              placeHolder="Delete Selected Registration(s)"
+            />
+            {hasSelected ? (
+              <SelectedInfo
+                selectedNum={selectedKeys.length}
+                placeHolder="registration"
+              />
+            ) : null}
+          </Col>
+          <Col span={24}>
+            <RegistrationTable
+              registrationList={this.registrationList}
+              rowSelection={rowSelection}
+              onChange={(pagination, filters, sorter) => {
+                dispatchSortedInfo(sorter);
+                dispatchFilteredInfo(filters);
+              }}
+              sortedInfo={sortedInfo || {}}
+              filteredInfo={filteredInfo || {}}
+            />
+          </Col>
+        </Row>
       </div>
     );
   }
 }
 
-EventManagementPage.propTypes = {
+EventRSVPPage.propTypes = {
   computedMatch: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
   dispatchSelectedKeys: PropTypes.func.isRequired,
@@ -191,7 +210,9 @@ EventManagementPage.propTypes = {
   dispatchSortedInfo: PropTypes.func.isRequired,
   dispatchFilteredInfo: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
-  dispatchRemove: PropTypes.func.isRequired,
+
+  dispatchSetEventsData: PropTypes.func.isRequired,
+  performDeleteRSVP: PropTypes.func.isRequired,
 
   eventmgmtUI: PropTypes.shape({}).isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
@@ -208,12 +229,14 @@ const mapDispatchToProps = {
   dispatchSortedInfo: setSortedInfo,
   dispatchFilteredInfo: setFilteredInfo,
   dispatchResetState: resetState,
-  dispatchRemove: remove,
+
+  dispatchSetEventsData: setEventsData,
+  performDeleteRSVP: postDeleteRSVP,
 };
 
-const FormEventManagementPage = Form.create()(EventManagementPage);
+const FormEventRSVPPage = Form.create()(EventRSVPPage);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormEventManagementPage);
+)(FormEventRSVPPage);

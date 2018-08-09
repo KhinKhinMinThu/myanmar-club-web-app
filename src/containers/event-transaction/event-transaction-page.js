@@ -202,6 +202,7 @@ class EventTransaction extends Component {
                   )
                   }
                   onClickReset={this.onClickReset}
+                  placeHolder="Search event name"
                 />
               </Col>
               <Col>

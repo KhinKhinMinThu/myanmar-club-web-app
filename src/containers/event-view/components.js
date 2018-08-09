@@ -1,19 +1,45 @@
 import React from 'react';
-import { Tabs, Button, Form } from 'antd';
+import {
+  Tabs, Button, Form, Input,
+} from 'antd';
 import { EVENT_EDIT } from '../../actions/location';
 import {
-  FullWidthButton,
-  ReadOnlyInput,
   TabIcon,
   BoldText,
   FullWidthTable,
-  SelectedText,
-  MarginLeftButton,
-  SearchInput,
 } from '../event-creation/styled-components';
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
+const layout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 8 },
+    xl: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 16 },
+    xl: { span: 16 },
+  },
+  style: { margin: 0 },
+};
+const readOnlyInput = {
+  style: {
+    border: 0,
+    outline: 0,
+    borderRadius: 0,
+    padding: 0,
+    borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+  },
+  readOnly: true,
+  size: 'small',
+};
+const fullButton = { style: { width: '100% ' } };
 
 /* eslint react/prop-types: 0 */
 // ALL FORM ITEM MUST PASS IN decorator!
@@ -48,27 +74,15 @@ export const EventViewTabs = ({ onChange, tabContents, props }) => {
   );
 };
 
-const layout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
-  },
-};
-
-const noMargin = { margin: 0 };
 export const EventData = ({ decorator }) => (
-  <div>
+  <Form>
     <FormItem>
       {decorator('photoLink', { valuePropName: 'src' })(
         <img
           alt="example"
           style={{
             width: 'auto',
-            height: '500px',
+            height: '200px',
             margin: '0 auto 0 auto',
             display: 'block',
           }}
@@ -76,83 +90,72 @@ export const EventData = ({ decorator }) => (
       )}
     </FormItem>
 
-    <FormItem {...layout} label="Event Name" style={noMargin}>
-      {decorator('name')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Event Name">
+      {decorator('name')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Event Description" style={noMargin}>
-      {decorator('description')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Event Description">
+      {decorator('description')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Start Date/Time" style={noMargin}>
-      {decorator('startDate')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Start Date/Time">
+      {decorator('startDate')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="End Date/Time" style={noMargin}>
-      {decorator('endDate')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="End Date/Time">
+      {decorator('endDate')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Location" style={noMargin}>
-      {decorator('location')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Location">
+      {decorator('location')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Postal Code" style={noMargin}>
-      {decorator('locationPostalCode')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Postal Code">
+      {decorator('locationPostalCode')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Event Status" style={noMargin}>
-      {decorator('eventStatus')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Event Status">
+      {decorator('eventStatus')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Ticket Fee (SGD)" style={noMargin}>
-      {decorator('ticketFee')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Ticket Fee (SGD)">
+      {decorator('ticketFee')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="No of Pax" style={noMargin}>
-      {decorator('noOfPax')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="No of Pax">
+      {decorator('noOfPax')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Refreshment Provided" style={noMargin}>
-      {decorator('isRefreshmentProvided')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Refreshment Provided">
+      {decorator('isRefreshmentProvided')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Contact Person" style={noMargin}>
-      {decorator('contactPerson')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Contact Person">
+      {decorator('contactPerson')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Email Address" style={noMargin}>
-      {decorator('emailAddress')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Email Address">
+      {decorator('emailAddress')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Mobile No" style={noMargin}>
-      {decorator('mobilePhone')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Mobile No">
+      {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Created By" style={noMargin}>
-      {decorator('createdBy')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Created By">
+      {decorator('createdBy')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} label="Created Date" style={noMargin}>
-      {decorator('createdDate')(<ReadOnlyInput readOnly />)}
+    <FormItem {...layout} label="Created Date">
+      {decorator('createdDate')(<Input {...readOnlyInput} />)}
     </FormItem>
-  </div>
+  </Form>
 );
 
 export const EditEventButton = ({ eventId }) => (
-  <FullWidthButton type="primary" href={EVENT_EDIT.concat('/').concat(eventId)}>
+  <Button
+    {...fullButton}
+    type="primary"
+    href={EVENT_EDIT.concat('/').concat(eventId)}
+  >
     Edit Event
-  </FullWidthButton>
+  </Button>
 );
 
-export const ViewRSVPButton = ({ eventId }) => (
-  // change to RSVP Link
-  <FullWidthButton type="primary" href={EVENT_EDIT.concat('/').concat(eventId)}>
-    View RSVP
-  </FullWidthButton>
+export const CloseButton = () => <Button {...fullButton}>Close</Button>;
+
+export const ShareFacebookButton = () => (
+  <Button icon="facebook" shape="circle" type="primary" ghost />
 );
 
-export const CloseButton = <FullWidthButton>Close</FullWidthButton>;
-
-export const ShareFacebookButton = ({ decorator }) => (
-  <FormItem {...layout} label="Share on facebook >" colon={false} style={noMargin}>
-    {decorator('shareFaceBook')(
-      <Button icon="facebook" shape="circle" type="primary" ghost />,
-    )}
-  </FormItem>
-);
-
-export const NotifyMsgButton = ({ decorator }) => (
-  <FormItem {...layout} label="Notify Club Members >" colon={false} style={noMargin}>
-    {decorator('notifyMsg')(
-      <Button icon="message" shape="circle" type="primary" ghost />,
-    )}
-  </FormItem>
+export const NotifyMsgButton = () => (
+  <Button icon="message" shape="circle" type="primary" ghost />
 );
 
 export const RegistrationTable = ({
@@ -168,6 +171,7 @@ export const RegistrationTable = ({
       title: 'No',
       dataIndex: 'no',
       key: 'no',
+      width: '4%',
       render: (text, record, index) => <span>{`${index + 1}`}</span>,
     },
     {
@@ -175,9 +179,10 @@ export const RegistrationTable = ({
       dataIndex: 'name',
       key: 'name',
       filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.includes(value),
+      onFilter: (value, record) => record.name.toLowerCase().includes(value),
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+      width: '19%',
     },
     {
       title: 'Email Address',
@@ -185,11 +190,13 @@ export const RegistrationTable = ({
       key: 'emailAddress',
       sorter: (a, b) => a.emailAddress.length - b.emailAddress.length,
       sortOrder: sortedInfo.columnKey === 'emailAddress' && sortedInfo.order,
+      width: '28%',
     },
     {
       title: 'Mobile No',
       dataIndex: 'mobilePhone',
       key: 'mobilePhone',
+      width: '19%',
     },
     {
       title: 'No. of Ticket(s)',
@@ -197,6 +204,7 @@ export const RegistrationTable = ({
       key: 'noOfPax',
       sorter: (a, b) => Number.parseInt(a.noOfPax, 10) - Number.parseInt(b.noOfPax, 10),
       sortOrder: sortedInfo.columnKey === 'noOfPax' && sortedInfo.order,
+      width: '14%',
     },
     {
       title: 'Payment',
@@ -204,6 +212,7 @@ export const RegistrationTable = ({
       key: 'paymentType',
       sorter: (a, b) => a.paymentType.length - b.paymentType.length,
       sortOrder: sortedInfo.columnKey === 'paymentType' && sortedInfo.order,
+      width: '15%',
     },
   ];
 
@@ -214,77 +223,8 @@ export const RegistrationTable = ({
       rowSelection={rowSelection}
       onChange={onChange}
       bordered
+      size="small"
+      pagination={{ position: 'top' }}
     />
   );
 };
-
-export const DeSeletAllButton = ({ onClick, hasSelected, loading }) => (
-  <MarginLeftButton
-    type="primary"
-    onClick={onClick}
-    disabled={!hasSelected}
-    loading={loading}
-    ghost
-  >
-    Deselect All
-  </MarginLeftButton>
-);
-
-export const SeletAllButton = ({ onClick, loading }) => (
-  <Button type="primary" onClick={onClick} loading={loading} ghost>
-    Select All
-  </Button>
-);
-
-export const SelectedRegistrations = ({ selectedNum }) => (
-  <SelectedText>Selected {selectedNum} registration(s)</SelectedText>
-);
-
-export const DeleteSeletedButton = ({ onClick, hasSelected }) => (
-  <MarginLeftButton type="primary" onClick={onClick} disabled={!hasSelected}>
-    Delete Selected Registration(s)
-  </MarginLeftButton>
-);
-
-export const SearchNamePanel = ({
-  onChange,
-  onPressEnter,
-  decorator,
-  onClickSearch,
-  onClickReset,
-}) => (
-  <FormItem
-    {...{
-      labelCol: {
-        xs: { span: 0 },
-        sm: { span: 0 },
-      },
-      wrapperCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
-      },
-    }}
-  >
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder="Search name"
-        onChange={onChange}
-        onPressEnter={onPressEnter}
-      />,
-    )}
-    <SearchNameButton onClick={onClickSearch} />
-    <ResetButton onClick={onClickReset} />
-  </FormItem>
-);
-
-export const SearchNameButton = ({ onClick }) => (
-  <MarginLeftButton type="primary" onClick={onClick}>
-    Search
-  </MarginLeftButton>
-);
-
-export const ResetButton = ({ onClick }) => (
-  <MarginLeftButton type="primary" onClick={onClick} ghost>
-    Clear Search
-  </MarginLeftButton>
-);

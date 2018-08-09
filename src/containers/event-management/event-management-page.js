@@ -9,7 +9,7 @@ import {
   EventsTable,
   DeSeletAllButton,
   SeletAllButton,
-  SelectedEvents,
+  SelectedInfo,
   DeleteSeletedButton,
   SearchNamePanel,
 } from './components';
@@ -77,12 +77,6 @@ class EventManagementPage extends Component {
     }, 1000);
   };
 
-  // handle check-box selection in the table
-  onSelectChange = (selectedKeys) => {
-    const { dispatchSelectedKeys } = this.props;
-    dispatchSelectedKeys(selectedKeys);
-  };
-
   // delete selected events
   onClickDeleteSelected = () => {
     const {
@@ -116,7 +110,6 @@ class EventManagementPage extends Component {
     dispatchResetState();
   };
 
-  // add the key and format role_names of member list
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
@@ -146,11 +139,12 @@ class EventManagementPage extends Component {
       form: { getFieldDecorator },
       dispatchSortedInfo,
       dispatchFilteredInfo,
+      dispatchSelectedKeys,
     } = this.props;
 
     const rowSelection = {
       selectedRowKeys: selectedKeys,
-      onChange: this.onSelectChange,
+      onChange: keys => dispatchSelectedKeys(keys),
     };
     const hasSelected = selectedKeys.length > 0;
 
@@ -184,6 +178,7 @@ class EventManagementPage extends Component {
                   )
                   }
                   onClickReset={this.onClickReset}
+                  placeHolder="Search event name"
                 />
               </Col>
               <Col span={24}>
@@ -200,9 +195,10 @@ class EventManagementPage extends Component {
                   onClick={this.onClickDeleteSelected}
                   hasSelected={hasSelected}
                   isPostApiLoading={isPostApiLoading}
+                  placeHolder="Delete Selected Event(s)"
                 />
                 {hasSelected ? (
-                  <SelectedEvents selectedNum={selectedKeys.length} />
+                  <SelectedInfo selectedNum={selectedKeys.length} placeHolder="event" />
                 ) : null}
               </Col>
               <Col span={24}>

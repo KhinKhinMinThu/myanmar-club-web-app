@@ -10,7 +10,11 @@ import {
   postDeleteTranscSaga,
   postAddTranscSaga,
 } from './event-transaction';
-import { getEventsDataSaga, postDeleteEventSaga } from './eventmgmt';
+import {
+  getEventsDataSaga,
+  postDeleteEventSaga,
+  postDeleteRSVPSaga,
+} from './eventmgmt';
 import postForgotPwdSaga from './forgot-password';
 
 export default function* rootSaga() {
@@ -27,6 +31,7 @@ export default function* rootSaga() {
     // eventmgmt
     getEventsDataSaga,
     postDeleteEventSaga,
+    postDeleteRSVPSaga,
     // forgot-password
     postForgotPwdSaga,
   ]);

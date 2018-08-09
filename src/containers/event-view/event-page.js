@@ -1,97 +1,114 @@
 import React, { Component } from 'react';
-import { Form, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Form, Row, Col } from 'antd';
 import {
   EventData,
   EditEventButton,
   CloseButton,
-  ViewRSVPButton,
   ShareFacebookButton,
   NotifyMsgButton,
 } from './components';
-import { FlexContainer, FormCard } from '../event-creation/styled-components';
+import { EventCard } from '../event-creation/styled-components';
 
 class EventPage extends Component {
-  componentDidMount() {
-    const {
-      computedMatch: {
-        params: { id },
-      },
-    } = this.props;
-    this.eventId = id;
-    console.log('eventId', id);
-
-    const {
-      form: { setFieldsValue },
-      eventmgmtData: { eventsData },
-    } = this.props;
-    const eventData = eventsData.find(item => item.id === id);
-
-    setFieldsValue({
-      // need to pick one by one due to "cannot setfields before registring" error
-      photoLink: eventData.photoLink,
-      name: eventData.name,
-      description: eventData.description,
-      location: `${eventData.locationLine1} ${eventData.locationLine2}`,
-      locationPostalCode: eventData.locationPostalCode,
-      ticketFee: eventData.ticketFee,
-      noOfPax: eventData.noOfPax,
-      isRefreshmentProvided:
-        eventData.isRefreshmentProvided === '1' ? 'Yes' : 'No',
-      contactPerson: eventData.contactPerson,
-      emailAddress: eventData.emailAddress,
-      mobilePhone: eventData.mobilePhone,
-      eventStatus: eventData.eventStatus === '1' ? 'Open' : 'Closed',
-      startDate: eventData.startDate,
-      endDate: eventData.endDate,
-      createdBy: eventData.createdBy,
-      createdDate: eventData.createdDate,
-    });
-  }
-
   render() {
     const {
       form: { getFieldDecorator },
     } = this.props;
+    const shareColLayout = {
+      xs: { span: 24, offset: 0 },
+      sm: { span: 24, offset: 0 },
+      md: { span: 24, offset: 0 },
+      lg: { span: 12, offset: 0 },
+      xl: { span: 12, offset: 0 },
+      style: { marginBottom: 14 },
+    };
+    const actionColLayout = {
+      xs: { span: 24 },
+      sm: { span: 24 },
+      md: { span: 24 },
+      lg: { span: 12 },
+      xl: { span: 12 },
+      style: { marginBottom: 14 },
+    };
 
     return (
       <div>
-        <Form onSubmit={this.onSubmit}>
-          <FormCard>
-            <EventData decorator={getFieldDecorator} />
-            <br />
-            <ShareFacebookButton decorator={getFieldDecorator} />
-            <NotifyMsgButton decorator={getFieldDecorator} />
-          </FormCard>
-        </Form>
-        <FlexContainer>
-          <Row gutter={8} style={{ width: '100%' }}>
-            <Col span={8}>
+        <EventCard>
+          <EventData decorator={getFieldDecorator} />
+          <br />
+          <Row gutter={8}>
+            <Col
+              {...shareColLayout}
+              {...{
+                lg: { span: 6, offset: 6 },
+                xl: { span: 6, offset: 6 },
+              }}
+            >
+              <ShareFacebookButton /> Share on facebook
+            </Col>
+            <Col {...shareColLayout}>
+              <NotifyMsgButton /> Notify Club Members
+            </Col>
+          </Row>
+          <Row gutter={8}>
+            <Col {...actionColLayout}>
               <EditEventButton eventId={this.eventId} />
             </Col>
-            <Col span={8}>
-              <ViewRSVPButton eventId={this.eventId} />
+            <Col {...actionColLayout}>
+              <CloseButton />
             </Col>
-            <Col span={8}>{CloseButton}</Col>
           </Row>
-        </FlexContainer>
+        </EventCard>
       </div>
     );
   }
 }
 
 EventPage.propTypes = {
-  computedMatch: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
-
-  eventmgmtData: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
   eventmgmtData: state.eventmgmt.data,
 });
 
-const FormEventPagePage = Form.create()(EventPage);
+const mapPropsToFields = ({
+  computedMatch: { params },
+  eventmgmtData: { eventsData },
+}) => {
+  const { id } = params;
+  const eventData = eventsData ? eventsData.find(item => item.id === id) : {};
+
+  return {
+    photoLink: Form.createFormField({ value: eventData.photoLink }),
+    name: Form.createFormField({ value: eventData.name }),
+    description: Form.createFormField({ value: eventData.description }),
+    location: Form.createFormField({
+      value: `${eventData.locationLine1} ${eventData.locationLine2}`,
+    }),
+    locationPostalCode: Form.createFormField({
+      value: eventData.locationPostalCode,
+    }),
+    ticketFee: Form.createFormField({ value: eventData.ticketFee }),
+    noOfPax: Form.createFormField({ value: eventData.noOfPax }),
+    isRefreshmentProvided: Form.createFormField({
+      value: eventData.isRefreshmentProvided === '1' ? 'Yes' : 'No',
+    }),
+    contactPerson: Form.createFormField({ value: eventData.contactPerson }),
+    emailAddress: Form.createFormField({ value: eventData.emailAddress }),
+    mobilePhone: Form.createFormField({ value: eventData.mobilePhone }),
+    eventStatus: Form.createFormField({
+      value: eventData.eventStatus === '1' ? 'Open' : 'Closed',
+    }),
+    startDate: Form.createFormField({ value: eventData.startDate }),
+    endDate: Form.createFormField({ value: eventData.endDate }),
+    createdBy: Form.createFormField({ value: eventData.createdBy }),
+    createdDate: Form.createFormField({ value: eventData.createdDate }),
+  };
+};
+
+const FormEventPagePage = Form.create({ mapPropsToFields })(EventPage);
 
 export default connect(mapStateToProps)(FormEventPagePage);

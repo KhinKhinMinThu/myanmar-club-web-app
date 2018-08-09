@@ -1,3 +1,4 @@
+export const CURRENTTAB = '[EVENTMGMT_UI] CURRENTTAB';
 export const VALIDATE = '[EVENTMGMT_UI] VALIDATE';
 export const SELECTEDKEYS = '[EVENTMGMT_UI] SELECTEDKEYS';
 export const DESELECTALL_LOADING = '[EVENTMGMT_UI] DESELECTALL_LOADING';
@@ -7,6 +8,11 @@ export const FILTEREDINFO = '[EVENTMGMT_UI] FILTEREDINFO';
 export const MODALVISIBILITY = '[EVENTMGMT_UI] MODALVISIBILITY';
 export const RESETSTATE = '[EVENTMGMT_UI] RESETSTATE';
 export const FILELIST = '[EVENTMGMT_UI] FILELIST';
+
+export const setCurrentTab = currentTab => ({
+  type: CURRENTTAB,
+  payload: currentTab,
+});
 
 export const validate = isValidating => ({
   type: VALIDATE,
@@ -73,10 +79,16 @@ const initialState = {
 export default function (
   state = {
     ...initialState,
+    currentTab: 'tab1',
   },
   action,
 ) {
   switch (action.type) {
+    case CURRENTTAB:
+      return {
+        ...state,
+        currentTab: action.payload,
+      };
     case VALIDATE:
       return {
         ...state,
@@ -119,6 +131,7 @@ export default function (
       };
     case RESETSTATE:
       return {
+        ...state,
         ...initialState,
       };
     default:

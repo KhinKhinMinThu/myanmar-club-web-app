@@ -7,6 +7,7 @@ import {
   GET_ERROR,
   POST_APILOADING,
   POST_DELETEEVENT,
+  POST_DELETERSVP,
   POST_ERROR,
 } from '../reducers/eventmgmt/eventmgmt-data';
 
@@ -32,14 +33,26 @@ const postDeleteEvent = eventsToDelete => api.post('/event/deleteEvent', {
   eventsToDelete,
 });
 
+const postDeleteRSVP = eventRSVPToDelete => api.post('/event/deleteRegistrations', {
+  eventRSVPToDelete,
+});
+
 function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
-    console.log('Calling API.........', action.type, action.eventsToDelete);
-    yield call(postDeleteEvent, action.eventsToDelete);
+    console.log(
+      'Calling API.........',
+      action.type,
+      action.eventsToDelete,
+      action.eventRSVPToDelete,
+    );
+
+    if (action.type === POST_DELETEEVENT) yield call(postDeleteEvent, action.eventsToDelete);
+    if (action.type === POST_DELETERSVP) yield call(postDeleteRSVP, action.eventRSVPToDelete);
+
     const { errorMsg } = response.data;
     errMsg = errorMsg;
   } catch (e) {
@@ -53,5 +66,9 @@ function* asyncPostProcessEvents(action) {
 export const getEventsDataSaga = takeLatest(GET_EVENTSDATA, asyncGetEventsData);
 export const postDeleteEventSaga = takeLatest(
   POST_DELETEEVENT,
+  asyncPostProcessEvents,
+);
+export const postDeleteRSVPSaga = takeLatest(
+  POST_DELETERSVP,
   asyncPostProcessEvents,
 );

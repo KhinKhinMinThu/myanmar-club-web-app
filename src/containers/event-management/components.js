@@ -19,11 +19,12 @@ export const SearchNamePanel = ({
   decorator,
   onSearch,
   onClickReset,
+  placeHolder,
 }) => (
   <FormItem style={{ marginBottom: 3 }}>
     {decorator('searchName', { initialValue: null })(
       <SearchInput
-        placeholder="Search event name"
+        placeholder={placeHolder}
         onChange={onChange}
         onPressEnter={onSearch}
       />,
@@ -155,14 +156,17 @@ export const SeletAllButton = ({ onClick, loading }) => (
   </Button>
 );
 
-export const SelectedEvents = ({ selectedNum }) => (
-  <SelectedText>Selected {selectedNum} event(s)</SelectedText>
+export const SelectedInfo = ({ selectedNum, placeHolder }) => (
+  <SelectedText>
+    Selected {selectedNum} {placeHolder}(s)
+  </SelectedText>
 );
 
 export const DeleteSeletedButton = ({
   onClick,
   hasSelected,
   isPostApiLoading,
+  placeHolder,
 }) => (
   <MarginLeftButton
     type="primary"
@@ -170,7 +174,7 @@ export const DeleteSeletedButton = ({
     disabled={!hasSelected}
     loading={isPostApiLoading}
   >
-    Delete Selected Event(s)
+    {placeHolder}
   </MarginLeftButton>
 );
 

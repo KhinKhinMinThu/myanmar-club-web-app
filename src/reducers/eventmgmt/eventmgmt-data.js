@@ -8,6 +8,7 @@ export const GET_ERROR = '[EVENTMGMT_DATA] GET_ERROR';
 // POST to API
 export const POST_APILOADING = '[EVENTMGMT_DATA] POST_APILOADING';
 export const POST_DELETEEVENT = '[EVENTMGMT_DATA] POST_DELETEEVENT';
+export const POST_DELETERSVP = '[EVENTMGMT_DATA] POST_DELETERSVP';
 export const POST_ERROR = '[EVENTMGMT_DATA] POST_ERROR';
 // end
 
@@ -20,16 +21,20 @@ export const postDeleteEvent = eventsToDelete => ({
   type: POST_DELETEEVENT,
   eventsToDelete,
 });
-
-// detele this!
-export const remove = eventsToDelete => ({
-  type: POST_DELETEEVENT,
-  eventsToDelete,
+export const postDeleteRSVP = eventRSVPToDelete => ({
+  type: POST_DELETERSVP,
+  eventRSVPToDelete,
 });
-// detele this!
-export const save = eventsToDelete => ({
-  type: POST_DELETEEVENT,
-  eventsToDelete,
+
+// delete
+export const save = eventRSVPToDelete => ({
+  type: POST_DELETERSVP,
+  eventRSVPToDelete,
+});
+// delete
+export const remove = eventRSVPToDelete => ({
+  type: POST_DELETERSVP,
+  eventRSVPToDelete,
 });
 
 export default function (
@@ -40,9 +45,6 @@ export default function (
     postErrMsg: null,
     eventsData: null,
 
-    // to update to API
-    //    eventsToDelete: [],
-    eventRSVPToDelete: [],
     id: null,
     name: null,
     description: null,
