@@ -174,10 +174,11 @@ export class ClaimsTable extends Component {
 
     const columns = [
       {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-        width: '3%',
+        title: 'No',
+        dataIndex: 'no',
+        key: 'no',
+        width: '4%',
+        render: (text, record, index) => <span>{`${index + 1}`}</span>,
       },
       {
         title: 'Event Description',
@@ -216,7 +217,7 @@ export class ClaimsTable extends Component {
             Click to view the receipt
           </TableActionButton>
         ),
-        width: '16%',
+        width: '15%',
       },
       {
         title: 'Submitted By',

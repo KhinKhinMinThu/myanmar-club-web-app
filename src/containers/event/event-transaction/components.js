@@ -97,10 +97,11 @@ export const EventsTable = ({
 }) => {
   const columns = [
     {
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id',
-      width: '3%',
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      width: '4%',
+      render: (text, record, index) => <span>{`${index + 1}`}</span>,
     },
     {
       title: 'Event Name',
@@ -151,7 +152,7 @@ export const EventsTable = ({
       sorter: (a, b) => a.eventStatus.length - b.eventStatus.length,
       sortOrder: sortedInfo.columnKey === 'eventStatus' && sortedInfo.order,
       render: text => (text === '1' ? 'Open' : 'Closed'),
-      width: '11%',
+      width: '10%',
     },
     {
       title: 'Created By',
