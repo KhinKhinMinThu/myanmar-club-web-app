@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Form, Row, Col } from 'antd';
-import { TIME_FORMAT_DB, DATE_FORMAT } from '../../../actions/constants';
+import {
+  TIME_FORMAT_DB,
+  DATE_FORMAT,
+  DEFAULT_DATE,
+  DEFAULT_TIME,
+} from '../../../actions/constants';
 
 import {
   EventData,
@@ -79,12 +84,12 @@ const mapStateToProps = state => ({
 
 const formatDate = (strDate) => {
   if (strDate) {
-    const date = moment(new Date(strDate)).format(DATE_FORMAT) === '01-01-1900'
+    const date = moment(new Date(strDate)).format(DATE_FORMAT) === DEFAULT_DATE
       ? '/'
       : moment(new Date(strDate))
         .format(DATE_FORMAT)
         .toString();
-    const time = moment(new Date(strDate)).format(TIME_FORMAT_DB) === '00:00:00'
+    const time = moment(new Date(strDate)).format(TIME_FORMAT_DB) === DEFAULT_TIME
       ? '/'
       : moment(new Date(strDate))
         .format(TIME_FORMAT_DB)

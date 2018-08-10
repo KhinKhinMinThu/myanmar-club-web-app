@@ -6,7 +6,7 @@ import {
   Form, message, Row, Col, Spin,
 } from 'antd';
 import { SUCCESS_NEWEVENT, SHOWFOR } from '../../../actions/message';
-import { DATETIME_FORMAT_DB } from '../../../actions/constants';
+import { DATETIME_FORMAT_DB, DEFAULT_DATETIME } from '../../../actions/constants';
 import {
   EventNameInput,
   EventDescriptionInput,
@@ -103,7 +103,7 @@ class EventCreation extends Component {
   // convert string date to Date object and combine date and time.
   formatDateTime = (strDate, strTime) => {
     // to set the default date and time for end date/time
-    const defaultDT = new Date('01-01-1900 00:00');
+    const defaultDT = new Date(DEFAULT_DATETIME);
     const date = strDate ? new Date(strDate) : defaultDT;
     const time = strTime ? new Date(strTime) : defaultDT;
 

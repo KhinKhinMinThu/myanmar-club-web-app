@@ -7,6 +7,9 @@ export const TIME_FORMAT = 'HH:mm';
 
 export const DATETIME_FORMAT_DB = 'DD-MM-YYYY HH:mm:ss';
 export const TIME_FORMAT_DB = 'HH:mm:ss';
+export const DEFAULT_DATETIME = '01-01-2000 00:00';
+export const DEFAULT_DATE = '01-01-2000';
+export const DEFAULT_TIME = '00:00';
 
 // APIGET API URLS
 export const APIGET_ROLEDATA = '/getRoleData';

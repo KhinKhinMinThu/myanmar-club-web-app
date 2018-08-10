@@ -15,6 +15,9 @@ import {
   TIME_FORMAT,
   DATETIME_FORMAT_DB,
   DATETIME_FORMAT,
+  DEFAULT_DATE,
+  DEFAULT_TIME,
+  DEFAULT_DATETIME,
 } from '../../../actions/constants';
 import {
   EventNameInput,
@@ -154,7 +157,7 @@ class EventEdit extends Component {
   // convert string date to Date object and combine date and time.
   formatDateTime = (strDate, strTime) => {
     // to set the default date and time for end date/time
-    const defaultDT = new Date('01-01-1900 00:00');
+    const defaultDT = new Date(DEFAULT_DATETIME);
     const date = strDate ? new Date(strDate) : defaultDT;
     const time = strTime ? new Date(strTime) : defaultDT;
 
@@ -257,7 +260,7 @@ const mapDispatchToProps = {
 // convert string date to moment object for date/time picker
 const formatDate = (strDate) => {
   if (strDate) {
-    return moment(new Date(strDate)).format(DATE_FORMAT) === '01-01-1900'
+    return moment(new Date(strDate)).format(DATE_FORMAT) === DEFAULT_DATE
       ? null
       : moment(strDate, DATETIME_FORMAT);
   }
@@ -266,7 +269,7 @@ const formatDate = (strDate) => {
 
 const formatTime = (strTime) => {
   if (strTime) {
-    return moment(new Date(strTime)).format(TIME_FORMAT) === '00:00'
+    return moment(new Date(strTime)).format(TIME_FORMAT) === DEFAULT_TIME
       ? null
       : moment(strTime, DATETIME_FORMAT);
   }
