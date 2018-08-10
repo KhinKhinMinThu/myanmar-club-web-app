@@ -10,6 +10,7 @@ import {
   SelectedText,
   MarginLeftButton,
   SearchInput,
+  BottomUnder,
 } from '../shared-styled';
 
 const FormItem = Form.Item;
@@ -29,13 +30,6 @@ export const layout = {
     md: { span: 24 },
     lg: { span: 20 },
     xl: { span: 20 },
-  },
-  style: {
-    border: 0,
-    outline: 0,
-    borderRadius: 0,
-    padding: 0,
-    borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
   },
 };
 
@@ -263,10 +257,10 @@ export class ClaimsTable extends Component {
         >
           <img alt="receipt" width="100%" src={photoLink} />
           <FormItem {...layout} style={{ marginBottom: 0 }} label="Photo Link">
-            <a href={photoLink}>{photoLink}</a>
+            <BottomUnder><a href={photoLink}>{photoLink}</a></BottomUnder>
           </FormItem>
           <FormItem {...layout} style={{ marginBottom: 0 }} label="Remark">
-            <BoldText>{remark}</BoldText>
+            <BottomUnder><BoldText>{remark}</BoldText></BottomUnder>
           </FormItem>
         </Modal>
       </div>

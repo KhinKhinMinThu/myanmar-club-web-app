@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import {
   Form, message, Row, Col,
 } from 'antd';
-import { SUCCESS_UNAPPROVECLAIMS, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_DELETEMEMBER, SHOWFOR } from '../../../actions/message';
 import {
-  ClaimsTable,
+  MembersTable,
   DeSeletAllButton,
   SeletAllButton,
   SelectedInfo,
@@ -20,28 +20,27 @@ import {
   setSortedInfo,
   setFilteredInfo,
   resetState,
-} from '../../../reducers/claimmgmt/claimmgmt-ui';
+} from '../../../reducers/membermgmt/membermgmt-ui';
 import {
-  postUnApproveClaims,
-  setNewClaimsData,
-  setOldClaimsData,
-} from '../../../reducers/claimmgmt/claimmgmt-data';
+  postDeleteMembers,
+  setEcMembersData,
+} from '../../../reducers/membermgmt/membermgmt-data';
 
-class ApprovedClaimsPage extends Component {
+class EcMembersPage extends Component {
   componentDidUpdate(prevProps) {
     const {
-      claimmgmtData: { isPostApiLoading, postErrMsg },
-      claimmgmtUI: { currentTab },
+      membermgmtData: { isPostApiLoading, postErrMsg },
+      membermgmtUI: { currentTab },
     } = this.props;
-    if (currentTab !== 'tab2') return;
+    if (currentTab !== 'tab1') return;
 
-    const isApiPost = prevProps.claimmgmtData.isPostApiLoading && !isPostApiLoading;
+    const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
     if (postErrMsg) {
       message.error(postErrMsg, SHOWFOR);
     } else {
-      message.success(SUCCESS_UNAPPROVECLAIMS, SHOWFOR);
+      message.success(SUCCESS_DELETEMEMBER, SHOWFOR);
     }
   }
 
@@ -61,29 +60,26 @@ class ApprovedClaimsPage extends Component {
     dispatchSelectAllLoading(true);
     setTimeout(() => {
       dispatchSelectAllLoading(false);
-      dispatchSelectedKeys([...this.claimsList.map(item => item.key)]);
+      dispatchSelectedKeys([...this.membersList.map(item => item.key)]);
     }, 1000);
   };
 
+  // delete selected member accounts
   onClickDeleteSelected = () => {
     const {
-      claimmgmtUI: { selectedKeys },
-      claimmgmtData: { newClaimsList, oldClaimsList },
-      performUnApproveClaims,
+      membermgmtUI: { selectedKeys },
+      membermgmtData: { ecMembersList },
+      performDeleteMember,
       dispatchResetState,
-      dispatchNewClaimsData,
-      dispatchOldClaimsData,
+      dispatchEcMembersData,
     } = this.props;
-
-    performUnApproveClaims({ claimsToUnapprove: selectedKeys });
+    performDeleteMember({ membersToDelete: selectedKeys });
     dispatchResetState();
 
-    const updatedNewClaims = oldClaimsList.filter(item => selectedKeys.includes(item.id));
-    const updatedOldClaims = oldClaimsList.filter(
+    const updatedEcMembers = ecMembersList.filter(
       item => !selectedKeys.includes(item.id),
     );
-    dispatchNewClaimsData([...newClaimsList, ...updatedNewClaims]);
-    dispatchOldClaimsData(updatedOldClaims);
+    dispatchEcMembersData(updatedEcMembers);
   };
 
   // handle onClick from Reset button
@@ -102,32 +98,39 @@ class ApprovedClaimsPage extends Component {
     dispatchResetState();
   };
 
+  // add the key and format role_names of member list
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
+      roleNames: item.RoleNames
+        ? item.roleNames.map(
+          (role, index) => (index === item.roleNames.length - 1 ? `${role}` : `${role}, `),
+        )
+        : '',
     }));
     return preparedList;
   };
 
   render() {
     const {
-      claimmgmtUI: {
+      membermgmtUI: {
         selectedKeys,
         deselectAllLoading,
         selectAllLoading,
         sortedInfo,
         filteredInfo,
+        currentTab,
       },
-      claimmgmtData: { oldClaimsList, isPostApiLoading },
+      membermgmtData: { ecMembersList, isPostApiLoading },
       form: { getFieldDecorator },
       dispatchSelectedKeys,
       dispatchSortedInfo,
       dispatchFilteredInfo,
     } = this.props;
 
-    if (oldClaimsList) this.claimsList = this.prepareList(oldClaimsList);
+    if (ecMembersList) this.membersList = this.prepareList(ecMembersList);
 
     const rowSelection = {
       selectedRowKeys: selectedKeys,
@@ -147,12 +150,12 @@ class ApprovedClaimsPage extends Component {
               decorator={getFieldDecorator}
               onSearch={() => dispatchFilteredInfo(
                 this.searchNameValue
-                  ? { submittedBy: [this.searchNameValue.toLowerCase()] }
+                  ? { name: [this.searchNameValue.toLowerCase()] }
                   : {},
               )
               }
               onClickReset={this.onClickReset}
-              placeHolder="Search submitted by"
+              placeHolder="Search member by name"
             />
           </Col>
           <Col span={24}>
@@ -169,18 +172,18 @@ class ApprovedClaimsPage extends Component {
               onClick={this.onClickDeleteSelected}
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
-              placeHolder="Unapprove Selected Claim(s)"
+              placeHolder="Delete Selected Member(s)"
             />
             {hasSelected ? (
               <SelectedInfo
                 selectedNum={selectedKeys.length}
-                placeHolder="claim"
+                placeHolder="member"
               />
             ) : null}
           </Col>
           <Col span={24}>
-            <ClaimsTable
-              claimsList={this.claimsList}
+            <MembersTable
+              membersList={this.membersList}
               rowSelection={rowSelection}
               onChange={(pagination, filters, sorter) => {
                 dispatchSortedInfo(sorter);
@@ -188,6 +191,7 @@ class ApprovedClaimsPage extends Component {
               }}
               sortedInfo={sortedInfo || {}}
               filteredInfo={filteredInfo || {}}
+              currentTab={currentTab}
             />
           </Col>
         </Row>
@@ -196,7 +200,7 @@ class ApprovedClaimsPage extends Component {
   }
 }
 
-ApprovedClaimsPage.propTypes = {
+EcMembersPage.propTypes = {
   form: PropTypes.shape({}).isRequired,
   dispatchSelectedKeys: PropTypes.func.isRequired,
   dispatchDeselectAllLoading: PropTypes.func.isRequired,
@@ -204,18 +208,17 @@ ApprovedClaimsPage.propTypes = {
   dispatchSortedInfo: PropTypes.func.isRequired,
   dispatchFilteredInfo: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
-  performUnApproveClaims: PropTypes.func.isRequired,
 
-  dispatchNewClaimsData: PropTypes.func.isRequired,
-  dispatchOldClaimsData: PropTypes.func.isRequired,
+  performDeleteMember: PropTypes.func.isRequired,
+  dispatchEcMembersData: PropTypes.func.isRequired,
 
-  claimmgmtUI: PropTypes.shape({}).isRequired,
-  claimmgmtData: PropTypes.shape({}).isRequired,
+  membermgmtUI: PropTypes.shape({}).isRequired,
+  membermgmtData: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
-  claimmgmtUI: state.claimmgmt.ui,
-  claimmgmtData: state.claimmgmt.data,
+  membermgmtUI: state.membermgmt.ui,
+  membermgmtData: state.membermgmt.data,
 });
 const mapDispatchToProps = {
   dispatchSelectedKeys: setSelectedKeys,
@@ -225,14 +228,13 @@ const mapDispatchToProps = {
   dispatchFilteredInfo: setFilteredInfo,
   dispatchResetState: resetState,
 
-  dispatchNewClaimsData: setNewClaimsData,
-  dispatchOldClaimsData: setOldClaimsData,
-  performUnApproveClaims: postUnApproveClaims,
+  performDeleteMember: postDeleteMembers,
+  dispatchEcMembersData: setEcMembersData,
 };
 
-const FormApprovedClaimsPage = Form.create()(ApprovedClaimsPage);
+const FormEcMembersPage = Form.create()(EcMembersPage);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormApprovedClaimsPage);
+)(FormEcMembersPage);

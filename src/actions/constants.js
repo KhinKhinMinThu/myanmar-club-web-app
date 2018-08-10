@@ -13,7 +13,7 @@ export const DEFAULT_TIME = '00:00';
 
 // APIGET API URLS
 export const APIGET_ROLEDATA = '/getRoleData';
-export const APIGET_MEMBERSDATA = '/getMembersData';
+export const APIGET_MEMBERSDATA = '/admin/getMembersData';
 export const APIGET_CLAIMSDATA = '/claim/getClaimsData';
 export const APIGET_EVENTTRANSCDATA = '/event/getEventsTranscData';
 export const APIGET_EVENTSDATA = '/event/getEventsData';
@@ -24,7 +24,7 @@ export const APIPOST_LOGIN = '/login';
 
 export const APIPOST_UPDATE_ROLE = '/updateRole';
 
-export const APIPOST_DELETE_MEMBERS = '/deleteMembers';
+export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';
 
 export const APIPOST_APPROVE_CLAIMS = '/claim/approveClaims';
 export const APIPOST_UNAPPROVE_CLAIMS = '/claim/unapproveClaims';
@@ -37,5 +37,5 @@ export const APIPOST_UPDATE_EVENT = '/event/updateEvent';
 export const APIPOST_ADD_EVENT = '/event/createEvent';
 export const APIPOST_ADD_EVENTPHOTO = '/event/eventPhoto';
 
-export const APIPOST_FORGOTPWD = '/event/forgotPassword';
+export const APIPOST_FORGOTPWD = '/forgotPassword';
 // end

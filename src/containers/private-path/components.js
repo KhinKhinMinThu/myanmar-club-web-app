@@ -8,7 +8,7 @@ import {
   PROFILE,
   LOGOUT,
   ROLE_MANAGEMENT,
-  ACCOUNT_MANAGEMENT,
+  MEMBER_MANAGEMENT,
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
@@ -27,9 +27,9 @@ const adminTitles = {
     icon: <MenuIcon type="setting" />,
     text: 'Roles Management',
   },
-  ACCOUNT_MANAGEMENT: {
+  MEMBER_MANAGEMENT: {
     icon: <MenuIcon type="user" />,
-    text: 'Accounts Management',
+    text: 'Members Management',
   },
   CLAIM_MANAGEMENT: {
     icon: <MenuIcon type="pay-circle-o" />,
@@ -84,9 +84,9 @@ const MenuPanel = ({
         </MenuItem>
       )}
       {isAdmin && (
-        <MenuItem key={ACCOUNT_MANAGEMENT}>
-          {adminTitles.ACCOUNT_MANAGEMENT.icon}
-          {adminTitles.ACCOUNT_MANAGEMENT.text}
+        <MenuItem key={MEMBER_MANAGEMENT}>
+          {adminTitles.MEMBER_MANAGEMENT.icon}
+          {adminTitles.MEMBER_MANAGEMENT.text}
         </MenuItem>
       )}
       {isAdmin && (
