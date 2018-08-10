@@ -1,6 +1,9 @@
 export const LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
 
-export const locationChange = location => ({ type: LOCATION_CHANGE, payload: location });
+export const locationChange = location => ({
+  type: LOCATION_CHANGE,
+  payload: location,
+});
 
 export default function (
   state = {

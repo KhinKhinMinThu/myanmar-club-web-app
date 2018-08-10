@@ -20,6 +20,7 @@ import PrivatePath from '../containers/private-path';
 import MainPage from '../containers/main-page';
 
 const App = () => (
+  
   <Provider store={store}>
     <PersistGate persistor={persistor}>
       <ConnectedRouter history={history}>

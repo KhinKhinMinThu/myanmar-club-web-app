@@ -47,6 +47,10 @@ import {
 const { confirm } = Modal;
 
 class EventEdit extends Component {
+  state = {
+    fileList: [],
+  };
+
   componentDidMount() {
     const { performGetEventsData } = this.props;
     performGetEventsData();
@@ -84,6 +88,8 @@ class EventEdit extends Component {
       performUpdateEvent,
       performDeleteEvent,
     } = this.props;
+
+    const { fileList } = this.state;
 
     // if user selects to delete event, it will be deleted without
     // updating the rest of the data even if the user changed anything else.
@@ -124,9 +130,24 @@ class EventEdit extends Component {
             endDate,
             mobilePhone,
             eventStatus: formValues.eventStatus ? '1' : '0',
+            uploadBtn: fileList,
           });
         }
       });
+    }
+  };
+
+  beforeUpload = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [file] });
+    }
+  };
+
+  removeFile = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [] });
     }
   };
 
@@ -162,6 +183,7 @@ class EventEdit extends Component {
       xl: { span: 12 },
       style: { marginBottom: 14 },
     };
+
     return (
       <Spin spinning={isPostApiLoading} size="large">
         <div className="pageHeaderContainer">
@@ -176,7 +198,11 @@ class EventEdit extends Component {
             <EndDateTimePicker decorator={getFieldDecorator} />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
-            <EventPhoto decorator={getFieldDecorator} />
+            <EventPhoto
+              decorator={getFieldDecorator}
+              beforeUpload={this.beforeUpload}
+              removeFile={this.removeFile}
+            />
           </EventCard>
           <EventCard>
             <TicketFeeInput decorator={getFieldDecorator} />

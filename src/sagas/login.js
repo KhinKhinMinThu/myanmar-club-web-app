@@ -3,10 +3,11 @@ import { push } from 'connected-react-router';
 import {
   LOGIN, LOGIN_PENDING, LOGIN_ERROR, LOGGEDIN,
 } from '../reducers/login';
-import api from './api';
+import { api } from './api';
 import { DASHBOARD } from '../actions/location';
+import { APIPOST_LOGIN } from '../actions/constants';
 
-const postLogin = userData => api.post('/login', {
+const postLogin = userData => api.post(APIPOST_LOGIN, {
   username: userData.username,
   password: userData.password,
 });

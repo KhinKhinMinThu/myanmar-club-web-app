@@ -28,6 +28,10 @@ import { EventCard } from '../shared-styled';
 import { postNewEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventCreation extends Component {
+  state = {
+    fileList: [],
+  };
+
   componentDidUpdate(prevProps) {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
@@ -49,6 +53,8 @@ class EventCreation extends Component {
       form: { validateFieldsAndScroll },
       performNewEvent,
     } = this.props;
+    const { fileList } = this.state;
+
     validateFieldsAndScroll((error, values) => {
       if (!error) {
         const formValues = values;
@@ -74,9 +80,24 @@ class EventCreation extends Component {
           endDate,
           mobilePhone,
           eventStatus: '1',
+          uploadBtn: fileList,
         });
       }
     });
+  };
+
+  beforeUpload = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [file] });
+    }
+  };
+
+  removeFile = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [] });
+    }
   };
 
   // convert string date to Date object and combine date and time.
@@ -126,7 +147,11 @@ class EventCreation extends Component {
             <EndDateTimePicker decorator={getFieldDecorator} />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
-            <EventPhoto decorator={getFieldDecorator} />
+            <EventPhoto
+              decorator={getFieldDecorator}
+              beforeUpload={this.beforeUpload}
+              removeFile={this.removeFile}
+            />
           </EventCard>
           <EventCard>
             <TicketFeeInput decorator={getFieldDecorator} />

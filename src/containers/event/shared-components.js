@@ -387,7 +387,7 @@ export class EventPhoto extends Component {
   };
 
   render() {
-    const { decorator } = this.props;
+    const { decorator, beforeUpload, removeFile } = this.props;
     const { isModalVisible, photoLink } = this.state;
     this.newFile = [];
     return (
@@ -396,16 +396,21 @@ export class EventPhoto extends Component {
         {decorator('uploadBtn', {
           valuePropName: 'fileList',
           initialValue: [],
-          getValueFromEvent: ({ fileList }) => {
+          getValueFromEvent: (e) => {
+            const { fileList } = e;
             this.newFile = fileList.length > 1 ? fileList.slice(1) : fileList;
             return this.newFile;
           },
         })(
           <Upload
             name="eventpic"
-            action=""
             listType="picture-card"
             onPreview={this.showModal}
+            onRemove={file => removeFile(file)}
+            beforeUpload={file => beforeUpload(file)}
+            // Hook function which will be executed before uploading.
+            // Uploading will be stopped with false or a rejected Promise returned.
+            // Warning：this function is not supported in IE9。
           >
             {this.newFile.length >= 2 ? null : (
               <div>

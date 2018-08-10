@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import api from './api';
+import { api } from './api';
 import {
   GET_CLAIMSDATA,
   GET_APILOADING,
@@ -11,8 +11,13 @@ import {
   POST_UNAPPROVECLAIMS,
   POST_ERROR,
 } from '../reducers/claimmgmt/claimmgmt-data';
+import {
+  APIGET_CLAIMSDATA,
+  APIPOST_APPROVE_CLAIMS,
+  APIPOST_UNAPPROVE_CLAIMS,
+} from '../actions/constants';
 
-const getClaimsData = () => api.get('/claim/getClaimsData');
+const getClaimsData = () => api.get(APIGET_CLAIMSDATA);
 
 function* asyncGetClaimsData() {
   let errMsg;
@@ -34,9 +39,9 @@ function* asyncGetClaimsData() {
   }
 }
 
-const postApproveClaims = claimsToApprove => api.post('/claim/approveClaims', { claimsToApprove });
+const postApproveClaims = claimsToApprove => api.post(APIPOST_APPROVE_CLAIMS, { claimsToApprove });
 
-const postUnapproveClaims = claimsToUnapprove => api.post('/claim/unapproveClaims', { claimsToUnapprove });
+const postUnapproveClaims = claimsToUnapprove => api.post(APIPOST_UNAPPROVE_CLAIMS, { claimsToUnapprove });
 
 function* asyncPostProcessClaims(action) {
   let errMsg;

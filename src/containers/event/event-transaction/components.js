@@ -242,7 +242,7 @@ export const AddRowButton = ({ type, action }) => (
     onClick={() => action(type)}
     style={{ float: 'right' }}
   >
-    Add a new record
+    {type === 'income' ? 'Add New Income' : 'Add New Expenditure'}
   </Button>
 );
 
@@ -373,7 +373,7 @@ const TransactionTable = ({
   const totalBalanceText = (
     <HightlightedText>
       <br />
-      {'Total Balance: SGD '}
+      {'Nett Amount: SGD '}
       {totalBalance(preparedList).toFixed(2)}
     </HightlightedText>
   );

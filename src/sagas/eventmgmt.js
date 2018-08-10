@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import api from './api';
+import { api, apiMultiPart } from './api';
 import {
   GET_EVENTSDATA,
   GET_APILOADING,
@@ -12,8 +12,16 @@ import {
   POST_UPDATEEVENT,
   POST_ERROR,
 } from '../reducers/eventmgmt/eventmgmt-data';
+import {
+  APIGET_EVENTSDATA,
+  APIPOST_DELETE_EVENT,
+  APIPOST_DELETE_EVENT_RSVP,
+  APIPOST_UPDATE_EVENT,
+  APIPOST_ADD_EVENT,
+  APIPOST_ADD_EVENTPHOTO,
+} from '../actions/constants';
 
-const getEventsData = () => api.get('/event/getEventsData');
+const getEventsData = () => api.get(APIGET_EVENTSDATA);
 
 function* asyncGetEventsData() {
   let errMsg;
@@ -31,15 +39,15 @@ function* asyncGetEventsData() {
   }
 }
 
-const postDeleteEvent = eventsToDelete => api.post('/event/deleteEvent', {
+const postDeleteEvent = eventsToDelete => api.post(APIPOST_DELETE_EVENT, {
   eventsToDelete,
 });
 
-const postDeleteRSVP = eventRSVPToDelete => api.post('/event/deleteRegistrations', {
+const postDeleteRSVP = eventRSVPToDelete => api.post(APIPOST_DELETE_EVENT_RSVP, {
   eventRSVPToDelete,
 });
 
-const postNewEvent = newEventToAdd => api.post('/event/createEvent', {
+const postNewEvent = newEventToAdd => api.post(APIPOST_ADD_EVENT, {
   name: newEventToAdd.name,
   description: newEventToAdd.description,
   startDate: newEventToAdd.startDate,
@@ -55,7 +63,8 @@ const postNewEvent = newEventToAdd => api.post('/event/createEvent', {
   mobilePhone: newEventToAdd.mobilePhone,
   eventStatus: newEventToAdd.eventStatus,
 });
-const postUpdateEvent = eventToUpdate => api.post('/event/updateEvent', {
+
+const postUpdateEvent = eventToUpdate => api.post(APIPOST_UPDATE_EVENT, {
   id: eventToUpdate.id,
 
   name: eventToUpdate.name,
@@ -73,6 +82,18 @@ const postUpdateEvent = eventToUpdate => api.post('/event/updateEvent', {
   mobilePhone: eventToUpdate.mobilePhone,
   eventStatus: eventToUpdate.eventStatus,
 });
+
+const postEventPhoto = multipartForm => apiMultiPart.post(APIPOST_ADD_EVENTPHOTO, multipartForm);
+
+const assembleFormData = ({ eventId, imageFile }) => {
+  if (eventId && imageFile) {
+    const mpf = new FormData();
+    mpf.append('id', eventId.id);
+    mpf.append('eventPhoto', imageFile, imageFile.name);
+    return mpf;
+  }
+  return null;
+};
 function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
@@ -88,13 +109,38 @@ function* asyncPostProcessEvents(action) {
       action.eventToUpdate,
     );
 
-    if (action.type === POST_DELETEEVENT) yield call(postDeleteEvent, action.eventsToDelete);
-    if (action.type === POST_DELETERSVP) yield call(postDeleteRSVP, action.eventRSVPToDelete);
-    if (action.type === POST_NEWEVENT) yield call(postNewEvent, action.newEventToAdd);
-    if (action.type === POST_UPDATEEVENT) yield call(postUpdateEvent, action.eventToUpdate);
+    let id;
+    let multipartForm;
+    const eventData = action.newEventToAdd || action.eventToUpdate;
+
+    switch (action.type) {
+      case POST_DELETEEVENT:
+        response = yield call(postDeleteEvent, action.eventsToDelete);
+        break;
+      case POST_DELETERSVP:
+        response = yield call(postDeleteRSVP, action.eventsToDelete);
+        break;
+      case POST_NEWEVENT:
+        response = yield call(postNewEvent, action.newEventToAdd);
+        id = response.data;
+        multipartForm = assembleFormData({
+          eventId: id,
+          imageFile: eventData.uploadBtn[0],
+        });
+        break;
+      case POST_UPDATEEVENT:
+        response = yield call(postUpdateEvent, action.eventToUpdate);
+        if (!response.data.errorMsg) id = eventData;
+        break;
+      default:
+    }
+    console.log('id', id, 'mpf', multipartForm);
+    if (multipartForm) response = yield call(postEventPhoto, multipartForm);
 
     const { errorMsg } = response.data;
     errMsg = errorMsg;
+
+    console.log('API RESPONSE.........', response.data);
   } catch (e) {
     errMsg = e.message;
   } finally {
