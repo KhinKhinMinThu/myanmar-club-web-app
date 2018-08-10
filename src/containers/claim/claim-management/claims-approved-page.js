@@ -1,33 +1,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, message } from 'antd';
-import { SUCCESS_UNAPPROVECLAIMS } from '../../actions/message';
+import {
+  Form, message, Row, Col,
+} from 'antd';
+import { SUCCESS_UNAPPROVECLAIMS, SHOWFOR } from '../../../actions/message';
 import {
   ClaimsTable,
   DeSeletAllButton,
   SeletAllButton,
-  SelectedMembers,
-  UnapproveSeletedButton,
+  SelectedInfo,
+  DeleteSeletedButton,
   SearchNamePanel,
-  ClaimModal,
 } from './components';
-import { FlexContainer } from './styled-components';
 import {
   setSelectedKeys,
   setDeSelectAllLoading,
   setSelectAllLoading,
   setSortedInfo,
   setFilteredInfo,
-  setModalVisibility,
-  setViewClaim,
   resetState,
-} from '../../reducers/claimmgmt/claimmgmt-ui';
+} from '../../../reducers/claimmgmt/claimmgmt-ui';
 import {
   postUnApproveClaims,
   setNewClaimsData,
   setOldClaimsData,
-} from '../../reducers/claimmgmt/claimmgmt-data';
+} from '../../../reducers/claimmgmt/claimmgmt-data';
 
 class ApprovedClaimsPage extends Component {
   componentDidUpdate(prevProps) {
@@ -41,9 +39,9 @@ class ApprovedClaimsPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg);
+      message.error(postErrMsg, SHOWFOR);
     } else {
-      message.success(SUCCESS_UNAPPROVECLAIMS);
+      message.success(SUCCESS_UNAPPROVECLAIMS, SHOWFOR);
     }
   }
 
@@ -67,8 +65,7 @@ class ApprovedClaimsPage extends Component {
     }, 1000);
   };
 
-  // delete selected member accounts
-  onClickUnApproveSelected = () => {
+  onClickDeleteSelected = () => {
     const {
       claimmgmtUI: { selectedKeys },
       claimmgmtData: { newClaimsList, oldClaimsList },
@@ -121,16 +118,12 @@ class ApprovedClaimsPage extends Component {
         selectAllLoading,
         sortedInfo,
         filteredInfo,
-        isModalVisible,
-        viewClaim,
       },
       claimmgmtData: { oldClaimsList, isPostApiLoading },
       form: { getFieldDecorator },
       dispatchSelectedKeys,
       dispatchSortedInfo,
       dispatchFilteredInfo,
-      dispatchModalVisibility,
-      dispatchViewClaim,
     } = this.props;
 
     if (oldClaimsList) this.claimsList = this.prepareList(oldClaimsList);
@@ -144,62 +137,59 @@ class ApprovedClaimsPage extends Component {
 
     return (
       <div>
-        <SearchNamePanel
-          onChange={(e) => {
-            this.searchNameValue = e.target.value;
-          }}
-          decorator={getFieldDecorator}
-          // handle onClick from SearchName button and onPressEnter from input field
-          onSearch={() => dispatchFilteredInfo(
-            this.searchNameValue
-              ? { submittedBy: [this.searchNameValue] }
-              : {},
-          )
-          }
-          onClickReset={this.onClickReset}
-        />
-
-        <FlexContainer>
-          <SeletAllButton
-            onClick={this.onClickSelectAll}
-            loading={selectAllLoading}
-          />
-          <DeSeletAllButton
-            onClick={this.onClickDeselectAll}
-            hasSelected={hasSelected}
-            loading={deselectAllLoading}
-          />
-          <UnapproveSeletedButton
-            onClick={this.onClickUnApproveSelected}
-            hasSelected={hasSelected}
-            loading={isPostApiLoading}
-          />
-          {hasSelected ? (
-            <SelectedMembers selectedNum={selectedKeys.length} />
-          ) : null}
-        </FlexContainer>
-
-        <FlexContainer>
-          <ClaimsTable
-            claimsList={this.claimsList}
-            rowSelection={rowSelection}
-            onChange={(pagination, filters, sorter) => {
-              dispatchSortedInfo(sorter);
-              dispatchFilteredInfo(filters);
-            }}
-            sortedInfo={sortedInfo || {}}
-            filteredInfo={filteredInfo || {}}
-            showModal={(id) => {
-              dispatchViewClaim(this.claimsList.find(item => item.id === id));
-              dispatchModalVisibility(true);
-            }}
-          />
-        </FlexContainer>
-        <ClaimModal
-          isModalVisible={isModalVisible}
-          onCloseModal={() => dispatchModalVisibility(false)}
-          viewClaim={viewClaim}
-        />
+        <Row type="flex" justify="start">
+          <Col span={24}>
+            <SearchNamePanel
+              onChange={(e) => {
+                this.searchNameValue = e.target.value;
+              }}
+              decorator={getFieldDecorator}
+              onSearch={() => dispatchFilteredInfo(
+                this.searchNameValue
+                  ? { submittedBy: [this.searchNameValue.toLowerCase()] }
+                  : {},
+              )
+              }
+              onClickReset={this.onClickReset}
+              placeHolder="Search submitted by"
+            />
+          </Col>
+          <Col span={24}>
+            <SeletAllButton
+              onClick={this.onClickSelectAll}
+              loading={selectAllLoading}
+            />
+            <DeSeletAllButton
+              onClick={this.onClickDeselectAll}
+              hasSelected={hasSelected}
+              loading={deselectAllLoading}
+            />
+            <DeleteSeletedButton
+              onClick={this.onClickDeleteSelected}
+              hasSelected={hasSelected}
+              isPostApiLoading={isPostApiLoading}
+              placeHolder="Unapprove Selected Claim(s)"
+            />
+            {hasSelected ? (
+              <SelectedInfo
+                selectedNum={selectedKeys.length}
+                placeHolder="claim"
+              />
+            ) : null}
+          </Col>
+          <Col span={24}>
+            <ClaimsTable
+              claimsList={this.claimsList}
+              rowSelection={rowSelection}
+              onChange={(pagination, filters, sorter) => {
+                dispatchSortedInfo(sorter);
+                dispatchFilteredInfo(filters);
+              }}
+              sortedInfo={sortedInfo || {}}
+              filteredInfo={filteredInfo || {}}
+            />
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -212,9 +202,7 @@ ApprovedClaimsPage.propTypes = {
   dispatchSelectAllLoading: PropTypes.func.isRequired,
   dispatchSortedInfo: PropTypes.func.isRequired,
   dispatchFilteredInfo: PropTypes.func.isRequired,
-  dispatchModalVisibility: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
-  dispatchViewClaim: PropTypes.func.isRequired,
   performUnApproveClaims: PropTypes.func.isRequired,
 
   dispatchNewClaimsData: PropTypes.func.isRequired,
@@ -234,8 +222,6 @@ const mapDispatchToProps = {
   dispatchSelectAllLoading: setSelectAllLoading,
   dispatchSortedInfo: setSortedInfo,
   dispatchFilteredInfo: setFilteredInfo,
-  dispatchModalVisibility: setModalVisibility,
-  dispatchViewClaim: setViewClaim,
   dispatchResetState: resetState,
 
   dispatchNewClaimsData: setNewClaimsData,

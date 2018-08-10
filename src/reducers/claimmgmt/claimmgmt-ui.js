@@ -1,22 +1,14 @@
 export const CURRENTTAB = '[CLAIMMGMT_UI] CURRENTTAB';
-export const VALIDATE = '[CLAIMMGMT_UI] VALIDATE';
 export const SELECTEDKEYS = '[CLAIMMGMT_UI] SELECTEDKEYS';
 export const DESELECTALL_LOADING = '[CLAIMMGMT_UI] DESELECTALL_LOADING';
 export const SELECTALL_LOADING = '[CLAIMMGMT_UI] SELECTALL_LOADING';
 export const SORTEDINFO = '[CLAIMMGMT_UI] SORTEDINFO';
 export const FILTEREDINFO = '[CLAIMMGMT_UI] FILTEREDINFO';
-export const MODALVISIBILITY = '[CLAIMMGMT_UI] MODALVISIBILITY';
-export const VIEWCLAIM = '[ACCMGMT_UI] VIEWCLAIM';
 export const RESETSTATE = '[CLAIMMGMT_UI] RESETSTATE';
 
 export const setCurrentTab = currentTab => ({
   type: CURRENTTAB,
   payload: currentTab,
-});
-
-export const validate = isValidating => ({
-  type: VALIDATE,
-  payload: isValidating,
 });
 
 export const setSelectedKeys = selectedKeys => ({
@@ -44,27 +36,14 @@ export const setFilteredInfo = filteredInfo => ({
   payload: filteredInfo,
 });
 
-export const setModalVisibility = isModalVisible => ({
-  type: MODALVISIBILITY,
-  payload: isModalVisible,
-});
-
-export const setViewClaim = viewClaim => ({
-  type: VIEWCLAIM,
-  payload: viewClaim,
-});
-
 export const resetState = () => ({ type: RESETSTATE });
 
 const initialState = {
-  isValidating: false,
   selectedKeys: [],
   deselectAllLoading: false,
   selectAllLoading: false,
   sortedInfo: null,
   filteredInfo: null,
-  isModalVisible: false,
-  viewClaim: [],
 };
 export default function (
   state = {
@@ -78,11 +57,6 @@ export default function (
       return {
         ...state,
         currentTab: action.payload,
-      };
-    case VALIDATE:
-      return {
-        ...state,
-        isValidating: action.payload,
       };
     case SELECTEDKEYS:
       return {
@@ -108,16 +82,6 @@ export default function (
       return {
         ...state,
         filteredInfo: action.payload,
-      };
-    case MODALVISIBILITY:
-      return {
-        ...state,
-        isModalVisible: action.payload,
-      };
-    case VIEWCLAIM:
-      return {
-        ...state,
-        viewClaim: action.payload,
       };
     case RESETSTATE:
       return {

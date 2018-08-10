@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Button,
   Form,
@@ -367,7 +367,7 @@ export const MobileNoInput = ({ decorator }) => {
   );
 };
 
-export class EventPhoto extends React.Component {
+export class EventPhoto extends Component {
   state = {
     isModalVisible: false,
   };

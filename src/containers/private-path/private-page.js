@@ -25,7 +25,7 @@ import Dashboard from './home-ex';
 import RoleManagementPage from '../role-management';
 import AccManagementPage from '../account-management';
 import MemberManagementPage from '../member-management';
-import ClaimManagementPage from '../claim-management';
+import ClaimManagementPage from '../claim/claim-management';
 import EventTransactionPage from '../event/event-transaction';
 import EventCreation from '../event/event-creation';
 import EventManagementPage from '../event/event-management';

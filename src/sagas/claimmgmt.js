@@ -2,7 +2,7 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 import api from './api';
 import {
   GET_CLAIMSDATA,
-  APILOADING,
+  GET_APILOADING,
   NEWCLAIMSDATA,
   OLDCLAIMSDATA,
   GET_ERROR,
@@ -17,7 +17,7 @@ const getClaimsData = () => api.get('/claim/getClaimsData');
 function* asyncGetClaimsData() {
   let errMsg;
   try {
-    yield put({ type: APILOADING, payload: true });
+    yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getClaimsData);
     const { claimsData, errorMsg } = response.data;
     errMsg = errorMsg;
@@ -30,7 +30,7 @@ function* asyncGetClaimsData() {
     errMsg = e.message;
   } finally {
     yield put({ type: GET_ERROR, payload: errMsg });
-    yield put({ type: APILOADING, payload: false });
+    yield put({ type: GET_APILOADING, payload: false });
   }
 }
 
