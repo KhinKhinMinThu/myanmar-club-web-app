@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
-import { Form, Card, Col } from 'antd';
+import { Form, Col } from 'antd';
 import { InputWithText, blankInput } from '../shared-components/common';
 import {
-  cardStyles,
   formItemLayout,
-  genderRdo,
-  dobInput,
   mStatusDdl,
   eduLvlInfo,
   sgPassDdl,
@@ -15,31 +12,11 @@ import {
   NationalityDdl,
   ReligionDdl,
   PassNumInput,
-} from '../shared-components/member-info-components';
+} from './components';
 
 const FormItem = Form.Item;
 
 const Page1 = class extends React.Component {
-  nameInputOpts = {
-    rules: [
-      {
-        required: true,
-        message: 'Please enter your name!',
-      },
-    ],
-  };
-
-  genderRdoOpts = { initialValue: 'M' };
-
-  dobInputOpts = {
-    rules: [
-      {
-        required: true,
-        message: 'Please enter your date of birth!',
-      },
-    ],
-  };
-
   natInputOpts = {
     rules: [
       {
@@ -134,112 +111,77 @@ const Page1 = class extends React.Component {
     let showOtherNatInput = null;
     let showOtherRelInput = null;
     if (showOtherNat) {
-      showOtherNatInput = getFieldDecorator('otherNatInput', this.natInputOpts)(blankInput);
+      showOtherNatInput = getFieldDecorator('otherNatInput', this.natInputOpts)(
+        blankInput,
+      );
     }
     if (showOtherRel) {
       showOtherRelInput = getFieldDecorator('otherRelInput')(blankInput);
     }
 
     return (
-      <Card style={cardStyles}>
-        <Form>
-          {/* Name */}
-          <FormItem {...formItemLayout} label="Name" colon required>
-            <Col span={7}>
-              <FormItem>
-                {getFieldDecorator('name1Input', this.nameInputOpts)(
-                  <InputWithText text="First Name" />,
-                )}
-              </FormItem>
-            </Col>
-            <Col span={7}>
-              <FormItem>
-                {getFieldDecorator('name2Input')(<InputWithText text="Middle Name" />)}
-              </FormItem>
-            </Col>
-            <Col span={10}>
-              <FormItem>
-                {getFieldDecorator('name3Input')(<InputWithText text="Last Name" />)}
-              </FormItem>
-            </Col>
-          </FormItem>
+      <Form>
+        {/* Nationality */}
+        <FormItem {...formItemLayout} label="Nationality" colon required>
+          <Col span={7}>
+            <FormItem>
+              {getFieldDecorator('nationalityDdl')(
+                <NationalityDdl changed={this.nationalityDdlChanged} />,
+              )}
+            </FormItem>
+          </Col>
+          <Col span={17}>
+            <FormItem>{showOtherNatInput}</FormItem>
+          </Col>
+        </FormItem>
 
-          {/* Gender */}
-          <FormItem {...formItemLayout} label="Gender">
-            {getFieldDecorator('genderRdo', this.genderRdoOpts)(genderRdo)}
-          </FormItem>
+        {/* Religion */}
+        <FormItem {...formItemLayout} label="Religion">
+          <Col span={7}>
+            <FormItem>
+              {getFieldDecorator('religionDdl')(
+                <ReligionDdl changed={this.religionDdlChanged} />,
+              )}
+            </FormItem>
+          </Col>
+          <Col span={17}>
+            <FormItem>{showOtherRelInput}</FormItem>
+          </Col>
+        </FormItem>
 
-          {/* Date of Birth */}
-          <FormItem {...formItemLayout} label="Date of Birth">
-            {getFieldDecorator('dobInput', this.dobInputOpts)(dobInput)}
-          </FormItem>
+        {/* Marital Status */}
+        <FormItem {...formItemLayout} label="Marital Status">
+          {getFieldDecorator('mStatusDdl', this.mStatusDdlOpts)(mStatusDdl)}
+        </FormItem>
 
-          {/* Nationality */}
-          <FormItem {...formItemLayout} label="Nationality" colon required>
-            <Col span={7}>
-              <FormItem>
-                {getFieldDecorator('nationalityDdl')(
-                  <NationalityDdl changed={this.nationalityDdlChanged} />,
-                )}
-              </FormItem>
-            </Col>
-            <Col span={17}>
-              <FormItem>
-                {showOtherNatInput}
-              </FormItem>
-            </Col>
-          </FormItem>
+        {/* Education Level */}
+        <FormItem {...formItemLayout} label="Education Level">
+          {getFieldDecorator('eduLvlInput', this.eduLvlInputOpts)(
+            <InputWithText text="Education Level" />,
+          )}
+          {eduLvlInfo}
+        </FormItem>
 
-          {/* Religion */}
-          <FormItem {...formItemLayout} label="Religion">
-            <Col span={7}>
-              <FormItem>
-                {getFieldDecorator('religionDdl')(
-                  <ReligionDdl changed={this.religionDdlChanged} />,
-                )}
-              </FormItem>
-            </Col>
-            <Col span={17}>
-              <FormItem>
-                {showOtherRelInput}
-              </FormItem>
-            </Col>
-          </FormItem>
+        {/* Occupation */}
+        <FormItem {...formItemLayout} label="Occupation">
+          {getFieldDecorator('occupationInput', this.occupationInputOpts)(
+            <InputWithText text="Job Title" />,
+          )}
+        </FormItem>
 
-          {/* Marital Status */}
-          <FormItem {...formItemLayout} label="Marital Status">
-            {getFieldDecorator('mStatusDdl', this.mStatusDdlOpts)(mStatusDdl)}
-          </FormItem>
+        {/* Pass */}
+        <FormItem {...formItemLayout} label="Singapore Pass">
+          {getFieldDecorator('sgPassDdl', this.sgPassDdlOpts)(sgPassDdl)}
+        </FormItem>
 
-          {/* Education Level */}
-          <FormItem {...formItemLayout} label="Education Level">
-            {getFieldDecorator('eduLvlInput', this.eduLvlInputOpts)(
-              <InputWithText text="Education Level" />,
-            )}
-            {eduLvlInfo}
-          </FormItem>
-
-          {/* Occupation */}
-          <FormItem {...formItemLayout} label="Occupation">
-            {getFieldDecorator('occupationInput', this.occupationInputOpts)(
-              <InputWithText text="Job Title" />,
-            )}
-          </FormItem>
-
-          {/* Pass */}
-          <FormItem {...formItemLayout} label="Singapore Pass">
-            {getFieldDecorator('sgPassDdl', this.sgPassDdlOpts)(sgPassDdl)}
-          </FormItem>
-
-          {/* ID Number */}
-          <FormItem {...formItemLayout} label="Identification Number">
-            {getFieldDecorator('passNumInput', this.passNumInputOpts)(
-              <PassNumInput blurred={this.handlePassNumOnBlur} />,
-            )}
-            {passNumInfo}
-          </FormItem>
-        </Form>
-      </Card>
+        {/* ID Number */}
+        <FormItem {...formItemLayout} label="Identification Number">
+          {getFieldDecorator('passNumInput', this.passNumInputOpts)(
+            <PassNumInput blurred={this.handlePassNumOnBlur} />,
+          )}
+          {passNumInfo}
+        </FormItem>
+      </Form>
     );
   }
 };

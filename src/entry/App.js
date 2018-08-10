@@ -13,7 +13,7 @@ import {
   // RESETPASSWORD,
 } from '../actions/location';
 import LoginPage from '../containers/login-page';
-import SignupPage2 from '../containers/signup-page2';
+import SignupPage from '../containers/signup-page';
 import ForgotPasswordPage from '../containers/forgotpwd-page';
 // import ResetPasswordPage from '../containers/forgotpwd-page/reset-password';
 import PrivatePath from '../containers/private-path';
@@ -27,7 +27,7 @@ const App = () => (
           <Switch>
             <Route exact path={DEFAULT} component={MainPage} />
             <Route path={LOGIN} component={LoginPage} />
-            <Route path={SIGNUP} component={SignupPage2} />
+            <Route path={SIGNUP} component={SignupPage} />
             <Route path={FORGOTPASSWORD} component={ForgotPasswordPage} />
 
             <PrivatePath exact path="/:pathname/:id?" />
