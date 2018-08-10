@@ -15,6 +15,7 @@ function* asyncLogin(action) {
   let errMsg;
   try {
     yield put({ type: LOGIN_PENDING });
+    console.log('Calling API.........', action.type, action.userData);
     const response = yield call(postLogin, action.userData);
     const status = response.data.isLoggedIn;
     errMsg = status ? '' : 'wrong username/password';

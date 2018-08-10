@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Spin, Alert,
+  Form, message, Spin, Alert, Row, Col,
 } from 'antd';
 import {
   SUCCESS_DELETEEVENTTRANSC,
   SUCCESS_ADDEVENTTRANSC,
-} from '../../actions/message';
+  SHOWFOR,
+} from '../../../actions/message';
 
-import { EventsTable, SearchNamePanel } from './components';
-import { FlexContainer } from './styled-components';
+import { EventsTable } from './components';
+import { SearchNamePanel } from '../shared-components';
+
 import {
   setSortedInfo,
   setFilteredInfo,
@@ -18,12 +20,13 @@ import {
   resetState,
   setDummyTransac,
   setEditingKey,
-} from '../../reducers/event-transaction/event-transaction-ui';
+} from '../../../reducers/event-transaction/event-transaction-ui';
 import {
   getEventTranscData,
+  setEventTranscData,
   postDeleteEventTransc,
   postAddEventTransc,
-} from '../../reducers/event-transaction/event-transaction-data';
+} from '../../../reducers/event-transaction/event-transaction-data';
 
 class EventTransaction extends Component {
   componentDidMount() {
@@ -49,10 +52,10 @@ class EventTransaction extends Component {
 
     if (this.actionType) {
       if (postErrMsg) {
-        message.error(postErrMsg);
+        message.error(postErrMsg, SHOWFOR);
       } else {
-        if (this.actionType === 'save') message.success(SUCCESS_ADDEVENTTRANSC);
-        if (this.actionType === 'delete') message.success(SUCCESS_DELETEEVENTTRANSC);
+        if (this.actionType === 'save') message.success(SUCCESS_ADDEVENTTRANSC, SHOWFOR);
+        if (this.actionType === 'delete') message.success(SUCCESS_DELETEEVENTTRANSC, SHOWFOR);
       }
     }
     this.actionType = null;
@@ -79,13 +82,14 @@ class EventTransaction extends Component {
       eventTransactionUI: { dummyTransacIndex },
       dispatchDummyTransac,
       dispatchEditingKey,
+      eventTransactionData: { eventsData },
+      dispatchSetEventTranscData,
     } = this.props;
-    const event = this.eventsList.find(item => item.id === eventId);
+    const event = eventsData.find(item => item.id === eventId);
     const { eventTransactions } = event;
 
     const key = dummyTransacIndex + 1;
     const newData = {
-      key: `dummy${key}`,
       id: `dummy${key}`,
       type,
       category: null,
@@ -94,21 +98,30 @@ class EventTransaction extends Component {
     eventTransactions.push(newData);
     dispatchDummyTransac(key);
     dispatchEditingKey(`dummy${key}`);
+    dispatchSetEventTranscData(eventsData);
   };
 
   deleteTransaction = (eventId, transacId) => {
     this.actionType = 'delete';
-    const event = this.eventsList.find(item => item.id === eventId);
+    const {
+      eventTransactionData: { eventsData },
+      dispatchSetEventTranscData,
+      performDeleteTransc,
+    } = this.props;
+    const event = eventsData.find(item => item.id === eventId);
     const { eventTransactions } = event;
     const index = eventTransactions.findIndex(item => item.id === transacId);
+    const eventTransc = eventTransactions[index];
 
     eventTransactions.splice(index, 1);
-
-    const { performDeleteTransc } = this.props;
-    performDeleteTransc({
-      eventId,
-      transacIdToRemove: transacId,
-    });
+    console.log(transacId, eventTransc.category);
+    if (!transacId.includes('dummy') && eventTransc.category !== null) {
+      performDeleteTransc({
+        eventId,
+        transacIdToRemove: transacId,
+      });
+    }
+    dispatchSetEventTranscData(eventsData);
   };
 
   prepareList = (sourceList) => {
@@ -150,7 +163,8 @@ class EventTransaction extends Component {
       eventTransactionData: {
         eventsData,
         isGetApiLoading,
-        getErrMsg, isPostApiLoading,
+        getErrMsg,
+        isPostApiLoading,
       },
       form: { getFieldDecorator },
       dispatchSortedInfo,
@@ -172,42 +186,51 @@ class EventTransaction extends Component {
           />
         ) : (
           <div>
-            <SearchNamePanel
-              onChange={(e) => {
-                this.searchNameValue = e.target.value;
-              }}
-              decorator={getFieldDecorator}
-              onSearch={() => dispatchFilteredInfo(
-                this.searchNameValue ? { name: [this.searchNameValue] } : {},
-              )
-              }
-              onClickReset={this.onClickReset}
-            />
-
-            <FlexContainer>
-              <EventsTable
-                eventsList={this.eventsList}
-                onChange={(pagination, filters, sorter) => {
-                  dispatchSortedInfo(sorter);
-                  dispatchFilteredInfo(filters);
-                }}
-                sortedInfo={sortedInfo || {}}
-                filteredInfo={filteredInfo || {}}
-                deleteTransaction={(eventId, transacId) => this.deleteTransaction(eventId, transacId)
-                }
-                expandedRowKeys={expandedRowKeys}
-                onExpand={(expanded, record) => {
-                  const keys = expanded ? [record.id] : [];
-                  dispatchExpandedRowKeys(keys);
-                }}
-                onClickAddRow={this.onClickAddRow}
-                cancelTransaction={() => dispatchEditingKey(null)}
-                editTransaction={transacId => dispatchEditingKey(transacId)}
-                saveTransaction={this.saveTransaction}
-                editingKey={editingKey}
-                isPostApiLoading={isPostApiLoading}
-              />
-            </FlexContainer>
+            <div className="pageHeaderContainer">
+              <h2>Event Transactions Page</h2>
+            </div>
+            <Row type="flex" justify="start">
+              <Col span={24}>
+                <SearchNamePanel
+                  onChange={(e) => {
+                    this.searchNameValue = e.target.value;
+                  }}
+                  decorator={getFieldDecorator}
+                  onSearch={() => dispatchFilteredInfo(
+                    this.searchNameValue
+                      ? { name: [this.searchNameValue.toLowerCase()] }
+                      : {},
+                  )
+                  }
+                  onClickReset={this.onClickReset}
+                  placeHolder="Search event name"
+                />
+              </Col>
+              <Col>
+                <EventsTable
+                  eventsList={this.eventsList}
+                  onChange={(pagination, filters, sorter) => {
+                    dispatchSortedInfo(sorter);
+                    dispatchFilteredInfo(filters);
+                  }}
+                  sortedInfo={sortedInfo || {}}
+                  filteredInfo={filteredInfo || {}}
+                  deleteTransaction={(eventId, transacId) => this.deleteTransaction(eventId, transacId)
+                  }
+                  expandedRowKeys={expandedRowKeys}
+                  onExpand={(expanded, record) => {
+                    const keys = expanded ? [record.id] : [];
+                    dispatchExpandedRowKeys(keys);
+                  }}
+                  onClickAddRow={this.onClickAddRow}
+                  cancelTransaction={() => dispatchEditingKey(null)}
+                  editTransaction={transacId => dispatchEditingKey(transacId)}
+                  saveTransaction={this.saveTransaction}
+                  editingKey={editingKey}
+                  isPostApiLoading={isPostApiLoading}
+                />
+              </Col>
+            </Row>
           </div>
         )}
       </Spin>
@@ -225,6 +248,7 @@ EventTransaction.propTypes = {
   dispatchEditingKey: PropTypes.func.isRequired,
 
   performGetEventTranscData: PropTypes.func.isRequired,
+  dispatchSetEventTranscData: PropTypes.func.isRequired,
   performAddTransc: PropTypes.func.isRequired,
   performDeleteTransc: PropTypes.func.isRequired,
 
@@ -245,6 +269,7 @@ const mapDispatchToProps = {
   dispatchEditingKey: setEditingKey,
 
   performGetEventTranscData: getEventTranscData,
+  dispatchSetEventTranscData: setEventTranscData,
   performAddTransc: postAddEventTransc,
   performDeleteTransc: postDeleteEventTransc,
 };

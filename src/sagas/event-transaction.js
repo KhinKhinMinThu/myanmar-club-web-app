@@ -11,7 +11,7 @@ import {
   POST_ERROR,
 } from '../reducers/event-transaction/event-transaction-data';
 
-const getEventTranscData = () => api.get('/getEventsTranscData');
+const getEventTranscData = () => api.get('/event/getEventsTranscData');
 
 function* asyncGetEventTranscData() {
   let errMsg;
@@ -29,12 +29,12 @@ function* asyncGetEventTranscData() {
   }
 }
 
-const postDeleteEventTransc = eventTranscToDelete => api.post('/deleteEventTransaction', {
+const postDeleteEventTransc = eventTranscToDelete => api.post('/event/deleteEventTransaction', {
   eventId: eventTranscToDelete.eventId,
   transacIdToRemove: eventTranscToDelete.transacIdToRemove,
 });
 
-const postAddEventTransc = eventTranscToAdd => api.post('/addEventTransaction', {
+const postAddEventTransc = eventTranscToAdd => api.post('/event/addEventTransaction', {
   eventId: eventTranscToAdd.eventId,
   transacDataToAdd: eventTranscToAdd.transacDataToAdd,
 });

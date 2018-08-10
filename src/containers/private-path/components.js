@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  MainMenu, MenuItem, MenuIcon,
-} from './styled-components';
+import { Menu } from 'antd';
+import { MenuItem, MenuIcon } from './styled-components';
 import {
   DASHBOARD,
   PROFILE,
@@ -13,7 +12,6 @@ import {
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
-  EVENT_CREATION,
 } from '../../actions/location';
 import { logout } from '../../reducers/login';
 import { locationChange } from '../../reducers/router';
@@ -45,10 +43,6 @@ const adminTitles = {
     icon: <MenuIcon type="calendar" />,
     text: 'Events Management',
   },
-  EVENT_CREATION: {
-    icon: <MenuIcon type="file-add" />,
-    text: 'Create New Event',
-  },
 };
 
 const MenuPanel = ({
@@ -67,11 +61,13 @@ const MenuPanel = ({
   };
 
   return (
-    <MainMenu
+    <Menu
       mode="inline"
       onClick={onClick}
       selectedKeys={selectedKeys}
-      style={{ marginTop: 5 }}
+      style={{
+        marginTop: 5,
+      }}
     >
       <MenuItem key={DASHBOARD}>
         {commonTitles.DASHBOARD.icon}
@@ -111,19 +107,11 @@ const MenuPanel = ({
           {adminTitles.EVENT_MANAGEMENT.text}
         </MenuItem>
       )}
-
-      {isAdmin && (
-        <MenuItem key={EVENT_CREATION}>
-          {adminTitles.EVENT_CREATION.icon}
-          {adminTitles.EVENT_CREATION.text}
-        </MenuItem>
-      )}
-
       <MenuItem key={LOGOUT}>
         {commonTitles.LOGOUT.icon}
         {commonTitles.LOGOUT.text}
       </MenuItem>
-    </MainMenu>
+    </Menu>
   );
 };
 

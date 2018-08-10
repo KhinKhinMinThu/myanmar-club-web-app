@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { Form, message } from 'antd';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
+import {
+  Form, message, Row, Col, Spin,
+} from 'antd';
+import { SUCCESS_NEWEVENT, SHOWFOR } from '../../../actions/message';
+import { DATETIME_FORMAT_DB } from '../../../actions/constants';
 import {
   EventNameInput,
   EventDescriptionInput,
@@ -10,7 +15,6 @@ import {
   AddressInput,
   PostalCodeInput,
   EventPhoto,
-  EventPhotoModal,
   TicketFeeInput,
   NumPaxInput,
   RefreshmentRadio,
@@ -18,19 +22,34 @@ import {
   EmailAddressInput,
   MobileNoInput,
   CreateButton,
-} from './components';
-import { FormCard, FlexContainer } from './styled-components';
-import {
-  setModalVisibility,
-  setFileList,
-} from '../../reducers/eventmgmt/eventmgmt-ui';
-import { save } from '../../reducers/eventmgmt/eventmgmt-data';
+  BackButton,
+} from '../shared-components';
+import { EventCard } from '../shared-styled';
+import { postNewEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventCreation extends Component {
+  componentDidUpdate(prevProps) {
+    const {
+      eventmgmtData: { isPostApiLoading, postErrMsg },
+    } = this.props;
+
+    const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (postErrMsg) {
+      message.error(postErrMsg, SHOWFOR);
+    } else {
+      message.success(SUCCESS_NEWEVENT, SHOWFOR);
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
-    const { form, dispatchSave } = this.props;
-    form.validateFieldsAndScroll((error, values) => {
+    const {
+      form: { validateFieldsAndScroll },
+      performNewEvent,
+    } = this.props;
+    validateFieldsAndScroll((error, values) => {
       if (!error) {
         const formValues = values;
         const startDate = this.formatDateTime(
@@ -41,108 +60,95 @@ class EventCreation extends Component {
           formValues.endDate,
           formValues.endTime,
         );
+        const mobilePhone = formValues.mobilePhone
+          ? formValues.areaCode + formValues.mobilePhone
+          : formValues.mobilePhone;
 
         // remove time value from the object
         delete formValues.startTime;
         delete formValues.endTime;
 
-        dispatchSave({
+        performNewEvent({
           ...formValues,
           startDate,
           endDate,
-          mobilePhone: formValues.areaCode + formValues.mobilePhone,
+          mobilePhone,
           eventStatus: '1',
         });
-        message.success('New event created!');
       }
     });
   };
 
-  // handle close button on Modal pop-up
-  onCloseModal = () => {
-    const { dispatchModalVisibility } = this.props;
-    dispatchModalVisibility({
-      isModalVisible: false,
-      photoLink: '',
-    });
-  };
-
-  onChange = ({ fileList }) => {
-    const { dispatchFileList } = this.props;
-    let newFile = fileList;
-    if (fileList.length > 1) {
-      newFile = fileList.slice(1);
-    }
-    dispatchFileList(newFile);
-  };
-
   // convert string date to Date object and combine date and time.
   formatDateTime = (strDate, strTime) => {
-    if (strDate && strTime) {
-      const date = new Date(strDate);
-      const time = new Date(strTime);
-      return new Date(
+    // to set the default date and time for end date/time
+    const defaultDT = new Date('01-01-1900 00:00');
+    const date = strDate ? new Date(strDate) : defaultDT;
+    const time = strTime ? new Date(strTime) : defaultDT;
+
+    return moment(
+      new Date(
         date.getFullYear(),
         date.getMonth(),
         date.getDate(),
         time.getHours(),
         time.getMinutes(),
         0,
-      );
-    }
-    return null;
-  };
-
-  // handle open-folder icon click from table row
-  showModal = (file) => {
-    const { dispatchModalVisibility } = this.props;
-    dispatchModalVisibility({
-      isModalVisible: true,
-      photoLink: file.url || file.thumbUrl,
-    });
+      ),
+    ).format(DATETIME_FORMAT_DB);
   };
 
   render() {
     const {
       form: { getFieldDecorator },
-      eventmgmtUI: { isModalVisible, photoLink, fileList },
+      eventmgmtData: { isPostApiLoading },
     } = this.props;
+    const actionColLayout = {
+      xs: { span: 24 },
+      sm: { span: 24 },
+      md: { span: 24 },
+      lg: { span: 12 },
+      xl: { span: 12 },
+      style: { marginBottom: 14 },
+    };
 
     return (
-      <div>
-        <Form onSubmit={this.onSubmit}>
-          <FormCard>
+      <Spin spinning={isPostApiLoading} size="large">
+        <div className="pageHeaderContainer">
+          <h2>Add New Event Page</h2>
+        </div>
+
+        <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
+          <EventCard>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
             <EndDateTimePicker decorator={getFieldDecorator} />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
-            <EventPhoto
-              decorator={getFieldDecorator}
-              onPreview={this.showModal}
-              onChange={this.onChange}
-              fileList={fileList}
-            />
-            <EventPhotoModal
-              onCloseModal={this.onCloseModal}
-              isModalVisible={isModalVisible}
-              photoLink={photoLink}
-            />
-          </FormCard>
-          <FormCard>
+            <EventPhoto decorator={getFieldDecorator} />
+          </EventCard>
+          <EventCard>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
-          </FormCard>
-          <FormCard>
+          </EventCard>
+          <EventCard>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />
-          </FormCard>
-          <FlexContainer>{CreateButton}</FlexContainer>
+            <br />
+            <Row gutter={8}>
+              <Col {...actionColLayout}>
+                <CreateButton />
+              </Col>
+              <Col {...actionColLayout}>
+                <BackButton />
+              </Col>
+            </Row>
+          </EventCard>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }
@@ -153,21 +159,16 @@ EventCreation.propTypes = {
     getFieldDecorator: PropTypes.func.isRequired,
     setFieldsValue: PropTypes.func.isRequired,
   }).isRequired,
-  // isValidating: PropTypes.bool.isRequired,
-  dispatchModalVisibility: PropTypes.func.isRequired,
-  dispatchFileList: PropTypes.func.isRequired,
-  dispatchSave: PropTypes.func.isRequired,
 
-  eventmgmtUI: PropTypes.shape({}).isRequired,
+  performNewEvent: PropTypes.func.isRequired,
+  eventmgmtData: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
-  eventmgmtUI: state.eventmgmt.ui,
+  eventmgmtData: state.eventmgmt.data,
 });
 const mapDispatchToProps = {
-  dispatchModalVisibility: setModalVisibility,
-  dispatchFileList: setFileList,
-  dispatchSave: save,
+  performNewEvent: postNewEvent,
 };
 
 const FormEventCreation = Form.create()(EventCreation);

@@ -1,21 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Form, Row, Col } from 'antd';
-import { EmailInput, ResetButton, BackButton } from './components';
-import { BoldText, BlockContainer } from './styled-components';
-import { save } from '../../reducers/forgot-password/forgot-password-data';
+import {
+  EmailInput,
+  ResetButton,
+  BackButton,
+  SuccessMessage,
+  ErrorMessage,
+} from './components';
+import { BoldText } from './styled-components';
+import { postForgotPwd } from '../../reducers/forgot-password/forgot-password-data';
 
-class ForgotPasswordPage extends React.Component {
+class ForgotPasswordPage extends Component {
+  componentWillUpdate(nextProps) {
+    const {
+      forgotpasswordData: { isPostApiLoading },
+    } = this.props;
+
+    this.isApiPost = !nextProps.forgotpasswordData.isPostApiLoading && isPostApiLoading;
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     const { form } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        /* eslint-disable no-console */
-        const { dispatchSave } = this.props;
-        dispatchSave(values);
-        console.log('Received values of form: ', values);
+        const { performForgotPwd } = this.props;
+        performForgotPwd(values);
       }
     });
   };
@@ -23,17 +35,37 @@ class ForgotPasswordPage extends React.Component {
   render() {
     const {
       form: { getFieldDecorator },
+      forgotpasswordData: { email, isPostApiLoading, postErrMsg },
     } = this.props;
+
+    let message;
+    if (this.isApiPost) {
+      message = postErrMsg ? (
+        <ErrorMessage postErrMsg={postErrMsg} />
+      ) : (
+        <SuccessMessage email={email} />
+      );
+    }
     return (
       <Form onSubmit={this.onSubmit}>
-        <BlockContainer>
-          <BoldText>Enter your email address to reset the password...</BoldText>
-          <EmailInput decorator={getFieldDecorator} />
-        </BlockContainer>
-        <Row gutter={8}>
-          <Col span={12}>{ResetButton}</Col>
-          <Col span={12}>{BackButton}</Col>
-        </Row>
+        {this.isApiPost ? (
+          message
+        ) : (
+          <Row gutter={8}>
+            <Col span={24}>
+              <BoldText>
+                Enter your email address to reset the password...
+              </BoldText>
+              <EmailInput decorator={getFieldDecorator} />
+            </Col>
+            <Col span={12}>
+              <ResetButton loading={isPostApiLoading} />
+            </Col>
+            <Col span={12}>
+              <BackButton />
+            </Col>
+          </Row>
+        )}
       </Form>
     );
   }
@@ -41,12 +73,18 @@ class ForgotPasswordPage extends React.Component {
 
 ForgotPasswordPage.propTypes = {
   form: PropTypes.shape({}).isRequired,
-  dispatchSave: PropTypes.func.isRequired,
+  performForgotPwd: PropTypes.func.isRequired,
+
+  forgotpasswordData: PropTypes.shape({}).isRequired,
 };
+
+const mapStateToProps = state => ({
+  forgotpasswordData: state.forgotpassword.data,
+});
 
 const FormForgotPasswordPage = Form.create()(ForgotPasswordPage);
 
 export default connect(
-  null,
-  { dispatchSave: save },
+  mapStateToProps,
+  { performForgotPwd: postForgotPwd },
 )(FormForgotPasswordPage);

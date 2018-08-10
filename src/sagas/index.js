@@ -10,6 +10,14 @@ import {
   postDeleteTranscSaga,
   postAddTranscSaga,
 } from './event-transaction';
+import {
+  getEventsDataSaga,
+  postDeleteEventSaga,
+  postDeleteRSVPSaga,
+  postNewEventSaga,
+  postUpdateEventSaga,
+} from './eventmgmt';
+import postForgotPwdSaga from './forgot-password';
 
 export default function* rootSaga() {
   yield all([
@@ -22,5 +30,13 @@ export default function* rootSaga() {
     getEventTranscDataSaga,
     postDeleteTranscSaga,
     postAddTranscSaga,
+    // eventmgmt
+    getEventsDataSaga,
+    postDeleteEventSaga,
+    postDeleteRSVPSaga,
+    // forgot-password
+    postForgotPwdSaga,
+    postNewEventSaga,
+    postUpdateEventSaga,
   ]);
 }

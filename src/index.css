@@ -4,9 +4,6 @@
 
 .App {
   height: 100%;
-  /* to hide the vertical scroll bar. 
-  V-scroll bar for individual pages will be displayed in .home-pages css */
-  overflow-y: hidden;
 }
 
 .login-page {
@@ -30,13 +27,14 @@
 .home-pages {
   width: 100%;
   height: 100vh;
-  min-width: 1300px;
+  min-width: 800px;
   background: #ffffff;
   display: flex;
   overflow-y: auto;
   overflow-x: auto;
 }
 
+/* REQUIRED DO NOT DELETE */
 .editable-row .ant-form-explain {
   position: absolute;
   font-size: 12px;
@@ -50,3 +48,24 @@ MMWebFonts can't support on Opera and Android Native Browser */
     url("https://mmwebfonts.comquas.com/fonts/myanmar3.woff") format("woff"),
     url("https://mmwebfonts.comquas.com/fonts/myanmar3.ttf") format("ttf");
 }
+
+h2 {
+  font-style: italic;
+  font-family: Impact;
+  font-size: 30px;
+  color: #312d2d;
+  opacity: 0.8;
+  text-transform: uppercase;
+  margin-right: 20px;
+}
+
+div.pageHeaderContainer {
+  position: absolute;
+  width: 40%;
+  height: 45px;
+  right: 10px;
+  vertical-align: middle;
+  text-align: right;
+}
+
+/* END REQUIRED DO NOT DELETE */

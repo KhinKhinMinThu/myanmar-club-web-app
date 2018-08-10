@@ -7,40 +7,13 @@ import {
   BoldText,
   BoldUnderlineText,
   FullWidthTable,
-  MarginLeftButton,
-  SearchInput,
   TableInput,
-  RowWhiteBackground,
   HightlightedText,
-} from './styled-components';
+} from '../shared-styled';
 
 const FormItem = Form.Item;
 
 /* eslint react/prop-types: 0 */
-// SearchNamePanel
-export const SearchNamePanel = ({
-  onChange,
-  decorator,
-  onSearch,
-  onClickReset,
-}) => (
-  <FormItem>
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder="Search event name"
-        onChange={onChange}
-        onPressEnter={onSearch}
-      />,
-    )}
-    <MarginLeftButton type="primary" onClick={onSearch}>
-      Search
-    </MarginLeftButton>
-    <MarginLeftButton type="primary" onClick={onClickReset} ghost>
-      Clear Search
-    </MarginLeftButton>
-  </FormItem>
-);
-
 // EditableContext
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (
@@ -64,7 +37,7 @@ class EditableCell extends Component {
       initialValue: record[dataIndex],
     };
     return (
-      <FormItem style={{ margin: 0 }}>
+      <FormItem style={{ marginBottom: 3 }}>
         {decorator(dataIndex, options)(<TableInput />)}
       </FormItem>
     );
@@ -127,17 +100,17 @@ export const EventsTable = ({
       title: 'Id',
       dataIndex: 'id',
       key: 'id',
-      sorter: (a, b) => Number.parseInt(a.id, 10) - Number.parseInt(b.id, 10),
-      sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+      width: '3%',
     },
     {
       title: 'Event Name',
       dataIndex: 'name',
       key: 'name',
       filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.includes(value),
+      onFilter: (value, record) => record.name.toLowerCase().includes(value),
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+      width: '11%',
     },
     {
       title: 'Event Description',
@@ -145,6 +118,7 @@ export const EventsTable = ({
       key: 'description',
       sorter: (a, b) => a.description.length - b.description.length,
       sortOrder: sortedInfo.columnKey === 'description' && sortedInfo.order,
+      width: '17%',
     },
     {
       title: 'Start Date',
@@ -152,6 +126,7 @@ export const EventsTable = ({
       key: 'startDate',
       sorter: (a, b) => new Date(a.startDate) - new Date(b.startDate),
       sortOrder: sortedInfo.columnKey === 'startDate' && sortedInfo.order,
+      width: '10%',
     },
     {
       title: 'End Date',
@@ -159,6 +134,7 @@ export const EventsTable = ({
       key: 'endDate',
       sorter: (a, b) => new Date(a.endDate) - new Date(b.endDate),
       sortOrder: sortedInfo.columnKey === 'endDate' && sortedInfo.order,
+      width: '10%',
     },
     {
       title: 'Location',
@@ -166,6 +142,7 @@ export const EventsTable = ({
       key: 'location',
       sorter: (a, b) => a.location.length - b.location.length,
       sortOrder: sortedInfo.columnKey === 'location' && sortedInfo.order,
+      width: '17%',
     },
     {
       title: 'Status',
@@ -174,6 +151,7 @@ export const EventsTable = ({
       sorter: (a, b) => a.eventStatus.length - b.eventStatus.length,
       sortOrder: sortedInfo.columnKey === 'eventStatus' && sortedInfo.order,
       render: text => (text === '1' ? 'Open' : 'Closed'),
+      width: '11%',
     },
     {
       title: 'Created By',
@@ -181,6 +159,7 @@ export const EventsTable = ({
       key: 'createdBy',
       sorter: (a, b) => a.createdBy.length - b.createdBy.length,
       sortOrder: sortedInfo.columnKey === 'createdBy' && sortedInfo.order,
+      width: '10%',
     },
     {
       title: 'Created Date',
@@ -188,6 +167,7 @@ export const EventsTable = ({
       key: 'createdDate',
       sorter: (a, b) => new Date(a.createdDate) - new Date(b.createdDate),
       sortOrder: sortedInfo.columnKey === 'createdDate' && sortedInfo.order,
+      width: '10%',
     },
   ];
 
@@ -197,6 +177,8 @@ export const EventsTable = ({
       dataSource={eventsList}
       onChange={onChange}
       bordered
+      size="small"
+      pagination={{ position: 'top' }}
       expandedRowKeys={expandedRowKeys}
       onExpand={onExpand}
       expandedRowRender={record => (
@@ -260,7 +242,7 @@ export const AddRowButton = ({ type, action }) => (
     onClick={() => action(type)}
     style={{ float: 'right' }}
   >
-    Add row
+    Add a new record
   </Button>
 );
 
@@ -300,7 +282,7 @@ const TransactionTable = ({
     {
       title: '',
       key: '',
-      width: 150,
+      width: 100,
       // render: (text, record) => ()
       render: (record) => {
         const editable = isEditing(record);
@@ -396,7 +378,7 @@ const TransactionTable = ({
     </HightlightedText>
   );
   return (
-    <RowWhiteBackground>
+    <div style={{ background: '#ffffff', padding: 8 }}>
       <Row gutter={8}>
         <Col span={12}>
           <FullWidthTable
@@ -406,7 +388,7 @@ const TransactionTable = ({
             dataSource={incomeList}
             pagination={{ pageSize: 5 }}
             bordered
-            size="middle"
+            size="small"
             rowClassName="editable-row"
           />
         </Col>
@@ -418,7 +400,7 @@ const TransactionTable = ({
             dataSource={expenditureList}
             pagination={{ pageSize: 5 }}
             bordered
-            size="middle"
+            size="small"
             rowClassName="editable-row"
           />
         </Col>
@@ -432,6 +414,6 @@ const TransactionTable = ({
           {totalBalanceText}
         </Col>
       </Row>
-    </RowWhiteBackground>
+    </div>
   );
 };
