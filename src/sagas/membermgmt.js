@@ -15,6 +15,7 @@ import {
   APIPOST_DELETE_MEMBERS,
 } from '../actions/constants';
 
+// GET REQUEST
 const getMembersData = () => api.get(APIGET_MEMBERSDATA);
 
 function* asyncGetMembersData() {
@@ -36,8 +37,10 @@ function* asyncGetMembersData() {
     yield put({ type: GET_APILOADING, payload: false });
   }
 }
+// end
 
-const postDeleteMembers = membersToDelete => api.post(APIPOST_DELETE_MEMBERS, { membersToDelete });
+// POST REQUEST
+const postDeleteMembers = membersToDelete => api.post(APIPOST_DELETE_MEMBERS, membersToDelete);
 
 function* asyncPostProcessMembers(action) {
   let errMsg;
@@ -58,6 +61,8 @@ function* asyncPostProcessMembers(action) {
     yield put({ type: POST_APILOADING, payload: false });
   }
 }
+// end
+
 export const getMembersDataSaga = takeLatest(
   GET_MEMBERSDATA,
   asyncGetMembersData,

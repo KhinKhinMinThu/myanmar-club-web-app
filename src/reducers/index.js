@@ -20,10 +20,10 @@ import eventmgmtReducer from './eventmgmt';
  * else it will replace initial state without checking (ignoring possible new entries)
  */
 const loginPersistConfig = {
-  key: 'login.data',
+  key: 'login',
   storage: localStorage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ['isLoggedIn'],
+  whitelist: ['isLoggedIn', 'isAdmin'],
 };
 
 const rootReducer = combineReducers({

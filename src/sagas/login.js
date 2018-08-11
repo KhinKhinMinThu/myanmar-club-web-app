@@ -1,6 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { api } from './api';
+import { api, addTokenToHeader } from './api';
 import {
   POST_LOGIN,
   ISLOGGEDIN,
@@ -33,6 +33,8 @@ function* asyncLogin(action) {
       yield put({ type: ISLOGGEDIN, payload: isLoggedIn });
       yield put({ type: ISADMIN, payload: isAdmin });
       yield put({ type: TOKEN, payload: token });
+      yield call(addTokenToHeader);
+      localStorage.setItem('loginState', JSON.stringify(response.data));
     }
     errMsg = errorMsg;
     console.log('API RESPONSE.........', response);

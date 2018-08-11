@@ -16,6 +16,7 @@ import {
   APIPOST_ADD_EVENTTRANSC,
 } from '../actions/constants';
 
+// GET REQUEST
 const getEventTranscData = () => api.get(APIGET_EVENTTRANSCDATA);
 
 function* asyncGetEventTranscData() {
@@ -33,7 +34,9 @@ function* asyncGetEventTranscData() {
     yield put({ type: GET_APILOADING, payload: false });
   }
 }
+// end
 
+// POST REQUEST
 const postDeleteEventTransc = eventTranscToDelete => api.post(APIPOST_DELETE_EVENTTRANSC, {
   eventId: eventTranscToDelete.eventId,
   transacIdToRemove: eventTranscToDelete.transacIdToRemove,
@@ -71,6 +74,7 @@ function* asyncPostProcessEventTransc(action) {
     yield put({ type: POST_APILOADING, payload: false });
   }
 }
+// end
 
 export const getEventTranscDataSaga = takeLatest(
   GET_EVENTTRANSACDATA,

@@ -4,6 +4,7 @@ export const ISADMIN = '[LOGIN_DATA] ISADMIN';
 export const TOKEN = '[LOGIN_DATA] TOKEN';
 export const POST_APILOADING = '[LOGIN_DATA] POST_APILOADING';
 export const POST_ERROR = '[LOGIN_DATA] POST_ERROR';
+export const AUTHENTICATED_USER = '[LOGIN_DATA] AUTHENTICATED_USER';
 
 export const postLogin = userData => ({ type: POST_LOGIN, userData });
 
@@ -16,13 +17,18 @@ export default function (
   state = {
     isPostApiLoading: false,
     postErrMsg: null,
-    isAdmin: true,
-    isLoggedIn: true,
-    token: '',
+    isAdmin: false, // change to false
+    isLoggedIn: false, // change to false
+    token: 'dummytoken',
   },
   action,
 ) {
   switch (action.type) {
+    case AUTHENTICATED_USER:
+      return {
+        ...state,
+        ...action.payload,
+      };
     case ISADMIN:
       return {
         ...state,

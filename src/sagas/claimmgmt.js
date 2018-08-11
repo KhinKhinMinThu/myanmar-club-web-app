@@ -17,6 +17,7 @@ import {
   APIPOST_UNAPPROVE_CLAIMS,
 } from '../actions/constants';
 
+// GET REQUEST
 const getClaimsData = () => api.get(APIGET_CLAIMSDATA);
 
 function* asyncGetClaimsData() {
@@ -38,10 +39,12 @@ function* asyncGetClaimsData() {
     yield put({ type: GET_APILOADING, payload: false });
   }
 }
+// end
 
-const postApproveClaims = claimsToApprove => api.post(APIPOST_APPROVE_CLAIMS, { claimsToApprove });
+// POST REQUEST
+const postApproveClaims = claimsToApprove => api.post(APIPOST_APPROVE_CLAIMS, claimsToApprove);
 
-const postUnapproveClaims = claimsToUnapprove => api.post(APIPOST_UNAPPROVE_CLAIMS, { claimsToUnapprove });
+const postUnapproveClaims = claimsToUnapprove => api.post(APIPOST_UNAPPROVE_CLAIMS, claimsToUnapprove);
 
 function* asyncPostProcessClaims(action) {
   let errMsg;
@@ -67,6 +70,7 @@ function* asyncPostProcessClaims(action) {
     yield put({ type: POST_APILOADING, payload: false });
   }
 }
+// end
 
 export const getClaimsDataSaga = takeLatest(GET_CLAIMSDATA, asyncGetClaimsData);
 export const postApproveClaimsSaga = takeLatest(

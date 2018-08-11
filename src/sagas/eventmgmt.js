@@ -23,6 +23,7 @@ import {
   APIPOST_NOTIFY_EVENT,
 } from '../actions/constants';
 
+// GET REQUEST
 const getEventsData = () => api.get(APIGET_EVENTSDATA);
 
 function* asyncGetEventsData() {
@@ -40,14 +41,12 @@ function* asyncGetEventsData() {
     yield put({ type: GET_APILOADING, payload: false });
   }
 }
+// end
 
-const postDeleteEvent = eventsToDelete => api.post(APIPOST_DELETE_EVENT, {
-  eventsToDelete,
-});
+// POST REQUEST
+const postDeleteEvent = eventsToDelete => api.post(APIPOST_DELETE_EVENT, eventsToDelete);
 
-const postDeleteRSVP = eventRSVPToDelete => api.post(APIPOST_DELETE_EVENT_RSVP, {
-  eventRSVPToDelete,
-});
+const postDeleteRSVP = eventRSVPToDelete => api.post(APIPOST_DELETE_EVENT_RSVP, eventRSVPToDelete);
 
 const postNewEvent = newEventToAdd => api.post(APIPOST_ADD_EVENT, {
   name: newEventToAdd.name,
@@ -101,6 +100,7 @@ const assembleFormData = ({ eventId, imageFile }) => {
   }
   return null;
 };
+
 function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
@@ -126,7 +126,7 @@ function* asyncPostProcessEvents(action) {
         response = yield call(postDeleteEvent, action.eventsToDelete);
         break;
       case POST_DELETERSVP:
-        response = yield call(postDeleteRSVP, action.eventsToDelete);
+        response = yield call(postDeleteRSVP, action.eventRSVPToDelete);
         break;
       case POST_NEWEVENT:
         response = yield call(postNewEvent, action.newEventToAdd);
@@ -159,6 +159,7 @@ function* asyncPostProcessEvents(action) {
     yield put({ type: POST_APILOADING, payload: false });
   }
 }
+// end
 
 export const getEventsDataSaga = takeLatest(GET_EVENTSDATA, asyncGetEventsData);
 export const postDeleteEventSaga = takeLatest(
