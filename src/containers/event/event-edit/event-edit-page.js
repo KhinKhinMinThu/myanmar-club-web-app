@@ -194,7 +194,7 @@ class EventEdit extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
@@ -207,17 +207,17 @@ class EventEdit extends Component {
               removeFile={this.removeFile}
             />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <EventStatusSwitch decorator={getFieldDecorator} />
             <DeleteEventSwitch decorator={getFieldDecorator} />
             <br />

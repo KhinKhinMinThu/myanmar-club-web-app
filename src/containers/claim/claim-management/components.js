@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Tabs, Button, Form, Modal,
+  Tabs, Button, Form, Modal, Input, Col,
 } from 'antd';
 import {
   TabIcon,
@@ -9,7 +9,6 @@ import {
   FullWidthTable,
   SelectedText,
   MarginLeftButton,
-  SearchInput,
   BottomUnder,
 } from '../shared-styled';
 
@@ -75,19 +74,23 @@ export const SearchNamePanel = ({
   placeHolder,
 }) => (
   <FormItem style={{ marginBottom: 3 }}>
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder={placeHolder}
-        onChange={onChange}
-        onPressEnter={onSearch}
-      />,
-    )}
-    <MarginLeftButton type="primary" onClick={onSearch}>
-      Search
-    </MarginLeftButton>
-    <MarginLeftButton type="primary" onClick={onClickReset} ghost>
-      Clear Search
-    </MarginLeftButton>
+    <Col span={4}>
+      {decorator('searchName', { initialValue: null })(
+        <Input
+          placeholder={placeHolder}
+          onChange={onChange}
+          onPressEnter={onSearch}
+        />,
+      )}
+    </Col>
+    <Col span={20}>
+      <MarginLeftButton type="primary" onClick={onSearch}>
+        Search
+      </MarginLeftButton>
+      <MarginLeftButton type="primary" onClick={onClickReset} ghost>
+        Clear Search
+      </MarginLeftButton>
+    </Col>
   </FormItem>
 );
 
@@ -257,10 +260,14 @@ export class ClaimsTable extends Component {
         >
           <img alt="receipt" width="100%" src={photoLink} />
           <FormItem {...layout} style={{ marginBottom: 0 }} label="Photo Link">
-            <BottomUnder><a href={photoLink}>{photoLink}</a></BottomUnder>
+            <BottomUnder>
+              <a href={photoLink}>{photoLink}</a>
+            </BottomUnder>
           </FormItem>
           <FormItem {...layout} style={{ marginBottom: 0 }} label="Remark">
-            <BottomUnder><BoldText>{remark}</BoldText></BottomUnder>
+            <BottomUnder>
+              <BoldText>{remark}</BoldText>
+            </BottomUnder>
           </FormItem>
         </Modal>
       </div>

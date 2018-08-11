@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import {
-  Icon, Table, Button, Input,
-} from 'antd';
+import { Icon, Table, Button } from 'antd';
 
 // Tables
 export const FullWidthTable = styled(Table)`
@@ -36,9 +34,6 @@ export const TableActionButton = styled(Button)`
 // &:link,
 // &:active
 
-export const SearchInput = styled(Input)`
-  width: 200px;
-`;
 // end
 
 // Tabs

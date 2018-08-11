@@ -5,11 +5,7 @@ import {
   EVENT_VIEW,
   EVENT_EDIT,
 } from '../../../actions/location';
-import {
-  FullWidthTable,
-  TableActionIcon,
-  TableActionLink,
-} from '../shared-styled';
+import { FullWidthTable, TableActionButton } from '../shared-styled';
 
 /* eslint react/prop-types: 0 */
 // EventsTable
@@ -85,14 +81,16 @@ export const EventsTable = ({
       width: '10%',
       // render: (text, record) => ()
       render: record => (
-        <span>
-          <TableActionLink to={EVENT_VIEW.concat('/').concat(record.id)}>
-            <TableActionIcon type="folder-open" />
-          </TableActionLink>
-          <TableActionLink to={EVENT_EDIT.concat('/').concat(record.id)}>
-            <TableActionIcon type="edit" />
-          </TableActionLink>
-        </span>
+        <div>
+          <TableActionButton
+            href={EVENT_VIEW.concat('/').concat(record.id)}
+            icon="folder-open"
+          />
+          <TableActionButton
+            href={EVENT_EDIT.concat('/').concat(record.id)}
+            icon="edit"
+          />
+        </div>
       ),
     },
   ];

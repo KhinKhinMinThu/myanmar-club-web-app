@@ -9,7 +9,7 @@ import {
   SuccessMessage,
   ErrorMessage,
 } from './components';
-import { BoldText } from './styled-components';
+import { BoldText, ForgotPwdCard } from './styled-components';
 import { postForgotPwd } from '../../reducers/forgot-password/forgot-password-data';
 
 class ForgotPasswordPage extends Component {
@@ -47,26 +47,28 @@ class ForgotPasswordPage extends Component {
       );
     }
     return (
-      <Form onSubmit={this.onSubmit}>
-        {this.isApiPost ? (
-          message
-        ) : (
-          <Row gutter={8}>
-            <Col span={24}>
-              <BoldText>
-                Enter your email address to reset the password...
-              </BoldText>
-              <EmailInput decorator={getFieldDecorator} />
-            </Col>
-            <Col span={12}>
-              <ResetButton loading={isPostApiLoading} />
-            </Col>
-            <Col span={12}>
-              <BackButton />
-            </Col>
-          </Row>
-        )}
-      </Form>
+      <ForgotPwdCard style={{ borderRadius: 15, margin: 'auto' }}>
+        <Form onSubmit={this.onSubmit}>
+          {this.isApiPost ? (
+            message
+          ) : (
+            <Row gutter={8}>
+              <Col span={24}>
+                <BoldText>
+                  Enter your email address to reset the password...
+                </BoldText>
+                <EmailInput decorator={getFieldDecorator} />
+              </Col>
+              <Col span={12}>
+                <ResetButton loading={isPostApiLoading} />
+              </Col>
+              <Col span={12}>
+                <BackButton />
+              </Col>
+            </Row>
+          )}
+        </Form>
+      </ForgotPwdCard>
     );
   }
 }

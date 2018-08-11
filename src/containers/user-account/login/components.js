@@ -1,16 +1,17 @@
 import React from 'react';
 import { Form } from 'antd';
-import { SIGNUP, FORGOTPASSWORD } from '../../actions/location';
+import { SIGNUP, FORGOTPASSWORD } from '../../../actions/location';
 import {
   FormInputIcon,
   CustomInput,
   CustomCheckbox,
   CustomLinkRight,
   CustomLinkLeft,
-  FullWidthButton,
-} from './styled-components';
+  FullButton,
+} from '../shared-styled';
 
 const FormItem = Form.Item;
+
 /* eslint react/prop-types: 0 */
 export const UsernameInput = ({ decorator }) => (
   <FormItem>
@@ -49,19 +50,19 @@ export const PasswordInput = ({ decorator }) => (
   </FormItem>
 );
 
-export const LoginButton = ({ isPending }) => (
-  <FullWidthButton type="primary" htmlType="submit" loading={isPending}>
+export const LoginButton = ({ loading }) => (
+  <FullButton type="primary" htmlType="submit" loading={loading}>
     Login
-  </FullWidthButton>
+  </FullButton>
 );
 
-export const Footer = ({ decorator, isPending }) => (
+export const Footer = ({ decorator, loading }) => (
   <FormItem>
     {decorator('isRemembered', {
       valuePropName: 'checked',
       initialValue: false,
     })(<CustomCheckbox>Remember me</CustomCheckbox>)}
-    <LoginButton isPending={isPending} />
+    <LoginButton loading={loading} />
     <CustomLinkRight href={FORGOTPASSWORD}>Forgot password</CustomLinkRight>
     <CustomLinkLeft href={SIGNUP}>Signup now!</CustomLinkLeft>
   </FormItem>

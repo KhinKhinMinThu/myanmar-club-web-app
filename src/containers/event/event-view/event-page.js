@@ -54,6 +54,7 @@ class EventPage extends Component {
   render() {
     const {
       form: { getFieldDecorator },
+      eventmgmtData: { isPostApiLoading },
     } = this.props;
     const shareColLayout = {
       xs: { span: 24, offset: 0 },
@@ -74,7 +75,7 @@ class EventPage extends Component {
 
     return (
       <div>
-        <EventCard>
+        <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
           <EventData decorator={getFieldDecorator} />
           <br />
           <Row gutter={8}>
@@ -88,8 +89,11 @@ class EventPage extends Component {
               <ShareFacebookButton /> Share on facebook
             </Col>
             <Col {...shareColLayout}>
-              <NotifyMsgButton onClickNotify={this.onClickNotify} /> Notify Club
-              Members
+              <NotifyMsgButton
+                onClickNotify={this.onClickNotify}
+                loading={isPostApiLoading}
+              />{' '}
+              Notify Club Members
             </Col>
           </Row>
           <Row gutter={8}>

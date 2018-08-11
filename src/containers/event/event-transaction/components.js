@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {
-  Form, Row, Col, Popconfirm, Button,
+  Form, Row, Col, Popconfirm, Button, Input,
 } from 'antd';
 import {
   TableActionButton,
   BoldText,
   BoldUnderlineText,
   FullWidthTable,
-  TableInput,
   HightlightedText,
 } from '../shared-styled';
 
@@ -38,7 +37,7 @@ class EditableCell extends Component {
     };
     return (
       <FormItem style={{ marginBottom: 3 }}>
-        {decorator(dataIndex, options)(<TableInput />)}
+        {decorator(dataIndex, options)(<Input />)}
       </FormItem>
     );
   };

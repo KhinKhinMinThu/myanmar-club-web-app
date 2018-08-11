@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  Icon, Table, Button, Input, Card,
+  Icon, Table, Button, Card,
 } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -16,11 +16,6 @@ export const SelectedText = styled.span`
 
 export const MarginLeftButton = styled(Button)`
   margin-left: 8px;
-`;
-
-export const TableActionIcon = styled(Icon)`
-  margin-right: 16px;
-  font-size: 18px;
 `;
 
 export const TableActionLink = styled(Link)`
@@ -51,13 +46,6 @@ export const TableActionButton = styled(Button)`
 // &:link,
 // &:active
 
-export const SearchInput = styled(Input)`
-  width: 200px;
-`;
-
-export const TableInput = styled(Input)`
-  width: 160px;
-`;
 // end
 
 // Tabs
@@ -85,12 +73,6 @@ export const BoldUnderlineText = styled.span`
 // Card
 export const EventCard = styled(Card)`
   width: 900px;
-  min-width: 900px;
-  border-radius: 15px;
-  top: 5%;
-  margin-bottom: 8px;
-  margin-left: auto;
-  margin-right: auto;
 `;
 // end
 

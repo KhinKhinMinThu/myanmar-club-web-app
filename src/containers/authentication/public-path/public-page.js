@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Layout, Breadcrumb } from 'antd';
-import { HeaderText, BreadcrumbIcon, BreadcrumbItem } from '../shared-styled';
+import { Layout, Anchor } from 'antd';
+import { HeaderText } from '../shared-styled';
 import {
   DEFAULT,
   LOGIN,
@@ -12,9 +12,10 @@ import {
   // PUBLIC_EVENT_VIEW,
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
+import MenuPanel from './components';
 import MainPage from './main-page';
 import ErrorPage from '../error-page';
-import LoginPage from '../../login-page';
+import LoginPage from '../../user-account/login';
 import SignupPage2 from '../../signup-page2';
 import ForgotPasswordPage from '../../forgotpwd-page';
 
@@ -84,6 +85,9 @@ class PrivatePage extends Component {
           >
             <HeaderText>Myanmar Club Web Portal</HeaderText>;
           </Header>
+          <Anchor>
+            <MenuPanel selectedKeys={[pathname]} />
+          </Anchor>
           <Content
             style={{
               margin: '5px',
@@ -91,24 +95,7 @@ class PrivatePage extends Component {
               padding: '10px 10px 10px 10px',
             }}
           >
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <BreadcrumbItem href={DEFAULT}>
-                <BreadcrumbIcon type="home" />
-              </BreadcrumbItem>
-              <BreadcrumbItem href={LOGIN}>
-                <BreadcrumbIcon type="user" />
-                <span>Login</span>
-              </BreadcrumbItem>
-            </Breadcrumb>
             <Page {...this.props} />
-            LONG <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG{' '}
-            <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG{' '}
-            <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG{' '}
-            <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG{' '}
-            <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG{' '}
-            <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG <br />LONG{' '}
-            <br />
-            END LONG <br />
           </Content>
         </Layout>
       </Layout>

@@ -35,6 +35,7 @@ function* asyncLogin(action) {
       yield put({ type: TOKEN, payload: token });
     }
     errMsg = errorMsg;
+    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {

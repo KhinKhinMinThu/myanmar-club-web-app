@@ -139,13 +139,14 @@ export const ShareFacebookButton = () => (
   <Button icon="facebook" shape="circle" type="primary" ghost />
 );
 
-export const NotifyMsgButton = ({ onClickNotify }) => (
+export const NotifyMsgButton = ({ onClickNotify, loading }) => (
   <Button
     icon="message"
     shape="circle"
     type="primary"
     ghost
     onClick={onClickNotify}
+    loading={loading}
   />
 );
 
