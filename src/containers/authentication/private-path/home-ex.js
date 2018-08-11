@@ -1,7 +1,7 @@
 // dummy home page: to be removed later
 import React from 'react';
 import { Row, Col } from 'antd';
-import dummyOtter from '../../images/dummy_otter.jpg';
+import dummyOtter from '../../../images/dummy_otter.jpg';
 
 const DashboardPage = () => (
   <Row>

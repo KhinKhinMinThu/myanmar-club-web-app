@@ -104,10 +104,14 @@ class EcMembersPage extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
-      roleNames: item.RoleNames
-        ? item.roleNames.map(
-          (role, index) => (index === item.roleNames.length - 1 ? `${role}` : `${role}, `),
-        )
+      roleNames: item.roleNames
+        ? item.roleNames
+          .map(
+            (role, index) => (index === item.roleNames.length - 1
+              ? `${role.name}`
+              : `${role.name}, `),
+          )
+          .join('')
         : '',
     }));
     return preparedList;

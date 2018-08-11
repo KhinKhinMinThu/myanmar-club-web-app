@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Icon, Menu } from 'antd';
+import { Icon, Menu, Breadcrumb } from 'antd';
 
 export const MenuIcon = styled(Icon)`
   font-size: 16px;
@@ -16,4 +16,14 @@ export const HeaderText = styled.h1`
   font-family: Impact;
   color: #ffffff;
   text-transform: uppercase;
+`;
+
+export const BreadcrumbIcon = styled(Icon)`
+  font-size: 16px;
+`;
+
+export const BreadcrumbItem = styled(Breadcrumb.Item)`
+  &:hover {
+    background: rgba(216, 230, 223, 0.5);
+  }
 `;

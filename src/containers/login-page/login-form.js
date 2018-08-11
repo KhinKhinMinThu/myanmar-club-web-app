@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form, message } from 'antd';
-import { login } from '../../reducers/login';
+import { postLogin } from '../../reducers/login/login-data';
 import { UsernameInput, PasswordInput, Footer } from './components';
 
 class LoginForm extends Component {
@@ -79,5 +79,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { performLogin: login },
+  { performLogin: postLogin },
 )(Form.create()(LoginForm));

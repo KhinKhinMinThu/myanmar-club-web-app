@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Menu } from 'antd';
-import { MenuItem, MenuIcon } from './styled-components';
+import { MenuItem, MenuIcon } from '../shared-styled';
 import {
   DASHBOARD,
   PROFILE,
@@ -12,9 +12,9 @@ import {
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
-} from '../../actions/location';
-import { logout } from '../../reducers/login';
-import { locationChange } from '../../reducers/router';
+} from '../../../actions/location';
+import { setIsLoggedIn } from '../../../reducers/login/login-data';
+import { locationChange } from '../../../reducers/router';
 
 const commonTitles = {
   DASHBOARD: { icon: <MenuIcon type="home" />, text: 'Dashboard' },
@@ -54,7 +54,7 @@ const MenuPanel = ({
 }) => {
   const onClick = (e) => {
     if (e.key === LOGOUT) {
-      performLogout(false);
+      performLogout({ payload: false });
     }
     const location = { ...currentLocation, pathname: e.key };
     updateLocation({ location });
@@ -124,7 +124,7 @@ MenuPanel.propTypes = {
 };
 
 const mapDispatchToProps = {
-  performLogout: logout,
+  performLogout: setIsLoggedIn,
   updateLocation: locationChange,
 };
 

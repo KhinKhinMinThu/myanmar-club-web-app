@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
-import ui from './accmgmt-ui';
-import data from './accmgmt-data';
+import data from './login-data';
 
 export default combineReducers({
-  ui,
   data,
 });

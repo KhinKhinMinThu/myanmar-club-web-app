@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LOGIN, SIGNUP, FORGOTPASSWORD } from '../../actions/location';
+import { LOGIN, SIGNUP, FORGOTPASSWORD } from '../../../actions/location';
 
 const PublicMain = () => (
   <div>

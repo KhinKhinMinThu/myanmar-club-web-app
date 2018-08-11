@@ -10,6 +10,7 @@ import {
   POST_DELETERSVP,
   POST_NEWEVENT,
   POST_UPDATEEVENT,
+  POST_NOTIFYEVENT,
   POST_ERROR,
 } from '../reducers/eventmgmt/eventmgmt-data';
 import {
@@ -19,6 +20,7 @@ import {
   APIPOST_UPDATE_EVENT,
   APIPOST_ADD_EVENT,
   APIPOST_ADD_EVENTPHOTO,
+  APIPOST_NOTIFY_EVENT,
 } from '../actions/constants';
 
 const getEventsData = () => api.get(APIGET_EVENTSDATA);
@@ -85,6 +87,11 @@ const postUpdateEvent = eventToUpdate => api.post(APIPOST_UPDATE_EVENT, {
 
 const postEventPhoto = multipartForm => apiMultiPart.post(APIPOST_ADD_EVENTPHOTO, multipartForm);
 
+const postNotifyEvent = notification => api.post(APIPOST_NOTIFY_EVENT, {
+  id: notification.id,
+  url: notification.url,
+});
+
 const assembleFormData = ({ eventId, imageFile }) => {
   if (eventId && imageFile) {
     const mpf = new FormData();
@@ -107,6 +114,7 @@ function* asyncPostProcessEvents(action) {
       action.eventRSVPToDelete,
       action.newEventToAdd,
       action.eventToUpdate,
+      action.notification,
     );
 
     let id;
@@ -131,6 +139,9 @@ function* asyncPostProcessEvents(action) {
       case POST_UPDATEEVENT:
         response = yield call(postUpdateEvent, action.eventToUpdate);
         if (!response.data.errorMsg) id = eventData;
+        break;
+      case POST_NOTIFYEVENT:
+        response = yield call(postNotifyEvent, action.notification);
         break;
       default:
     }
@@ -164,5 +175,9 @@ export const postNewEventSaga = takeLatest(
 );
 export const postUpdateEventSaga = takeLatest(
   POST_UPDATEEVENT,
+  asyncPostProcessEvents,
+);
+export const postNotifyEventSaga = takeLatest(
+  POST_NOTIFYEVENT,
   asyncPostProcessEvents,
 );

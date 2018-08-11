@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Tabs, Button, Form, Modal, Row, Col,
+  Tabs, Button, Form, Modal,
 } from 'antd';
 import { MEMBER_EDIT } from '../../../actions/location';
 import {
@@ -25,16 +25,17 @@ export const layout = {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 24 },
-    lg: { span: 4 },
-    xl: { span: 4 },
+    lg: { span: 10 },
+    xl: { span: 10 },
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 24 },
-    lg: { span: 20 },
-    xl: { span: 20 },
+    lg: { span: 14 },
+    xl: { span: 14 },
   },
+  colon: true,
 };
 
 /* eslint react/prop-types: 0 */
@@ -141,36 +142,38 @@ export const DeleteSeletedButton = ({
 
 // Member Object Labels
 const displayMemberInfo = member => [
-  { label: 'Member Id', text: member.id },
-  { label: 'Name', text: member.name },
-  { label: 'Gender', text: member.gender },
-  { label: 'Date of birth', text: member.dateOfBirth },
-  { label: 'Nationality', text: member.nationality },
-  { label: 'Religion', text: member.religion },
-  { label: 'Marital Status', text: member.maritalStatus },
-  { label: 'Education Level', text: member.educationLevel },
-  { label: 'Occupation', text: member.occupation },
-  { label: 'Singapore Pass', text: member.passType },
-  { label: 'ID Number', text: member.idNumber },
+  { label: 'Member Id', text: member.id || '-' },
+  { label: 'Name', text: member.name || '-' },
+  { label: 'Gender', text: member.gender || '-' },
+  { label: 'Date of birth', text: member.dateOfBirth || '-' },
+  { label: 'Nationality', text: member.nationality || '-' },
+  { label: 'Religion', text: member.religion || '-' },
+  { label: 'Marital Status', text: member.maritalStatus || '-' },
+  { label: 'Education Level', text: member.educationLevel || '-' },
+  { label: 'Occupation', text: member.occupation || '-' },
+  { label: 'Singapore Pass', text: member.passType || '-' },
+  { label: 'ID Number', text: member.idNumber || '-' },
   {
     label: 'Address',
-    text: [member.addressLine1, member.addressLine2, member.postalCode].join(
-      ' ',
-    ),
+    text: [
+      member.addressLine1 || '-',
+      member.addressLine2,
+      member.postalCode,
+    ].join(' '),
   },
-  { label: 'Email Address', text: member.emailAddress },
-  { label: 'Facebook Account', text: member.facebookAccount },
-  { label: 'Home Phone', text: member.homePhone },
-  { label: 'Mobile Phone', text: member.mobilePhone },
-  { label: 'Hobbies', text: member.hobbies },
+  { label: 'Email Address', text: member.emailAddress || '-' },
+  { label: 'Facebook Account', text: member.facebookAccount || '-' },
+  { label: 'Home Phone', text: member.homePhone || '-' },
+  { label: 'Mobile Phone', text: member.mobilePhone || '-' },
+  { label: 'Hobbies', text: member.hobbies || '-' },
 ];
 const displayMembership = member => [
-  { label: 'Membership Type', text: member.membershipType },
-  { label: 'Membership Status', text: member.membershipStatus },
-  { label: 'Joined Date', text: member.createdDate },
-  { label: 'Membership Expiry Date', text: member.membershipExpiryDate },
-  { label: 'Last Payment Date', text: member.lastPaymentDate },
-  { label: 'Last Payment Type', text: member.lastPaymentType },
+  { label: 'Membership Type', text: member.membershipType || '-' },
+  { label: 'Membership Status', text: member.membershipStatus || '-' },
+  { label: 'Joined Date', text: member.createdDate || '-' },
+  { label: 'Membership Expiry Date', text: member.membershipExpiryDate || '-' },
+  { label: 'Last Payment Date', text: member.lastPaymentDate || '-' },
+  { label: 'Last Payment Type', text: member.lastPaymentType || '-' },
 ];
 
 // MembersTable
@@ -248,7 +251,7 @@ export class MembersTable extends Component {
         width: '9%',
       },
       {
-        title: 'Role Title',
+        title: 'Role Title(s)',
         dataIndex: 'roleNames',
         key: 'roleNames',
         sorter: (a, b) => a.roleNames.length - b.roleNames.length,
@@ -296,8 +299,6 @@ export class MembersTable extends Component {
       columns.splice(5, 1);
       columns[columns.length - 1].width = '22%';
     }
-    // remove
-    member.photoLink = 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
 
     return (
       <div>

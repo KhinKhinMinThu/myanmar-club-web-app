@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api, apiMultiPart } from './api';
+import { api } from './api';
 import {
   GET_MEMBERSDATA,
   GET_APILOADING,

@@ -1,17 +1,21 @@
+// public
 export const DEFAULT = '/';
 export const LOGIN = '/login';
 export const LOGOUT = '/logout';
 export const SIGNUP = '/signup';
 export const FORGOTPASSWORD = '/forgot-password';
 export const RESETPASSWORD = '/password-reset';
-export const PROFILE = '/profile';
-export const DASHBOARD = '/dashboard';
-export const ROLE_MANAGEMENT = '/manage-roles';
-export const MEMBER_MANAGEMENT = '/manage-members';
-export const MEMBER_EDIT = '/edit-member';
-export const CLAIM_MANAGEMENT = '/manage-claims';
-export const EVENT_TRANSACTION = '/events-transactions';
-export const EVENT_MANAGEMENT = '/manage-events';
-export const EVENT_CREATION = '/create-new-event';
-export const EVENT_EDIT = '/edit-event';
-export const EVENT_VIEW = '/view-event';
+export const PUBLIC_EVENT_VIEW = '/event-info';
+
+// private
+export const PROFILE = '/portal/profile';
+export const DASHBOARD = '/portal/dashboard';
+export const ROLE_MANAGEMENT = '/portal/manage-roles';
+export const MEMBER_MANAGEMENT = '/portal/manage-members';
+export const MEMBER_EDIT = '/portal/edit-member';
+export const CLAIM_MANAGEMENT = '/portal/manage-claims';
+export const EVENT_TRANSACTION = 'portal/events-transactions';
+export const EVENT_MANAGEMENT = '/portal/manage-events';
+export const EVENT_CREATION = '/portal/create-new-event';
+export const EVENT_EDIT = '/portal/edit-event';
+export const EVENT_VIEW = '/portal/view-event';

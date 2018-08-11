@@ -6,7 +6,6 @@ import loginReducer from './login';
 import signupReducer from './signup';
 import routerReducer from './router';
 import rolemgmtReducer from './rolemgmt';
-import accmgmtReducer from './accmgmt';
 import membermgmtReducer from './membermgmt';
 import claimmgmtReducer from './claimmgmt';
 import eventTransactionReducer from './event-transaction';
@@ -21,7 +20,7 @@ import eventmgmtReducer from './eventmgmt';
  * else it will replace initial state without checking (ignoring possible new entries)
  */
 const loginPersistConfig = {
-  key: 'login',
+  key: 'login.data',
   storage: localStorage,
   stateReconciler: autoMergeLevel2,
   whitelist: ['isLoggedIn'],
@@ -32,7 +31,6 @@ const rootReducer = combineReducers({
   signup: signupReducer,
   forgotpassword: forgotPasswordReducer,
   rolemgmt: rolemgmtReducer,
-  accmgmt: accmgmtReducer,
   membermgmt: membermgmtReducer,
   claimmgmt: claimmgmtReducer,
   eventTransaction: eventTransactionReducer,

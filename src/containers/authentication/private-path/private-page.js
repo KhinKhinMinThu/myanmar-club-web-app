@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Layout, Anchor } from 'antd';
-import { HeaderText } from './styled-components';
+import { HeaderText } from '../shared-styled';
 import {
   DEFAULT,
   DASHBOARD,
@@ -17,19 +17,20 @@ import {
   EVENT_CREATION,
   EVENT_VIEW,
   EVENT_EDIT,
-} from '../../actions/location';
-import logo from '../../images/logo.jpg';
+} from '../../../actions/location';
+import logo from '../../../images/logo.jpg';
 import MenuPanel from './components';
-import SignupPage2 from '../signup-page2';
+import SignupPage2 from '../../signup-page2';
 import Dashboard from './home-ex';
-import RoleManagementPage from '../role-management';
-import MemberManagementPage from '../member/member-management';
-import ClaimManagementPage from '../claim/claim-management';
-import EventTransactionPage from '../event/event-transaction';
-import EventCreation from '../event/event-creation';
-import EventManagementPage from '../event/event-management';
-import EventEditPage from '../event/event-edit';
-import EventViewPage from '../event/event-view';
+import ErrorPage from '../error-page';
+import RoleManagementPage from '../../role-management';
+import MemberManagementPage from '../../member/member-management';
+import ClaimManagementPage from '../../claim/claim-management';
+import EventTransactionPage from '../../event/event-transaction';
+import EventCreation from '../../event/event-creation';
+import EventManagementPage from '../../event/event-management';
+import EventEditPage from '../../event/event-edit';
+import EventViewPage from '../../event/event-view';
 
 const { Header, Content, Sider } = Layout;
 const logoImage = (
@@ -52,7 +53,7 @@ class PrivatePage extends Component {
           return this.switchAdminPage(pathname);
         }
         // should return to error page
-        return Dashboard;
+        return ErrorPage;
     }
   };
 
@@ -78,7 +79,7 @@ class PrivatePage extends Component {
         return EventEditPage;
       default:
         // should return to error page
-        return Dashboard;
+        return ErrorPage;
     }
   };
 
@@ -88,9 +89,9 @@ class PrivatePage extends Component {
       isAdmin,
     } = this.props;
     const { pathname } = params;
-    const Page = this.switchPage(`/${pathname}`, isAdmin);
+    const Page = this.switchPage(`/portal/${pathname}`, isAdmin);
     console.log('private props:', this.props);
-    console.log('pathname:', pathname);
+    console.log('pathname:', pathname, `/${pathname}`);
 
     return (
       <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
