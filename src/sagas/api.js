@@ -1,5 +1,5 @@
 import axios from 'axios';
-import tokenProvider from 'axios-token-interceptor';
+// import tokenProvider from 'axios-token-interceptor';
 import { select } from 'redux-saga/effects';
 import { BASE_URL } from '../actions/constants';
 
@@ -26,10 +26,10 @@ export function* addTokenToHeader() {
   const { token } = loginState;
   console.log('token: ', token);
   // This will send the "Authorization: Bearer abc" header when making the call to the API endpoint.
-  if (token) {
-    api.interceptors.request.use(tokenProvider({ token }));
-    apiMultiPart.interceptors.request.use(tokenProvider({ token }));
-  }
+  // if (token) {
+  // api.interceptors.request.use(tokenProvider({ token }));
+  //  apiMultiPart.interceptors.request.use(tokenProvider({ token }));
+  // }
 }
 
 // to print the request
