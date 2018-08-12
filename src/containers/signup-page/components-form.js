@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Steps, Icon, Button } from 'antd';
+import { Steps, Icon } from 'antd';
 
 import PageInfo from './page-info';
 import Page1 from './page1';
 import Page2 from './page2';
 import Page3 from './page3';
+import { HalfWidthButton } from './styled-components';
 
 const { Step } = Steps;
 
@@ -108,11 +108,7 @@ export class StepContent extends React.Component {
       );
     }
     // ***********************
-    return (
-      <div style={stepsContentStyles}>
-        {page}
-      </div>
-    );
+    return <div style={stepsContentStyles}>{page}</div>;
   }
 }
 
@@ -126,9 +122,6 @@ StepContent.propTypes = {
   ).isRequired,
 };
 
-const HalfWidthButton = styled(Button)`
-  width: 49%;
-`;
 export const StepAction = (props) => {
   const {
     steps, current, prevClicked, nxtClicked, completedClicked,

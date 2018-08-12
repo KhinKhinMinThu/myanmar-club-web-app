@@ -4,121 +4,41 @@ import 'antd/dist/antd.css';
 import {
   Form, Card, Row, Col,
 } from 'antd';
-import { BtnWithOnClick, blankInput } from '../shared-components/common';
+import { feesTbl } from './components/pageinfo-components';
 import {
-  cardStyles,
-  formItemLayout,
-  membershipTypeRdo,
-  declarationInfo,
-  declarationChk,
-  contactInfo,
-  feesTbl,
-  PaymentTypeRdo,
-} from '../shared-components/member-info-components';
-import {
+  layout,
+  NameOnCardInput,
   CardNumInput,
-  CardSecInput,
-  cardNumInfo,
-  cardExpInfo,
-  cardExpInput,
-} from '../shared-components/creditcard-info-components';
+  CardExpiryPicker,
+  PaymentButton,
+  MembershipTypeRadio,
+  PaymentTypeRadio,
+  CardSecurityCodeInput,
+  DeclarationInfo,
+  DeclarationCheckBox,
+  ContactInfo,
+} from './components/page3-components';
+import { FormCard } from './styled-components';
 
 const FormItem = Form.Item;
 
 class Page3 extends React.Component {
-  membershipTypeRdoOpts = {
-    rules: [
-      {
-        required: true,
-        message: 'Please select your membership type!',
-      },
-    ],
-  };
-
-  cardNameInputOpts = {
-    rules: [
-      {
-        required: true,
-        message: 'Please enter cardholder name!',
-      },
-    ],
-  };
-
-  cardNumInputOpts = {
-    rules: [
-      {
-        pattern: '^([0-9]{16})$',
-        message: 'The input is not a 16-digits card number!',
-      },
-      {
-        required: true,
-        message: 'Please enter card number!',
-      },
-    ],
-  };
-
-  cardExpInputOpts = {
-    rules: [
-      {
-        required: true,
-        message: 'Please enter card expiry month and year!',
-      },
-    ],
-  };
-
-  cardSecInputOpts = {
-    rules: [
-      {
-        pattern: '^([0-9]{3,})$',
-        message: 'The input is not a 16-digits card number!',
-      },
-      {
-        required: true,
-        message: 'Please enter card security code!',
-      },
-    ],
-  };
-
-  declarationChkOpts = {
-    rules: [
-      {
-        type: 'array',
-        required: true,
-        message: 'Please tick both chechboxes!',
-        len: 2,
-      },
-    ],
-  };
-
   static propTypes = {
     form: PropTypes.shape({}).isRequired,
   };
 
   state = { showDirectPayment: true };
 
-  handleCardNumOnBlur = (e) => {
-    // console.log('handleCardNumOnBlur');
-    const value = e.target.value.trim();
-    const { form } = this.props;
-
-    form.setFieldsValue({ cardNumInput: value });
-    form.validateFields(['cardNumInput'], { force: true });
-  };
-
-  handleCardSecOnBlur = (e) => {
-    const value = e.target.value.trim();
-    const { form } = this.props;
-    form.setFieldsValue({ cardSecInput: value });
-    form.validateFields(['cardSecInput'], { force: true });
-  };
-
   handleCreditCardForm = () => {
     /* eslint-disable no-console */
     // console.log('handleCreditCardForm');
     const { form } = this.props;
-    form.validateFields(['cardNameInput', 'cardNumInput', 'cardExpInput', 'cardSecInput'], {
-      force: true,
-    });
+    form.validateFields(
+      ['cardNameInput', 'cardNumInput', 'cardExpInput', 'cardSecInput'],
+      {
+        force: true,
+      },
+    );
   };
 
   toggleDirectPayment = (e) => {
@@ -149,57 +69,34 @@ class Page3 extends React.Component {
     let creditCardForm = null;
     if (showDirectPayment) {
       creditCardForm = (
-        <FormItem {...formItemLayout} label=" " colon={false}>
+        <FormItem {...layout} label=" " colon={false}>
           <Card>
-            <FormItem {...formItemLayout} label="Name on Card">
-              {getFieldDecorator('cardNameInput', this.cardNameInputOpts)(blankInput)}
-            </FormItem>
-
-            <FormItem {...formItemLayout} label="Card Number">
-              {getFieldDecorator('cardNumInput', this.cardNumInputOpts)(
-                <CardNumInput blurred={this.handleCardNumOnBlur} />,
-              )}
-              {cardNumInfo}
-            </FormItem>
-
-            <FormItem {...formItemLayout} label="Expiry Date">
-              {getFieldDecorator('cardExpInput', this.cardExpInputOpts)(cardExpInput)}
-              {cardExpInfo}
-            </FormItem>
-
-            <FormItem {...formItemLayout} label="Security Code">
-              {getFieldDecorator('cardSecInput', this.cardSecInputOpts)(
-                <CardSecInput blurred={this.handleCardSecOnBlur} />,
-              )}
-            </FormItem>
-            <BtnWithOnClick clicked={this.handleCreditCardForm} text="Make Payment Now" />
+            <NameOnCardInput decorator={getFieldDecorator} />
+            <CardNumInput decorator={getFieldDecorator} />
+            <CardExpiryPicker decorator={getFieldDecorator} />
+            <CardSecurityCodeInput decorator={getFieldDecorator} />
+            <PaymentButton onClick={this.handleCreditCardForm} />
           </Card>
         </FormItem>
       );
     }
 
     return (
-      <Card style={cardStyles}>
-        <Form>
+      <Form>
+        <FormCard style={{ textAlign: 'left' }}>
           <Row>
             <Col offset={6} span={12}>
-              <FormItem>
-                {feesTbl}
-              </FormItem>
+              <FormItem>{feesTbl}</FormItem>
             </Col>
           </Row>
-
           {/* Membership Fee */}
-          <FormItem {...formItemLayout} label="Membership Fees">
-            {getFieldDecorator('membershipTypeRdo', this.membershipTypeRdoOpts)(membershipTypeRdo)}
-          </FormItem>
+          <MembershipTypeRadio decorator={getFieldDecorator} />
 
           {/* Payment Method */}
-          <FormItem {...formItemLayout} label="Payment Method">
-            {getFieldDecorator('paymentTypeRdo')(
-              <PaymentTypeRdo changed={this.toggleDirectPayment} />,
-            )}
-          </FormItem>
+          <PaymentTypeRadio
+            decorator={getFieldDecorator}
+            changed={this.toggleDirectPayment}
+          />
 
           {creditCardForm}
 
@@ -218,16 +115,14 @@ class Page3 extends React.Component {
             colon={false}
           >
             {/* Declaration */}
-            {declarationInfo}
-            <FormItem>
-              {getFieldDecorator('declarationChk', this.declarationChkOpts)(declarationChk)}
-            </FormItem>
+            <DeclarationInfo decorator={getFieldDecorator} />
+            <DeclarationCheckBox decorator={getFieldDecorator} />
 
             {/* Contact Info */}
-            {contactInfo}
+            <ContactInfo decorator={getFieldDecorator} />
           </FormItem>
-        </Form>
-      </Card>
+        </FormCard>
+      </Form>
     );
   }
 }
