@@ -8,6 +8,7 @@ import {
   LOGIN,
   SIGNUP,
   FORGOTPASSWORD,
+  EVENT_REGISTER,
   // RESETPASSWORD,
   // PUBLIC_EVENT_VIEW,
 } from '../../../actions/location';
@@ -16,8 +17,9 @@ import MenuPanel from './components';
 import MainPage from './main-page';
 import ErrorPage from '../error-page';
 import LoginPage from '../../user-account/login';
-import SignupPage2 from '../../signup-page2';
+import SignupPage from '../../signup-page';
 import ForgotPasswordPage from '../../forgotpwd-page';
+import EventRegisterPage from '../../event/event-registration';
 
 const { Header, Content, Sider } = Layout;
 const logoImage = (
@@ -34,10 +36,11 @@ class PrivatePage extends Component {
       case LOGIN:
         return LoginPage;
       case SIGNUP:
-        return SignupPage2;
+        return SignupPage;
       case FORGOTPASSWORD:
         return ForgotPasswordPage;
-
+      case EVENT_REGISTER:
+        return EventRegisterPage;
       default:
         // should return to error page
         return ErrorPage;

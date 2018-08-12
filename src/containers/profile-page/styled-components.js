@@ -11,8 +11,8 @@ export const PageCard = styled(Card)`
 `;
 
 export const FormCard = styled(Card)`
-  width: 1000px;
-  min-width: 1000px;
+  width: 1100px;
+  min-width: 1100px;
   border-radius: 10px;
   top: 5%;
   margin-bottom: 8px;

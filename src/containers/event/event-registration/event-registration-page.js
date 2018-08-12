@@ -163,17 +163,12 @@ const mapPropsToFields = ({
     contactPerson: Form.createFormField({ value: eventData.contactPerson }),
     emailAddress: Form.createFormField({ value: eventData.emailAddress }),
     mobilePhone: Form.createFormField({ value: eventData.mobilePhone }),
-    eventStatus: Form.createFormField({
-      value: eventData.eventStatus === '1' ? 'Open' : 'Closed',
-    }),
     startDate: Form.createFormField({
       value: formatDate(eventData.startDate),
     }),
     endDate: Form.createFormField({
       value: formatDate(eventData.endDate),
     }),
-    createdBy: Form.createFormField({ value: eventData.createdBy }),
-    createdDate: Form.createFormField({ value: eventData.createdDate }),
   };
 };
 

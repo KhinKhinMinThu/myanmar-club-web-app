@@ -95,9 +95,6 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Postal Code">
       {decorator('locationPostalCode')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Status">
-      {decorator('eventStatus')(<Input {...readOnlyInput} />)}
-    </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Ticket Fee (SGD)">
       {decorator('ticketFee')(<Input {...readOnlyInput} />)}
     </FormItem>
@@ -119,12 +116,6 @@ export const EventData = ({ decorator }) => (
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
-    </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created By">
-      {decorator('createdBy')(<Input {...readOnlyInput} />)}
-    </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created Date">
-      {decorator('createdDate')(<Input {...readOnlyInput} />)}
     </FormItem>
   </Form>
 );

@@ -37,7 +37,7 @@ const layout = {
 export const AddressInput = ({ decorator }) => (
   <FormItem {...layout} label="Address" colon required>
     <Row gutter={8} type="flex" justify="start">
-      <Col span="10">
+      <Col span="12">
         <FormItem>
           {decorator('locationLine1', {
             rules: [
