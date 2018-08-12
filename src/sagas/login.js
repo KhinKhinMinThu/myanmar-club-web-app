@@ -45,7 +45,7 @@ function* asyncLogin(action) {
       yield put({ type: ISADMIN, payload: isAdmin });
       yield put({ type: TOKEN, payload: token });
 
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       localStorage.setItem('loginState', JSON.stringify(response.data));
     }
   } catch (e) {

@@ -140,7 +140,7 @@ class EventCreation extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
@@ -153,12 +153,12 @@ class EventCreation extends Component {
               removeFile={this.removeFile}
             />
           </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />

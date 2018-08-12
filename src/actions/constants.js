@@ -41,5 +41,5 @@ export const APIPOST_ADD_EVENT = '/event/createEvent';
 export const APIPOST_ADD_EVENTPHOTO = '/event/eventPhoto';
 export const APIPOST_NOTIFY_EVENT = '/event/sendEventNotification';
 
-export const APIPOST_FORGOTPWD = '/forgotPassword';
+export const APIPOST_FORGOTPWD = '/admin/forgotPassword';
 // end
