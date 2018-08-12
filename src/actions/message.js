@@ -7,4 +7,7 @@ export const SUCCESS_DELETEEVENT = 'Deleted Selected Event(s)';
 export const SUCCESS_DELETERSVP = 'Deleted Selected Registration(s)';
 export const SUCCESS_NEWEVENT = 'New Event has been created!';
 export const SUCCESS_UPDATEEVENT = 'Event has been updated!';
+export const SUCCESS_DELETEMEMBER = 'Delted Selected Member(s)';
+export const SUCCESS_NOTIFYEVENT = 'Event Notification has been sent to the members';
+
 export const CONFIRM_DELETEEVENT = 'Please confirm to delete this event!';

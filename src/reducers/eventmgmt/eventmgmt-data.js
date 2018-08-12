@@ -11,6 +11,7 @@ export const POST_DELETEEVENT = '[EVENTMGMT_DATA] POST_DELETEEVENT';
 export const POST_DELETERSVP = '[EVENTMGMT_DATA] POST_DELETERSVP';
 export const POST_NEWEVENT = '[EVENTMGMT_DATA] POST_NEWEVENT';
 export const POST_UPDATEEVENT = '[EVENTMGMT_DATA] POST_UPDATEEVENT';
+export const POST_NOTIFYEVENT = '[EVENTMGMT_DATA] POST_NOTIFYEVENT';
 export const POST_ERROR = '[EVENTMGMT_DATA] POST_ERROR';
 // end
 
@@ -34,6 +35,10 @@ export const postNewEvent = newEventToAdd => ({
 export const postUpdateEvent = eventToUpdate => ({
   type: POST_UPDATEEVENT,
   eventToUpdate,
+});
+export const postNotifyEvent = notification => ({
+  type: POST_NOTIFYEVENT,
+  notification,
 });
 
 export default function (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Button,
   Form,
@@ -13,12 +13,7 @@ import {
   Col,
   Icon,
 } from 'antd';
-import {
-  SelectedText,
-  MarginLeftButton,
-  SearchInput,
-  FullButton,
-} from './shared-styled';
+import { SelectedText, MarginLeftButton, FullButton } from './shared-styled';
 import { DATE_FORMAT, TIME_FORMAT } from '../../actions/constants';
 
 const FormItem = Form.Item;
@@ -26,6 +21,39 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Option } = Select;
 const { TextArea } = Input;
+
+// Responsive layout for event forms
+export const layout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 8 },
+    xl: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 16 },
+    xl: { span: 16 },
+  },
+};
+
+const inputLayout1 = {
+  xs: { span: 8 },
+  sm: { span: 8 },
+  md: { span: 8 },
+  lg: { span: 10 },
+  xl: { span: 10 },
+};
+const inputLayout2 = {
+  xs: { span: 16 },
+  sm: { span: 16 },
+  md: { span: 16 },
+  lg: { span: 12 },
+  xl: { span: 12 },
+};
 
 /* eslint react/prop-types: 0 */
 // SearchNamePanel
@@ -37,19 +65,23 @@ export const SearchNamePanel = ({
   placeHolder,
 }) => (
   <FormItem style={{ marginBottom: 3 }}>
-    {decorator('searchName', { initialValue: null })(
-      <SearchInput
-        placeholder={placeHolder}
-        onChange={onChange}
-        onPressEnter={onSearch}
-      />,
-    )}
-    <MarginLeftButton type="primary" onClick={onSearch}>
-      Search
-    </MarginLeftButton>
-    <MarginLeftButton type="primary" onClick={onClickReset} ghost>
-      Clear Search
-    </MarginLeftButton>
+    <Col span={4}>
+      {decorator('searchName', { initialValue: null })(
+        <Input
+          placeholder={placeHolder}
+          onChange={onChange}
+          onPressEnter={onSearch}
+        />,
+      )}
+    </Col>
+    <Col span={20}>
+      <MarginLeftButton type="primary" onClick={onSearch}>
+        Search
+      </MarginLeftButton>
+      <MarginLeftButton type="primary" onClick={onClickReset} ghost>
+        Clear Search
+      </MarginLeftButton>
+    </Col>
   </FormItem>
 );
 
@@ -97,38 +129,6 @@ export const DeleteSeletedButton = ({
   </MarginLeftButton>
 );
 
-// Responsive layout for event forms
-export const layout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-    md: { span: 24 },
-    lg: { span: 8 },
-    xl: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-    md: { span: 24 },
-    lg: { span: 16 },
-    xl: { span: 16 },
-  },
-};
-
-const inputLayout1 = {
-  xs: { span: 8 },
-  sm: { span: 8 },
-  md: { span: 8 },
-  lg: { span: 10 },
-  xl: { span: 10 },
-};
-const inputLayout2 = {
-  xs: { span: 16 },
-  sm: { span: 16 },
-  md: { span: 16 },
-  lg: { span: 12 },
-  xl: { span: 12 },
-};
 // BackButton
 export const BackButton = () => <FullButton>Go Back</FullButton>;
 
@@ -367,7 +367,7 @@ export const MobileNoInput = ({ decorator }) => {
   );
 };
 
-export class EventPhoto extends React.Component {
+export class EventPhoto extends Component {
   state = {
     isModalVisible: false,
   };
@@ -387,7 +387,7 @@ export class EventPhoto extends React.Component {
   };
 
   render() {
-    const { decorator } = this.props;
+    const { decorator, beforeUpload, removeFile } = this.props;
     const { isModalVisible, photoLink } = this.state;
     this.newFile = [];
     return (
@@ -396,16 +396,21 @@ export class EventPhoto extends React.Component {
         {decorator('uploadBtn', {
           valuePropName: 'fileList',
           initialValue: [],
-          getValueFromEvent: ({ fileList }) => {
+          getValueFromEvent: (e) => {
+            const { fileList } = e;
             this.newFile = fileList.length > 1 ? fileList.slice(1) : fileList;
             return this.newFile;
           },
         })(
           <Upload
             name="eventpic"
-            action=""
             listType="picture-card"
             onPreview={this.showModal}
+            onRemove={file => removeFile(file)}
+            beforeUpload={file => beforeUpload(file)}
+            // Hook function which will be executed before uploading.
+            // Uploading will be stopped with false or a rejected Promise returned.
+            // Warning：this function is not supported in IE9。
           >
             {this.newFile.length >= 2 ? null : (
               <div>

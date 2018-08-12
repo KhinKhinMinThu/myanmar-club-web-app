@@ -74,6 +74,9 @@ export const EventData = ({ decorator }) => (
       )}
     </FormItem>
 
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Id">
+      {decorator('id')(<Input {...readOnlyInput} />)}
+    </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Name">
       {decorator('name')(<Input {...readOnlyInput} />)}
     </FormItem>
@@ -101,7 +104,11 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="No of Pax">
       {decorator('noOfPax')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Refreshment Provided">
+    <FormItem
+      {...layout}
+      style={{ marginBottom: 0 }}
+      label="Refreshment Provided"
+    >
       {decorator('isRefreshmentProvided')(<Input {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Contact Person">
@@ -132,8 +139,15 @@ export const ShareFacebookButton = () => (
   <Button icon="facebook" shape="circle" type="primary" ghost />
 );
 
-export const NotifyMsgButton = () => (
-  <Button icon="message" shape="circle" type="primary" ghost />
+export const NotifyMsgButton = ({ onClickNotify, loading }) => (
+  <Button
+    icon="message"
+    shape="circle"
+    type="primary"
+    ghost
+    onClick={onClickNotify}
+    loading={loading}
+  />
 );
 
 export const RegistrationTable = ({

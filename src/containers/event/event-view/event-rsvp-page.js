@@ -148,7 +148,6 @@ class EventRSVPPage extends Component {
               onChange={(e) => {
                 this.searchNameValue = e.target.value;
               }}
-              onPressEnter={this.onSearchName}
               decorator={getFieldDecorator}
               onSearch={() => dispatchFilteredInfo(
                 this.searchNameValue

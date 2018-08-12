@@ -1,13 +1,13 @@
 // GET API call
 export const GET_CLAIMSDATA = '[CLAIMMGMT_DATA] GET_CLAIMSDATA';
-export const APILOADING = '[CLAIMMGMT_UI] APILOADING';
+export const GET_APILOADING = '[CLAIMMGMT_DATA] APILOADING';
 export const NEWCLAIMSDATA = '[CLAIMMGMT_DATA] NEWCLAIMSDATA';
 export const OLDCLAIMSDATA = '[CLAIMMGMT_DATA] OLDCLAIMSDATA';
 export const GET_ERROR = '[CLAIMMGMT_DATA] GET_ERROR';
 // end
 
 // POST to API
-export const POST_APILOADING = '[CLAIMMGMT_UI] POST_APILOADING';
+export const POST_APILOADING = '[CLAIMMGMT_DATA] POST_APILOADING';
 export const POST_APPROVECLAIMS = '[CLAIMMGMT_DATA] POST_APPROVECLAIMS';
 export const POST_UNAPPROVECLAIMS = '[CLAIMMGMT_DATA] POST_UNAPPROVECLAIMS';
 export const POST_ERROR = '[CLAIMMGMT_DATA] POST_ERROR';
@@ -33,23 +33,20 @@ export const postUnApproveClaims = claimsToUnapprove => ({
 
 export default function (
   state = {
-    isApiLoading: false,
+    isGetApiLoading: false,
     getErrMsg: null,
     isPostApiLoading: false,
     postErrMsg: null,
     newClaimsList: null,
     oldClaimsList: null,
-
-    // claimsToApprove: [],
-    // claimsToUnApprove: [],
   },
   action,
 ) {
   switch (action.type) {
-    case APILOADING:
+    case GET_APILOADING:
       return {
         ...state,
-        isApiLoading: action.payload,
+        isGetApiLoading: action.payload,
       };
     case NEWCLAIMSDATA:
       return {

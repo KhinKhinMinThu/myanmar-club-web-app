@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {
-  Form, Row, Col, Popconfirm, Button,
+  Form, Row, Col, Popconfirm, Button, Input,
 } from 'antd';
 import {
   TableActionButton,
   BoldText,
   BoldUnderlineText,
   FullWidthTable,
-  TableInput,
   HightlightedText,
 } from '../shared-styled';
 
@@ -38,7 +37,7 @@ class EditableCell extends Component {
     };
     return (
       <FormItem style={{ marginBottom: 3 }}>
-        {decorator(dataIndex, options)(<TableInput />)}
+        {decorator(dataIndex, options)(<Input />)}
       </FormItem>
     );
   };
@@ -97,10 +96,11 @@ export const EventsTable = ({
 }) => {
   const columns = [
     {
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id',
-      width: '3%',
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      width: '4%',
+      render: (text, record, index) => <span>{`${index + 1}`}</span>,
     },
     {
       title: 'Event Name',
@@ -151,7 +151,7 @@ export const EventsTable = ({
       sorter: (a, b) => a.eventStatus.length - b.eventStatus.length,
       sortOrder: sortedInfo.columnKey === 'eventStatus' && sortedInfo.order,
       render: text => (text === '1' ? 'Open' : 'Closed'),
-      width: '11%',
+      width: '10%',
     },
     {
       title: 'Created By',
@@ -242,7 +242,7 @@ export const AddRowButton = ({ type, action }) => (
     onClick={() => action(type)}
     style={{ float: 'right' }}
   >
-    Add a new record
+    {type === 'income' ? 'Add New Income' : 'Add New Expenditure'}
   </Button>
 );
 
@@ -373,7 +373,7 @@ const TransactionTable = ({
   const totalBalanceText = (
     <HightlightedText>
       <br />
-      {'Total Balance: SGD '}
+      {'Nett Amount: SGD '}
       {totalBalance(preparedList).toFixed(2)}
     </HightlightedText>
   );

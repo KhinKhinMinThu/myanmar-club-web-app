@@ -15,6 +15,9 @@ import {
   TIME_FORMAT,
   DATETIME_FORMAT_DB,
   DATETIME_FORMAT,
+  DEFAULT_DATE,
+  DEFAULT_TIME,
+  DEFAULT_DATETIME,
 } from '../../../actions/constants';
 import {
   EventNameInput,
@@ -47,6 +50,10 @@ import {
 const { confirm } = Modal;
 
 class EventEdit extends Component {
+  state = {
+    fileList: [],
+  };
+
   componentDidMount() {
     const { performGetEventsData } = this.props;
     performGetEventsData();
@@ -84,6 +91,8 @@ class EventEdit extends Component {
       performUpdateEvent,
       performDeleteEvent,
     } = this.props;
+
+    const { fileList } = this.state;
 
     // if user selects to delete event, it will be deleted without
     // updating the rest of the data even if the user changed anything else.
@@ -124,16 +133,31 @@ class EventEdit extends Component {
             endDate,
             mobilePhone,
             eventStatus: formValues.eventStatus ? '1' : '0',
+            uploadBtn: fileList,
           });
         }
       });
     }
   };
 
+  beforeUpload = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [file] });
+    }
+  };
+
+  removeFile = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [] });
+    }
+  };
+
   // convert string date to Date object and combine date and time.
   formatDateTime = (strDate, strTime) => {
     // to set the default date and time for end date/time
-    const defaultDT = new Date('01-01-1900 00:00');
+    const defaultDT = new Date(DEFAULT_DATETIME);
     const date = strDate ? new Date(strDate) : defaultDT;
     const time = strTime ? new Date(strTime) : defaultDT;
 
@@ -162,6 +186,7 @@ class EventEdit extends Component {
       xl: { span: 12 },
       style: { marginBottom: 14 },
     };
+
     return (
       <Spin spinning={isPostApiLoading} size="large">
         <div className="pageHeaderContainer">
@@ -169,26 +194,30 @@ class EventEdit extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
             <EndDateTimePicker decorator={getFieldDecorator} />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
-            <EventPhoto decorator={getFieldDecorator} />
+            <EventPhoto
+              decorator={getFieldDecorator}
+              beforeUpload={this.beforeUpload}
+              removeFile={this.removeFile}
+            />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <EventStatusSwitch decorator={getFieldDecorator} />
             <DeleteEventSwitch decorator={getFieldDecorator} />
             <br />
@@ -231,7 +260,7 @@ const mapDispatchToProps = {
 // convert string date to moment object for date/time picker
 const formatDate = (strDate) => {
   if (strDate) {
-    return moment(new Date(strDate)).format(DATE_FORMAT) === '01-01-1900'
+    return moment(new Date(strDate)).format(DATE_FORMAT) === DEFAULT_DATE
       ? null
       : moment(strDate, DATETIME_FORMAT);
   }
@@ -240,7 +269,7 @@ const formatDate = (strDate) => {
 
 const formatTime = (strTime) => {
   if (strTime) {
-    return moment(new Date(strTime)).format(TIME_FORMAT) === '00:00'
+    return moment(new Date(strTime)).format(TIME_FORMAT) === DEFAULT_TIME
       ? null
       : moment(strTime, DATETIME_FORMAT);
   }

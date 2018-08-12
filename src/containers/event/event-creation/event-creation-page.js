@@ -6,7 +6,7 @@ import {
   Form, message, Row, Col, Spin,
 } from 'antd';
 import { SUCCESS_NEWEVENT, SHOWFOR } from '../../../actions/message';
-import { DATETIME_FORMAT_DB } from '../../../actions/constants';
+import { DATETIME_FORMAT_DB, DEFAULT_DATETIME } from '../../../actions/constants';
 import {
   EventNameInput,
   EventDescriptionInput,
@@ -28,6 +28,10 @@ import { EventCard } from '../shared-styled';
 import { postNewEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventCreation extends Component {
+  state = {
+    fileList: [],
+  };
+
   componentDidUpdate(prevProps) {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
@@ -49,6 +53,8 @@ class EventCreation extends Component {
       form: { validateFieldsAndScroll },
       performNewEvent,
     } = this.props;
+    const { fileList } = this.state;
+
     validateFieldsAndScroll((error, values) => {
       if (!error) {
         const formValues = values;
@@ -74,15 +80,30 @@ class EventCreation extends Component {
           endDate,
           mobilePhone,
           eventStatus: '1',
+          uploadBtn: fileList,
         });
       }
     });
   };
 
+  beforeUpload = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [file] });
+    }
+  };
+
+  removeFile = (file) => {
+    // one file only
+    if (file) {
+      this.setState({ fileList: [] });
+    }
+  };
+
   // convert string date to Date object and combine date and time.
   formatDateTime = (strDate, strTime) => {
     // to set the default date and time for end date/time
-    const defaultDT = new Date('01-01-1900 00:00');
+    const defaultDT = new Date(DEFAULT_DATETIME);
     const date = strDate ? new Date(strDate) : defaultDT;
     const time = strTime ? new Date(strTime) : defaultDT;
 
@@ -119,21 +140,25 @@ class EventCreation extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
             <EndDateTimePicker decorator={getFieldDecorator} />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
-            <EventPhoto decorator={getFieldDecorator} />
+            <EventPhoto
+              decorator={getFieldDecorator}
+              beforeUpload={this.beforeUpload}
+              removeFile={this.removeFile}
+            />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />

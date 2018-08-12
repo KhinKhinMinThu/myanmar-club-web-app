@@ -5,11 +5,7 @@ import {
   EVENT_VIEW,
   EVENT_EDIT,
 } from '../../../actions/location';
-import {
-  FullWidthTable,
-  TableActionIcon,
-  TableActionLink,
-} from '../shared-styled';
+import { FullWidthTable, TableActionButton } from '../shared-styled';
 
 /* eslint react/prop-types: 0 */
 // EventsTable
@@ -22,10 +18,11 @@ export const EventsTable = ({
 }) => {
   const columns = [
     {
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id',
-      width: '3%',
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      width: '4%',
+      render: (text, record, index) => <span>{`${index + 1}`}</span>,
     },
     {
       title: 'Event Name',
@@ -76,7 +73,7 @@ export const EventsTable = ({
       sorter: (a, b) => a.eventStatus.length - b.eventStatus.length,
       sortOrder: sortedInfo.columnKey === 'eventStatus' && sortedInfo.order,
       render: text => (text === '1' ? 'Open' : 'Closed'),
-      width: '11%',
+      width: '10%',
     },
     {
       title: 'Action',
@@ -84,14 +81,16 @@ export const EventsTable = ({
       width: '10%',
       // render: (text, record) => ()
       render: record => (
-        <span>
-          <TableActionLink to={EVENT_VIEW.concat('/').concat(record.id)}>
-            <TableActionIcon type="folder-open" />
-          </TableActionLink>
-          <TableActionLink to={EVENT_EDIT.concat('/').concat(record.id)}>
-            <TableActionIcon type="edit" />
-          </TableActionLink>
-        </span>
+        <div>
+          <TableActionButton
+            href={EVENT_VIEW.concat('/').concat(record.id)}
+            icon="folder-open"
+          />
+          <TableActionButton
+            href={EVENT_EDIT.concat('/').concat(record.id)}
+            icon="edit"
+          />
+        </div>
       ),
     },
   ];

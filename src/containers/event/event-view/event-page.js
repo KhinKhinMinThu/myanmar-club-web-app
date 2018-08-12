@@ -2,9 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { Form, Row, Col } from 'antd';
-import { TIME_FORMAT_DB, DATE_FORMAT } from '../../../actions/constants';
+import {
+  Form, Row, Col, message,
+} from 'antd';
 
+import { SUCCESS_NOTIFYEVENT, SHOWFOR } from '../../../actions/message';
+import {
+  TIME_FORMAT_DB,
+  DATE_FORMAT,
+  DEFAULT_DATE,
+  DEFAULT_TIME,
+  BASE_URL,
+} from '../../../actions/constants';
+import { PUBLIC_EVENT_VIEW } from '../../../actions/location';
 import {
   EventData,
   EditEventButton,
@@ -13,11 +23,38 @@ import {
 } from './components';
 import { EventCard } from '../shared-styled';
 import { BackButton } from '../shared-components';
+import { postNotifyEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventPage extends Component {
+  componentDidUpdate(prevProps) {
+    const {
+      eventmgmtData: { isPostApiLoading, postErrMsg },
+    } = this.props;
+
+    const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (postErrMsg) {
+      message.error(postErrMsg, SHOWFOR);
+    } else {
+      message.success(SUCCESS_NOTIFYEVENT, SHOWFOR);
+    }
+  }
+
+  onClickNotify = () => {
+    const {
+      form: { getFieldValue },
+      performNotifyEvent,
+    } = this.props;
+    const id = getFieldValue('id');
+    const url = BASE_URL.concat(PUBLIC_EVENT_VIEW, '/', id);
+    performNotifyEvent({ id, url });
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
+      eventmgmtData: { isPostApiLoading },
     } = this.props;
     const shareColLayout = {
       xs: { span: 24, offset: 0 },
@@ -38,7 +75,7 @@ class EventPage extends Component {
 
     return (
       <div>
-        <EventCard>
+        <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
           <EventData decorator={getFieldDecorator} />
           <br />
           <Row gutter={8}>
@@ -52,7 +89,11 @@ class EventPage extends Component {
               <ShareFacebookButton /> Share on facebook
             </Col>
             <Col {...shareColLayout}>
-              <NotifyMsgButton /> Notify Club Members
+              <NotifyMsgButton
+                onClickNotify={this.onClickNotify}
+                loading={isPostApiLoading}
+              />{' '}
+              Notify Club Members
             </Col>
           </Row>
           <Row gutter={8}>
@@ -71,6 +112,8 @@ class EventPage extends Component {
 
 EventPage.propTypes = {
   form: PropTypes.shape({}).isRequired,
+  performNotifyEvent: PropTypes.func.isRequired,
+  eventmgmtData: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -79,12 +122,12 @@ const mapStateToProps = state => ({
 
 const formatDate = (strDate) => {
   if (strDate) {
-    const date = moment(new Date(strDate)).format(DATE_FORMAT) === '01-01-1900'
+    const date = moment(new Date(strDate)).format(DATE_FORMAT) === DEFAULT_DATE
       ? '/'
       : moment(new Date(strDate))
         .format(DATE_FORMAT)
         .toString();
-    const time = moment(new Date(strDate)).format(TIME_FORMAT_DB) === '00:00:00'
+    const time = moment(new Date(strDate)).format(TIME_FORMAT_DB) === DEFAULT_TIME
       ? '/'
       : moment(new Date(strDate))
         .format(TIME_FORMAT_DB)
@@ -103,6 +146,7 @@ const mapPropsToFields = ({
 
   return {
     photoLink: Form.createFormField({ value: eventData.photoLink }),
+    id: Form.createFormField({ value: eventData.id }),
     name: Form.createFormField({ value: eventData.name }),
     description: Form.createFormField({ value: eventData.description }),
     location: Form.createFormField({
@@ -133,6 +177,13 @@ const mapPropsToFields = ({
   };
 };
 
+const mapDispatchToProps = {
+  performNotifyEvent: postNotifyEvent,
+};
+
 const FormEventPagePage = Form.create({ mapPropsToFields })(EventPage);
 
-export default connect(mapStateToProps)(FormEventPagePage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FormEventPagePage);

@@ -1,8 +1,8 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import api from './api';
+import { api } from './api';
 import {
   GET_CLAIMSDATA,
-  APILOADING,
+  GET_APILOADING,
   NEWCLAIMSDATA,
   OLDCLAIMSDATA,
   GET_ERROR,
@@ -11,13 +11,19 @@ import {
   POST_UNAPPROVECLAIMS,
   POST_ERROR,
 } from '../reducers/claimmgmt/claimmgmt-data';
+import {
+  APIGET_CLAIMSDATA,
+  APIPOST_APPROVE_CLAIMS,
+  APIPOST_UNAPPROVE_CLAIMS,
+} from '../actions/constants';
 
-const getClaimsData = () => api.get('/claim/getClaimsData');
+// GET REQUEST
+const getClaimsData = () => api.get(APIGET_CLAIMSDATA);
 
 function* asyncGetClaimsData() {
   let errMsg;
   try {
-    yield put({ type: APILOADING, payload: true });
+    yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getClaimsData);
     const { claimsData, errorMsg } = response.data;
     errMsg = errorMsg;
@@ -30,13 +36,15 @@ function* asyncGetClaimsData() {
     errMsg = e.message;
   } finally {
     yield put({ type: GET_ERROR, payload: errMsg });
-    yield put({ type: APILOADING, payload: false });
+    yield put({ type: GET_APILOADING, payload: false });
   }
 }
+// end
 
-const postApproveClaims = claimsToApprove => api.post('/claim/approveClaims', { claimsToApprove });
+// POST REQUEST
+const postApproveClaims = claimsToApprove => api.post(APIPOST_APPROVE_CLAIMS, claimsToApprove);
 
-const postUnapproveClaims = claimsToUnapprove => api.post('/claim/unapproveClaims', { claimsToUnapprove });
+const postUnapproveClaims = claimsToUnapprove => api.post(APIPOST_UNAPPROVE_CLAIMS, claimsToUnapprove);
 
 function* asyncPostProcessClaims(action) {
   let errMsg;
@@ -62,6 +70,7 @@ function* asyncPostProcessClaims(action) {
     yield put({ type: POST_APILOADING, payload: false });
   }
 }
+// end
 
 export const getClaimsDataSaga = takeLatest(GET_CLAIMSDATA, asyncGetClaimsData);
 export const postApproveClaimsSaga = takeLatest(
