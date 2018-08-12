@@ -1,6 +1,7 @@
+import axios from 'axios';
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { api, addTokenToHeader } from './api';
+import { api } from './api';
 import {
   POST_LOGIN,
   ISLOGGEDIN,
@@ -33,7 +34,8 @@ function* asyncLogin(action) {
       yield put({ type: ISLOGGEDIN, payload: isLoggedIn });
       yield put({ type: ISADMIN, payload: isAdmin });
       yield put({ type: TOKEN, payload: token });
-      yield call(addTokenToHeader);
+
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       localStorage.setItem('loginState', JSON.stringify(response.data));
     }
     errMsg = errorMsg;

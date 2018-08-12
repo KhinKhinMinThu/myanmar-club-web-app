@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { Icon, Table, Button } from 'antd';
+import {
+  Icon, Table, Button, Card,
+} from 'antd';
 
 // Tables
 export const FullWidthTable = styled(Table)`
@@ -43,12 +45,40 @@ export const TabIcon = styled(Icon)`
 // end
 
 // Text
+export const MMText = styled.span`
+  font-family: Myanmar3;
+  text-align: justify;
+`;
+
 export const BoldText = styled.span`
   font-weight: bold;
+`;
+
+export const BoldUnderlineText = styled.span`
+  font-weight: bold;
+  text-decoration: underline;
 `;
 
 export const BottomUnder = styled.div`
   width: 100%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+`;
+
+export const ExtraInfoText = styled.span`
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+  margin-left: 8;
+`;
+// end
+
+// Card
+export const ProfileCard = styled(Card)`
+  width: 900px;
+`;
+// end
+
+// Button
+export const FullButton = styled(Button)`
+  width: 100%;
 `;
 // end

@@ -2,7 +2,9 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 import { api } from './api';
 import {
   GET_MEMBERSDATA,
+  GET_MEMBERDATA,
   GET_APILOADING,
+  MEMBERDATA,
   ECMEMBERSDATA,
   CLUBMEMBERSDATA,
   GET_ERROR,
@@ -12,11 +14,30 @@ import {
 } from '../reducers/membermgmt/membermgmt-data';
 import {
   APIGET_MEMBERSDATA,
+  APIGET_MEMBERDATA,
   APIPOST_DELETE_MEMBERS,
 } from '../actions/constants';
 
 // GET REQUEST
 const getMembersData = () => api.get(APIGET_MEMBERSDATA);
+// POST TO GET DATA -.-
+const getMemberData = id => api.post(APIGET_MEMBERDATA, id);
+function* asyncGetMemberData(action) {
+  let errMsg;
+  try {
+    yield put({ type: GET_APILOADING, payload: true });
+    const response = yield call(getMemberData, action.id);
+    const { memberData, errorMsg } = response.data;
+    errMsg = errorMsg;
+
+    yield put({ type: MEMBERDATA, payload: memberData });
+  } catch (e) {
+    errMsg = e.message;
+  } finally {
+    yield put({ type: GET_ERROR, payload: errMsg });
+    yield put({ type: GET_APILOADING, payload: false });
+  }
+}
 
 function* asyncGetMembersData() {
   let errMsg;
@@ -67,6 +88,8 @@ export const getMembersDataSaga = takeLatest(
   GET_MEMBERSDATA,
   asyncGetMembersData,
 );
+
+export const getMemberDataSaga = takeLatest(GET_MEMBERDATA, asyncGetMemberData);
 
 export const postDeleteMembersSaga = takeLatest(
   POST_DELETEMEMBERS,

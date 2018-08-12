@@ -1,5 +1,6 @@
-export const BASE_URL = 'http://demo0532724.mockable.io';
+// export const BASE_URL = 'http://demo0532724.mockable.io';
 // 'http://54.200.158.0/MyanmarClubAPI';
+export const BASE_URL = 'http://54.200.158.0/MyanmarClubAPI';
 
 export const DATETIME_FORMAT = 'DD-MM-YYYY HH:mm';
 export const DATE_FORMAT = 'DD-MM-YYYY';
@@ -24,6 +25,7 @@ export const APIPOST_LOGIN = '/admin/login';
 
 export const APIPOST_UPDATE_ROLE = '/updateRole';
 
+export const APIGET_MEMBERDATA = '/admin/getMemberData';
 export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';
 
 export const APIPOST_APPROVE_CLAIMS = '/claim/approveClaims';
