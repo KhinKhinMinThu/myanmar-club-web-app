@@ -10,7 +10,7 @@ import {
   LOGOUT,
   ROLE_MANAGEMENT,
   MEMBER_MANAGEMENT,
-  // EDIT_MEMBER,
+  MEMBER_EDIT,
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
@@ -26,6 +26,7 @@ import Dashboard from './home-ex';
 import ErrorPage from '../error-page';
 import RoleManagementPage from '../../role-management';
 import MemberManagementPage from '../../member/member-management';
+import MemberProfileEditPage from '../../member/member-profile-edit';
 import ClaimManagementPage from '../../claim/claim-management';
 import EventTransactionPage from '../../event/event-transaction';
 import EventCreation from '../../event/event-creation';
@@ -64,8 +65,8 @@ class PrivatePage extends Component {
         return RoleManagementPage;
       case MEMBER_MANAGEMENT:
         return MemberManagementPage;
-      // case EDIT_MEMBER:
-      //   return MemberManagementPage;
+      case MEMBER_EDIT:
+        return MemberProfileEditPage;
       case CLAIM_MANAGEMENT:
         return ClaimManagementPage;
       case EVENT_TRANSACTION:

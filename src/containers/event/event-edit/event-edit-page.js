@@ -43,7 +43,7 @@ import {
 } from './components';
 import { EventCard } from '../shared-styled';
 import {
-  getEventsData,
+  getEventData,
   postDeleteEvent,
   postUpdateEvent,
 } from '../../../reducers/eventmgmt/eventmgmt-data';
@@ -55,9 +55,14 @@ class EventEdit extends Component {
     fileList: [],
   };
 
-  componentDidMount() {
-    const { performGetEventsData } = this.props;
-    performGetEventsData();
+  componentWillMount() {
+    const {
+      computedMatch: {
+        params: { id },
+      },
+      performGetEventData,
+    } = this.props;
+    performGetEventData({ id });
   }
 
   componentWillUpdate(nextProps) {
@@ -200,7 +205,7 @@ class EventEdit extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
@@ -213,17 +218,17 @@ class EventEdit extends Component {
               removeFile={this.removeFile}
             />
           </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />
           </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventStatusSwitch decorator={getFieldDecorator} />
             <DeleteEventSwitch decorator={getFieldDecorator} />
             <br />
@@ -246,7 +251,7 @@ EventEdit.propTypes = {
   computedMatch: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
 
-  performGetEventsData: PropTypes.func.isRequired,
+  performGetEventData: PropTypes.func.isRequired,
   performUpdateEvent: PropTypes.func.isRequired,
   performDeleteEvent: PropTypes.func.isRequired,
 
@@ -259,7 +264,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  performGetEventsData: getEventsData,
+  performGetEventData: getEventData,
   performUpdateEvent: postUpdateEvent,
   performDeleteEvent: postDeleteEvent,
 };
@@ -283,57 +288,50 @@ const formatTime = (strTime) => {
   return null;
 };
 
-const mapPropsToFields = ({
-  computedMatch: { params },
-  eventmgmtData: { eventsData },
-}) => {
-  const { id } = params;
-  const eventData = eventsData ? eventsData.find(item => item.id === id) : {};
-
+const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
+  const event = eventData || {};
   return {
     uploadBtn: Form.createFormField({
-      value: eventData.photoLink
-        ? [{ uid: eventData.id, url: eventData.photoLink }]
-        : [],
+      value: event.photoLink ? [{ uid: event.id, url: event.photoLink }] : [],
     }),
-    name: Form.createFormField({ value: eventData.name }),
-    description: Form.createFormField({ value: eventData.description }),
-    locationLine1: Form.createFormField({ value: eventData.locationLine1 }),
-    locationLine2: Form.createFormField({ value: eventData.locationLine2 }),
+    name: Form.createFormField({ value: event.name }),
+    description: Form.createFormField({ value: event.description }),
+    locationLine1: Form.createFormField({ value: event.locationLine1 }),
+    locationLine2: Form.createFormField({ value: event.locationLine2 }),
     locationPostalCode: Form.createFormField({
-      value: eventData.locationPostalCode,
+      value: event.locationPostalCode,
     }),
-    ticketFee: Form.createFormField({ value: eventData.ticketFee }),
-    noOfPax: Form.createFormField({ value: eventData.noOfPax }),
+    ticketFee: Form.createFormField({ value: event.ticketFee }),
+    noOfPax: Form.createFormField({ value: event.noOfPax }),
     isRefreshmentProvided: Form.createFormField({
-      value: eventData.isRefreshmentProvided,
+      value: event.isRefreshmentProvided,
     }),
-    contactPerson: Form.createFormField({ value: eventData.contactPerson }),
-    emailAddress: Form.createFormField({ value: eventData.emailAddress }),
+    contactPerson: Form.createFormField({ value: event.contactPerson }),
+    emailAddress: Form.createFormField({ value: event.emailAddress }),
     areaCode: Form.createFormField({
-      value: eventData.mobilePhone
-        ? eventData.mobilePhone.substr(0, 2)
-        : eventData.mobilePhone,
+      value: event.mobilePhone
+        ? event.mobilePhone.substr(0, 2)
+        : event.mobilePhone,
     }),
     mobilePhone: Form.createFormField({
-      value: eventData.mobilePhone
-        ? eventData.mobilePhone.substr(2)
-        : eventData.mobilePhone,
+      value: event.mobilePhone
+        ? event.mobilePhone.substr(2)
+        : event.mobilePhone,
     }),
     eventStatus: Form.createFormField({
-      value: eventData.eventStatus === '1',
+      value: event.eventStatus === '1',
     }),
     startDate: Form.createFormField({
-      value: formatDate(eventData.startDate),
+      value: formatDate(event.startDate),
     }),
     startTime: Form.createFormField({
-      value: formatTime(eventData.startDate),
+      value: formatTime(event.startDate),
     }),
     endDate: Form.createFormField({
-      value: formatDate(eventData.endDate),
+      value: formatDate(event.endDate),
     }),
     endTime: Form.createFormField({
-      value: formatTime(eventData.endDate),
+      value: formatTime(event.endDate),
     }),
   };
 };

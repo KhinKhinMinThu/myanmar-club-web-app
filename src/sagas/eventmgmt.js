@@ -2,7 +2,9 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 import { api, apiMultiPart } from './api';
 import {
   GET_EVENTSDATA,
+  GET_EVENTDATA,
   GET_APILOADING,
+  EVENTDATA,
   EVENTSDATA,
   GET_ERROR,
   POST_APILOADING,
@@ -15,6 +17,7 @@ import {
 } from '../reducers/eventmgmt/eventmgmt-data';
 import {
   APIGET_EVENTSDATA,
+  APIGET_EVENTDATA,
   APIPOST_DELETE_EVENT,
   APIPOST_DELETE_EVENT_RSVP,
   APIPOST_UPDATE_EVENT,
@@ -25,6 +28,24 @@ import {
 
 // GET REQUEST
 const getEventsData = () => api.get(APIGET_EVENTSDATA);
+// POST TO GET DATA -.-
+const getEventData = id => api.post(APIGET_EVENTDATA, id);
+function* asyncGetEventData(action) {
+  let errMsg;
+  try {
+    yield put({ type: GET_APILOADING, payload: true });
+    const response = yield call(getEventData, action.id);
+    const { eventData, errorMsg } = response.data;
+    errMsg = errorMsg;
+
+    yield put({ type: EVENTDATA, payload: eventData });
+  } catch (e) {
+    errMsg = e.message;
+  } finally {
+    yield put({ type: GET_ERROR, payload: errMsg });
+    yield put({ type: GET_APILOADING, payload: false });
+  }
+}
 
 function* asyncGetEventsData() {
   let errMsg;
@@ -93,6 +114,7 @@ const postNotifyEvent = notification => api.post(APIPOST_NOTIFY_EVENT, {
 
 const assembleFormData = ({ eventId, imageFile }) => {
   if (eventId && imageFile) {
+    console.log('assembleForm', eventId, imageFile);
     const mpf = new FormData();
     mpf.append('id', eventId.id);
     mpf.append('eventPhoto', imageFile, imageFile.name);
@@ -117,7 +139,6 @@ function* asyncPostProcessEvents(action) {
       action.notification,
     );
 
-    let id;
     let multipartForm;
     const eventData = action.newEventToAdd || action.eventToUpdate;
 
@@ -130,23 +151,30 @@ function* asyncPostProcessEvents(action) {
         break;
       case POST_NEWEVENT:
         response = yield call(postNewEvent, action.newEventToAdd);
-        id = response.data;
         multipartForm = assembleFormData({
-          eventId: id,
+          eventId: response.data.id,
           imageFile: eventData.uploadBtn[0],
         });
+        console.log('eventId', response.data.id, 'mpf', multipartForm);
+        if (multipartForm) response = yield call(postEventPhoto, multipartForm);
         break;
       case POST_UPDATEEVENT:
         response = yield call(postUpdateEvent, action.eventToUpdate);
-        if (!response.data.errorMsg) id = eventData;
+        multipartForm = assembleFormData({
+          eventId: eventData.id,
+          imageFile: eventData.uploadBtn[0],
+        });
+        console.log('eventId', eventData.id, 'mpf', multipartForm);
+        if (multipartForm) response = yield call(postEventPhoto, multipartForm);
+
         break;
       case POST_NOTIFYEVENT:
         response = yield call(postNotifyEvent, action.notification);
         break;
       default:
     }
-    console.log('id', id, 'mpf', multipartForm);
-    if (multipartForm) response = yield call(postEventPhoto, multipartForm);
+    // console.log('eventId', eventId, 'mpf', multipartForm);
+    // if (multipartForm) response = yield call(postEventPhoto, multipartForm);
 
     const { errorMsg } = response.data;
     errMsg = errorMsg;
@@ -162,6 +190,8 @@ function* asyncPostProcessEvents(action) {
 // end
 
 export const getEventsDataSaga = takeLatest(GET_EVENTSDATA, asyncGetEventsData);
+export const getEventDataSaga = takeLatest(GET_EVENTDATA, asyncGetEventData);
+
 export const postDeleteEventSaga = takeLatest(
   POST_DELETEEVENT,
   asyncPostProcessEvents,

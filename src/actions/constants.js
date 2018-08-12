@@ -2,11 +2,11 @@
 // 'http://54.200.158.0/MyanmarClubAPI';
 export const BASE_URL = 'http://54.200.158.0/MyanmarClubAPI';
 
-export const DATETIME_FORMAT = 'DD-MM-YYYY HH:mm';
-export const DATE_FORMAT = 'DD-MM-YYYY';
+export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
+export const DATE_FORMAT = 'YYYY-MM-DD';
 export const TIME_FORMAT = 'HH:mm';
 
-export const DATETIME_FORMAT_DB = 'DD-MM-YYYY HH:mm:ss';
+export const DATETIME_FORMAT_DB = 'YYYY-MM-DD HH:mm:ss';
 export const TIME_FORMAT_DB = 'HH:mm:ss';
 export const DEFAULT_DATETIME = '01-01-2000 00:00';
 export const DEFAULT_DATE = '01-01-2000';
@@ -25,11 +25,13 @@ export const APIPOST_LOGIN = '/admin/login';
 
 export const APIPOST_UPDATE_ROLE = '/updateRole';
 
+export const APIGET_MEMBERDATA = '/admin/getMemberData';
 export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';
 
 export const APIPOST_APPROVE_CLAIMS = '/claim/approveClaims';
 export const APIPOST_UNAPPROVE_CLAIMS = '/claim/unapproveClaims';
 
+export const APIGET_EVENTDATA = '/event/getEventData';
 export const APIPOST_DELETE_EVENTTRANSC = '/event/deleteEventTransaction';
 export const APIPOST_ADD_EVENTTRANSC = '/event/addEventTransaction';
 export const APIPOST_DELETE_EVENT = '/event/deleteEvent';

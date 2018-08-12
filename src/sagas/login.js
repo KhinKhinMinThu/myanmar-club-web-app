@@ -1,5 +1,5 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { api } from './api';
 import {
@@ -46,7 +46,6 @@ function* asyncLogin(action) {
       yield put({ type: TOKEN, payload: token });
 
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-
       localStorage.setItem('loginState', JSON.stringify(response.data));
     }
   } catch (e) {

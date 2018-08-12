@@ -44,7 +44,8 @@ function* asyncGetClaimsData() {
 // POST REQUEST
 const postApproveClaims = claimsToApprove => api.post(APIPOST_APPROVE_CLAIMS, claimsToApprove);
 
-const postUnapproveClaims = claimsToUnapprove => api.post(APIPOST_UNAPPROVE_CLAIMS, claimsToUnapprove);
+// name must Ae claimsToUnApprove with capital A
+const postUnapproveClaims = claimsToUnApprove => api.post(APIPOST_UNAPPROVE_CLAIMS, claimsToUnApprove);
 
 function* asyncPostProcessClaims(action) {
   let errMsg;
@@ -56,11 +57,11 @@ function* asyncPostProcessClaims(action) {
       'Calling API.........',
       action.type,
       action.claimsToApprove,
-      action.claimsToUnapprove,
+      action.claimsToUnApprove,
     );
 
     if (action.type === POST_APPROVECLAIMS) response = yield call(postApproveClaims, action.claimsToApprove);
-    if (action.type === POST_UNAPPROVECLAIMS) response = yield call(postUnapproveClaims, action.claimsToUnapprove);
+    if (action.type === POST_UNAPPROVECLAIMS) response = yield call(postUnapproveClaims, action.claimsToUnApprove);
     const { errorMsg } = response.data;
     errMsg = errorMsg;
   } catch (e) {

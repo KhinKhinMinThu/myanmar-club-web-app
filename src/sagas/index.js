@@ -11,6 +11,7 @@ import {
   postAddTranscSaga,
 } from './event-transaction';
 import {
+  getEventDataSaga,
   getEventsDataSaga,
   postDeleteEventSaga,
   postDeleteRSVPSaga,
@@ -18,7 +19,11 @@ import {
   postUpdateEventSaga,
   postNotifyEventSaga,
 } from './eventmgmt';
-import { getMembersDataSaga, postDeleteMembersSaga } from './membermgmt';
+import {
+  getMembersDataSaga,
+  getMemberDataSaga,
+  postDeleteMembersSaga,
+} from './membermgmt';
 import postForgotPwdSaga from './forgot-password';
 
 export default function* rootSaga() {
@@ -33,12 +38,14 @@ export default function* rootSaga() {
     postDeleteTranscSaga,
     postAddTranscSaga,
     // eventmgmt
+    getEventDataSaga,
     getEventsDataSaga,
     postDeleteEventSaga,
     postDeleteRSVPSaga,
     postNotifyEventSaga,
     // membermgmt
     getMembersDataSaga,
+    getMemberDataSaga,
     postDeleteMembersSaga,
     // forgot-password
     postForgotPwdSaga,

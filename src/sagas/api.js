@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import tokenProvider from 'axios-token-interceptor';
 import { BASE_URL } from '../actions/constants';
 
 // after logged in
@@ -23,4 +22,9 @@ export const apiMultiPart = axios.create({
 // api.interceptors.request.use((request) => {
 //   console.log('Starting Request', request);
 //   return request;
+// });
+
+// api.interceptors.request.use((response) => {
+//   console.log('Getting Response', response);
+//   return response;
 // });
