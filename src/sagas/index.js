@@ -11,6 +11,7 @@ import {
   postAddTranscSaga,
 } from './event-transaction';
 import {
+  getEventDataSaga,
   getEventsDataSaga,
   postDeleteEventSaga,
   postDeleteRSVPSaga,
@@ -37,6 +38,7 @@ export default function* rootSaga() {
     postDeleteTranscSaga,
     postAddTranscSaga,
     // eventmgmt
+    getEventDataSaga,
     getEventsDataSaga,
     postDeleteEventSaga,
     postDeleteRSVPSaga,

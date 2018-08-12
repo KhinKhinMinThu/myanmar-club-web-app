@@ -133,7 +133,7 @@ export const DeleteSeletedButton = ({
 export const BackButton = () => <FullButton>Go Back</FullButton>;
 
 // Event form data
-
+const initialValue = { initialValue: '' };
 const customInput = { style: { width: '200px' } };
 
 // Event Name
@@ -237,7 +237,7 @@ export const AddressInput = ({ decorator }) => (
       </Col>
       <Col {...inputLayout2}>
         <FormItem>
-          {decorator('locationLine2')(
+          {decorator('locationLine2', initialValue)(
             <Input {...customInput} placeholder="Street Address Line 2..." />,
           )}
         </FormItem>
@@ -271,7 +271,7 @@ export const RefreshmentRadio = ({ decorator }) => (
     label="Refreshment Provided"
     style={{ marginBottom: 0 }}
   >
-    {decorator('isRefreshmentProvided')(
+    {decorator('isRefreshmentProvided', initialValue)(
       <RadioGroup name="refreshment">
         <RadioButton value="1">Yes</RadioButton>
         <RadioButton value="0">No</RadioButton>
@@ -292,6 +292,7 @@ const validateNumber = (rule, value, callback) => {
 export const TicketFeeInput = ({ decorator }) => (
   <FormItem {...layout} label="Ticket Fee (SGD)">
     {decorator('ticketFee', {
+      initialValue: '',
       rules: [
         {
           validator: validateNumber,
@@ -305,6 +306,7 @@ export const TicketFeeInput = ({ decorator }) => (
 export const NumPaxInput = ({ decorator }) => (
   <FormItem {...layout} label="No of Pax">
     {decorator('noOfPax', {
+      initialValue: '',
       rules: [
         {
           validator: validateNumber,
@@ -318,6 +320,7 @@ export const NumPaxInput = ({ decorator }) => (
 export const EmailAddressInput = ({ decorator }) => (
   <FormItem {...layout} label="Email Address">
     {decorator('emailAddress', {
+      initialValue: '',
       rules: [
         {
           type: 'email',
@@ -331,7 +334,7 @@ export const EmailAddressInput = ({ decorator }) => (
 // Contact Person
 export const ContactPersonInput = ({ decorator }) => (
   <FormItem {...layout} label="Contact Person">
-    {decorator('contactPerson')(
+    {decorator('contactPerson', initialValue)(
       <Input {...customInput} placeholder="Contact Person Name" />,
     )}
   </FormItem>
@@ -350,6 +353,7 @@ export const MobileNoInput = ({ decorator }) => {
   return (
     <FormItem {...layout} label="Mobile No" style={{ marginBottom: 0 }}>
       {decorator('mobilePhone', {
+        initialValue: '',
         rules: [
           {
             pattern: '^([0-9]{6,})$',

@@ -1,6 +1,8 @@
 // GET API call
 export const GET_EVENTSDATA = '[EVENTMGMT_DATA] GET_EVENTSDATA';
+export const GET_EVENTDATA = '[EVENTMGMT_DATA] GET_EVENTDATA';
 export const GET_APILOADING = '[EVENTMGMT_DATA] GET_APILOADING';
+export const EVENTDATA = '[EVENTMGMT_DATA] EVENTDATA';
 export const EVENTSDATA = '[EVENTMGMT_DATA] EVENTSDATA';
 export const GET_ERROR = '[EVENTMGMT_DATA] GET_ERROR';
 // end
@@ -15,7 +17,12 @@ export const POST_NOTIFYEVENT = '[EVENTMGMT_DATA] POST_NOTIFYEVENT';
 export const POST_ERROR = '[EVENTMGMT_DATA] POST_ERROR';
 // end
 
+export const getEventData = id => ({ type: GET_EVENTDATA, id });
 export const getEventsData = () => ({ type: GET_EVENTSDATA });
+export const setEventData = eventData => ({
+  type: EVENTDATA,
+  payload: eventData,
+});
 export const setEventsData = eventsData => ({
   type: EVENTSDATA,
   payload: eventsData,
@@ -48,6 +55,7 @@ export default function (
     isPostApiLoading: false,
     postErrMsg: null,
     eventsData: null,
+    eventData: null,
   },
   action,
 ) {
@@ -56,6 +64,11 @@ export default function (
       return {
         ...state,
         isGetApiLoading: action.payload,
+      };
+    case EVENTDATA:
+      return {
+        ...state,
+        eventData: action.payload,
       };
     case EVENTSDATA:
       return {
