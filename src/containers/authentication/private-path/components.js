@@ -20,7 +20,10 @@ import { locationChange } from '../../../reducers/router';
 const commonTitles = {
   DASHBOARD: { icon: <MenuIcon type="home" />, text: 'Dashboard' },
   PROFILE: { icon: <MenuIcon type="solution" />, text: 'Profile' },
-  LOGOUT: { icon: <MenuIcon type="logout" />, text: 'Logout' },
+  LOGOUT: {
+    icon: <MenuIcon type="logout" />,
+    text: 'Logout',
+  },
 };
 
 const adminTitles = {
@@ -55,13 +58,15 @@ const MenuPanel = ({
 }) => {
   const onClick = (e) => {
     if (e.key === LOGOUT) {
-      performLogout({ payload: false });
+      performLogout(false);
       // redirect to login page
-      e.key = LOGIN;
       localStorage.clear();
+      console.log('cleared!!!!!!!!!!!');
+    } else {
+      console.log('updateLocation!!!!!!!!!!!');
+      const location = { ...currentLocation, pathname: e.key };
+      updateLocation({ location });
     }
-    const location = { ...currentLocation, pathname: e.key };
-    updateLocation({ location });
   };
 
   return (
@@ -112,8 +117,10 @@ const MenuPanel = ({
         </MenuItem>
       )}
       <MenuItem key={LOGOUT}>
-        {commonTitles.LOGOUT.icon}
-        {commonTitles.LOGOUT.text}
+        <a href={LOGIN}>
+          {commonTitles.LOGOUT.icon}
+          {commonTitles.LOGOUT.text}
+        </a>
       </MenuItem>
     </Menu>
   );

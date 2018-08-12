@@ -1,5 +1,6 @@
-export const BASE_URL = 'http://demo0532724.mockable.io';
+// export const BASE_URL = 'http://demo0532724.mockable.io';
 // 'http://54.200.158.0/MyanmarClubAPI';
+export const BASE_URL = 'http://54.200.158.0/MyanmarClubAPI';
 
 export const DATETIME_FORMAT = 'DD-MM-YYYY HH:mm';
 export const DATE_FORMAT = 'DD-MM-YYYY';
