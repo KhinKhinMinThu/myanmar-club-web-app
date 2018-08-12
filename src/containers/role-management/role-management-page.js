@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import { Form, message } from 'antd';
 import { connect } from 'react-redux';
@@ -82,6 +83,11 @@ class RoleManagement extends Component {
     });
   };
 
+  handleBack = () => {
+    const { history } = this.props;
+    history.go(-1);
+  };
+
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
@@ -113,7 +119,7 @@ class RoleManagement extends Component {
             isValidating={isValidating}
             onClick={() => dispatchValidate(true)}
           />
-          <GoBackButton onClick={() => console.log('clicked goback')} />
+          <GoBackButton clicked={this.handleBack} />
         </ButtonContainer>
       </Form>
     );
@@ -127,6 +133,7 @@ RoleManagement.propTypes = {
   dispatchValidate: PropTypes.func.isRequired,
   dispatchSave: PropTypes.func.isRequired,
   rolemgmtData: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 const FormRoleManagement = Form.create()(RoleManagement);
 
@@ -143,4 +150,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormRoleManagement);
+)(withRouter(FormRoleManagement));
