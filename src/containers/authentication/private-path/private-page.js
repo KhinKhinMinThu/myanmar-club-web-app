@@ -20,7 +20,8 @@ import {
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
 import MenuPanel from './components';
-import SignupPage2 from '../../signup-page2';
+// import SignupPage2 from '../../signup-page2';
+import ProfilePage from '../../profile-page';
 import Dashboard from './home-ex';
 import ErrorPage from '../error-page';
 import RoleManagementPage from '../../role-management';
@@ -46,7 +47,7 @@ class PrivatePage extends Component {
       case DASHBOARD:
         return Dashboard;
       case PROFILE:
-        return SignupPage2;
+        return ProfilePage;
       case LOGOUT:
         return Dashboard;
       default:

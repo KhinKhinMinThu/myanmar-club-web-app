@@ -1,4 +1,8 @@
 import axios from 'axios';
+<<<<<<< HEAD
+=======
+// import tokenProvider from 'axios-token-interceptor';
+>>>>>>> ed849ac564aac543fa12568c6742a4e431f76aeb
 import { BASE_URL } from '../actions/constants';
 
 // after logged in
