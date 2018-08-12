@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -6,7 +7,10 @@ import {
   Form, message, Row, Col, Spin,
 } from 'antd';
 import { SUCCESS_NEWEVENT, SHOWFOR } from '../../../actions/message';
-import { DATETIME_FORMAT_DB, DEFAULT_DATETIME } from '../../../actions/constants';
+import {
+  DATETIME_FORMAT_DB,
+  DEFAULT_DATETIME,
+} from '../../../actions/constants';
 import {
   EventNameInput,
   EventDescriptionInput,
@@ -86,6 +90,11 @@ class EventCreation extends Component {
     });
   };
 
+  handleBack = () => {
+    const { history } = this.props;
+    history.go(-1);
+  };
+
   beforeUpload = (file) => {
     // one file only
     if (file) {
@@ -132,7 +141,6 @@ class EventCreation extends Component {
       xl: { span: 12 },
       style: { marginBottom: 14 },
     };
-
     return (
       <Spin spinning={isPostApiLoading} size="large">
         <div className="pageHeaderContainer">
@@ -168,7 +176,7 @@ class EventCreation extends Component {
                 <CreateButton />
               </Col>
               <Col {...actionColLayout}>
-                <BackButton />
+                <BackButton clicked={this.handleBack} />
               </Col>
             </Row>
           </EventCard>
@@ -179,12 +187,12 @@ class EventCreation extends Component {
 }
 
 EventCreation.propTypes = {
+  history: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({
     validateFieldsAndScroll: PropTypes.func.isRequired,
     getFieldDecorator: PropTypes.func.isRequired,
     setFieldsValue: PropTypes.func.isRequired,
   }).isRequired,
-
   performNewEvent: PropTypes.func.isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
 };
@@ -201,4 +209,4 @@ const FormEventCreation = Form.create()(EventCreation);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormEventCreation);
+)(withRouter(FormEventCreation));

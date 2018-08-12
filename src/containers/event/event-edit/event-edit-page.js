@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -145,6 +146,11 @@ class EventEdit extends Component {
     }
   };
 
+  handleBack = () => {
+    const { history } = this.props;
+    history.go(-1);
+  };
+
   beforeUpload = (file) => {
     // one file only
     if (file) {
@@ -231,7 +237,7 @@ class EventEdit extends Component {
                 <SaveUpdateButton />
               </Col>
               <Col {...actionColLayout}>
-                <BackButton />
+                <BackButton clicked={this.handleBack} />
               </Col>
             </Row>
           </EventCard>
@@ -250,6 +256,7 @@ EventEdit.propTypes = {
   performDeleteEvent: PropTypes.func.isRequired,
 
   eventmgmtData: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -333,4 +340,4 @@ const FormEventEditPage = Form.create({ mapPropsToFields })(EventEdit);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormEventEditPage);
+)(withRouter(FormEventEditPage));

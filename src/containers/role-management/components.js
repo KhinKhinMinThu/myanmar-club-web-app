@@ -1,7 +1,10 @@
 import React from 'react';
 import { Form, Select, Transfer } from 'antd';
 import {
-  HalfWidthButton, RoleSelect, BoldUnderlineText, FlexContainer,
+  HalfWidthButton,
+  RoleSelect,
+  BoldUnderlineText,
+  FlexContainer,
 } from './styled-components';
 
 const FormItem = Form.Item;
@@ -29,7 +32,11 @@ export const RoleNameSelect = ({ onChange, roleNameList, decorator }) => (
         },
       ],
     })(
-      <RoleSelect onChange={onChange} placeholder="Select a role" style={{ width: '300px' }}>
+      <RoleSelect
+        onChange={onChange}
+        placeholder="Select a role"
+        style={{ width: '300px' }}
+      >
         {roleNameList.map(item => (
           <Option key={item.id.toString} value={item.id}>
             {item.name}
@@ -52,8 +59,8 @@ export const SaveButton = ({ isValidating, onClick }) => (
   </HalfWidthButton>
 );
 
-export const GoBackButton = ({ onClick }) => (
-  <HalfWidthButton onClick={onClick}>Go Back</HalfWidthButton>
+export const GoBackButton = ({ clicked }) => (
+  <HalfWidthButton onClick={clicked}>Go Back</HalfWidthButton>
 );
 
 export const RoleAssignTransfer = ({ dataSource, onChange, decorator }) => {

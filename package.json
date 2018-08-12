@@ -30,7 +30,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "deploy": "aws s3 sync build/ s3://myanmarclub.com/*",
+    "deploy": "aws s3 sync build/ s3://myanmarclub.com",
     "test": "react-app-rewired test --env=jsdom"
   },
   "devDependencies": {

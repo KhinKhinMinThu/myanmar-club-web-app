@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -51,6 +52,11 @@ class EventPage extends Component {
     performNotifyEvent({ id, url });
   };
 
+  handleBack = () => {
+    const { history } = this.props;
+    history.go(-1);
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -101,7 +107,7 @@ class EventPage extends Component {
               <EditEventButton eventId={this.eventId} />
             </Col>
             <Col {...actionColLayout}>
-              <BackButton />
+              <BackButton clicked={this.handleBack} />
             </Col>
           </Row>
         </EventCard>
@@ -114,6 +120,7 @@ EventPage.propTypes = {
   form: PropTypes.shape({}).isRequired,
   performNotifyEvent: PropTypes.func.isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -186,4 +193,4 @@ const FormEventPagePage = Form.create({ mapPropsToFields })(EventPage);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormEventPagePage);
+)(withRouter(FormEventPagePage));
