@@ -19,12 +19,12 @@ export const apiMultiPart = axios.create({
 });
 // end after logged in
 
-api.interceptors.request.use((request) => {
-  console.log('Starting Request', request);
-  return request;
-});
+// api.interceptors.request.use((request) => {
+//   console.log('Starting Request', request);
+//   return request;
+// });
 
-api.interceptors.request.use((response) => {
-  console.log('Getting Response', response);
-  return response;
-});
+// api.interceptors.request.use((response) => {
+//   console.log('Getting Response', response);
+//   return response;
+// });
