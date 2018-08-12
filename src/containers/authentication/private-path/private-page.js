@@ -34,7 +34,7 @@ import EventViewPage from '../../event/event-view';
 
 const { Header, Content, Sider } = Layout;
 const logoImage = (
-  <img alt="logo" src={logo} style={{ width: 'auto', height: '65px' }} />
+  <img alt="logo" src={logo} style={{ width: 'auto', height: '55px' }} />
 );
 const siderWidth = 230;
 
@@ -105,7 +105,7 @@ class PrivatePage extends Component {
           <a href={DEFAULT}>
             <Header
               style={{
-                height: 70,
+                height: 65,
                 background: '#ffffff',
                 borderBottom: '3px solid #1DA57A',
               }}
@@ -124,7 +124,7 @@ class PrivatePage extends Component {
         <Layout>
           <Header
             style={{
-              height: 70,
+              height: 65,
               background: '#312D2D',
               borderBottom: '3px solid #1DA57A',
             }}

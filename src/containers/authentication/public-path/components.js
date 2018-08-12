@@ -24,18 +24,18 @@ const MenuPanel = ({ updateLocation, currentLocation, selectedKeys }) => {
     const location = { ...currentLocation, pathname: e.key };
     updateLocation({ location });
   };
-
+  const height = { style: { height: 40 } };
   return (
     <Menu mode="horizontal" onClick={onClick} selectedKeys={selectedKeys}>
-      <MenuItem key={DEFAULT}>
+      <MenuItem {...height} key={DEFAULT}>
         {commonTitles.DEFAULT.icon}
         {commonTitles.DEFAULT.text}
       </MenuItem>
-      <MenuItem key={LOGIN}>
+      <MenuItem {...height} key={LOGIN}>
         {commonTitles.LOGIN.icon}
         {commonTitles.LOGIN.text}
       </MenuItem>
-      <MenuItem key={SIGNUP}>
+      <MenuItem {...height} key={SIGNUP}>
         {commonTitles.SIGNUP.icon}
         {commonTitles.SIGNUP.text}
       </MenuItem>

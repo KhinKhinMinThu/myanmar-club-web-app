@@ -21,7 +21,7 @@ import ForgotPasswordPage from '../../forgotpwd-page';
 
 const { Header, Content, Sider } = Layout;
 const logoImage = (
-  <img alt="logo" src={logo} style={{ width: 'auto', height: '65px' }} />
+  <img alt="logo" src={logo} style={{ width: 'auto', height: '55px' }} />
 );
 const siderWidth = 230;
 
@@ -64,7 +64,7 @@ class PrivatePage extends Component {
           <a href={DEFAULT}>
             <Header
               style={{
-                height: 70,
+                height: 65,
                 background: '#ffffff',
                 borderBottom: '3px solid #1DA57A',
               }}
@@ -72,22 +72,23 @@ class PrivatePage extends Component {
               {logoImage}
             </Header>
           </a>
-          TEST
         </Sider>
 
         <Layout>
           <Header
             style={{
-              height: 70,
+              height: 65,
               background: '#312D2D',
               borderBottom: '3px solid #1DA57A',
             }}
           >
             <HeaderText>Myanmar Club Web Portal</HeaderText>;
           </Header>
-          <Anchor>
-            <MenuPanel selectedKeys={[pathname]} />
-          </Anchor>
+          <div style={{ marginLeft: '4px' }}>
+            <Anchor style={{ background: 'transparent' }}>
+              <MenuPanel selectedKeys={[pathname]} />
+            </Anchor>
+          </div>
           <Content
             style={{
               margin: '5px',
@@ -96,6 +97,9 @@ class PrivatePage extends Component {
             }}
           >
             <Page {...this.props} />
+            a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br />{' '}
+            a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br />{' '}
+            a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br />
           </Content>
         </Layout>
       </Layout>

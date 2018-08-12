@@ -7,6 +7,7 @@ import {
   DASHBOARD,
   PROFILE,
   LOGOUT,
+  LOGIN,
   ROLE_MANAGEMENT,
   MEMBER_MANAGEMENT,
   CLAIM_MANAGEMENT,
@@ -55,6 +56,9 @@ const MenuPanel = ({
   const onClick = (e) => {
     if (e.key === LOGOUT) {
       performLogout({ payload: false });
+      // redirect to login page
+      e.key = LOGIN;
+      localStorage.clear();
     }
     const location = { ...currentLocation, pathname: e.key };
     updateLocation({ location });
