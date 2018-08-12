@@ -11,11 +11,12 @@ export const PageCard = styled(Card)`
 `;
 
 export const FormCard = styled(Card)`
-  width: 100%;
-  padding: 15px;
-  border-radius: 10;
+  width: 1000px;
+  min-width: 1000px;
+  border-radius: 10px;
   top: 5%;
-  margin-left: auto;
+  margin-bottom: 8px;
+  margin-left: 5px;
   margin-right: auto;
   textalign: left;
 `;

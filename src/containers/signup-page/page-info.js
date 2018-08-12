@@ -1,13 +1,12 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import {
-  Form, Card, Row, Col,
-} from 'antd';
-import { cardStyles, feesTbl, unicode } from './components';
+import { Form, Row, Col } from 'antd';
+import { feesTbl, unicode } from './components/pageinfo-components';
 import { CustomIcon } from '../shared-components/common';
+import { PageCard } from './styled-components';
 
 const PageInfo = () => (
-  <Card style={cardStyles}>
+  <PageCard style={{ textAlign: 'left' }}>
     <Row>
       <Col offset={3} span={18}>
         <header
@@ -84,7 +83,7 @@ const PageInfo = () => (
         {feesTbl}
       </Col>
     </Row>
-  </Card>
+  </PageCard>
 );
 
 export default Form.create()(PageInfo);
