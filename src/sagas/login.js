@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { put, call, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
 import { push } from 'connected-react-router';
 import { api } from './api';
 import {
