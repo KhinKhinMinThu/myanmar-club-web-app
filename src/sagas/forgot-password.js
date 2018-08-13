@@ -7,7 +7,7 @@ import {
 } from '../reducers/forgot-password/forgot-password-data';
 import { APIPOST_FORGOTPWD } from '../actions/constants';
 
-const postForgotPwd = email => api.post(APIPOST_FORGOTPWD, { email });
+const postForgotPwd = email => api.post(APIPOST_FORGOTPWD, email);
 
 function* asyncPostForgotPwd(action) {
   let errMsg;

@@ -150,7 +150,9 @@ class EventManagementPage extends Component {
     const hasSelected = selectedKeys.length > 0;
 
     if (eventsData) this.eventsList = this.prepareList(eventsData);
-
+    const header = this.eventsList
+      ? 'Total events: '.concat(this.eventsList.length)
+      : '';
     return (
       <Spin spinning={isGetApiLoading} size="large">
         {this.isApiCalled && getErrMsg ? (
@@ -215,6 +217,7 @@ class EventManagementPage extends Component {
                   }}
                   sortedInfo={sortedInfo || {}}
                   filteredInfo={filteredInfo || {}}
+                  header={header}
                 />
               </Col>
             </Row>

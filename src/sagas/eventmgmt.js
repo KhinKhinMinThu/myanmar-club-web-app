@@ -37,7 +37,7 @@ function* asyncGetEventData(action) {
     const response = yield call(getEventData, action.id);
     const { eventData, errorMsg } = response.data;
     errMsg = errorMsg;
-
+    console.log('RESPONSE:', response);
     yield put({ type: EVENTDATA, payload: eventData });
   } catch (e) {
     errMsg = e.message;
@@ -114,7 +114,6 @@ const postNotifyEvent = notification => api.post(APIPOST_NOTIFY_EVENT, {
 
 const assembleFormData = ({ eventId, imageFile }) => {
   if (eventId && imageFile) {
-    console.log('assembleForm', eventId, imageFile);
     const mpf = new FormData();
     mpf.append('id', eventId.id);
     mpf.append('eventPhoto', imageFile, imageFile.name);

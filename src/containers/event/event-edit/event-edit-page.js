@@ -44,6 +44,7 @@ import {
 import { EventCard } from '../shared-styled';
 import {
   getEventData,
+  setEventData,
   postDeleteEvent,
   postUpdateEvent,
 } from '../../../reducers/eventmgmt/eventmgmt-data';
@@ -62,7 +63,7 @@ class EventEdit extends Component {
       },
       performGetEventData,
     } = this.props;
-    performGetEventData({ id });
+    if (id) performGetEventData({ id });
   }
 
   componentWillUpdate(nextProps) {
@@ -94,6 +95,7 @@ class EventEdit extends Component {
       computedMatch: {
         params: { id },
       },
+      performEventData,
       performUpdateEvent,
       performDeleteEvent,
     } = this.props;
@@ -132,7 +134,7 @@ class EventEdit extends Component {
           delete formValues.startTime;
           delete formValues.endTime;
 
-          performUpdateEvent({
+          const eventToUpdate = {
             ...formValues,
             id,
             startDate,
@@ -140,15 +142,12 @@ class EventEdit extends Component {
             mobilePhone,
             eventStatus: formValues.eventStatus ? '1' : '0',
             uploadBtn: fileList,
-          });
+          };
+          performEventData(eventToUpdate);
+          performUpdateEvent(eventToUpdate);
         }
       });
     }
-  };
-
-  handleBack = () => {
-    const { history } = this.props;
-    history.go(-1);
   };
 
   beforeUpload = (file) => {
@@ -186,6 +185,7 @@ class EventEdit extends Component {
 
   render() {
     const {
+      history,
       form: { getFieldDecorator },
       eventmgmtData: { isPostApiLoading },
     } = this.props;
@@ -237,7 +237,7 @@ class EventEdit extends Component {
                 <SaveUpdateButton />
               </Col>
               <Col {...actionColLayout}>
-                <BackButton clicked={this.handleBack} />
+                <BackButton history={history} />
               </Col>
             </Row>
           </EventCard>
@@ -252,6 +252,7 @@ EventEdit.propTypes = {
   form: PropTypes.shape({}).isRequired,
 
   performGetEventData: PropTypes.func.isRequired,
+  performEventData: PropTypes.func.isRequired,
   performUpdateEvent: PropTypes.func.isRequired,
   performDeleteEvent: PropTypes.func.isRequired,
 
@@ -265,6 +266,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   performGetEventData: getEventData,
+  performEventData: setEventData,
   performUpdateEvent: postUpdateEvent,
   performDeleteEvent: postDeleteEvent,
 };

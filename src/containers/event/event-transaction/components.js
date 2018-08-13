@@ -93,6 +93,7 @@ export const EventsTable = ({
   saveTransaction,
   editingKey,
   isPostApiLoading,
+  header,
 }) => {
   const columns = [
     {
@@ -173,6 +174,7 @@ export const EventsTable = ({
 
   return (
     <FullWidthTable
+      title={() => header}
       columns={columns}
       dataSource={eventsList}
       onChange={onChange}

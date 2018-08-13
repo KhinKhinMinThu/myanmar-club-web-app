@@ -127,6 +127,9 @@ class NewClaimsPage extends Component {
     } = this.props;
 
     if (newClaimsList) this.claimsList = this.prepareList(newClaimsList);
+    const header = this.claimsList
+      ? 'Approved Claim(s): '.concat(this.claimsList.length)
+      : '';
 
     const rowSelection = {
       selectedRowKeys: selectedKeys,
@@ -187,6 +190,7 @@ class NewClaimsPage extends Component {
               }}
               sortedInfo={sortedInfo || {}}
               filteredInfo={filteredInfo || {}}
+              header={header}
             />
           </Col>
         </Row>

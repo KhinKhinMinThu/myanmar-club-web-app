@@ -174,6 +174,9 @@ class EventTransaction extends Component {
     } = this.props;
 
     if (eventsData) this.eventsList = this.prepareList(eventsData);
+    const header = this.eventsList
+      ? 'Total event transactions: '.concat(this.eventsList.length)
+      : '';
 
     return (
       <Spin spinning={isGetApiLoading} size="large">
@@ -228,6 +231,7 @@ class EventTransaction extends Component {
                   saveTransaction={this.saveTransaction}
                   editingKey={editingKey}
                   isPostApiLoading={isPostApiLoading}
+                  header={header}
                 />
               </Col>
             </Row>

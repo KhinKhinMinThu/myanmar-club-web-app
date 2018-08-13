@@ -144,43 +144,38 @@ const formatDate = (strDate) => {
   return null;
 };
 
-const mapPropsToFields = ({
-  computedMatch: { params },
-  eventmgmtData: { eventsData },
-}) => {
-  const { id } = params;
-  const eventData = eventsData ? eventsData.find(item => item.id === id) : {};
-
+const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
+  const event = eventData || {};
   return {
-    photoLink: Form.createFormField({ value: eventData.photoLink }),
-    id: Form.createFormField({ value: eventData.id }),
-    name: Form.createFormField({ value: eventData.name }),
-    description: Form.createFormField({ value: eventData.description }),
+    photoLink: Form.createFormField({ value: event.photoLink }),
+    id: Form.createFormField({ value: event.id }),
+    name: Form.createFormField({ value: event.name }),
+    description: Form.createFormField({ value: event.description }),
     location: Form.createFormField({
-      value: `${eventData.locationLine1} ${eventData.locationLine2}`,
+      value: `${event.locationLine1} ${event.locationLine2}`,
     }),
     locationPostalCode: Form.createFormField({
-      value: eventData.locationPostalCode,
+      value: event.locationPostalCode,
     }),
-    ticketFee: Form.createFormField({ value: eventData.ticketFee }),
-    noOfPax: Form.createFormField({ value: eventData.noOfPax }),
+    ticketFee: Form.createFormField({ value: event.ticketFee }),
+    noOfPax: Form.createFormField({ value: event.noOfPax }),
     isRefreshmentProvided: Form.createFormField({
-      value: eventData.isRefreshmentProvided === '1' ? 'Yes' : 'No',
+      value: event.isRefreshmentProvided === '1' ? 'Yes' : 'No',
     }),
-    contactPerson: Form.createFormField({ value: eventData.contactPerson }),
-    emailAddress: Form.createFormField({ value: eventData.emailAddress }),
-    mobilePhone: Form.createFormField({ value: eventData.mobilePhone }),
+    contactPerson: Form.createFormField({ value: event.contactPerson }),
+    emailAddress: Form.createFormField({ value: event.emailAddress }),
+    mobilePhone: Form.createFormField({ value: event.mobilePhone }),
     eventStatus: Form.createFormField({
-      value: eventData.eventStatus === '1' ? 'Open' : 'Closed',
+      value: event.eventStatus === '1' ? 'Open' : 'Closed',
     }),
     startDate: Form.createFormField({
-      value: formatDate(eventData.startDate),
+      value: formatDate(event.startDate),
     }),
     endDate: Form.createFormField({
-      value: formatDate(eventData.endDate),
+      value: formatDate(event.endDate),
     }),
-    createdBy: Form.createFormField({ value: eventData.createdBy }),
-    createdDate: Form.createFormField({ value: eventData.createdDate }),
+    createdBy: Form.createFormField({ value: event.createdBy }),
+    createdDate: Form.createFormField({ value: event.createdDate }),
   };
 };
 

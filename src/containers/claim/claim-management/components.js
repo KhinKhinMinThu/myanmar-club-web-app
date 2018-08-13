@@ -166,6 +166,7 @@ export class ClaimsTable extends Component {
       onChange,
       sortedInfo,
       filteredInfo,
+      header,
     } = this.props;
     const { isModalVisible, photoLink, remark } = this.state;
 
@@ -176,6 +177,14 @@ export class ClaimsTable extends Component {
         key: 'no',
         width: '4%',
         render: (text, record, index) => <span>{`${index + 1}`}</span>,
+      },
+      {
+        title: 'Id',
+        dataIndex: 'id',
+        key: 'id',
+        sorter: (a, b) => Number.parseInt(a.id, 10) - Number.parseInt(b.id, 10),
+        sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+        width: '5%',
       },
       {
         title: 'Event Description',
@@ -200,7 +209,7 @@ export class ClaimsTable extends Component {
         sorter: (a, b) => Number.parseFloat(a.totalAmount) - Number.parseFloat(b.totalAmount),
         sortOrder: sortedInfo.columnKey === 'totalAmount' && sortedInfo.order,
         render: text => `SGD ${text}`,
-        width: '14%',
+        width: '12%',
       },
       {
         title: 'Photo Link',
@@ -211,10 +220,10 @@ export class ClaimsTable extends Component {
             icon="picture"
             onClick={() => this.showModal(record)}
           >
-            Click to view the receipt
+           View receipt
           </TableActionButton>
         ),
-        width: '15%',
+        width: '12%',
       },
       {
         title: 'Submitted By',
@@ -239,6 +248,7 @@ export class ClaimsTable extends Component {
     return (
       <div>
         <FullWidthTable
+          title={() => header}
           columns={columns}
           dataSource={claimsList}
           rowSelection={rowSelection}

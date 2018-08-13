@@ -206,6 +206,7 @@ export class MembersTable extends Component {
       sortedInfo,
       filteredInfo,
       currentTab,
+      header,
     } = this.props;
     const { isModalVisible, member } = this.state;
     const columns = [
@@ -301,10 +302,10 @@ export class MembersTable extends Component {
       columns.splice(5, 1);
       columns[columns.length - 1].width = '22%';
     }
-
     return (
       <div>
         <FullWidthTable
+          title={() => header}
           columns={columns}
           dataSource={membersList}
           rowSelection={rowSelection}

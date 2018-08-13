@@ -97,9 +97,6 @@ class PrivatePage extends Component {
             }}
           >
             <Page {...this.props} />
-            a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br />{' '}
-            a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br />{' '}
-            a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br /> a<br />a<br />
           </Content>
         </Layout>
       </Layout>

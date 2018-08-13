@@ -15,6 +15,7 @@ export const EventsTable = ({
   onChange,
   sortedInfo,
   filteredInfo,
+  header,
 }) => {
   const columns = [
     {
@@ -97,6 +98,7 @@ export const EventsTable = ({
 
   return (
     <FullWidthTable
+      title={() => header}
       columns={columns}
       dataSource={eventsList}
       rowSelection={rowSelection}

@@ -9,16 +9,20 @@ import {
   resetState,
   setCurrentTab,
 } from '../../../reducers/eventmgmt/eventmgmt-ui';
-import { getEventsData } from '../../../reducers/eventmgmt/eventmgmt-data';
+import { getEventData } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 import EventPage from './event-page';
 import RegistrationListPage from './event-rsvp-page';
 
 class EventView extends Component {
   componentDidMount() {
-    const { dispatchResetState, performGetEventsData } = this.props;
-    dispatchResetState();
-    performGetEventsData();
+    const {
+      computedMatch: {
+        params: { id },
+      },
+      performGetEventData,
+    } = this.props;
+    if (id) performGetEventData({ id });
   }
 
   componentWillUpdate(nextProps) {
@@ -72,9 +76,10 @@ class EventView extends Component {
 }
 
 EventView.propTypes = {
+  computedMatch: PropTypes.shape({}).isRequired,
   dispatchResetState: PropTypes.func.isRequired,
   dispatchCurrentTab: PropTypes.func.isRequired,
-  performGetEventsData: PropTypes.func.isRequired,
+  performGetEventData: PropTypes.func.isRequired,
 
   eventmgmtUI: PropTypes.shape({}).isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
@@ -88,7 +93,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   dispatchResetState: resetState,
   dispatchCurrentTab: setCurrentTab,
-  performGetEventsData: getEventsData,
+  performGetEventData: getEventData,
 };
 
 export default connect(

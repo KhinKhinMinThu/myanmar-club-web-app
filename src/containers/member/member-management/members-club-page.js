@@ -104,6 +104,16 @@ class ClubMembersPage extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
+      ...item,
+      roleNames: item.roleNames
+        ? item.roleNames
+          .map(
+            (role, index) => (index === item.roleNames.length - 1
+              ? `${role.name}`
+              : `${role.name}, `),
+          )
+          .join('')
+        : '',
     }));
     return preparedList;
   };
@@ -126,6 +136,10 @@ class ClubMembersPage extends Component {
     } = this.props;
 
     if (clubMembersList) this.membersList = this.prepareList(clubMembersList);
+
+    const header = this.membersList
+      ? 'Total EC members: '.concat(this.membersList.length)
+      : '';
 
     const rowSelection = {
       selectedRowKeys: selectedKeys,
@@ -187,6 +201,7 @@ class ClubMembersPage extends Component {
               sortedInfo={sortedInfo || {}}
               filteredInfo={filteredInfo || {}}
               currentTab={currentTab}
+              header={header}
             />
           </Col>
         </Row>

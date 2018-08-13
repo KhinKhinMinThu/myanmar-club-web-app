@@ -130,8 +130,8 @@ export const DeleteSeletedButton = ({
 );
 
 // BackButton
-export const BackButton = ({ clicked }) => (
-  <FullButton onClick={clicked}>Go Back</FullButton>
+export const BackButton = ({ history }) => (
+  <FullButton onClick={() => history.go(-1)}>Go Back</FullButton>
 );
 
 // Event form data

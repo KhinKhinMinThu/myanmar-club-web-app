@@ -90,11 +90,6 @@ class EventCreation extends Component {
     });
   };
 
-  handleBack = () => {
-    const { history } = this.props;
-    history.go(-1);
-  };
-
   beforeUpload = (file) => {
     // one file only
     if (file) {
@@ -130,6 +125,7 @@ class EventCreation extends Component {
 
   render() {
     const {
+      history,
       form: { getFieldDecorator },
       eventmgmtData: { isPostApiLoading },
     } = this.props;
@@ -176,7 +172,7 @@ class EventCreation extends Component {
                 <CreateButton />
               </Col>
               <Col {...actionColLayout}>
-                <BackButton clicked={this.handleBack} />
+                <BackButton history={history} />
               </Col>
             </Row>
           </EventCard>

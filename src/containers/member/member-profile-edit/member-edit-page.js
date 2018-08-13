@@ -10,7 +10,7 @@ import {
   CONFIRM_DELETEMEMBER,
   SHOWFOR,
 } from '../../../actions/message';
-import { DATETIME_FORMAT_DB, DATE_FORMAT } from '../../../actions/constants';
+import { DATETIME_FORMAT_DB } from '../../../actions/constants';
 import {
   SaveUpdateButton,
   BackButton,
@@ -45,24 +45,7 @@ class MemberEdit extends Component {
     fileList: [],
   };
 
-  componentWillMount() {
-    console.log('willMount');
-  }
-
-  componentWillReceiveProps() {
-    console.log('receiveprop');
-  }
-
-  componentWillUpdate() {
-    const {
-      membermgmtData: { memberData },
-    } = this.props;
-    // this.isApiCalled = !nextProps.membermgmtData.isGetApiLoading && isGetApiLoading;
-    console.log('willupdate', memberData);
-  }
-
   componentDidUpdate(prevProps) {
-    console.log('didupdate');
     const {
       membermgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
@@ -159,7 +142,7 @@ class MemberEdit extends Component {
     };
     return (
       <Spin spinning={isPostApiLoading} size="large">
-        <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
+        <Form onSubmit={this.onSubmit}>
           <ProfileCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
             <IdReadOnly decorator={getFieldDecorator} />
             <NameInput decorator={getFieldDecorator} />
@@ -214,87 +197,80 @@ const mapDispatchToProps = {
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
-  console.log('mapprop', memberData);
-  if (memberData) {
-    console.log('TRUE', memberData);
-    return {
-      uploadBtn: Form.createFormField({
-        value: memberData.photoLink
-          ? [{ uid: memberData.id, url: memberData.photoLink }]
-          : [],
-      }),
-      name: Form.createFormField({ value: memberData.name }),
-      gender: Form.createFormField({ value: memberData.gender }),
-      dateOfBirth: Form.createFormField({
-        value: moment(new Date(memberData.dateOfBirth)).format(DATE_FORMAT),
-      }),
-      nationality: Form.createFormField({ value: memberData.nationality }),
-      religion: Form.createFormField({ value: memberData.religion }),
-      maritalStatus: Form.createFormField({ value: memberData.maritalStatus }),
-      educationLevel: Form.createFormField({
-        value: memberData.educationLevel,
-      }),
-      occupation: Form.createFormField({ value: memberData.occupation }),
-      passType: Form.createFormField({ value: memberData.passType }),
-      idNumber: Form.createFormField({ value: memberData.idNumber }),
-      addressLine1: Form.createFormField({ value: memberData.addressLine1 }),
-      addressLine2: Form.createFormField({ value: memberData.addressLine2 }),
-      postalCode: Form.createFormField({ value: memberData.postalCode }),
-      emailAddress: Form.createFormField({ value: memberData.emailAddress }),
-      facebookAccount: Form.createFormField({
-        value: memberData.facebookAccount,
-      }),
-      areaCodeHomePhone: Form.createFormField({
-        value: memberData.homePhone
-          ? memberData.homePhone.substr(0, 2)
-          : memberData.homePhone,
-      }),
-      homePhone: Form.createFormField({
-        value: memberData.homePhone
-          ? memberData.homePhone.substr(2)
-          : memberData.homePhone,
-      }),
-      areaCodeMobilePhone: Form.createFormField({
-        value: memberData.mobilePhone
-          ? memberData.mobilePhone.substr(0, 2)
-          : memberData.mobilePhone,
-      }),
-      mobilePhone: Form.createFormField({
-        value: memberData.mobilePhone
-          ? memberData.mobilePhone.substr(2)
-          : memberData.mobilePhone,
-      }),
-      hobbies: Form.createFormField({ value: memberData.hobbies }),
-      // roleNames        :        [{id: "2", name: "admin"},{ id: "4",  name:"treasurer" }],
-      // subComInterest        :        [{id: "2", description: "develipment"},{ id: "4", "other interest" }],
-      isEcMember: Form.createFormField({
-        value: memberData.isEcMember === '1',
-      }),
-      membershipType: Form.createFormField({
-        value: memberData.membershipType,
-      }),
-      membershipStatus: Form.createFormField({
-        value: memberData.membershipStatus,
-      }),
-      createdDate: Form.createFormField({
-        value: moment(new Date(memberData.createdDate)).format(DATE_FORMAT),
-      }),
-      membershipExpiryDate: Form.createFormField({
-        value: moment(new Date(memberData.membershipExpiryDate)).format(
-          DATE_FORMAT,
-        ),
-      }),
-      lastPaymentDate: Form.createFormField({
-        value: memberData.lastPaymentDate
-          ? moment(new Date(memberData.lastPaymentDate)).format(DATE_FORMAT)
-          : memberData.lastPaymentDate,
-      }),
-      lastPaymentType: Form.createFormField({
-        value: memberData.lastPaymentType,
-      }),
-    };
-  }
-  return {};
+  const member = memberData || {};
+  return {
+    uploadBtn: Form.createFormField({
+      value: member.photoLink
+        ? [{ uid: member.id, url: member.photoLink }]
+        : [],
+    }),
+    id: Form.createFormField({ value: member.id }),
+    name: Form.createFormField({ value: member.name }),
+    gender: Form.createFormField({ value: member.gender }),
+    dateOfBirth: Form.createFormField({
+      value: moment(new Date(member.dateOfBirth)),
+    }),
+    nationality: Form.createFormField({ value: member.nationality }),
+    religion: Form.createFormField({ value: member.religion }),
+    maritalStatus: Form.createFormField({ value: member.maritalStatus }),
+    educationLevel: Form.createFormField({
+      value: member.educationLevel,
+    }),
+    occupation: Form.createFormField({ value: member.occupation }),
+    passType: Form.createFormField({ value: member.passType }),
+    idNumber: Form.createFormField({ value: member.idNumber }),
+    addressLine1: Form.createFormField({ value: member.addressLine1 }),
+    addressLine2: Form.createFormField({ value: member.addressLine2 }),
+    postalCode: Form.createFormField({ value: member.postalCode }),
+    emailAddress: Form.createFormField({ value: member.emailAddress }),
+    facebookAccount: Form.createFormField({
+      value: member.facebookAccount,
+    }),
+    areaCodeHomePhone: Form.createFormField({
+      value: member.homePhone
+        ? member.homePhone.substr(0, 2)
+        : member.homePhone,
+    }),
+    homePhone: Form.createFormField({
+      value: member.homePhone ? member.homePhone.substr(2) : member.homePhone,
+    }),
+    areaCodeMobilePhone: Form.createFormField({
+      value: member.mobilePhone
+        ? member.mobilePhone.substr(0, 2)
+        : member.mobilePhone,
+    }),
+    mobilePhone: Form.createFormField({
+      value: member.mobilePhone
+        ? member.mobilePhone.substr(2)
+        : member.mobilePhone,
+    }),
+    hobbies: Form.createFormField({ value: member.hobbies }),
+    // roleNames        :        [{id: "2", name: "admin"},{ id: "4",  name:"treasurer" }],
+    // subComInterest        :        [{id: "2", description: "develipment"},{ id: "4", "other interest" }],
+    isEcMember: Form.createFormField({
+      value: member.isEcMember,
+    }),
+    // membershipType: Form.createFormField({
+    //   value: member.membershipType,
+    // }),
+    // membershipStatus: Form.createFormField({
+    //   value: member.membershipStatus,
+    // }),
+    // createdDate: Form.createFormField({
+    //   value: moment(new Date(member.createdDate)).format(DATE_FORMAT),
+    // }),
+    // membershipExpiryDate: Form.createFormField({
+    //   value: moment(new Date(member.membershipExpiryDate)).format(DATE_FORMAT),
+    // }),
+    // lastPaymentDate: Form.createFormField({
+    //   value: member.lastPaymentDate
+    //     ? moment(new Date(member.lastPaymentDate)).format(DATE_FORMAT)
+    //     : member.lastPaymentDate,
+    // }),
+    // lastPaymentType: Form.createFormField({
+    //   value: member.lastPaymentType,
+    // }),
+  };
 };
 
 const FormMemberEditPage = Form.create({ mapPropsToFields })(MemberEdit);

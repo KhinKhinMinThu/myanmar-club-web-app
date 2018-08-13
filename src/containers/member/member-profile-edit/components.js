@@ -106,13 +106,13 @@ export const RenewButton = () => (
 export const BackButton = () => <FullButton>Go Back</FullButton>;
 
 // Member form data
-
+const initialValue = { initialValue: '' };
 const customInput = { style: { width: '200px' } };
 
 // id
 export const IdReadOnly = ({ decorator }) => (
   <FormItem {...layout} label="Member Id">
-    {decorator('id')(<Input readOnly />)}
+    {decorator('id')(<Input {...customInput} readOnly />)}
   </FormItem>
 );
 
@@ -162,7 +162,7 @@ export const DateOfBirthInput = ({ decorator }) => (
 // maritalStatus
 export const MaritalStatusSelect = ({ decorator }) => (
   <FormItem {...layout} label="Marital Status">
-    {decorator('maritalStatus')(
+    {decorator('maritalStatus', { initialValue: 'Single' })(
       <Select {...customInput} placeholder="Select marital status">
         <Option value="Single">Single</Option>
         <Option value="Married">Married</Option>
@@ -175,18 +175,24 @@ export const MaritalStatusSelect = ({ decorator }) => (
 
 // educationLevel
 export const EducationLevelInput = ({ decorator }) => (
-  <FormItem {...layout} label="Education Level">
-    {decorator('educationLevel', {
-      rules: [
-        {
-          required: true,
-          message: 'Please ender education level!',
-        },
-      ],
-    })(<Input {...customInput} placeholder="Education Level" />)}
-    <ExtraInfoText>
-      GCE A Level, Bachelor, Master, Doctoral (PhD) etc.
-    </ExtraInfoText>
+  <FormItem {...layout} label="Education Level" colon>
+    <Row gutter={8} type="flex" justify="start">
+      <Col {...inputLayout1}>
+        <FormItem>
+          {decorator('educationLevel', {
+            rules: [
+              {
+                required: true,
+                message: 'Please ender education level!',
+              },
+            ],
+          })(<Input {...customInput} placeholder="Education Level" />)}
+        </FormItem>
+      </Col>
+      <Col {...inputLayout2}>
+        <ExtraInfoText>GCE A Level/Bachelor/Master/(PhD) etc.</ExtraInfoText>
+      </Col>
+    </Row>
   </FormItem>
 );
 
@@ -207,7 +213,7 @@ export const OccupationInput = ({ decorator }) => (
 // passType
 export const PassTypeSelect = ({ decorator }) => (
   <FormItem {...layout} label="Singapore Pass">
-    {decorator('passType')(
+    {decorator('passType', initialValue)(
       <Select {...customInput} placeholder="Select pass type">
         <Option value="S Pass">S Pass</Option>
         <Option value="Employment Pass">Employment Pass</Option>
@@ -223,19 +229,33 @@ export const PassTypeSelect = ({ decorator }) => (
 // idNumber
 export const IdNumberInput = ({ decorator }) => (
   <FormItem {...layout} label="Identification Number">
-    {decorator('idNumber', {
-      rules: [
-        {
-          pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
-          message: 'The input is not a valid ID Number!',
-        },
-        {
-          required: true,
-          message: 'Please enter ID Number!',
-        },
-      ],
-    })(<Input {...customInput} maxLength="9" placeholder="NRIC/ FIN No." />)}
-    <ExtraInfoText>S1234567Z, G1234567Z etc.</ExtraInfoText>
+    <Row gutter={8} type="flex" justify="start">
+      <Col {...inputLayout1}>
+        <FormItem>
+          {decorator('idNumber', {
+            rules: [
+              {
+                pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
+                message: 'The input is not a valid ID Number!',
+              },
+              {
+                required: true,
+                message: 'Please enter ID Number!',
+              },
+            ],
+          })(
+            <Input
+              {...customInput}
+              maxLength="9"
+              placeholder="NRIC/ FIN No."
+            />,
+          )}
+        </FormItem>
+      </Col>
+      <Col {...inputLayout2}>
+        <ExtraInfoText>S1234567Z, G1234567Z etc.</ExtraInfoText>
+      </Col>
+    </Row>
   </FormItem>
 );
 
@@ -257,7 +277,7 @@ export const AddressInput = ({ decorator }) => (
       </Col>
       <Col {...inputLayout2}>
         <FormItem>
-          {decorator('addressLine2')(
+          {decorator('addressLine2', initialValue)(
             <Input {...customInput} placeholder="Street Address Line 2..." />,
           )}
         </FormItem>
@@ -298,15 +318,15 @@ export const EmailAddressInput = ({ decorator }) => (
           message: 'The input is not valid E-mail!',
         },
       ],
-    })(<Input {...customInput} placeholder="Email Address" />)}
+    })(<Input placeholder="Email Address" />)}
   </FormItem>
 );
 
 // facebookAccount
 export const FacebookAccountInput = ({ decorator }) => (
   <FormItem {...layout} label="Facebook Account">
-    {decorator('facebookAccount')(
-      <Input {...customInput} placeholder="Facebook Account" />,
+    {decorator('facebookAccount', initialValue)(
+      <Input placeholder="Facebook Account" />,
     )}
   </FormItem>
 );
@@ -322,8 +342,9 @@ export const HomePhoneInput = ({ decorator }) => {
     </Select>,
   );
   return (
-    <FormItem {...layout} label="Home Phone" style={{ marginBottom: 0 }}>
+    <FormItem {...layout} label="Home Phone">
       {decorator('homePhone', {
+        initialValue: '',
         rules: [
           {
             pattern: '^([0-9]{6,})$',
@@ -352,7 +373,7 @@ export const MobilePhoneInput = ({ decorator }) => {
     </Select>,
   );
   return (
-    <FormItem {...layout} label="Mobile No" style={{ marginBottom: 0 }}>
+    <FormItem {...layout} label="Mobile No">
       {decorator('mobilePhone', {
         rules: [
           {
@@ -380,7 +401,7 @@ export const MobilePhoneInput = ({ decorator }) => {
 // hobbies
 export const HobbiesInput = ({ decorator }) => (
   <FormItem {...layout} label="Hobbies">
-    {decorator('hobbies')(
+    {decorator('hobbies', initialValue)(
       <TextArea {...customInput} rows={2} placeholder="Hobbies" />,
     )}
   </FormItem>
@@ -392,7 +413,7 @@ export const HobbiesInput = ({ decorator }) => (
 // isEcMember
 export const IsEcMemberRadio = ({ decorator }) => (
   <FormItem {...layout} label="Committee Member?">
-    {decorator('isEcMember')(
+    {decorator('isEcMember', { initialValue: '0' })(
       <RadioGroup name="isEcMember">
         <RadioButton value="1">Yes</RadioButton>
         <RadioButton value="0">No</RadioButton>

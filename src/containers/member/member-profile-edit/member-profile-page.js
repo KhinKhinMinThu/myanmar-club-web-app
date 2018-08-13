@@ -18,11 +18,8 @@ class MemberProfile extends Component {
       computedMatch: {
         params: { id },
       },
-      dispatchResetState,
       performGetMemberData,
     } = this.props;
-    console.log('requested id', id);
-    dispatchResetState();
     if (id) performGetMemberData({ id });
   }
 
@@ -89,8 +86,8 @@ MemberProfile.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  membermgmtUI: state.eventmgmt.ui,
-  membermgmtData: state.eventmgmt.data,
+  membermgmtUI: state.membermgmt.ui,
+  membermgmtData: state.membermgmt.data,
 });
 
 const mapDispatchToProps = {

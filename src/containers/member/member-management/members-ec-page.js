@@ -136,6 +136,10 @@ class EcMembersPage extends Component {
 
     if (ecMembersList) this.membersList = this.prepareList(ecMembersList);
 
+    const header = this.membersList
+      ? 'Total EC members: '.concat(this.membersList.length)
+      : '';
+
     const rowSelection = {
       selectedRowKeys: selectedKeys,
       // handle check-box selection in the table
@@ -196,6 +200,7 @@ class EcMembersPage extends Component {
               sortedInfo={sortedInfo || {}}
               filteredInfo={filteredInfo || {}}
               currentTab={currentTab}
+              header={header}
             />
           </Col>
         </Row>
