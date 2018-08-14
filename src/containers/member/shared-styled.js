@@ -45,11 +45,6 @@ export const TabIcon = styled(Icon)`
 // end
 
 // Text
-export const MMText = styled.span`
-  font-family: Myanmar3;
-  text-align: justify;
-`;
-
 export const BoldText = styled.span`
   font-weight: bold;
 `;
@@ -62,12 +57,6 @@ export const BoldUnderlineText = styled.span`
 export const BottomUnder = styled.div`
   width: 100%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-`;
-
-export const ExtraInfoText = styled.span`
-  color: rgba(0, 0, 0, 0.4);
-  font-style: italic;
-  margin-left: 8;
 `;
 // end
 

@@ -10,10 +10,12 @@ import {
   CONFIRM_DELETEMEMBER,
   SHOWFOR,
 } from '../../../actions/message';
-import { DATETIME_FORMAT_DB } from '../../../actions/constants';
 import {
-  SaveUpdateButton,
-  BackButton,
+  DATETIME_FORMAT_DB,
+  NATIONALITY_LIST,
+  RELIGION_LIST,
+} from '../../../actions/constants';
+import {
   IdReadOnly,
   NameInput,
   GenderRadio,
@@ -31,11 +33,18 @@ import {
   MobilePhoneInput,
   HobbiesInput,
   IsEcMemberRadio,
-} from './components';
+  SubComInterest,
+  ProfilePhoto,
+  DeleteProfileSwitch,
+} from './shared/shared-components';
+import { SaveUpdateButton, BackButton } from './components';
+import NationalityInput from './shared/nationalityInput';
+import ReligionInput from './shared/religionInput';
 import { ProfileCard } from '../shared-styled';
 import {
   postDeleteMembers,
   postUpdateMember,
+  setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
@@ -69,13 +78,14 @@ class MemberEdit extends Component {
       },
       performUpdateMember,
       performDeleteMembers,
+      performMemberData,
     } = this.props;
 
     const { fileList } = this.state;
 
     // if user selects to delete member, it will be deleted without
     // updating the rest of the data even if the user changed anything else.
-    if (getFieldValue('deleteMember')) {
+    if (getFieldValue('deleteProfile')) {
       confirm({
         title: CONFIRM_DELETEMEMBER,
         onOk() {
@@ -89,22 +99,40 @@ class MemberEdit extends Component {
       validateFieldsAndScroll((error, values) => {
         if (!error) {
           const formValues = values;
+          console.log(formValues);
           const dateOfBirth = this.formatDateTime(formValues.dateOfBirth);
           const homePhone = formValues.homePhone
-            ? formValues.areaCode + formValues.homePhone
+            ? formValues.areaCodeHomePhone + formValues.homePhone
             : formValues.homePhone;
           const mobilePhone = formValues.mobilePhone
-            ? formValues.areaCode + formValues.mobilePhone
+            ? formValues.areaCodeMobilePhone + formValues.mobilePhone
             : formValues.mobilePhone;
+          const nationality = formValues.nationality === 'Others'
+            ? formValues.otherNationality
+            : formValues.nationality;
+          const religion = formValues.religion === 'Others'
+            ? formValues.otherReligion
+            : formValues.religion;
+          const subComInterest = [];
+          Object.entries(formValues).forEach((item) => {
+            if (item[0].includes('subComChk') && item[1]) {
+              subComInterest.push({ id: item[0].slice(-1) });
+            }
+          });
 
-          performUpdateMember({
+          const memberToUpdate = {
             ...formValues,
             id,
             dateOfBirth,
             homePhone,
             mobilePhone,
+            nationality,
+            religion,
+            subComInterest,
             uploadBtn: fileList,
-          });
+          };
+          // performMemberData(memberToUpdate);
+          performUpdateMember(memberToUpdate);
         }
       });
     }
@@ -129,9 +157,12 @@ class MemberEdit extends Component {
 
   render() {
     const {
-      form: { getFieldDecorator },
-      membermgmtData: { isPostApiLoading },
+      form,
+      form: { getFieldDecorator, getFieldValue },
+      membermgmtData: { isPostApiLoading, memberFormFields },
     } = this.props;
+    // console.log('......isOtherNat', getFieldValue('isOtherNat'));
+
     const actionColLayout = {
       xs: { span: 24 },
       sm: { span: 24 },
@@ -140,6 +171,12 @@ class MemberEdit extends Component {
       xl: { span: 12 },
       style: { marginBottom: 14 },
     };
+
+    const isOtherNat = getFieldValue('isOtherNat');
+    const isOtherRel = getFieldValue('isOtherRel');
+    const allSubComInterest = memberFormFields
+      ? memberFormFields.allSubComInterest
+      : [];
     return (
       <Spin spinning={isPostApiLoading} size="large">
         <Form onSubmit={this.onSubmit}>
@@ -148,11 +185,26 @@ class MemberEdit extends Component {
             <NameInput decorator={getFieldDecorator} />
             <GenderRadio decorator={getFieldDecorator} />
             <DateOfBirthInput decorator={getFieldDecorator} />
+            <NationalityInput
+              form={form}
+              decorator={getFieldDecorator}
+              isOtherNat={isOtherNat}
+            />
+            <ReligionInput
+              form={form}
+              decorator={getFieldDecorator}
+              isOtherRel={isOtherRel}
+            />
             <MaritalStatusSelect decorator={getFieldDecorator} />
             <EducationLevelInput decorator={getFieldDecorator} />
             <OccupationInput decorator={getFieldDecorator} />
             <PassTypeSelect decorator={getFieldDecorator} />
             <IdNumberInput decorator={getFieldDecorator} />
+            <ProfilePhoto
+              decorator={getFieldDecorator}
+              beforeUpload={this.beforeUpload}
+              removeFile={this.removeFile}
+            />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
@@ -161,7 +213,11 @@ class MemberEdit extends Component {
             <MobilePhoneInput decorator={getFieldDecorator} />
             <HobbiesInput decorator={getFieldDecorator} />
             <IsEcMemberRadio decorator={getFieldDecorator} />
-
+            <SubComInterest
+              decorator={getFieldDecorator}
+              allSubComInterest={allSubComInterest}
+            />
+            <DeleteProfileSwitch decorator={getFieldDecorator} />
             <br />
             <Row gutter={8}>
               <Col {...actionColLayout}>
@@ -184,6 +240,7 @@ MemberEdit.propTypes = {
 
   performUpdateMember: PropTypes.func.isRequired,
   performDeleteMembers: PropTypes.func.isRequired,
+  performMemberData: PropTypes.func.isRequired,
 
   membermgmtData: PropTypes.shape({}).isRequired,
 };
@@ -194,10 +251,30 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   performUpdateMember: postUpdateMember,
   performDeleteMembers: postDeleteMembers,
+  performMemberData: setMemberData,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   const member = memberData || {};
+  let isOtherNat;
+  let isOtherRel;
+  const subComInterest = {};
+  if (memberData) {
+    isOtherNat = NATIONALITY_LIST.includes(member.nationality.toLowerCase())
+      ? 't'
+      : 'f';
+    isOtherRel = RELIGION_LIST.includes(member.religion.toLowerCase())
+      ? 't'
+      : 'f';
+    member.subComInterest.forEach((item) => {
+      subComInterest['subComChk'.concat(item.id)] = Form.createFormField({
+        value: true,
+      });
+    });
+    // member.subComInterest.map{ subComChk1: Form.createFormField({ value: true }), subComChk2: Form.createFormField({ value: true }) };
+  }
+
+  // return the fields
   return {
     uploadBtn: Form.createFormField({
       value: member.photoLink
@@ -210,8 +287,26 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
     dateOfBirth: Form.createFormField({
       value: moment(new Date(member.dateOfBirth)),
     }),
-    nationality: Form.createFormField({ value: member.nationality }),
-    religion: Form.createFormField({ value: member.religion }),
+    // Nationality
+    nationality: Form.createFormField({
+      value: isOtherNat === 't' ? member.nationality : 'Others',
+    }),
+    otherNationality: Form.createFormField({
+      value: isOtherNat === 't' ? '' : member.nationality,
+    }),
+    isOtherNat: Form.createFormField({ value: isOtherNat }),
+    // end Nationality
+
+    // Religion
+    religion: Form.createFormField({
+      value: isOtherRel === 't' ? member.religion : 'Others',
+    }),
+    otherReligion: Form.createFormField({
+      value: isOtherRel === 't' ? '' : member.religion,
+    }),
+    isOtherRel: Form.createFormField({ value: isOtherRel }),
+    // end Religion
+
     maritalStatus: Form.createFormField({ value: member.maritalStatus }),
     educationLevel: Form.createFormField({
       value: member.educationLevel,
@@ -227,9 +322,7 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
       value: member.facebookAccount,
     }),
     areaCodeHomePhone: Form.createFormField({
-      value: member.homePhone
-        ? member.homePhone.substr(0, 2)
-        : member.homePhone,
+      value: member.homePhone ? member.homePhone.substr(0, 2) : '65',
     }),
     homePhone: Form.createFormField({
       value: member.homePhone ? member.homePhone.substr(2) : member.homePhone,
@@ -246,10 +339,11 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
     }),
     hobbies: Form.createFormField({ value: member.hobbies }),
     // roleNames        :        [{id: "2", name: "admin"},{ id: "4",  name:"treasurer" }],
-    // subComInterest        :        [{id: "2", description: "develipment"},{ id: "4", "other interest" }],
+    ...subComInterest,
     isEcMember: Form.createFormField({
       value: member.isEcMember,
     }),
+
     // membershipType: Form.createFormField({
     //   value: member.membershipType,
     // }),

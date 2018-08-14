@@ -37,8 +37,8 @@ function* asyncGetEventData(action) {
     const response = yield call(getEventData, action.id);
     const { eventData, errorMsg } = response.data;
     errMsg = errorMsg;
-    console.log('RESPONSE:', response);
     yield put({ type: EVENTDATA, payload: eventData });
+    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -55,6 +55,7 @@ function* asyncGetEventsData() {
     const { eventsData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: EVENTSDATA, payload: eventsData });
+    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -69,6 +70,8 @@ const postDeleteEvent = eventsToDelete => api.post(APIPOST_DELETE_EVENT, eventsT
 
 const postDeleteRSVP = eventRSVPToDelete => api.post(APIPOST_DELETE_EVENT_RSVP, eventRSVPToDelete);
 
+// not posting with api.post(APIPOST_ADD_EVENT, { newEvenToAdd });
+// in order to filter uncessary data
 const postNewEvent = newEventToAdd => api.post(APIPOST_ADD_EVENT, {
   name: newEventToAdd.name,
   description: newEventToAdd.description,
@@ -178,7 +181,7 @@ function* asyncPostProcessEvents(action) {
     const { errorMsg } = response.data;
     errMsg = errorMsg;
 
-    console.log('API RESPONSE.........', response.data);
+    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {

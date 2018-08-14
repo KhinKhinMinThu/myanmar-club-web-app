@@ -19,13 +19,8 @@ export const store = createStore(
 );
 
 const loginState = localStorage.getItem('loginState');
-console.log('loginstate', loginState);
+console.log('LoginState from localStorage:', loginState);
 if (loginState) {
-  console.log(
-    'getting loginState from storage',
-    loginState,
-    JSON.parse(loginState),
-  );
   store.dispatch({
     type: AUTHENTICATED_USER,
     payload: JSON.parse(loginState),

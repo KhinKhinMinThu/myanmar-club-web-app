@@ -38,13 +38,13 @@ export const ClaimTabs = ({ onChange, tabContents }) => {
   const tabTitles = {
     tab1: (
       <BoldText>
-        <TabIcon type="pay-circle-o" />
+        <TabIcon type="file-text" />
         New-Claims
       </BoldText>
     ),
     tab2: (
       <BoldText>
-        <TabIcon type="pay-circle-o" />
+        <TabIcon type="file-text" />
         Approved-Claims
       </BoldText>
     ),

@@ -14,7 +14,10 @@ import {
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
 } from '../../../actions/location';
-import { setIsLoggedIn } from '../../../reducers/login/login-data';
+import {
+  setLogout,
+  initialLoginState,
+} from '../../../reducers/login/login-data';
 import { locationChange } from '../../../reducers/router';
 
 const commonTitles = {
@@ -36,7 +39,7 @@ const adminTitles = {
     text: 'Members Management',
   },
   CLAIM_MANAGEMENT: {
-    icon: <MenuIcon type="pay-circle-o" />,
+    icon: <MenuIcon type="file-text" />,
     text: 'Claims Management',
   },
   EVENT_TRANSACTION: {
@@ -58,12 +61,11 @@ const MenuPanel = ({
 }) => {
   const onClick = (e) => {
     if (e.key === LOGOUT) {
-      performLogout(false);
+      performLogout(initialLoginState);
       // redirect to login page
       localStorage.clear();
-      console.log('cleared!!!!!!!!!!!');
+      console.log('cleared local storage');
     } else {
-      console.log('updateLocation!!!!!!!!!!!');
       const location = { ...currentLocation, pathname: e.key };
       updateLocation({ location });
     }
@@ -135,7 +137,7 @@ MenuPanel.propTypes = {
 };
 
 const mapDispatchToProps = {
-  performLogout: setIsLoggedIn,
+  performLogout: setLogout,
   updateLocation: locationChange,
 };
 

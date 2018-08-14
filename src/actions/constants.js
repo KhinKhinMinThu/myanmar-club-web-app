@@ -12,12 +12,16 @@ export const DEFAULT_DATETIME = '01-01-2000 00:00';
 export const DEFAULT_DATE = '01-01-2000';
 export const DEFAULT_TIME = '00:00';
 
+export const NATIONALITY_LIST = ['singaporean'];
+export const RELIGION_LIST = ['buddhism', 'islam', 'hinduism', 'christianity'];
+
 // APIGET API URLS
 export const APIGET_ROLEDATA = '/getRoleData';
 export const APIGET_MEMBERSDATA = '/admin/getMembersData';
 export const APIGET_CLAIMSDATA = '/claim/getClaimsData';
 export const APIGET_EVENTTRANSCDATA = '/event/getEventsTranscData';
 export const APIGET_EVENTSDATA = '/event/getEventsData';
+export const APIGET_MEBERFORMFIELDS = '/admin/memberFormFields';
 // end
 
 // POST API URLS
@@ -27,6 +31,7 @@ export const APIPOST_UPDATE_ROLE = '/updateRole';
 
 export const APIGET_MEMBERDATA = '/admin/getMemberData';
 export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';
+export const APIPOST_UPDATE_PROFILE = '/admin/updateProfile';
 
 export const APIPOST_APPROVE_CLAIMS = '/claim/approveClaims';
 export const APIPOST_UNAPPROVE_CLAIMS = '/claim/unapproveClaims';

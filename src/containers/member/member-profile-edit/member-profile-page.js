@@ -9,7 +9,10 @@ import {
   resetState,
   setCurrentTab,
 } from '../../../reducers/eventmgmt/eventmgmt-ui';
-import { getMemberData } from '../../../reducers/membermgmt/membermgmt-data';
+import {
+  getMemberData,
+  getMemberFormFields,
+} from '../../../reducers/membermgmt/membermgmt-data';
 import MemberEditPage from './member-edit-page';
 
 class MemberProfile extends Component {
@@ -18,9 +21,11 @@ class MemberProfile extends Component {
       computedMatch: {
         params: { id },
       },
+      performGetMemberFormFields,
       performGetMemberData,
     } = this.props;
-    if (id) performGetMemberData({ id });
+    performGetMemberFormFields();
+   // if (id) performGetMemberData({ id });
   }
 
   componentWillUpdate(nextProps) {
@@ -80,6 +85,7 @@ MemberProfile.propTypes = {
   dispatchResetState: PropTypes.func.isRequired,
   dispatchCurrentTab: PropTypes.func.isRequired,
   performGetMemberData: PropTypes.func.isRequired,
+  performGetMemberFormFields: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
@@ -94,6 +100,7 @@ const mapDispatchToProps = {
   dispatchResetState: resetState,
   dispatchCurrentTab: setCurrentTab,
   performGetMemberData: getMemberData,
+  performGetMemberFormFields: getMemberFormFields,
 };
 
 export default connect(

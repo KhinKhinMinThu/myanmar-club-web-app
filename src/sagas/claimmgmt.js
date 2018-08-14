@@ -32,6 +32,7 @@ function* asyncGetClaimsData() {
 
     yield put({ type: NEWCLAIMSDATA, payload: newClaimsList });
     yield put({ type: OLDCLAIMSDATA, payload: oldClaimsList });
+    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -64,6 +65,8 @@ function* asyncPostProcessClaims(action) {
     if (action.type === POST_UNAPPROVECLAIMS) response = yield call(postUnapproveClaims, action.claimsToUnApprove);
     const { errorMsg } = response.data;
     errMsg = errorMsg;
+
+    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {

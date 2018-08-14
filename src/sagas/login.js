@@ -29,9 +29,9 @@ function* asyncLogin(action) {
     yield put({ type: POST_APILOADING, payload: true });
 
     console.log('Calling API.........', action.type, action.userData);
-
     const response = yield call(postLogin, action.userData);
     console.log('API RESPONSE.........', response);
+
     const {
       isLoggedIn, isAdmin, token, errorMsg,
     } = response.data;

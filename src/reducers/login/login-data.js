@@ -1,5 +1,6 @@
 export const POST_LOGIN = '[LOGIN_DATA] POST_LOGIN';
 export const ISLOGGEDIN = '[LOGIN_DATA] ISLOGGEDIN';
+export const LOGOUT = '[LOGIN_DATA] LOGOUT';
 export const ISADMIN = '[LOGIN_DATA] ISADMIN';
 export const TOKEN = '[LOGIN_DATA] TOKEN';
 export const POST_APILOADING = '[LOGIN_DATA] POST_APILOADING';
@@ -12,21 +13,27 @@ export const setIsLoggedIn = isLoggedIn => ({
   type: ISLOGGEDIN,
   payload: isLoggedIn,
 });
+export const setLogout = initialLoginState => ({
+  type: LOGOUT,
+  payload: initialLoginState,
+});
 
-export default function (
-  state = {
-    isPostApiLoading: false,
-    postErrMsg: null,
-    isAdmin: false, // change to false
-    isLoggedIn: false, // change to false
-    token: 'dummytoken',
-  },
-  action,
-) {
+export const initialLoginState = {
+  isPostApiLoading: false,
+  postErrMsg: null,
+  isAdmin: false, // change to false
+  isLoggedIn: false, // change to false
+  token: 'dummytoken',
+};
+export default function (state = { ...initialLoginState }, action) {
   switch (action.type) {
     case AUTHENTICATED_USER:
       return {
         ...state,
+        ...action.payload,
+      };
+    case LOGOUT:
+      return {
         ...action.payload,
       };
     case ISADMIN:

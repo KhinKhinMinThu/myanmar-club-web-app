@@ -128,7 +128,7 @@ class NewClaimsPage extends Component {
 
     if (newClaimsList) this.claimsList = this.prepareList(newClaimsList);
     const header = this.claimsList
-      ? 'Approved Claim(s): '.concat(this.claimsList.length)
+      ? 'New Claim(s) to Approve: '.concat(this.claimsList.length)
       : '';
 
     const rowSelection = {

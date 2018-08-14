@@ -52,15 +52,11 @@ class EventPage extends Component {
     performNotifyEvent({ id, url });
   };
 
-  handleBack = () => {
-    const { history } = this.props;
-    history.go(-1);
-  };
-
   render() {
     const {
+      history,
       form: { getFieldDecorator },
-      eventmgmtData: { isPostApiLoading },
+      eventmgmtData: { isPostApiLoading, eventData },
     } = this.props;
     const shareColLayout = {
       xs: { span: 24, offset: 0 },
@@ -104,10 +100,10 @@ class EventPage extends Component {
           </Row>
           <Row gutter={8}>
             <Col {...actionColLayout}>
-              <EditEventButton eventId={this.eventId} />
+              <EditEventButton eventId={eventData ? eventData.id : ''} />
             </Col>
             <Col {...actionColLayout}>
-              <BackButton clicked={this.handleBack} />
+              <BackButton history={history} />
             </Col>
           </Row>
         </EventCard>

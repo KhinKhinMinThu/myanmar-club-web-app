@@ -313,7 +313,7 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
     areaCode: Form.createFormField({
       value: event.mobilePhone
         ? event.mobilePhone.substr(0, 2)
-        : event.mobilePhone,
+        : '65',
     }),
     mobilePhone: Form.createFormField({
       value: event.mobilePhone
