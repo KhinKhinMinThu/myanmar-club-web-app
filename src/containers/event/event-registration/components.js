@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Tabs, Button, Form, Input,
+  Tabs, Button, Form, Input, DatePicker, Radio,
 } from 'antd';
 import { EVENT_EDIT } from '../../../actions/location';
 import {
@@ -8,11 +8,15 @@ import {
   BoldText,
   FullWidthTable,
   FullButton,
+  ExtraInfoText,
 } from '../shared-styled';
 import { layout } from '../shared-components';
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+const MonthPicker = DatePicker;
 const readOnlyInput = {
   style: {
     border: 0,
@@ -24,6 +28,98 @@ const readOnlyInput = {
   readOnly: true,
   size: 'small',
 };
+
+// Card Num input
+export const CardNumInput = ({ decorator }) => (
+  <FormItem {...layout} label="Card Number">
+    {decorator('cardNumber', {
+      rules: [
+        {
+          pattern: '^([0-9]{16})$',
+          message: 'The input is not a 16-digits card number!',
+        },
+        {
+          required: true,
+          message: 'Please enter card number!',
+        },
+      ],
+    })(<Input maxLength="16" type="text" />)}
+    <br />
+    <ExtraInfoText style={{ marginTop: '0px' }}>
+      {' '}
+      {'Do not include space or dashes "-".'}
+    </ExtraInfoText>
+  </FormItem>
+);
+
+// Card Security input
+export const CardSecurityCodeInput = ({ decorator }) => (
+  <FormItem {...layout} label="Security Code">
+    {decorator('cardSecurityCode', {
+      rules: [
+        {
+          pattern: '^([0-9]{3,})$',
+          message: 'The input is not a 16-digits card number!',
+        },
+        {
+          required: true,
+          message: 'Please enter card security code!',
+        },
+      ],
+    })(<Input maxLength="4" type="text" />)}
+  </FormItem>
+);
+
+// Name on card input
+export const NameOnCardInput = ({ decorator }) => (
+  <FormItem {...layout} label="Name on Card">
+    {decorator('nameOnCard', {
+      rules: [
+        {
+          required: true,
+          message: 'Please enter cardholder name!',
+        },
+      ],
+    })(<Input type="text" />)}
+  </FormItem>
+);
+
+// Card expiry
+export const CardExpiryPicker = ({ decorator }) => (
+  <FormItem {...layout} label="Expiry Date">
+    {decorator('cardExpiry', {
+      rules: [
+        {
+          required: true,
+          message: 'Please enter card expiry month and year!',
+        },
+      ],
+    })(<MonthPicker placeholder="Select month and year" format="MM-YYYY" />)}
+    <ExtraInfoText>MM-YYYY</ExtraInfoText>
+  </FormItem>
+);
+
+// Payment Button
+export const PaymentButton = ({ clicked }) => (
+  <FullButton type="primary" htmlType="submit" onClick={clicked}>
+    Make Payment Now
+  </FullButton>
+);
+
+// Payment Radio
+export const PaymentTypeRadio = ({ decorator, changed }) => (
+  <FormItem {...layout} label="Payment Method">
+    {decorator('paymentType', {
+      initialValue: 'DP',
+    })(
+      <RadioGroup name="paymentTypeRdo" defaultValue="DP" onChange={changed}>
+        <RadioButton value="DP">Direct Online Payment</RadioButton>
+        <RadioButton value="BT">Bank Transfer</RadioButton>
+        <RadioButton value="CT">Cash Payment</RadioButton>
+      </RadioGroup>,
+    )}
+  </FormItem>
+);
 
 /* eslint react/prop-types: 0 */
 // ALL FORM ITEM MUST PASS IN decorator!
@@ -74,9 +170,6 @@ export const EventData = ({ decorator }) => (
       )}
     </FormItem>
 
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Id">
-      {decorator('id')(<Input {...readOnlyInput} />)}
-    </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Name">
       {decorator('name')(<Input {...readOnlyInput} />)}
     </FormItem>

@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import {
-  Form, Row, Col, message,
-} from 'antd';
+import { Form, message, Card } from 'antd';
 
 import { SUCCESS_NOTIFYEVENT, SHOWFOR } from '../../../actions/message';
 import {
@@ -17,15 +15,21 @@ import {
 import { PUBLIC_EVENT_VIEW } from '../../../actions/location';
 import {
   EventData,
-  EditEventButton,
-  ShareFacebookButton,
-  NotifyMsgButton,
+  NameOnCardInput,
+  CardNumInput,
+  CardExpiryPicker,
+  CardSecurityCodeInput,
+  PaymentButton,
+  PaymentTypeRadio,
 } from './components';
-import { EventCard } from '../shared-styled';
+import { EventCard, EventCardSmall } from '../shared-styled';
 import { BackButton } from '../shared-components';
 import { postNotifyEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
+const { FormItem } = Form.Item;
 class EventPage extends Component {
+  state = { showDirectPayment: true };
+
   componentDidUpdate(prevProps) {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
@@ -51,59 +55,59 @@ class EventPage extends Component {
     performNotifyEvent({ id, url });
   };
 
+  toggleDirectPayment = (e) => {
+    // console.log('toggleDirectPayment');
+    const { showDirectPayment } = this.state;
+    const { form } = this.props;
+
+    if (e.target.value === 'DP' && !showDirectPayment) {
+      this.setState({ showDirectPayment: true });
+      // unhide and reset the fields with validator
+      form.getFieldDecorator('cardNumInput', { hidden: false });
+      form.getFieldDecorator('cardSecInput', { hidden: false });
+      form.resetFields(['cardNumInput', 'cardSecInput']);
+    }
+    if (e.target.value !== 'DP' && showDirectPayment) {
+      this.setState({ showDirectPayment: false });
+      // hide the fields with validator
+      form.getFieldDecorator('cardNumInput', { hidden: true });
+      form.getFieldDecorator('cardSecInput', { hidden: true });
+    }
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
-      eventmgmtData: { isPostApiLoading },
     } = this.props;
-    const shareColLayout = {
-      xs: { span: 24, offset: 0 },
-      sm: { span: 24, offset: 0 },
-      md: { span: 24, offset: 0 },
-      lg: { span: 12, offset: 0 },
-      xl: { span: 12, offset: 0 },
-      style: { marginBottom: 14 },
-    };
-    const actionColLayout = {
-      xs: { span: 24 },
-      sm: { span: 24 },
-      md: { span: 24 },
-      lg: { span: 12 },
-      xl: { span: 12 },
-      style: { marginBottom: 14 },
-    };
+    const { showDirectPayment } = this.state;
 
+    let creditCardForm = null;
+    if (showDirectPayment) {
+      creditCardForm = (
+        <FormItem label=" " colon={false}>
+          <Card>
+            <NameOnCardInput decorator={getFieldDecorator} />
+            <CardNumInput decorator={getFieldDecorator} />
+            <CardExpiryPicker decorator={getFieldDecorator} />
+            <CardSecurityCodeInput decorator={getFieldDecorator} />
+            <PaymentButton onClick={this.handleCreditCardForm} />
+          </Card>
+        </FormItem>
+      );
+    }
     return (
       <div>
         <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
           <EventData decorator={getFieldDecorator} />
           <br />
-          <Row gutter={8}>
-            <Col
-              {...shareColLayout}
-              {...{
-                lg: { span: 6, offset: 6 },
-                xl: { span: 6, offset: 6 },
-              }}
-            >
-              <ShareFacebookButton /> Share on facebook
-            </Col>
-            <Col {...shareColLayout}>
-              <NotifyMsgButton
-                onClickNotify={this.onClickNotify}
-                loading={isPostApiLoading}
-              />{' '}
-              Notify Club Members
-            </Col>
-          </Row>
-          <Row gutter={8}>
-            <Col {...actionColLayout}>
-              <EditEventButton eventId={this.eventId} />
-            </Col>
-            <Col {...actionColLayout}>
-              <BackButton />
-            </Col>
-          </Row>
+          <EventCardSmall title="Event Registration">
+            {creditCardForm}
+            <PaymentTypeRadio
+              decorator={getFieldDecorator}
+              changed={this.toggleDirectPayment}
+            />
+            <BackButton />
+          </EventCardSmall>
         </EventCard>
       </div>
     );
@@ -146,7 +150,6 @@ const mapPropsToFields = ({
 
   return {
     photoLink: Form.createFormField({ value: eventData.photoLink }),
-    id: Form.createFormField({ value: eventData.id }),
     name: Form.createFormField({ value: eventData.name }),
     description: Form.createFormField({ value: eventData.description }),
     location: Form.createFormField({
