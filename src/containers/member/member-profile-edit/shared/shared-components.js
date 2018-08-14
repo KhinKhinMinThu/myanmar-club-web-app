@@ -380,10 +380,10 @@ export const HobbiesInput = ({ decorator }) => (
 );
 
 // isEcMember
-export const IsEcMemberRadio = ({ decorator }) => (
+export const IsEcMemberRadio = ({ decorator, onChange }) => (
   <FormItem {...layout} label="Committee Member?">
     {decorator('isEcMember', { initialValue: '0' })(
-      <RadioGroup name="isEcMember">
+      <RadioGroup name="isEcMember" onChange={onChange}>
         <RadioButton value="1">Yes</RadioButton>
         <RadioButton value="0">No</RadioButton>
       </RadioGroup>,

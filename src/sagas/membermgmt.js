@@ -38,13 +38,13 @@ function* asyncGetMemberData(action) {
       response = yield call(getMemberData, action.id);
       const { memberData, errorMsg } = response.data;
       errMsg = errorMsg;
-      // delete below
 
-      const subComInterest = [
-        { id: '2', description: 'develipment' },
-        { id: '4', description: 'other interest' },
-      ];
-      memberData.subComInterest = subComInterest.map;
+      // delete below
+      // const subComInterest = [
+      //   { id: '2', description: 'develipment' },
+      //   { id: '4', description: 'other interest' },
+      // ];
+      // memberData.subComInterest = subComInterest.map;
       // end delete
 
       yield put({ type: MEMBERDATA, payload: memberData });
@@ -53,29 +53,50 @@ function* asyncGetMemberData(action) {
       response = yield call(getMemberFormFields);
       const { memberFormFields, errorMsg } = response.data;
       errMsg = errorMsg;
+
       // delete below
-      const allSubComInterest = [
-        {
-          id: '1',
-          description:
-            'မြန်မာ့ယဉ်ကျေးမှုအနုပညာ ထိန်းသိမ်းမြှင့်တင် ပျံ့ပွားရေး Sub-Committee',
-        },
-        {
-          id: '2',
-          description:
-            'စာပေ၊ ဗဟုသုတ၊ တတ်သိပညာ မြှင့်တင် ပျံ့ပွားရေး Sub-Committee',
-        },
-        {
-          id: '3',
-          description:
-            'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး',
-        },
-        {
-          id: '4',
-          description: 'မြန်မာ့အားကစားကဏ္ဍ ပံ့ပိုးကူညီရေး Sub-Committee',
-        },
-      ];
-      memberFormFields.allSubComInterest = allSubComInterest;
+      // const memberFormFields = {};
+      // const allSubComInterest = [
+      //   {
+      //     id: '1',
+      //     description:
+      //       'မြန်မာ့ယဉ်ကျေးမှုအနုပညာ ထိန်းသိမ်းမြှင့်တင် ပျံ့ပွားရေး Sub-Committee',
+      //   },
+      //   {
+      //     id: '2',
+      //     description:
+      //       'စာပေ၊ ဗဟုသုတ၊ တတ်သိပညာ မြှင့်တင် ပျံ့ပွားရေး Sub-Committee',
+      //   },
+      //   {
+      //     id: '3',
+      //     description:
+      //       'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး',
+      //   },
+      //   {
+      //     id: '4',
+      //     description: 'မြန်မာ့အားကစားကဏ္ဍ ပံ့ပိုးကူညီရေး Sub-Committee',
+      //   },
+      // ];
+      // memberFormFields.allSubComInterest = allSubComInterest;
+
+      // const allRoles = [
+      //   {
+      //     description: 'Authorized for all functions',
+      //     id: '1',
+      //     name: 'Admin',
+      //   },
+      //   {
+      //     description: 'Authorized for Finance Function',
+      //     id: '2',
+      //     name: 'Treasurer',
+      //   },
+      //   {
+      //     description: 'Authorized for Event Functions',
+      //     id: '3',
+      //     name: 'IT Person',
+      //   },
+      // ];
+      // memberFormFields.allRoles = allRoles;
       // end delete
 
       memberFormFields.allSubComInterest.forEach((item, index) => {
@@ -84,6 +105,13 @@ function* asyncGetMemberData(action) {
           id: 'subComChk'.concat(item.id),
         };
       });
+      // memberFormFields.allRoles.forEach((item, index) => {
+      //   memberFormFields.allRoles[index] = {
+      //     ...item,
+      //     id: 'roleChk'.concat(item.id),
+      //   };
+      // });
+
       yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
     }
     console.log('API RESPONSE.........', response);
@@ -142,6 +170,7 @@ const postUpdateMember = memberToUpdate => api.post(APIPOST_UPDATE_PROFILE, {
   nationality: memberToUpdate.nationality,
   religion: memberToUpdate.religion,
   subComInterest: memberToUpdate.subComInterest,
+  roleNames: memberToUpdate.roleNames,
 });
 
 function* asyncPostProcessMembers(action) {

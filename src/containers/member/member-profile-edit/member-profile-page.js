@@ -25,7 +25,7 @@ class MemberProfile extends Component {
       performGetMemberData,
     } = this.props;
     performGetMemberFormFields();
-   // if (id) performGetMemberData({ id });
+    if (id) performGetMemberData({ id });
   }
 
   componentWillUpdate(nextProps) {

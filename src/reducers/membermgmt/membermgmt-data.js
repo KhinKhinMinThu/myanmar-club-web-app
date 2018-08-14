@@ -62,9 +62,10 @@ export default function (
     postErrMsg: null,
     ecMembersList: null,
     clubMembersList: null,
+    memberData1: null,
 
     // reset back to null
-    memberData: {
+    memberData1: {
       id: '2',
       name: 'Yamin',
       gender: 'Female',
@@ -88,14 +89,13 @@ export default function (
       mobilePhone: '65696090',
       hobbies: 'Swimming',
       isEcMember: '1',
-
       nationality: 'Korean',
       religion: 'kkkm',
       subComInterest: [{ id: '1' }, { id: '2' }],
+      roleNames: [{ id: '1', name: 'Admin' }, { id: '3', name: 'treasurer' }],
+
       memberRoleToAdd: ['1', '2'],
       memberRoleToRemove: ['3'],
-      subComInterestToCheck: ['1', '2'],
-
       membershipType: 'Life',
       membershipStatus: 'Active',
       PaymentType: 'Cash',

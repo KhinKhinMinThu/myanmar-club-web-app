@@ -1,18 +1,18 @@
 import React from 'react';
-import {
-  Tabs, Form, Radio, Select, Transfer,
-} from 'antd';
+import { Form, Tabs, Select } from 'antd';
 import {
   TabIcon,
   BoldText,
   FullButton,
-  BoldUnderlineText,
+  // BoldUnderlineText,
 } from '../shared-styled';
+import { layout } from './shared/shared-components';
+import { ExtraInfoText } from './shared/shared-styled';
 
 const { TabPane } = Tabs;
-// const FormItem = Form.Item;
+const FormItem = Form.Item;
 // const RadioGroup = Radio.Group;
-// const { Option } = Select;
+const { Option } = Select;
 
 /* eslint react/prop-types: 0 */
 export const ProfileTabs = ({ onChange, tabContents, props }) => {
@@ -60,6 +60,43 @@ export const RenewButton = () => (
 // BackButton
 export const BackButton = () => <FullButton>Go Back</FullButton>;
 
+export const RoleInput = ({ decorator, allRoles, form }) => {
+  // const { decorator, allRoles } = this.props;
+
+  const children = [];
+  const description = [];
+  allRoles.forEach((item) => {
+    description.push(`${item.name}: ${item.description}`);
+    children.push(<Option key={item.id}>{item.name}</Option>);
+  });
+
+  return (
+    <FormItem {...layout} label="Roles" colon>
+      {decorator('roleNames', {
+        getValueFromEvent: (value) => {
+          const { getFieldValue } = form;
+          if (getFieldValue('isEcMember') === '0') return [];
+          if (value.includes('1')) return ['1'];
+          return value;
+        },
+      })(
+        <Select
+          mode="multiple"
+          placeholder="Please select"
+          style={{ width: '100%' }}
+        >
+          {children}
+        </Select>,
+      )}
+      {description.map(item => (
+        <ExtraInfoText key={item}>
+          {item}
+          <br />
+        </ExtraInfoText>
+      ))}
+    </FormItem>
+  );
+};
 // ********************************************************************************************
 // ********************************************************************************************
 // ********************************************************************************************

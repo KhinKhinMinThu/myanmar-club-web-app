@@ -7,5 +7,4 @@ export const MMText = styled.span`
 export const ExtraInfoText = styled.span`
   color: rgba(0, 0, 0, 0.4);
   font-style: italic;
-  margin-left: 8;
 `;

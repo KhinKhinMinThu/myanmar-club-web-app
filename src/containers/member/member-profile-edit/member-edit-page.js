@@ -40,6 +40,7 @@ import {
 import { SaveUpdateButton, BackButton } from './components';
 import NationalityInput from './shared/nationalityInput';
 import ReligionInput from './shared/religionInput';
+import RoleInput from './shared/roleInput';
 import { ProfileCard } from '../shared-styled';
 import {
   postDeleteMembers,
@@ -68,6 +69,16 @@ class MemberEdit extends Component {
       message.success(SUCCESS_UPDATEMEMBER, SHOWFOR);
     }
   }
+
+  onChange = (e) => {
+    const { value } = e.target;
+    const {
+      form: { setFieldsValue },
+    } = this.props;
+    if (value === '0') {
+      setFieldsValue({ roleNames: [] });
+    }
+  };
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -119,7 +130,8 @@ class MemberEdit extends Component {
               subComInterest.push({ id: item[0].slice(-1) });
             }
           });
-
+          const roleNames = [];
+          formValues.roleNames.forEach(item => roleNames.push({ id: item }));
           const memberToUpdate = {
             ...formValues,
             id,
@@ -129,9 +141,10 @@ class MemberEdit extends Component {
             nationality,
             religion,
             subComInterest,
+            roleNames,
             uploadBtn: fileList,
           };
-          // performMemberData(memberToUpdate);
+          performMemberData(memberToUpdate);
           performUpdateMember(memberToUpdate);
         }
       });
@@ -161,8 +174,6 @@ class MemberEdit extends Component {
       form: { getFieldDecorator, getFieldValue },
       membermgmtData: { isPostApiLoading, memberFormFields },
     } = this.props;
-    // console.log('......isOtherNat', getFieldValue('isOtherNat'));
-
     const actionColLayout = {
       xs: { span: 24 },
       sm: { span: 24 },
@@ -177,6 +188,8 @@ class MemberEdit extends Component {
     const allSubComInterest = memberFormFields
       ? memberFormFields.allSubComInterest
       : [];
+    const allRoles = memberFormFields ? memberFormFields.allRoles : [];
+
     return (
       <Spin spinning={isPostApiLoading} size="large">
         <Form onSubmit={this.onSubmit}>
@@ -212,10 +225,18 @@ class MemberEdit extends Component {
             <HomePhoneInput decorator={getFieldDecorator} />
             <MobilePhoneInput decorator={getFieldDecorator} />
             <HobbiesInput decorator={getFieldDecorator} />
-            <IsEcMemberRadio decorator={getFieldDecorator} />
             <SubComInterest
               decorator={getFieldDecorator}
               allSubComInterest={allSubComInterest}
+            />
+            <IsEcMemberRadio
+              decorator={getFieldDecorator}
+              onChange={this.onChange}
+            />
+            <RoleInput
+              form={form}
+              decorator={getFieldDecorator}
+              allRoles={allRoles}
             />
             <DeleteProfileSwitch decorator={getFieldDecorator} />
             <br />
@@ -259,6 +280,7 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   let isOtherNat;
   let isOtherRel;
   const subComInterest = {};
+  const roleNames = [];
   if (memberData) {
     isOtherNat = NATIONALITY_LIST.includes(member.nationality.toLowerCase())
       ? 't'
@@ -270,6 +292,9 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
       subComInterest['subComChk'.concat(item.id)] = Form.createFormField({
         value: true,
       });
+    });
+    member.roleNames.forEach((item) => {
+      roleNames.push(item.id);
     });
     // member.subComInterest.map{ subComChk1: Form.createFormField({ value: true }), subComChk2: Form.createFormField({ value: true }) };
   }
@@ -338,11 +363,11 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
         : member.mobilePhone,
     }),
     hobbies: Form.createFormField({ value: member.hobbies }),
-    // roleNames        :        [{id: "2", name: "admin"},{ id: "4",  name:"treasurer" }],
     ...subComInterest,
     isEcMember: Form.createFormField({
       value: member.isEcMember,
     }),
+    roleNames: Form.createFormField({ value: roleNames }),
 
     // membershipType: Form.createFormField({
     //   value: member.membershipType,
