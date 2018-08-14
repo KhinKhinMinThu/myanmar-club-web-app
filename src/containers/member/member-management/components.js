@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import {
   Tabs, Button, Form, Modal, Col, Input,
 } from 'antd';
 import { MEMBER_EDIT } from '../../../actions/location';
+import { DEFAULT_DATE, DATE_FORMAT } from '../../../actions/constants';
 import {
   FullWidthTable,
   TableActionButton,
@@ -172,7 +174,13 @@ const displayMembership = member => [
   { label: 'Membership Type', text: member.membershipType || '-' },
   { label: 'Membership Status', text: member.membershipStatus || '-' },
   { label: 'Joined Date', text: member.createdDate || '-' },
-  { label: 'Membership Expiry Date', text: member.membershipExpiryDate || '-' },
+  {
+    label: 'Membership Expiry Date',
+    text:
+      moment(member.membershipExpiryDate).format(DATE_FORMAT) === DEFAULT_DATE
+        ? '-'
+        : member.membershipExpiryDate,
+  },
   { label: 'Last Payment Date', text: member.lastPaymentDate || '-' },
   { label: 'Last Payment Type', text: member.lastPaymentType || '-' },
 ];

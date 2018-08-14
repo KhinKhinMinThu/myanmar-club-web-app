@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal,
+  Form, message, Row, Col, Spin, Modal, Card,
 } from 'antd';
 import {
   SUCCESS_UPDATEMEMBER,
@@ -37,11 +38,9 @@ import {
   ProfilePhoto,
   DeleteProfileSwitch,
 } from './shared/shared-components';
-import { SaveUpdateButton, BackButton } from './components';
+import { RoleInput, SaveUpdateButton, BackButton } from './components';
 import NationalityInput from './shared/nationalityInput';
 import ReligionInput from './shared/religionInput';
-import RoleInput from './shared/roleInput';
-import { ProfileCard } from '../shared-styled';
 import {
   postDeleteMembers,
   postUpdateMember,
@@ -58,7 +57,9 @@ class MemberEdit extends Component {
   componentDidUpdate(prevProps) {
     const {
       membermgmtData: { isPostApiLoading, postErrMsg },
+      membermgmtUI: { currentTab },
     } = this.props;
+    if (currentTab !== 'tab2') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
@@ -170,10 +171,18 @@ class MemberEdit extends Component {
 
   render() {
     const {
+      history,
       form,
       form: { getFieldDecorator, getFieldValue },
       membermgmtData: { isPostApiLoading, memberFormFields },
     } = this.props;
+    const layout = {
+      xs: { span: 24 },
+      sm: { span: 24 },
+      md: { span: 24 },
+      lg: { span: 12 },
+      xl: { span: 12 },
+    };
     const actionColLayout = {
       xs: { span: 24 },
       sm: { span: 24 },
@@ -193,62 +202,86 @@ class MemberEdit extends Component {
     return (
       <Spin spinning={isPostApiLoading} size="large">
         <Form onSubmit={this.onSubmit}>
-          <ProfileCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
-            <IdReadOnly decorator={getFieldDecorator} />
-            <NameInput decorator={getFieldDecorator} />
-            <GenderRadio decorator={getFieldDecorator} />
-            <DateOfBirthInput decorator={getFieldDecorator} />
-            <NationalityInput
-              form={form}
-              decorator={getFieldDecorator}
-              isOtherNat={isOtherNat}
-            />
-            <ReligionInput
-              form={form}
-              decorator={getFieldDecorator}
-              isOtherRel={isOtherRel}
-            />
-            <MaritalStatusSelect decorator={getFieldDecorator} />
-            <EducationLevelInput decorator={getFieldDecorator} />
-            <OccupationInput decorator={getFieldDecorator} />
-            <PassTypeSelect decorator={getFieldDecorator} />
-            <IdNumberInput decorator={getFieldDecorator} />
-            <ProfilePhoto
-              decorator={getFieldDecorator}
-              beforeUpload={this.beforeUpload}
-              removeFile={this.removeFile}
-            />
-            <AddressInput decorator={getFieldDecorator} />
-            <PostalCodeInput decorator={getFieldDecorator} />
-            <EmailAddressInput decorator={getFieldDecorator} />
-            <FacebookAccountInput decorator={getFieldDecorator} />
-            <HomePhoneInput decorator={getFieldDecorator} />
-            <MobilePhoneInput decorator={getFieldDecorator} />
-            <HobbiesInput decorator={getFieldDecorator} />
-            <SubComInterest
-              decorator={getFieldDecorator}
-              allSubComInterest={allSubComInterest}
-            />
-            <IsEcMemberRadio
-              decorator={getFieldDecorator}
-              onChange={this.onChange}
-            />
-            <RoleInput
-              form={form}
-              decorator={getFieldDecorator}
-              allRoles={allRoles}
-            />
-            <DeleteProfileSwitch decorator={getFieldDecorator} />
-            <br />
-            <Row gutter={8}>
-              <Col {...actionColLayout}>
-                <SaveUpdateButton />
-              </Col>
-              <Col {...actionColLayout}>
-                <BackButton />
-              </Col>
-            </Row>
-          </ProfileCard>
+          <Row gutter={8} justify="start">
+            <Col span={24}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <IdReadOnly decorator={getFieldDecorator} />
+              </Card>
+            </Col>
+          </Row>
+          <Row gutter={8} justify="start">
+            <Col {...layout}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <NameInput decorator={getFieldDecorator} />
+                <GenderRadio decorator={getFieldDecorator} />
+                <DateOfBirthInput decorator={getFieldDecorator} />
+                <NationalityInput
+                  form={form}
+                  decorator={getFieldDecorator}
+                  isOtherNat={isOtherNat}
+                />
+                <ReligionInput
+                  form={form}
+                  decorator={getFieldDecorator}
+                  isOtherRel={isOtherRel}
+                />
+              </Card>
+            </Col>
+            <Col {...layout}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <MaritalStatusSelect decorator={getFieldDecorator} />
+                <EducationLevelInput decorator={getFieldDecorator} />
+                <OccupationInput decorator={getFieldDecorator} />
+                <PassTypeSelect decorator={getFieldDecorator} />
+                <IdNumberInput decorator={getFieldDecorator} />
+              </Card>
+            </Col>
+          </Row>
+          <Row gutter={8} justify="start">
+            <Col span={24}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <ProfilePhoto
+                  decorator={getFieldDecorator}
+                  beforeUpload={this.beforeUpload}
+                  removeFile={this.removeFile}
+                />
+                <AddressInput decorator={getFieldDecorator} />
+                <PostalCodeInput decorator={getFieldDecorator} />
+                <EmailAddressInput decorator={getFieldDecorator} />
+                <FacebookAccountInput decorator={getFieldDecorator} />
+                <HomePhoneInput decorator={getFieldDecorator} />
+                <MobilePhoneInput decorator={getFieldDecorator} />
+                <HobbiesInput decorator={getFieldDecorator} />
+                <SubComInterest
+                  decorator={getFieldDecorator}
+                  allSubComInterest={allSubComInterest}
+                />
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <IsEcMemberRadio
+                  decorator={getFieldDecorator}
+                  onChange={this.onChange}
+                />
+                <RoleInput
+                  form={form}
+                  decorator={getFieldDecorator}
+                  allRoles={allRoles}
+                />
+                <DeleteProfileSwitch decorator={getFieldDecorator} />
+                <br />
+                <Row gutter={8}>
+                  <Col {...actionColLayout}>
+                    <SaveUpdateButton />
+                  </Col>
+                  <Col {...actionColLayout}>
+                    <BackButton history={history} />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
         </Form>
       </Spin>
     );
@@ -256,6 +289,7 @@ class MemberEdit extends Component {
 }
 
 MemberEdit.propTypes = {
+  history: PropTypes.shape({}).isRequired,
   computedMatch: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
 
@@ -263,9 +297,11 @@ MemberEdit.propTypes = {
   performDeleteMembers: PropTypes.func.isRequired,
   performMemberData: PropTypes.func.isRequired,
 
+  membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
 };
 const mapStateToProps = state => ({
+  membermgmtUI: state.membermgmt.ui,
   membermgmtData: state.membermgmt.data,
 });
 
@@ -368,33 +404,11 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
       value: member.isEcMember,
     }),
     roleNames: Form.createFormField({ value: roleNames }),
-
-    // membershipType: Form.createFormField({
-    //   value: member.membershipType,
-    // }),
-    // membershipStatus: Form.createFormField({
-    //   value: member.membershipStatus,
-    // }),
-    // createdDate: Form.createFormField({
-    //   value: moment(new Date(member.createdDate)).format(DATE_FORMAT),
-    // }),
-    // membershipExpiryDate: Form.createFormField({
-    //   value: moment(new Date(member.membershipExpiryDate)).format(DATE_FORMAT),
-    // }),
-    // lastPaymentDate: Form.createFormField({
-    //   value: member.lastPaymentDate
-    //     ? moment(new Date(member.lastPaymentDate)).format(DATE_FORMAT)
-    //     : member.lastPaymentDate,
-    // }),
-    // lastPaymentType: Form.createFormField({
-    //   value: member.lastPaymentType,
-    // }),
   };
 };
 
 const FormMemberEditPage = Form.create({ mapPropsToFields })(MemberEdit);
-// const FormMemberEditPage = Form.create()(MemberEdit);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormMemberEditPage);
+)(withRouter(FormMemberEditPage));

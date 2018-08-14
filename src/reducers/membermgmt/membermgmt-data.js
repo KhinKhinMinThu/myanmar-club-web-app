@@ -15,6 +15,7 @@ export const GET_ERROR = '[MEMBERMGMT_DATA] GET_ERROR';
 export const POST_APILOADING = '[MEMBERMGMT_DATA] POST_APILOADING';
 export const POST_DELETEMEMBERS = '[MEMBERMGMT_DATA] POST_DELETEMEMBERS';
 export const POST_UPDATEMEMBER = '[MEMBERMGMT_DATA] POST_UPDATEMEMBER';
+export const POST_UPDATEMEMBERSHIP = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIP';
 export const POST_ERROR = '[MEMBERMGMT_DATA] POST_ERROR';
 // end
 
@@ -45,7 +46,10 @@ export const postUpdateMember = memberToUpdate => ({
   type: POST_UPDATEMEMBER,
   memberToUpdate,
 });
-
+export const postUpdateMembership = membershipToUpdate => ({
+  type: POST_UPDATEMEMBERSHIP,
+  membershipToUpdate,
+});
 // delete
 export const SAVE = '[MEMBERMGMT_DATA] SAVE';
 export const save = formValues => ({
@@ -62,7 +66,7 @@ export default function (
     postErrMsg: null,
     ecMembersList: null,
     clubMembersList: null,
-    memberData1: null,
+    memberData: null,
 
     // reset back to null
     memberData1: {

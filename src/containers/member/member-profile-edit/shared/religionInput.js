@@ -4,9 +4,7 @@ import {
   Form, Input, Select, Row, Col,
 } from 'antd';
 import {
-  layout,
-  inputLayout1,
-  inputLayout2,
+  layoutHalf,
   customInput,
 } from './shared-components';
 
@@ -38,9 +36,9 @@ class ReligionInput extends Component {
   render() {
     const { decorator } = this.props;
     return (
-      <FormItem {...layout} label="Religion" colon>
+      <FormItem {...layoutHalf} label="Religion" colon>
         <Row gutter={8} type="flex" justify="start">
-          <Col {...inputLayout1}>
+          <Col span={12}>
             <FormItem>
               {decorator('religion')(
                 <Select {...customInput} onChange={this.onChange}>
@@ -53,7 +51,7 @@ class ReligionInput extends Component {
               )}
             </FormItem>
           </Col>
-          <Col {...inputLayout2}>
+          <Col span={12}>
             <FormItem>
               {decorator('otherReligion', { rules: [{ required: false }] })(
                 <Input

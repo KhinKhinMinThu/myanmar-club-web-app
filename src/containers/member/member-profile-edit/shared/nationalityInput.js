@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Form, Input, Select, Row, Col,
 } from 'antd';
-import {
-  layout,
-  inputLayout1,
-  inputLayout2,
-  customInput,
-} from './shared-components';
+import { layoutHalf, customInput } from './shared-components';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -38,9 +33,9 @@ class NationalityInput extends Component {
   render() {
     const { decorator } = this.props;
     return (
-      <FormItem {...layout} label="Nationality" colon required>
+      <FormItem {...layoutHalf} label="Nationality" colon required>
         <Row gutter={8} type="flex" justify="start">
-          <Col {...inputLayout1}>
+          <Col span={12}>
             <FormItem>
               {decorator('nationality')(
                 <Select {...customInput} onChange={this.onChange}>
@@ -51,7 +46,7 @@ class NationalityInput extends Component {
               )}
             </FormItem>
           </Col>
-          <Col {...inputLayout2}>
+          <Col span={12}>
             <FormItem>
               {decorator('otherNationality', {
                 rules: [

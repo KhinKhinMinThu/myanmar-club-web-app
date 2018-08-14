@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import {
-  Icon, Table, Button, Card,
-} from 'antd';
+import { Icon, Table, Button } from 'antd';
 
 // Tables
 export const FullWidthTable = styled(Table)`
@@ -57,12 +55,6 @@ export const BoldUnderlineText = styled.span`
 export const BottomUnder = styled.div`
   width: 100%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-`;
-// end
-
-// Card
-export const ProfileCard = styled(Card)`
-  width: 900px;
 `;
 // end
 

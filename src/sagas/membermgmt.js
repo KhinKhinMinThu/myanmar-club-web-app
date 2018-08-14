@@ -13,6 +13,7 @@ import {
   POST_APILOADING,
   POST_DELETEMEMBERS,
   POST_UPDATEMEMBER,
+  POST_UPDATEMEMBERSHIP,
   POST_ERROR,
 } from '../reducers/membermgmt/membermgmt-data';
 import {
@@ -21,6 +22,7 @@ import {
   APIGET_MEBERFORMFIELDS,
   APIPOST_DELETE_MEMBERS,
   APIPOST_UPDATE_PROFILE,
+  APIPOST_UPDATE_MEMBERSHIP,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -46,14 +48,14 @@ function* asyncGetMemberData(action) {
       // ];
       // memberData.subComInterest = subComInterest.map;
       // end delete
-
+      console.log('API RESPONSE.........', response);
       yield put({ type: MEMBERDATA, payload: memberData });
     }
     if (action.type === GET_MEMBERFORMFIELDS) {
       response = yield call(getMemberFormFields);
       const { memberFormFields, errorMsg } = response.data;
       errMsg = errorMsg;
-
+      console.log('API RESPONSE.........', response);
       // delete below
       // const memberFormFields = {};
       // const allSubComInterest = [
@@ -114,7 +116,6 @@ function* asyncGetMemberData(action) {
 
       yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
     }
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -172,6 +173,12 @@ const postUpdateMember = memberToUpdate => api.post(APIPOST_UPDATE_PROFILE, {
   subComInterest: memberToUpdate.subComInterest,
   roleNames: memberToUpdate.roleNames,
 });
+const postUpdateMembership = membershipToUpdate => api.post(APIPOST_UPDATE_MEMBERSHIP, {
+  id: membershipToUpdate.id,
+  paymentType: membershipToUpdate.paymentType,
+  membershipType: membershipToUpdate.membershipType,
+  totalAmount: membershipToUpdate.totalAmount,
+});
 
 function* asyncPostProcessMembers(action) {
   let errMsg;
@@ -184,10 +191,12 @@ function* asyncPostProcessMembers(action) {
       action.type,
       action.membersToDelete,
       action.memberToUpdate,
+      action.membershipToUpdate,
     );
 
     if (action.type === POST_DELETEMEMBERS) response = yield call(postDeleteMembers, action.membersToDelete);
     if (action.type === POST_UPDATEMEMBER) response = yield call(postUpdateMember, action.memberToUpdate);
+    if (action.type === POST_UPDATEMEMBERSHIP) response = yield call(postUpdateMembership, action.membershipToUpdate);
 
     console.log('API RESPONSE.........', response);
 
@@ -221,5 +230,10 @@ export const postDeleteMembersSaga = takeLatest(
 
 export const postUpdateMemberSaga = takeLatest(
   POST_UPDATEMEMBER,
+  asyncPostProcessMembers,
+);
+
+export const postUpdateMembershipSaga = takeLatest(
+  POST_UPDATEMEMBERSHIP,
   asyncPostProcessMembers,
 );

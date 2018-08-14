@@ -14,6 +14,7 @@ import {
   getMemberFormFields,
 } from '../../../reducers/membermgmt/membermgmt-data';
 import MemberEditPage from './member-edit-page';
+import MemberRenewalPage from './member-renewal-page';
 
 class MemberProfile extends Component {
   componentDidMount() {
@@ -69,7 +70,7 @@ class MemberProfile extends Component {
                     dispatchResetState();
                     dispatchCurrentTab(tabKey);
                   }}
-                  tabContents={[MemberEditPage]}
+                  tabContents={[MemberEditPage, MemberRenewalPage]}
                 />
               </Col>
             </Row>

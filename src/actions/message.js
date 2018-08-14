@@ -10,6 +10,8 @@ export const SUCCESS_UPDATEEVENT = 'Event has been updated!';
 export const SUCCESS_DELETEMEMBER = 'Delted Selected Member(s)';
 export const SUCCESS_NOTIFYEVENT = 'Event Notification has been sent to the members';
 export const SUCCESS_UPDATEMEMBER = 'Member has been updated!';
+export const SUCCESS_RENEWMEMBER = 'Member has been renewed!';
 
 export const CONFIRM_DELETEEVENT = 'Please confirm to delete this event!';
 export const CONFIRM_DELETEMEMBER = 'Please confirm to delete the member profile!';
+export const CONFIRM_RENEWMEMBER = 'Please confirm to renew the member!';

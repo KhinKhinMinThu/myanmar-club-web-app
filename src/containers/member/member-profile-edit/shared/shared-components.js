@@ -14,7 +14,7 @@ import {
   Icon,
 } from 'antd';
 import { ExtraInfoText, MMText } from './shared-styled';
-import { DATE_FORMAT } from '../../../../actions/constants';
+import { DATE_FORMAT, MEMBERSHIP_TYPES } from '../../../../actions/constants';
 
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -38,19 +38,32 @@ export const layout = {
     xl: { span: 16 },
   },
 };
-export const inputLayout1 = {
-  xs: { span: 8 },
-  sm: { span: 8 },
-  md: { span: 8 },
-  lg: { span: 10 },
-  xl: { span: 10 },
+export const layoutHalf = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 7 },
+    xl: { span: 7 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 17 },
+    xl: { span: 17 },
+  },
 };
-export const inputLayout2 = {
-  xs: { span: 16 },
-  sm: { span: 16 },
-  md: { span: 16 },
-  lg: { span: 12 },
-  xl: { span: 12 },
+
+const readOnlyInput = {
+  style: {
+    border: 0,
+    outline: 0,
+    borderRadius: 0,
+    padding: 0,
+    borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+  },
+  readOnly: true,
 };
 
 /* eslint react/prop-types: 0 */
@@ -60,14 +73,33 @@ export const customInput = { style: { width: '200px' } };
 
 // id
 export const IdReadOnly = ({ decorator }) => (
-  <FormItem {...layout} label="Member Id">
-    {decorator('id')(<Input {...customInput} readOnly />)}
+  <FormItem
+    {...{
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 24 },
+        md: { span: 24 },
+        lg: { span: 3 },
+        xl: { span: 3 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 24 },
+        md: { span: 24 },
+        lg: { span: 21 },
+        xl: { span: 21 },
+      },
+    }}
+    label="Member Id"
+    style={{ margin: 0 }}
+  >
+    {decorator('id')(<Input {...readOnlyInput} />)}
   </FormItem>
 );
 
 // name
 export const NameInput = ({ decorator }) => (
-  <FormItem {...layout} label="Name">
+  <FormItem {...layoutHalf} label="Name">
     {decorator('name', {
       rules: [{ required: true, message: 'Please input member name!' }],
     })(<Input {...customInput} placeholder="Member Name" />)}
@@ -76,7 +108,7 @@ export const NameInput = ({ decorator }) => (
 
 // gender
 export const GenderRadio = ({ decorator }) => (
-  <FormItem {...layout} label="Gender">
+  <FormItem {...layoutHalf} label="Gender">
     {decorator('gender', { initialValue: 'Male' })(
       <RadioGroup name="gender">
         <RadioButton value="Male">Male</RadioButton>
@@ -88,7 +120,7 @@ export const GenderRadio = ({ decorator }) => (
 
 // dateOfBirth
 export const DateOfBirthInput = ({ decorator }) => (
-  <FormItem {...layout} label="Date of Birth">
+  <FormItem {...layoutHalf} label="Date of Birth">
     {decorator('dateOfBirth', {
       rules: [{ required: true, message: 'Please enter date of birth!' }],
     })(<DatePicker format={DATE_FORMAT} />)}
@@ -97,7 +129,7 @@ export const DateOfBirthInput = ({ decorator }) => (
 
 // maritalStatus
 export const MaritalStatusSelect = ({ decorator }) => (
-  <FormItem {...layout} label="Marital Status">
+  <FormItem {...layoutHalf} label="Marital Status">
     {decorator('maritalStatus', { initialValue: 'Single' })(
       <Select {...customInput} placeholder="Select marital status">
         <Option value="Single">Single</Option>
@@ -111,27 +143,17 @@ export const MaritalStatusSelect = ({ decorator }) => (
 
 // educationLevel
 export const EducationLevelInput = ({ decorator }) => (
-  <FormItem {...layout} label="Education Level" colon required>
-    <Row gutter={8} type="flex" justify="start">
-      <Col {...inputLayout1}>
-        <FormItem>
-          {decorator('educationLevel', {
-            rules: [
-              { required: true, message: 'Please ender education level!' },
-            ],
-          })(<Input {...customInput} placeholder="Education Level" />)}
-        </FormItem>
-      </Col>
-      <Col {...inputLayout2}>
-        <ExtraInfoText>GCE A Level/Bachelor/Master/(PhD) etc.</ExtraInfoText>
-      </Col>
-    </Row>
+  <FormItem {...layoutHalf} label="Education Level">
+    {decorator('educationLevel', {
+      rules: [{ required: true, message: 'Please ender education level!' }],
+    })(<Input {...customInput} placeholder="Education Level" />)}
+    <ExtraInfoText> GCE A Level/Bachelor/Master/(PhD)</ExtraInfoText>
   </FormItem>
 );
 
 // occupation
 export const OccupationInput = ({ decorator }) => (
-  <FormItem {...layout} label="Occupation">
+  <FormItem {...layoutHalf} label="Occupation">
     {decorator('occupation', {
       rules: [{ required: true, message: 'Please ender occupation!' }],
     })(<Input {...customInput} placeholder="Job Title" />)}
@@ -140,7 +162,7 @@ export const OccupationInput = ({ decorator }) => (
 
 // passType
 export const PassTypeSelect = ({ decorator }) => (
-  <FormItem {...layout} label="Singapore Pass">
+  <FormItem {...layoutHalf} label="Singapore Pass">
     {decorator('passType', initialValue)(
       <Select {...customInput} placeholder="Select pass type">
         <Option value="S Pass">S Pass</Option>
@@ -156,31 +178,17 @@ export const PassTypeSelect = ({ decorator }) => (
 
 // idNumber
 export const IdNumberInput = ({ decorator }) => (
-  <FormItem {...layout} label="Identification Number" colon required>
-    <Row gutter={8} type="flex" justify="start">
-      <Col {...inputLayout1}>
-        <FormItem>
-          {decorator('idNumber', {
-            rules: [
-              {
-                pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
-                message: 'The input is not a valid ID Number!',
-              },
-              { required: true, message: 'Please enter ID Number!' },
-            ],
-          })(
-            <Input
-              {...customInput}
-              maxLength="9"
-              placeholder="NRIC/ FIN No."
-            />,
-          )}
-        </FormItem>
-      </Col>
-      <Col {...inputLayout2}>
-        <ExtraInfoText>S1234567Z, G1234567Z etc.</ExtraInfoText>
-      </Col>
-    </Row>
+  <FormItem {...layoutHalf} label="Identification Number">
+    {decorator('idNumber', {
+      rules: [
+        {
+          pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
+          message: 'The input is not a valid ID Number!',
+        },
+        { required: true, message: 'Please enter ID Number!' },
+      ],
+    })(<Input {...customInput} maxLength="9" placeholder="NRIC/ FIN No." />)}
+    <ExtraInfoText> S1234567Z, G1234567Z etc.</ExtraInfoText>
   </FormItem>
 );
 
@@ -188,17 +196,17 @@ export const IdNumberInput = ({ decorator }) => (
 export const AddressInput = ({ decorator }) => (
   <FormItem {...layout} label="Address" colon required>
     <Row gutter={8} type="flex" justify="start">
-      <Col {...inputLayout1}>
+      <Col span={12}>
         <FormItem>
           {decorator('addressLine1', {
             rules: [{ required: true, message: 'Please input address!' }],
-          })(<Input {...customInput} placeholder="Street Address Line 1..." />)}
+          })(<Input placeholder="Street Address Line 1..." />)}
         </FormItem>
       </Col>
-      <Col {...inputLayout2}>
+      <Col span={12}>
         <FormItem>
           {decorator('addressLine2', initialValue)(
-            <Input {...customInput} placeholder="Street Address Line 2..." />,
+            <Input placeholder="Street Address Line 2..." />,
           )}
         </FormItem>
       </Col>
@@ -418,6 +426,119 @@ export const DeleteProfileSwitch = ({ decorator }) => (
   <FormItem {...layout} label="Delete Profile?">
     {decorator('deleteProfile', { initialValue: false })(
       <Switch checkedChildren="Yes" unCheckedChildren="No" />,
+    )}
+  </FormItem>
+);
+
+// Membership Information
+// MembershipTypeReadOnly
+export const MembershipTypeReadOnly = ({ decorator }) => (
+  <FormItem {...layout} label="Membership Type" style={{ margin: 0 }}>
+    {decorator('membershipTypeReadOnly')(<Input {...readOnlyInput} />)}
+  </FormItem>
+);
+
+// MembershipTypeReadOnly
+export const MembershipStatusReadOnly = ({ decorator }) => (
+  <FormItem {...layout} label="Membership Status" style={{ margin: 0 }}>
+    {decorator('membershipStatus')(<Input {...readOnlyInput} />)}
+  </FormItem>
+);
+
+// JoinedDate
+export const CreatedDate = ({ decorator }) => (
+  <FormItem {...layout} label="Joined Date" style={{ margin: 0 }}>
+    {decorator('createdDate')(<Input {...readOnlyInput} />)}
+  </FormItem>
+);
+
+// membershipExpiryDate
+export const MembershipExpiryDate = ({ decorator }) => (
+  <FormItem {...layout} label="Expiry Date" style={{ margin: 0 }}>
+    {decorator('membershipExpiryDate')(<Input {...readOnlyInput} />)}
+  </FormItem>
+);
+
+// lastPaymentDate
+export const LastPaymentDate = ({ decorator }) => (
+  <FormItem {...layout} label="Last Payment Date" style={{ margin: 0 }}>
+    {decorator('lastPaymentDate')(<Input {...readOnlyInput} />)}
+  </FormItem>
+);
+
+// lastPaymentType
+export const LastPaymentType = ({ decorator }) => (
+  <FormItem {...layout} label="Last Payment Type" style={{ margin: 0 }}>
+    {decorator('lastPaymentType')(<Input {...readOnlyInput} />)}
+  </FormItem>
+);
+
+// Membership fees
+export const MembershipTypeRadio = ({ decorator, onChange }) => (
+  <FormItem {...layout} label="Membership Fees">
+    {decorator('membershipType', {
+      rules: [
+        {
+          required: true,
+          message: 'Please select the membership type!',
+        },
+      ],
+    })(
+      <RadioGroup
+        style={{
+          display: 'block',
+          paddingTop: '6px',
+          lineHeight: 2,
+        }}
+        name="membershipTypeRdo"
+        onChange={onChange}
+      >
+        <Col span={24}>
+          <Radio value="TYP1">
+            <MMText>
+              {MEMBERSHIP_TYPES.TYP1.substr(
+                MEMBERSHIP_TYPES.TYP1.indexOf(':') + 1,
+              )}
+            </MMText>
+          </Radio>
+        </Col>
+        <Col span={24}>
+          <Radio value="TYP2">
+            <MMText>
+              {MEMBERSHIP_TYPES.TYP2.substr(
+                MEMBERSHIP_TYPES.TYP2.indexOf(':') + 1,
+              )}
+            </MMText>
+          </Radio>
+        </Col>
+        <Col span={24}>
+          <Radio value="TYP3">
+            <MMText>
+              {MEMBERSHIP_TYPES.TYP3.substr(
+                MEMBERSHIP_TYPES.TYP3.indexOf(':') + 1,
+              )}
+            </MMText>
+          </Radio>
+        </Col>
+        <Col span={24}>
+          <Radio value="TYP4">
+            <MMText>
+              {MEMBERSHIP_TYPES.TYP4.substr(
+                MEMBERSHIP_TYPES.TYP4.indexOf(':') + 1,
+              )}
+            </MMText>
+          </Radio>
+        </Col>
+        <Col span={24}>
+          <Radio value="TYP5">
+            <MMText>
+              {MEMBERSHIP_TYPES.TYP5.substr(
+                MEMBERSHIP_TYPES.TYP5.indexOf(':') + 1,
+              )}
+            </MMText>
+          </Radio>
+        </Col>
+      </RadioGroup>,
     )}
   </FormItem>
 );

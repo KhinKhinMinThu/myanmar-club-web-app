@@ -1,17 +1,20 @@
 import React from 'react';
-import { Form, Tabs, Select } from 'antd';
+import {
+  Form, Tabs, Select, Radio, InputNumber,
+} from 'antd';
 import {
   TabIcon,
   BoldText,
   FullButton,
   // BoldUnderlineText,
 } from '../shared-styled';
-import { layout } from './shared/shared-components';
+import { layout, customInput } from './shared/shared-components';
 import { ExtraInfoText } from './shared/shared-styled';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
-// const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 const { Option } = Select;
 
 /* eslint react/prop-types: 0 */
@@ -32,14 +35,14 @@ export const ProfileTabs = ({ onChange, tabContents, props }) => {
   };
 
   const MemberEditPage = tabContents[0];
-  // const MemberRenewPage = tabContents[1];
+  const MemberRenewalPage = tabContents[1];
   return (
     <Tabs onChange={onChange} type="card">
       <TabPane tab={tabTitles.tab1} key="tab1">
         <MemberEditPage {...props} />
       </TabPane>
       <TabPane tab={tabTitles.tab2} key="tab2">
-        LALALALA
+        <MemberRenewalPage {...props} />
       </TabPane>
     </Tabs>
   );
@@ -58,7 +61,9 @@ export const RenewButton = () => (
 );
 
 // BackButton
-export const BackButton = () => <FullButton>Go Back</FullButton>;
+export const BackButton = ({ history }) => (
+  <FullButton onClick={() => history.go(-1)}>Go Back</FullButton>
+);
 
 export const RoleInput = ({ decorator, allRoles, form }) => {
   // const { decorator, allRoles } = this.props;
@@ -82,7 +87,7 @@ export const RoleInput = ({ decorator, allRoles, form }) => {
       })(
         <Select
           mode="multiple"
-          placeholder="Please select"
+          placeholder="Please select member role"
           style={{ width: '100%' }}
         >
           {children}
@@ -97,130 +102,40 @@ export const RoleInput = ({ decorator, allRoles, form }) => {
     </FormItem>
   );
 };
-// ********************************************************************************************
-// ********************************************************************************************
-// ********************************************************************************************
 
-// export const RoleAssignTransfer = ({
-//   dataSource,
-//   onChange,
-//   decorator,
-//   targetKeys,
-// }) => {
-//   const titles = [
-//     <BoldUnderlineText>Available Role(s):</BoldUnderlineText>,
-//     <BoldUnderlineText>Member&#39;s Role(s):</BoldUnderlineText>,
-//   ];
-//   return (
-//     <FormItem>
-//       {decorator('roleTransfer', {
-//         initialValue: targetKeys,
-//         valuePropName: 'targetKeys',
-//       })(
-//         <Transfer
-//           dataSource={dataSource}
-//           titles={titles}
-//           onChange={onChange}
-//           listStyle={{
-//             width: 350,
-//             height: 300,
-//           }}
-//           render={item => item.description}
-//         />,
-//       )}
-//     </FormItem>
-//   );
-// };
+// PaymentTypeRadio
+export const PaymentTypeRadio = ({ decorator }) => (
+  <FormItem {...layout} label="Payment Method">
+    {decorator('paymentType', {
+      initialValue: 'Bank Transfer',
+      rules: [{ required: true, message: 'Please select payment type!' }],
+    })(
+      <RadioGroup name="paymentType">
+        <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>
+        <RadioButton value="Cash Payment">Cash Payment</RadioButton>
+      </RadioGroup>,
+    )}
+  </FormItem>
+);
 
-// export const MemberTypeText = ({ value }) => (
-//   <FormItem {...layout} label="Member Type">
-//     <BoldText>{value}</BoldText>
-//   </FormItem>
-// );
-// export const StatusText = ({ value }) => (
-//   <FormItem {...layout} label="Status">
-//     <BoldText>{value}</BoldText>
-//   </FormItem>
-// );
-// export const JoinDateText = ({ value }) => (
-//   <FormItem {...layout} label="Joined Date">
-//     <BoldText>{value}</BoldText>
-//   </FormItem>
-// );
-// export const ExpiryDateText = ({ value }) => (
-//   <FormItem {...layout} label="Expiry Date">
-//     <BoldText>{value}</BoldText>
-//   </FormItem>
-// );
-// export const LastPaymentDateText = ({ value }) => (
-//   <FormItem {...layout} label="Last Payment Date">
-//     <BoldText>{value}</BoldText>
-//   </FormItem>
-// );
-// export const LastPaymentTypeText = ({ value }) => (
-//   <FormItem {...layout} label="Last Payment Type">
-//     <BoldText>{value}</BoldText>
-//   </FormItem>
-// );
-// export const MemberTypeRadio = ({ decorator }) => (
-//   <FormItem {...layout} label="Membership Type">
-//     {decorator('memberTypeRadio', {
-//       rules: [
-//         {
-//           required: true,
-//           message: 'Please choose a membership type.',
-//         },
-//       ],
-//     })(
-//       <RadioGroup name="memberTypeRadio">
-//         <Radio value="TYP1">
-//           {'Life '}
-//           <MMText>(ရာသက်ပန်) </MMText>
-//           {'SGD 350'}
-//         </Radio>
-//         <br />
-//         <Radio value="TYP2">
-//           {'Singaporean/ PR/ EP Ordinary SGD 74 '}
-//           {'+ Member Card SGD 5 (1st time) = SGD 79'}
-//         </Radio>
-//         <br />
-//         <Radio value="TYP3">
-//           {'Other Passes SGD 24 '}
-//           {'+ Member Card SGD 5 (1st time) = SGD 29'}
-//         </Radio>
-//         <br />
-//         <Radio value="TYP4">
-//           {'Yearly Renewal Fees SGD 24 '}
-//           {'+ New Member Card SGD 5 = SGD 29'}
-//         </Radio>
-//         <br />
-//         <Radio value="TYP5">
-//           {'6 month Fees SGD 12 '}
-//           {'(not entitled for Member Card / '}
-//           <MMText>အသင်းဝင်ကဒ်ရမည် မဟုတ်ပါ)</MMText>
-//         </Radio>
-//       </RadioGroup>,
-//     )}
-//   </FormItem>
-// );
-// export const PaymentTypeSelect = ({ decorator }) => (
-//   <FormItem {...layout} label="Payment Type">
-//     {decorator('newPaymentType', {
-//       rules: [
-//         {
-//           required: true,
-//           message: 'Please select payment type.',
-//         },
-//       ],
-//     })(
-//       <Select
-//         {...customInput}
-//         placeholder="Select payment type"
-//         style={{ width: '300px' }}
-//       >
-//         <Option value="CASH">Cash</Option>
-//         <Option value="BANK">Bank Transfer</Option>
-//       </Select>,
-//     )}
-//   </FormItem>
-// );
+// TotalAmount
+export const TotalAmountInput = ({ decorator }) => (
+  <FormItem {...layout} label="Total Amount">
+    {decorator('totalAmount', {
+      rules: [
+        {
+          // pattern: '^-?(0|[1-9][0-9]*)(.[0-9]*)?$',
+          required: true,
+          message: 'Please input total amount!',
+        },
+      ],
+    })(
+      <InputNumber
+        {...customInput}
+        formatter={value => `SGD ${value}`}
+        max={25}
+        placeholder="Please input total amount"
+      />,
+    )}
+  </FormItem>
+);
