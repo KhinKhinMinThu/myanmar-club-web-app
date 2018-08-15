@@ -154,7 +154,7 @@ class EventManagementPage extends Component {
       ? 'Total events: '.concat(this.eventsList.length)
       : '';
     return (
-      <Spin spinning={isGetApiLoading} size="large">
+      <Spin spinning={isGetApiLoading} size="large" delay={1000}>
         {this.isApiCalled && getErrMsg ? (
           <Alert
             message="Error"

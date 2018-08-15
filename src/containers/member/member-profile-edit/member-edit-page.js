@@ -200,7 +200,7 @@ class MemberEdit extends Component {
     const allRoles = memberFormFields ? memberFormFields.allRoles : [];
 
     return (
-      <Spin spinning={isPostApiLoading} size="large">
+      <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <Form onSubmit={this.onSubmit}>
           <Row gutter={8} justify="start">
             <Col span={24}>

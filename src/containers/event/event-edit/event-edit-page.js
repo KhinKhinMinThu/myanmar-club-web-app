@@ -199,7 +199,7 @@ class EventEdit extends Component {
     };
 
     return (
-      <Spin spinning={isPostApiLoading} size="large">
+      <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <div className="pageHeaderContainer">
           <h2>Update Event Page</h2>
         </div>

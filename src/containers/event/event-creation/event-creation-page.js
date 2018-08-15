@@ -138,7 +138,7 @@ class EventCreation extends Component {
       style: { marginBottom: 14 },
     };
     return (
-      <Spin spinning={isPostApiLoading} size="large">
+      <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <div className="pageHeaderContainer">
           <h2>Add New Event Page</h2>
         </div>
