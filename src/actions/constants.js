@@ -8,7 +8,7 @@ export const TIME_FORMAT = 'HH:mm';
 
 export const DATETIME_FORMAT_DB = 'YYYY-MM-DD HH:mm:ss';
 export const TIME_FORMAT_DB = 'HH:mm:ss';
-export const DEFAULT_DATETIME = '2000-01-01- 00:00';
+export const DEFAULT_DATETIME = '2000-01-01 00:00';
 export const DEFAULT_DATE = '2000-01-01';
 export const DEFAULT_TIME = '00:00';
 
