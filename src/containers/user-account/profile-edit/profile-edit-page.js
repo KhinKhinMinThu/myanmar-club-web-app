@@ -33,15 +33,13 @@ import {
   HomePhoneInput,
   MobilePhoneInput,
   HobbiesInput,
-  IsEcMemberRadio,
   SubComInterest,
   ProfilePhoto,
   DeleteProfileSwitch,
 } from '../../shared-profile-components/shared-components';
-import { RoleInput, SaveUpdateButton, BackButton } from './components';
+import { SaveUpdateButton, BackButton } from './components';
 import NationalityInput from '../../shared-profile-components/nationalityInput';
 import ReligionInput from '../../shared-profile-components/religionInput';
-import PasswordInput from '../../shared-profile-components/passwordInput';
 import {
   postDeleteMembers,
   postUpdateMember,
@@ -71,16 +69,6 @@ class MemberEdit extends Component {
       message.success(SUCCESS_UPDATEMEMBER, SHOWFOR);
     }
   }
-
-  onChange = (e) => {
-    const { value } = e.target;
-    const {
-      form: { setFieldsValue },
-    } = this.props;
-    if (value === '0') {
-      setFieldsValue({ roleNames: [] });
-    }
-  };
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -198,7 +186,6 @@ class MemberEdit extends Component {
     const allSubComInterest = memberFormFields
       ? memberFormFields.allSubComInterest
       : [];
-    const allRoles = memberFormFields ? memberFormFields.allRoles : [];
 
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
@@ -249,15 +236,6 @@ class MemberEdit extends Component {
                 <AddressInput decorator={getFieldDecorator} />
                 <PostalCodeInput decorator={getFieldDecorator} />
                 <EmailAddressInput decorator={getFieldDecorator} />
-                <PasswordInput
-                  decorator={getFieldDecorator}
-                  form={form}
-                  placeHolder="Account Password"
-                />
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
                 <FacebookAccountInput decorator={getFieldDecorator} />
                 <HomePhoneInput decorator={getFieldDecorator} />
                 <MobilePhoneInput decorator={getFieldDecorator} />
@@ -270,15 +248,6 @@ class MemberEdit extends Component {
             </Col>
             <Col span={24}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-                <IsEcMemberRadio
-                  decorator={getFieldDecorator}
-                  onChange={this.onChange}
-                />
-                <RoleInput
-                  form={form}
-                  decorator={getFieldDecorator}
-                  allRoles={allRoles}
-                />
                 <DeleteProfileSwitch decorator={getFieldDecorator} />
                 <br />
                 <Row gutter={8}>

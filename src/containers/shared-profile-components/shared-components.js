@@ -14,7 +14,7 @@ import {
   Icon,
 } from 'antd';
 import { ExtraInfoText, MMText } from './shared-styled';
-import { DATE_FORMAT, MEMBERSHIP_TYPES } from '../../../../actions/constants';
+import { DATE_FORMAT, MEMBERSHIP_TYPES } from '../../actions/constants';
 
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -240,6 +240,7 @@ export const EmailAddressInput = ({ decorator }) => (
     })(<Input placeholder="Email Address" />)}
   </FormItem>
 );
+
 
 // facebookAccount
 export const FacebookAccountInput = ({ decorator }) => (
