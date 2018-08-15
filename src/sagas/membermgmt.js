@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api } from './api';
+import { api, apiMultiPart } from './api';
 import {
   GET_MEMBERSDATA,
   GET_MEMBERDATA,
@@ -13,7 +13,8 @@ import {
   POST_APILOADING,
   POST_DELETEMEMBERS,
   POST_UPDATEMEMBER,
-  POST_UPDATEMEMBERSHIP,
+  POST_UPDATEMEMBERSHIPADMIN,
+  POST_UPDATEMEMBERSHIPMEMBER,
   POST_ERROR,
 } from '../reducers/membermgmt/membermgmt-data';
 import {
@@ -22,7 +23,9 @@ import {
   APIGET_MEBERFORMFIELDS,
   APIPOST_DELETE_MEMBERS,
   APIPOST_UPDATE_PROFILE,
-  APIPOST_UPDATE_MEMBERSHIP,
+  APIPOST_UPDATE_MEMBERSHIPADMIN,
+  APIPOST_UPDATE_MEMBERSHIPMEMBER,
+  APIPOST_ADD_MEMBERPHOTO,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -41,13 +44,6 @@ function* asyncGetMemberData(action) {
       const { memberData, errorMsg } = response.data;
       errMsg = errorMsg;
 
-      // delete below
-      // const subComInterest = [
-      //   { id: '2', description: 'develipment' },
-      //   { id: '4', description: 'other interest' },
-      // ];
-      // memberData.subComInterest = subComInterest.map;
-      // end delete
       console.log('API RESPONSE.........', response);
       yield put({ type: MEMBERDATA, payload: memberData });
     }
@@ -56,50 +52,6 @@ function* asyncGetMemberData(action) {
       const { memberFormFields, errorMsg } = response.data;
       errMsg = errorMsg;
       console.log('API RESPONSE.........', response);
-      // delete below
-      // const memberFormFields = {};
-      // const allSubComInterest = [
-      //   {
-      //     id: '1',
-      //     description:
-      //       'မြန်မာ့ယဉ်ကျေးမှုအနုပညာ ထိန်းသိမ်းမြှင့်တင် ပျံ့ပွားရေး Sub-Committee',
-      //   },
-      //   {
-      //     id: '2',
-      //     description:
-      //       'စာပေ၊ ဗဟုသုတ၊ တတ်သိပညာ မြှင့်တင် ပျံ့ပွားရေး Sub-Committee',
-      //   },
-      //   {
-      //     id: '3',
-      //     description:
-      //       'စင်္ကာပူရောက် မြန်မာမိသားစု၏ လူမှုအခက်ခဲများ ကူညီစောင့်ရှောက်ရေးနှင့် ကောင်းမွန်သော လူ့ဘောင်ဘဝ မြှင့်တင်ထိန်းသိမ်းရေး',
-      //   },
-      //   {
-      //     id: '4',
-      //     description: 'မြန်မာ့အားကစားကဏ္ဍ ပံ့ပိုးကူညီရေး Sub-Committee',
-      //   },
-      // ];
-      // memberFormFields.allSubComInterest = allSubComInterest;
-
-      // const allRoles = [
-      //   {
-      //     description: 'Authorized for all functions',
-      //     id: '1',
-      //     name: 'Admin',
-      //   },
-      //   {
-      //     description: 'Authorized for Finance Function',
-      //     id: '2',
-      //     name: 'Treasurer',
-      //   },
-      //   {
-      //     description: 'Authorized for Event Functions',
-      //     id: '3',
-      //     name: 'IT Person',
-      //   },
-      // ];
-      // memberFormFields.allRoles = allRoles;
-      // end delete
 
       memberFormFields.allSubComInterest.forEach((item, index) => {
         memberFormFields.allSubComInterest[index] = {
@@ -107,13 +59,6 @@ function* asyncGetMemberData(action) {
           id: 'subComChk'.concat(item.id),
         };
       });
-      // memberFormFields.allRoles.forEach((item, index) => {
-      //   memberFormFields.allRoles[index] = {
-      //     ...item,
-      //     id: 'roleChk'.concat(item.id),
-      //   };
-      // });
-
       yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
     }
   } catch (e) {
@@ -149,6 +94,8 @@ function* asyncGetMembersData() {
 // POST REQUEST
 const postDeleteMembers = membersToDelete => api.post(APIPOST_DELETE_MEMBERS, membersToDelete);
 
+// not posting with api.post(APIPOST_ADD_EVENT, { memberToUpdate });
+// in order to filter uncessary data
 const postUpdateMember = memberToUpdate => api.post(APIPOST_UPDATE_PROFILE, {
   id: memberToUpdate.id,
   name: memberToUpdate.name,
@@ -163,6 +110,7 @@ const postUpdateMember = memberToUpdate => api.post(APIPOST_UPDATE_PROFILE, {
   addressLine2: memberToUpdate.addressLine2,
   postalCode: memberToUpdate.postalCode,
   emailAddress: memberToUpdate.emailAddress,
+  password: memberToUpdate.password,
   facebookAccount: memberToUpdate.facebookAccount,
   homePhone: memberToUpdate.homePhone,
   mobilePhone: memberToUpdate.mobilePhone,
@@ -173,12 +121,29 @@ const postUpdateMember = memberToUpdate => api.post(APIPOST_UPDATE_PROFILE, {
   subComInterest: memberToUpdate.subComInterest,
   roleNames: memberToUpdate.roleNames,
 });
-const postUpdateMembership = membershipToUpdate => api.post(APIPOST_UPDATE_MEMBERSHIP, {
+const postUpdateMembershipAdmin = membershipToUpdate => api.post(APIPOST_UPDATE_MEMBERSHIPADMIN, {
   id: membershipToUpdate.id,
   paymentType: membershipToUpdate.paymentType,
   membershipType: membershipToUpdate.membershipType,
   totalAmount: membershipToUpdate.totalAmount,
 });
+const postUpdateMembershipMember = membershipToUpdate => api.post(APIPOST_UPDATE_MEMBERSHIPMEMBER, {
+  id: membershipToUpdate.id,
+  paymentType: membershipToUpdate.paymentType,
+  membershipType: membershipToUpdate.membershipType,
+  totalAmount: membershipToUpdate.totalAmount,
+});
+const postMemberPhoto = multipartForm => apiMultiPart.post(APIPOST_ADD_MEMBERPHOTO, multipartForm);
+
+const assembleFormData = ({ memberId, imageFile }) => {
+  if (memberId && imageFile) {
+    const mpf = new FormData();
+    mpf.append('id', memberId);
+    mpf.append('memberPhoto', imageFile, imageFile.name);
+    return mpf;
+  }
+  return null;
+};
 
 function* asyncPostProcessMembers(action) {
   let errMsg;
@@ -194,9 +159,37 @@ function* asyncPostProcessMembers(action) {
       action.membershipToUpdate,
     );
 
-    if (action.type === POST_DELETEMEMBERS) response = yield call(postDeleteMembers, action.membersToDelete);
-    if (action.type === POST_UPDATEMEMBER) response = yield call(postUpdateMember, action.memberToUpdate);
-    if (action.type === POST_UPDATEMEMBERSHIP) response = yield call(postUpdateMembership, action.membershipToUpdate);
+    let multipartForm;
+    const memberData = action.membershipToUpdate;
+
+    switch (action.type) {
+      case POST_DELETEMEMBERS:
+        response = yield call(postDeleteMembers, action.membersToDelete);
+        break;
+      case POST_UPDATEMEMBER:
+        response = yield call(postUpdateMember, action.memberToUpdate);
+        multipartForm = assembleFormData({
+          memberId: memberData.id,
+          imageFile: memberData.uploadBtn[0],
+        });
+        console.log('memberId', memberData.id, 'mpf', multipartForm);
+        if (multipartForm) response = yield call(postMemberPhoto, multipartForm);
+
+        break;
+      case POST_UPDATEMEMBERSHIPADMIN:
+        response = yield call(
+          postUpdateMembershipAdmin,
+          action.membershipToUpdate,
+        );
+        break;
+      case POST_UPDATEMEMBERSHIPMEMBER:
+        response = yield call(
+          postUpdateMembershipMember,
+          action.membershipToUpdate,
+        );
+        break;
+      default:
+    }
 
     console.log('API RESPONSE.........', response);
 
@@ -233,7 +226,12 @@ export const postUpdateMemberSaga = takeLatest(
   asyncPostProcessMembers,
 );
 
-export const postUpdateMembershipSaga = takeLatest(
-  POST_UPDATEMEMBERSHIP,
+export const postUpdateMembershipAdminSaga = takeLatest(
+  POST_UPDATEMEMBERSHIPADMIN,
+  asyncPostProcessMembers,
+);
+
+export const postUpdateMembershipMemberSaga = takeLatest(
+  POST_UPDATEMEMBERSHIPMEMBER,
   asyncPostProcessMembers,
 );

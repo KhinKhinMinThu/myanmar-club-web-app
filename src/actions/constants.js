@@ -8,7 +8,7 @@ export const TIME_FORMAT = 'HH:mm';
 
 export const DATETIME_FORMAT_DB = 'YYYY-MM-DD HH:mm:ss';
 export const TIME_FORMAT_DB = 'HH:mm:ss';
-export const DEFAULT_DATETIME = '2000-01-01- 00:00';
+export const DEFAULT_DATETIME = '2000-01-01 00:00';
 export const DEFAULT_DATE = '2000-01-01';
 export const DEFAULT_TIME = '00:00';
 
@@ -31,6 +31,13 @@ export const MEMBERSHIP_FEES = {
   TYP4: 29,
   TYP5: 12,
 };
+export const MEMBERSHIP_INFO = [
+  'ရာသက်ပန် အသင်းသားအဖြစ် ဝင်ကြေး စင်္ကာပူဒေါ်လာ (၅၀) နှင့် ရာသက်ပန်ကြေး ဒေါ်လာ (၃၀၀)၊ စုစုပေါင်း ဒေါ်လာ (၃၅၀) ပေးသွင်းရမည်ဖြစ်သည်။',
+  'သာမန်အသင်းသားများအဖြစ် Singaporean (သို့) PR (သို့) EP Holder များဖြစ်ပါက ဝင်ကြေး စင်္ကာပူဒေါ်လာ (၅၀) နှင့် နှစ်စဉ်ကြေး ဒေါ်လာ (၂၄)၊ စုစုပေါင်း ဒေါ်လာ (၇၄) ပေးသွင်းရမည်ဖြစ်ပါသည်။',
+  'အခြားသော Pass holder များအနေဖြင့် ဝင်ကြေးဒေါ်လာ (၅၀) ပေးသွင်းရန်မလိုပဲ နှစ်စဉ်ကြေး ဒေါ်လာ (၂၄) သာပေးသွင်းရန်လိုအပ်ပါသည်။ ',
+  'Membership Card ရိုက်နှိပ်ခအတွက် စင်္ကာပူ ဒေါ်လာ (၅) သီးခြားပေးရမည်ဖြစ်ပါသည်။',
+  'မြန်မာကလပ်(စင်္ကာပူ)၏ ဘဏ်အကောင့် (UOB 146-301-836-2) သို့ အသင်းကြေးပေးသွင်းပြီးပါက ဘဏ္ဍာရေးမှူး ဒေါ်မြမြစိန် H.P - 8233 5682 သို့ လူကြီးမင်း၏ အမည်နှင့်တကွ ပေးသွင်းသော အသင်းကြေးငွေ ပမာဏကို message ပို့ပေးပါရန်။',
+];
 
 // APIGET API URLS
 export const APIGET_ROLEDATA = '/getRoleData';
@@ -49,7 +56,9 @@ export const APIPOST_UPDATE_ROLE = '/updateRole';
 export const APIGET_MEMBERDATA = '/admin/getMemberData';
 export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';
 export const APIPOST_UPDATE_PROFILE = '/admin/updateProfile';
-export const APIPOST_UPDATE_MEMBERSHIP = '/admin/updateMembership';
+export const APIPOST_UPDATE_MEMBERSHIPADMIN = '/admin/updateMembershipByAdmin';
+export const APIPOST_UPDATE_MEMBERSHIPMEMBER = '/admin/updateMembershipByMember';
+export const APIPOST_ADD_MEMBERPHOTO = '/admin/memberPhoto';
 
 export const APIPOST_APPROVE_CLAIMS = '/claim/approveClaims';
 export const APIPOST_UNAPPROVE_CLAIMS = '/claim/unapproveClaims';

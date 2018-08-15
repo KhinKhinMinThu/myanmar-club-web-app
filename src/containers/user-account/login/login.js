@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import CryptoJS from 'crypto-js';
 import { Form, message } from 'antd';
 import { SHOWFOR } from '../../../actions/message';
 import { UsernameInput, PasswordInput, Footer } from './components';
@@ -30,7 +31,8 @@ class LoginForm extends Component {
     validateFields((err, values) => {
       if (!err) {
         const { username, password } = values;
-        performLogin({ username, password });
+        const enPassword = CryptoJS.MD5(password).toString(CryptoJS.enc.Hex);
+        performLogin({ username, password: enPassword });
       }
     });
   };

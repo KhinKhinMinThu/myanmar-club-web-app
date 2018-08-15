@@ -31,8 +31,9 @@ import {
   BackButton,
   PaymentTypeRadio,
   TotalAmountInput,
-} from './components';
-import { postUpdateMembership } from '../../../reducers/membermgmt/membermgmt-data';
+  feesTbl,
+} from '../shared-components';
+import { postUpdateMembershipMember } from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
 
@@ -110,6 +111,11 @@ class MemberRenewal extends Component {
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <Form onSubmit={this.onSubmit}>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+            <Row gutter={8} type="flex" justify="center">
+              <Col span={12}>{feesTbl}</Col>
+            </Row>
+          </Card>
           <Row gutter={8} justify="start">
             <Col span={24}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
@@ -163,7 +169,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  performUpdateMembership: postUpdateMembership,
+  performUpdateMembership: postUpdateMembershipMember,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {

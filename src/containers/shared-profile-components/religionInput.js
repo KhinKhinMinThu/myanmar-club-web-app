@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Form, Input, Select, Row, Col,
 } from 'antd';
-import {
-  layoutHalf,
-  customInput,
-} from './shared-components';
+import { layoutHalf, customInput } from './shared-components';
 
 const FormItem = Form.Item;
 const { Option } = Select;

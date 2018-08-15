@@ -37,7 +37,7 @@ import {
   ProfilePhoto,
   DeleteProfileSwitch,
 } from '../../shared-profile-components/shared-components';
-import { SaveUpdateButton, BackButton } from './components';
+import { SaveUpdateButton, BackButton } from '../shared-components';
 import NationalityInput from '../../shared-profile-components/nationalityInput';
 import ReligionInput from '../../shared-profile-components/religionInput';
 import {

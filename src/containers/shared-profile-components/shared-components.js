@@ -241,7 +241,6 @@ export const EmailAddressInput = ({ decorator }) => (
   </FormItem>
 );
 
-
 // facebookAccount
 export const FacebookAccountInput = ({ decorator }) => (
   <FormItem {...layout} label="Facebook Account">
@@ -358,6 +357,7 @@ export class ProfilePhoto extends Component {
             // Hook function which will be executed before uploading.
             // Uploading will be stopped with false or a rejected Promise returned.
             // Warning：this function is not supported in IE9。
+            action="//jsonplaceholder.typicode.com/posts/"
           >
             {this.newFile.length >= 2 ? null : (
               <div>

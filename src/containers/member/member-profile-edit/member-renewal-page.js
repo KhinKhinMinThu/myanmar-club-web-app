@@ -32,7 +32,7 @@ import {
   PaymentTypeRadio,
   TotalAmountInput,
 } from './components';
-import { postUpdateMembership } from '../../../reducers/membermgmt/membermgmt-data';
+import { postUpdateMembershipAdmin } from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
 
@@ -42,7 +42,7 @@ class MemberRenewal extends Component {
       membermgmtData: { isPostApiLoading, postErrMsg },
       membermgmtUI: { currentTab },
     } = this.props;
-    if (currentTab !== 'tab1') return;
+    if (currentTab !== 'tab2') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
@@ -163,7 +163,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  performUpdateMembership: postUpdateMembership,
+  performUpdateMembership: postUpdateMembershipAdmin,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
@@ -171,7 +171,9 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   // return the fields
   return {
     membershipTypeReadOnly: Form.createFormField({
-      value: member.membershipType,
+      value: member.membershipType
+        ? member.membershipType.substr(member.membershipType.indexOf(':') + 1)
+        : '-',
     }),
     membershipStatus: Form.createFormField({ value: member.membershipStatus }),
     createdDate: Form.createFormField({

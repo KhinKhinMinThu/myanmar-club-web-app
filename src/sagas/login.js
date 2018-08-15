@@ -3,9 +3,7 @@ import { push } from 'connected-react-router';
 import { api } from './api';
 import {
   POST_LOGIN,
-  ISLOGGEDIN,
-  ISADMIN,
-  TOKEN,
+  LOGINDATA,
   POST_APILOADING,
   POST_ERROR,
 } from '../reducers/login/login-data';
@@ -33,16 +31,23 @@ function* asyncLogin(action) {
     console.log('API RESPONSE.........', response);
 
     const {
-      isLoggedIn, isAdmin, token, errorMsg,
+      isLoggedIn, isAdmin, token, errorMsg, id, name,
     } = response.data;
     errMsg = errorMsg;
 
     successLogin = isLoggedIn;
 
     if (isLoggedIn) {
-      yield put({ type: ISLOGGEDIN, payload: isLoggedIn });
-      yield put({ type: ISADMIN, payload: isAdmin });
-      yield put({ type: TOKEN, payload: token });
+      yield put({
+        type: LOGINDATA,
+        payload: {
+          isLoggedIn,
+          isAdmin,
+          token,
+          id,
+          name,
+        },
+      });
 
       // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       localStorage.setItem('loginState', JSON.stringify(response.data));

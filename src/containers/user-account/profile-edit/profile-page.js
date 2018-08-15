@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   Spin, Alert, Row, Col,
 } from 'antd';
-import { ProfileTabs } from './components';
+import { ProfileTabs } from '../shared-components';
 import {
   resetState,
   setCurrentTab,
@@ -12,19 +12,22 @@ import {
 import {
   getMemberData,
   getMemberFormFields,
+  resetMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
-import MemberEditPage from './profile-edit-page';
-import MemberRenewalPage from './profile-renewal-page';
+import ProfileEditPage from './profile-edit-page';
+import ProfileRenewalPage from './profile-renewal-page';
 
-class MemberProfile extends Component {
+class Profile extends Component {
   componentDidMount() {
     const {
-      computedMatch: {
-        params: { id },
-      },
+      loginData: { id },
+      // need to reset to prevent from showing member data in profile
+      // if the user goes from edit-member to profile.
       performGetMemberFormFields,
       performGetMemberData,
+      performResetMemberData,
     } = this.props;
+    performResetMemberData();
     performGetMemberFormFields();
     if (id) performGetMemberData({ id });
   }
@@ -58,7 +61,7 @@ class MemberProfile extends Component {
             <div className="pageHeaderContainer">
               <h2>
                 {currentTab === 'tab1'
-                  ? 'Edit Member Page'
+                  ? 'Edit Profile Page'
                   : 'Membership Renewal Page'}
               </h2>
             </div>
@@ -70,7 +73,7 @@ class MemberProfile extends Component {
                     dispatchResetState();
                     dispatchCurrentTab(tabKey);
                   }}
-                  tabContents={[MemberEditPage, MemberRenewalPage]}
+                  tabContents={[ProfileEditPage, ProfileRenewalPage]}
                 />
               </Col>
             </Row>
@@ -81,20 +84,22 @@ class MemberProfile extends Component {
   }
 }
 
-MemberProfile.propTypes = {
-  computedMatch: PropTypes.shape({}).isRequired,
+Profile.propTypes = {
   dispatchResetState: PropTypes.func.isRequired,
   dispatchCurrentTab: PropTypes.func.isRequired,
   performGetMemberData: PropTypes.func.isRequired,
   performGetMemberFormFields: PropTypes.func.isRequired,
+  performResetMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
+  loginData: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
   membermgmtUI: state.membermgmt.ui,
   membermgmtData: state.membermgmt.data,
+  loginData: state.login.data,
 });
 
 const mapDispatchToProps = {
@@ -102,9 +107,10 @@ const mapDispatchToProps = {
   dispatchCurrentTab: setCurrentTab,
   performGetMemberData: getMemberData,
   performGetMemberFormFields: getMemberFormFields,
+  performResetMemberData: resetMemberData,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MemberProfile);
+)(Profile);

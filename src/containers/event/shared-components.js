@@ -417,6 +417,7 @@ export class EventPhoto extends Component {
             // Hook function which will be executed before uploading.
             // Uploading will be stopped with false or a rejected Promise returned.
             // Warning：this function is not supported in IE9。
+            action="//jsonplaceholder.typicode.com/posts/"
           >
             {this.newFile.length >= 2 ? null : (
               <div>

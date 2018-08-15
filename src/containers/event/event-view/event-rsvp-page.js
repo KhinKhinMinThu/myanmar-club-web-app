@@ -22,7 +22,7 @@ import {
   resetState,
 } from '../../../reducers/eventmgmt/eventmgmt-ui';
 import {
-  setEventsData,
+  setEventData,
   postDeleteRSVP,
 } from '../../../reducers/eventmgmt/eventmgmt-data';
 
@@ -65,25 +65,21 @@ class EventRSVPPage extends Component {
   // delete selected rsvp
   onClickDeleteSelected = () => {
     const {
-      computedMatch: {
-        params: { id },
-      },
-      eventmgmtData: { eventsData },
+      eventmgmtData: { eventData },
       eventmgmtUI: { selectedKeys },
       performDeleteRSVP,
-      dispatchSetEventsData,
+      dispatchSetEventData,
       dispatchResetState,
     } = this.props;
     performDeleteRSVP({ eventRSVPToDelete: selectedKeys });
 
-    const event = eventsData.find(item => item.id === id);
-    const { eventRSVPData } = event;
+    const { eventRSVPData } = eventData;
 
     selectedKeys.forEach((item) => {
       const index = eventRSVPData.findIndex(rsvp => rsvp.id === item);
       if (index !== -1) eventRSVPData.splice(index, 1);
     });
-    dispatchSetEventsData(eventsData);
+    dispatchSetEventData(eventData);
     dispatchResetState();
   };
 
@@ -114,9 +110,6 @@ class EventRSVPPage extends Component {
 
   render() {
     const {
-      computedMatch: {
-        params: { id },
-      },
       eventmgmtUI: {
         selectedKeys,
         deselectAllLoading,
@@ -124,7 +117,7 @@ class EventRSVPPage extends Component {
         sortedInfo,
         filteredInfo,
       },
-      eventmgmtData: { eventsData, isPostApiLoading },
+      eventmgmtData: { eventData, isPostApiLoading },
       form: { getFieldDecorator },
       dispatchSortedInfo,
       dispatchFilteredInfo,
@@ -137,8 +130,9 @@ class EventRSVPPage extends Component {
     };
     const hasSelected = selectedKeys.length > 0;
 
-    const eventData = eventsData ? eventsData.find(item => item.id === id) : {};
-    this.registrationList = this.prepareList(eventData.eventRSVPData);
+    this.registrationList = eventData
+      ? this.prepareList(eventData.eventRSVPData)
+      : [];
 
     return (
       <div>
@@ -201,7 +195,6 @@ class EventRSVPPage extends Component {
 }
 
 EventRSVPPage.propTypes = {
-  computedMatch: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
   dispatchSelectedKeys: PropTypes.func.isRequired,
   dispatchDeselectAllLoading: PropTypes.func.isRequired,
@@ -210,7 +203,7 @@ EventRSVPPage.propTypes = {
   dispatchFilteredInfo: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
 
-  dispatchSetEventsData: PropTypes.func.isRequired,
+  dispatchSetEventData: PropTypes.func.isRequired,
   performDeleteRSVP: PropTypes.func.isRequired,
 
   eventmgmtUI: PropTypes.shape({}).isRequired,
@@ -229,7 +222,7 @@ const mapDispatchToProps = {
   dispatchFilteredInfo: setFilteredInfo,
   dispatchResetState: resetState,
 
-  dispatchSetEventsData: setEventsData,
+  dispatchSetEventData: setEventData,
   performDeleteRSVP: postDeleteRSVP,
 };
 

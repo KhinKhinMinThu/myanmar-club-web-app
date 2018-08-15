@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
   Form, message, Row, Col, Spin, Modal, Card,
@@ -60,7 +61,7 @@ class MemberEdit extends Component {
       membermgmtData: { isPostApiLoading, postErrMsg },
       membermgmtUI: { currentTab },
     } = this.props;
-    if (currentTab !== 'tab2') return;
+    if (currentTab !== 'tab1') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
@@ -86,6 +87,7 @@ class MemberEdit extends Component {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll, getFieldValue },
+      membermgmtData: { memberData },
       computedMatch: {
         params: { id },
       },
@@ -134,6 +136,10 @@ class MemberEdit extends Component {
           });
           const roleNames = [];
           formValues.roleNames.forEach(item => roleNames.push({ id: item }));
+          // encryp the password if it's changed.
+          const password = memberData.password !== formValues.password
+            ? CryptoJS.MD5(formValues.password).toString(CryptoJS.enc.Hex)
+            : memberData.password;
           const memberToUpdate = {
             ...formValues,
             id,
@@ -144,6 +150,7 @@ class MemberEdit extends Component {
             religion,
             subComInterest,
             roleNames,
+            password,
             uploadBtn: fileList,
           };
           performMemberData(memberToUpdate);

@@ -19,7 +19,9 @@ import LoginPage from '../../user-account/login';
 import SignupPage from '../../signup-page';
 import ForgotPasswordPage from '../../forgotpwd-page';
 
-const { Header, Content, Sider } = Layout;
+const {
+  Header, Content, Sider, Footer,
+} = Layout;
 const logoImage = (
   <img alt="logo" src={logo} style={{ width: 'auto', height: '55px' }} />
 );
@@ -98,6 +100,10 @@ class PrivatePage extends Component {
           >
             <Page {...this.props} />
           </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            MClubPortal ©2018 Created by PentaHive as Singapore Management
+            University Final Year Project.
+          </Footer>
         </Layout>
       </Layout>
     );
