@@ -1,22 +1,16 @@
 import React from 'react';
 import {
-  Tabs, Button, Form, Input, DatePicker, Radio,
+  Form, Input, DatePicker, Radio, Card, Col, Select,
 } from 'antd';
-import { EVENT_EDIT } from '../../../actions/location';
-import {
-  TabIcon,
-  BoldText,
-  FullWidthTable,
-  FullButton,
-  ExtraInfoText,
-} from '../shared-styled';
+import { FullButton, ExtraInfoText } from '../shared-styled';
 import { layout } from '../shared-components';
 
 const FormItem = Form.Item;
-const { TabPane } = Tabs;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker;
+const Option = Select;
+const customInput = { style: { width: '200px' } };
 const readOnlyInput = {
   style: {
     border: 0,
@@ -29,131 +23,211 @@ const readOnlyInput = {
   size: 'small',
 };
 
-// Card Num input
-export const CardNumInput = ({ decorator }) => (
-  <FormItem {...layout} label="Card Number">
-    {decorator('cardNumber', {
+// Email address
+export const EmailAddressInput = ({ decorator }) => (
+  <FormItem {...layout} label="Email Address">
+    {decorator('memberEmailAddress', {
       rules: [
         {
-          pattern: '^([0-9]{16})$',
-          message: 'The input is not a 16-digits card number!',
+          type: 'email',
+          message: 'The input is not valid E-mail!',
         },
         {
           required: true,
-          message: 'Please enter card number!',
+          message: 'Please enter your email address!',
         },
       ],
-    })(<Input maxLength="16" type="text" />)}
-    <br />
-    <ExtraInfoText style={{ marginTop: '0px' }}>
-      {' '}
-      {'Do not include space or dashes "-".'}
-    </ExtraInfoText>
+    })(<Input {...customInput} placeholder="Email Address" />)}
   </FormItem>
 );
 
-// Card Security input
-export const CardSecurityCodeInput = ({ decorator }) => (
-  <FormItem {...layout} label="Security Code">
-    {decorator('cardSecurityCode', {
+// Mobile Number
+export const MobileNoInput = ({ decorator }) => {
+  const areaCodeDdl = decorator('memberAreaCode', {
+    initialValue: '65',
+  })(
+    <Select>
+      <Option value="65">+65</Option>
+      <Option value="95">+95</Option>
+    </Select>,
+  );
+  return (
+    <FormItem {...layout} label="Mobile No">
+      {decorator('memberMobilePhone', {
+        rules: [
+          {
+            pattern: '^([0-9]{6,})$',
+            message: 'The input is not a valid phone number!',
+          },
+          {
+            required: true,
+            message: 'Please enter your phone number!',
+          },
+        ],
+      })(
+        <Input
+          style={{ width: '200px', float: 'left' }}
+          addonBefore={areaCodeDdl}
+          placeholder="Mobile Phone"
+        />,
+      )}
+    </FormItem>
+  );
+};
+
+// Number of ticket input
+export const TicketNumInput = ({ decorator }) => (
+  <FormItem {...layout} label="No of Ticket(s)/Attendee(s)">
+    {decorator('memberNoOfTicket', {
       rules: [
         {
-          pattern: '^([0-9]{3,})$',
-          message: 'The input is not a 16-digits card number!',
+          pattern: '^([0-9])$',
+          message: 'The input is not a number!',
         },
         {
           required: true,
-          message: 'Please enter card security code!',
+          message: 'Please enter number of tickets/attendees!',
         },
       ],
-    })(<Input maxLength="4" type="text" />)}
+    })(<Input {...customInput} type="text" />)}
   </FormItem>
 );
 
-// Name on card input
-export const NameOnCardInput = ({ decorator }) => (
-  <FormItem {...layout} label="Name on Card">
-    {decorator('nameOnCard', {
+// Name input
+export const NameInput = ({ decorator }) => (
+  <FormItem {...layout} label="Name">
+    {decorator('memberName', {
       rules: [
         {
           required: true,
-          message: 'Please enter cardholder name!',
+          message: 'Please enter your name!',
         },
       ],
-    })(<Input type="text" />)}
+    })(<Input {...customInput} type="text" />)}
   </FormItem>
 );
 
-// Card expiry
-export const CardExpiryPicker = ({ decorator }) => (
-  <FormItem {...layout} label="Expiry Date">
-    {decorator('cardExpiry', {
-      rules: [
-        {
-          required: true,
-          message: 'Please enter card expiry month and year!',
-        },
-      ],
-    })(<MonthPicker placeholder="Select month and year" format="MM-YYYY" />)}
-    <ExtraInfoText>MM-YYYY</ExtraInfoText>
-  </FormItem>
-);
-
-// Payment Button
-export const PaymentButton = ({ clicked }) => (
+// Register Button
+export const EventRegisterButton = ({ clicked }) => (
   <FullButton type="primary" htmlType="submit" onClick={clicked}>
-    Make Payment Now
+    Register for Event
   </FullButton>
 );
 
-// Payment Radio
-export const PaymentTypeRadio = ({ decorator, changed }) => (
-  <FormItem {...layout} label="Payment Method">
-    {decorator('paymentType', {
-      initialValue: 'DP',
-    })(
-      <RadioGroup name="paymentTypeRdo" defaultValue="DP" onChange={changed}>
-        <RadioButton value="DP">Direct Online Payment</RadioButton>
-        <RadioButton value="BT">Bank Transfer</RadioButton>
-        <RadioButton value="CT">Cash Payment</RadioButton>
-      </RadioGroup>,
+class PaymentToggler extends React.Component {
+  state = { showDirectPayment: true };
+
+  onSelect = (e) => {
+    const { showDirectPayment } = this.state;
+    // console.log('toggleDirectPayment');
+    if (e.target.value === 'DP' && !showDirectPayment) {
+      this.setState({ showDirectPayment: true });
+      // unhide and reset the fields with validator
+    }
+    if (e.target.value !== 'DP' && showDirectPayment) {
+      this.setState({ showDirectPayment: false });
+      // hide the fields with validator
+    }
+  };
+
+  render() {
+    const { render } = this.props;
+    const { showDirectPayment } = this.state;
+    return render(showDirectPayment, this.onSelect);
+  }
+}
+
+export const Payment = ({ decorator, clicked }) => (
+  <PaymentToggler
+    render={(showDirectPayment, onSelect) => (
+      <FormItem {...layout} label="Payment Method">
+        <FormItem>
+          {decorator('paymentType', { initialValue: 'DP' })(
+            <RadioGroup name="paymentTypeRdo" onChange={onSelect}>
+              <RadioButton value="DP">Direct Online Payment</RadioButton>
+              <RadioButton value="BT">Bank Transfer</RadioButton>
+              <RadioButton value="CT">Cash Payment</RadioButton>
+            </RadioGroup>,
+          )}
+        </FormItem>
+        {/* show text input if nationality is others */}
+        {showDirectPayment && (
+          <Col span={1}>
+            <FormItem {...layout} label=" " colon={false}>
+              <Card style={{ width: '500px', textAlign: 'left' }}>
+                <FormItem {...layout} label="Name on Card">
+                  {decorator('nameOnCard', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Please enter cardholder name!',
+                      },
+                    ],
+                  })(<Input {...customInput} type="text" />)}
+                </FormItem>
+                <FormItem {...layout} label="Card Number">
+                  {decorator('cardNumber', {
+                    rules: [
+                      {
+                        pattern: '^([0-9]{16})$',
+                        message: 'The input is not a 16-digits card number!',
+                      },
+                      {
+                        required: true,
+                        message: 'Please enter card number!',
+                      },
+                    ],
+                  })(<Input {...customInput} maxLength="16" type="text" />)}
+                  <br />
+                  <ExtraInfoText style={{ marginTop: '0px' }}>
+                    {' '}
+                    {'Do not include space or dashes "-".'}
+                  </ExtraInfoText>
+                </FormItem>
+                <FormItem {...layout} label="Expiry Date">
+                  {decorator('cardExpiry', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Please enter card expiry month and year!',
+                      },
+                    ],
+                  })(
+                    <MonthPicker
+                      placeholder="Select month and year"
+                      format="MM-YYYY"
+                    />,
+                  )}
+                  <ExtraInfoText>MM-YYYY</ExtraInfoText>
+                </FormItem>
+                <FormItem {...layout} label="Security Code">
+                  {decorator('cardSecurityCode', {
+                    rules: [
+                      {
+                        pattern: '^([0-9]{3,})$',
+                        message: 'The input is not a 16-digits card number!',
+                      },
+                      {
+                        required: true,
+                        message: 'Please enter card security code!',
+                      },
+                    ],
+                  })(<Input maxLength="4" type="text" />)}
+                </FormItem>
+                <FullButton type="primary" htmlType="submit" onClick={clicked}>
+                  Make Payment Now
+                </FullButton>
+              </Card>
+            </FormItem>
+          </Col>
+        )}
+      </FormItem>
     )}
-  </FormItem>
+  />
 );
 
 /* eslint react/prop-types: 0 */
 // ALL FORM ITEM MUST PASS IN decorator!
-export const EventViewTabs = ({ onChange, tabContents, props }) => {
-  const tabTitles = {
-    tab1: (
-      <BoldText>
-        <TabIcon type="calendar" />
-        Event
-      </BoldText>
-    ),
-    tab2: (
-      <BoldText>
-        <TabIcon type="calendar" />
-        Registration List
-      </BoldText>
-    ),
-  };
-
-  const EventPage = tabContents[0];
-  const RegistrationListPage = tabContents[1];
-
-  return (
-    <Tabs onChange={onChange} type="card">
-      <TabPane tab={tabTitles.tab1} key="tab1">
-        <EventPage {...props} />
-      </TabPane>
-      <TabPane tab={tabTitles.tab2} key="tab2">
-        <RegistrationListPage {...props} />
-      </TabPane>
-    </Tabs>
-  );
-};
-
 export const EventData = ({ decorator }) => (
   <Form>
     <FormItem>
@@ -170,6 +244,9 @@ export const EventData = ({ decorator }) => (
       )}
     </FormItem>
 
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Id">
+      {decorator('id')(<Input {...readOnlyInput} />)}
+    </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Name">
       {decorator('name')(<Input {...readOnlyInput} />)}
     </FormItem>
@@ -187,6 +264,9 @@ export const EventData = ({ decorator }) => (
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Postal Code">
       {decorator('locationPostalCode')(<Input {...readOnlyInput} />)}
+    </FormItem>
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Status">
+      {decorator('eventStatus')(<Input {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Ticket Fee (SGD)">
       {decorator('ticketFee')(<Input {...readOnlyInput} />)}
@@ -210,97 +290,11 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
     </FormItem>
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created By">
+      {decorator('createdBy')(<Input {...readOnlyInput} />)}
+    </FormItem>
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created Date">
+      {decorator('createdDate')(<Input {...readOnlyInput} />)}
+    </FormItem>
   </Form>
 );
-
-export const EditEventButton = ({ eventId }) => (
-  <FullButton type="primary" href={EVENT_EDIT.concat('/').concat(eventId)}>
-    Edit Event
-  </FullButton>
-);
-
-export const ShareFacebookButton = () => (
-  <Button icon="facebook" shape="circle" type="primary" ghost />
-);
-
-export const NotifyMsgButton = ({ onClickNotify, loading }) => (
-  <Button
-    icon="message"
-    shape="circle"
-    type="primary"
-    ghost
-    onClick={onClickNotify}
-    loading={loading}
-  />
-);
-
-export const RegistrationTable = ({
-  registrationList,
-  rowSelection,
-  onChange,
-  sortedInfo,
-  filteredInfo,
-}) => {
-  const columns = [
-    // dataIndex = databases column names
-    {
-      title: 'No',
-      dataIndex: 'no',
-      key: 'no',
-      width: '4%',
-      render: (text, record, index) => <span>{`${index + 1}`}</span>,
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.toLowerCase().includes(value),
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
-      width: '19%',
-    },
-    {
-      title: 'Email Address',
-      dataIndex: 'emailAddress',
-      key: 'emailAddress',
-      sorter: (a, b) => a.emailAddress.length - b.emailAddress.length,
-      sortOrder: sortedInfo.columnKey === 'emailAddress' && sortedInfo.order,
-      width: '28%',
-    },
-    {
-      title: 'Mobile No',
-      dataIndex: 'mobilePhone',
-      key: 'mobilePhone',
-      width: '19%',
-    },
-    {
-      title: 'No. of Ticket(s)',
-      dataIndex: 'noOfPax',
-      key: 'noOfPax',
-      sorter: (a, b) => Number.parseInt(a.noOfPax, 10) - Number.parseInt(b.noOfPax, 10),
-      sortOrder: sortedInfo.columnKey === 'noOfPax' && sortedInfo.order,
-      width: '14%',
-    },
-    {
-      title: 'Payment',
-      dataIndex: 'paymentType',
-      key: 'paymentType',
-      sorter: (a, b) => a.paymentType.length - b.paymentType.length,
-      sortOrder: sortedInfo.columnKey === 'paymentType' && sortedInfo.order,
-      width: '15%',
-    },
-  ];
-
-  return (
-    <FullWidthTable
-      columns={columns}
-      dataSource={registrationList}
-      rowSelection={rowSelection}
-      onChange={onChange}
-      bordered
-      size="small"
-      pagination={{ position: 'top' }}
-    />
-  );
-};

@@ -1,6 +1,6 @@
-export const BASE_URL = 'http://demo0532724.mockable.io';
+// export const BASE_URL = 'http://demo0532724.mockable.io';
 // 'http://54.200.158.0/MyanmarClubAPI';
-
+export const BASE_URL = 'http://34.220.151.95/MyanmarClubAPI';
 export const DATETIME_FORMAT = 'DD-MM-YYYY HH:mm';
 export const DATE_FORMAT = 'DD-MM-YYYY';
 export const TIME_FORMAT = 'HH:mm';
@@ -35,6 +35,7 @@ export const APIPOST_DELETE_EVENT = '/event/deleteEvent';
 export const APIPOST_DELETE_EVENT_RSVP = '/event/deleteRegistrations';
 export const APIPOST_UPDATE_EVENT = '/event/updateEvent';
 export const APIPOST_ADD_EVENT = '/event/createEvent';
+export const APIPOST_ADD_EVENT_RSVP = '/event/addEventRegistration';
 export const APIPOST_ADD_EVENTPHOTO = '/event/eventPhoto';
 export const APIPOST_NOTIFY_EVENT = '/event/sendEventNotification';
 

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Form, message, Card } from 'antd';
-
 import { SUCCESS_NOTIFYEVENT, SHOWFOR } from '../../../actions/message';
 import {
   TIME_FORMAT_DB,
@@ -15,21 +14,17 @@ import {
 import { PUBLIC_EVENT_VIEW } from '../../../actions/location';
 import {
   EventData,
-  NameOnCardInput,
-  CardNumInput,
-  CardExpiryPicker,
-  CardSecurityCodeInput,
-  PaymentButton,
-  PaymentTypeRadio,
+  NameInput,
+  EmailAddressInput,
+  MobileNoInput,
+  TicketNumInput,
+  Payment,
+  EventRegisterButton,
 } from './components';
-import { EventCard, EventCardSmall } from '../shared-styled';
-import { BackButton } from '../shared-components';
-import { postNotifyEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
+import { EventCard } from '../shared-styled';
+import { postNewRSVP } from '../../../reducers/eventmgmt/eventmgmt-data';
 
-const { FormItem } = Form.Item;
-class EventPage extends Component {
-  state = { showDirectPayment: true };
-
+class EventRegistration extends Component {
   componentDidUpdate(prevProps) {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
@@ -55,69 +50,56 @@ class EventPage extends Component {
     performNotifyEvent({ id, url });
   };
 
-  toggleDirectPayment = (e) => {
-    // console.log('toggleDirectPayment');
-    const { showDirectPayment } = this.state;
-    const { form } = this.props;
-
-    if (e.target.value === 'DP' && !showDirectPayment) {
-      this.setState({ showDirectPayment: true });
-      // unhide and reset the fields with validator
-      form.getFieldDecorator('cardNumInput', { hidden: false });
-      form.getFieldDecorator('cardSecInput', { hidden: false });
-      form.resetFields(['cardNumInput', 'cardSecInput']);
-    }
-    if (e.target.value !== 'DP' && showDirectPayment) {
-      this.setState({ showDirectPayment: false });
-      // hide the fields with validator
-      form.getFieldDecorator('cardNumInput', { hidden: true });
-      form.getFieldDecorator('cardSecInput', { hidden: true });
-    }
+  onSubmit = (e) => {
+    e.preventDefault();
+    const {
+      form: { validateFieldsAndScroll },
+      performNewRSVP,
+    } = this.props;
+    validateFieldsAndScroll((error, values) => {
+      if (!error) {
+        const formValues = values;
+        const memberMobilePhone = formValues.memberMobilePhone
+          ? formValues.memberAreaCode + formValues.memberMobilePhone
+          : formValues.memberMobilePhone;
+        performNewRSVP({
+          ...formValues,
+          memberMobilePhone,
+        });
+      }
+    });
   };
 
   render() {
     const {
       form: { getFieldDecorator },
     } = this.props;
-    const { showDirectPayment } = this.state;
-
-    let creditCardForm = null;
-    if (showDirectPayment) {
-      creditCardForm = (
-        <FormItem label=" " colon={false}>
-          <Card>
-            <NameOnCardInput decorator={getFieldDecorator} />
-            <CardNumInput decorator={getFieldDecorator} />
-            <CardExpiryPicker decorator={getFieldDecorator} />
-            <CardSecurityCodeInput decorator={getFieldDecorator} />
-            <PaymentButton onClick={this.handleCreditCardForm} />
-          </Card>
-        </FormItem>
-      );
-    }
     return (
       <div>
         <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
           <EventData decorator={getFieldDecorator} />
           <br />
-          <EventCardSmall title="Event Registration">
-            {creditCardForm}
-            <PaymentTypeRadio
-              decorator={getFieldDecorator}
-              changed={this.toggleDirectPayment}
-            />
-            <BackButton />
-          </EventCardSmall>
+          <Form onSubmit={this.onSubmit}>
+            <Card type="inner" title="Event Registration">
+              <NameInput decorator={getFieldDecorator} />
+              <EmailAddressInput decorator={getFieldDecorator} />
+              <MobileNoInput decorator={getFieldDecorator} />
+              <TicketNumInput decorator={getFieldDecorator} />
+              <Payment decorator={getFieldDecorator} />
+              <EventRegisterButton />
+            </Card>
+          </Form>
         </EventCard>
       </div>
     );
   }
 }
 
-EventPage.propTypes = {
+EventRegistration.propTypes = {
   form: PropTypes.shape({}).isRequired,
   performNotifyEvent: PropTypes.func.isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
+  performNewRSVP: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -147,7 +129,7 @@ const mapPropsToFields = ({
 }) => {
   const { id } = params;
   const eventData = eventsData ? eventsData.find(item => item.id === id) : {};
-
+  console.log('event data', eventData);
   return {
     photoLink: Form.createFormField({ value: eventData.photoLink }),
     name: Form.createFormField({ value: eventData.name }),
@@ -176,12 +158,14 @@ const mapPropsToFields = ({
 };
 
 const mapDispatchToProps = {
-  performNotifyEvent: postNotifyEvent,
+  performNewRSVP: postNewRSVP,
 };
 
-const FormEventPagePage = Form.create({ mapPropsToFields })(EventPage);
+const FormEventRegistrationPage = Form.create({ mapPropsToFields })(
+  EventRegistration,
+);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormEventPagePage);
+)(FormEventRegistrationPage);
