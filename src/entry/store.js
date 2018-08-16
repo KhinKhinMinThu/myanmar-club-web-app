@@ -15,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = createStore(
   connectRouter(history)(rootReducer), // new root reducer with router state
-  composeWithDevTools(applyMiddleware(sagaMiddleware, rtrMiddleware)),
+  composeWithDevTools(applyMiddleware(sagaMiddleware, logger, rtrMiddleware)),
 );
 
 const loginState = localStorage.getItem('loginState');

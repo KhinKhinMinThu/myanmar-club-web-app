@@ -2,11 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
-import {
-  prev,
-  next,
-  startValidate,
-} from '../../../reducers/membermgmt/membermgmt-ui';
+import { prev, next } from '../../../reducers/membermgmt/membermgmt-ui';
 import { FullButton } from '../shared-styled';
 import { LOGIN } from '../../../actions/location';
 
@@ -62,7 +58,6 @@ const FormStepAction = ({ membermgmtUI: { currentStep }, dispatchPrev }) => {
 FormStepAction.propTypes = {
   dispatchNext: PropTypes.func.isRequired,
   dispatchPrev: PropTypes.func.isRequired,
-  dispatchStartValidate: PropTypes.func.isRequired,
   membermgmtUI: PropTypes.shape({}).isRequired,
 };
 
@@ -73,7 +68,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   dispatchNext: next,
   dispatchPrev: prev,
-  dispatchStartValidate: startValidate,
 };
 
 export default connect(

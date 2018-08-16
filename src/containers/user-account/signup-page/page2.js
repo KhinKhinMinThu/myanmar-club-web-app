@@ -17,35 +17,14 @@ import {
   DeclarationCheckBox,
 } from '../shared-components';
 import { next } from '../../../reducers/membermgmt/membermgmt-ui';
-import { setMemberData, postSignup } from '../../../reducers/membermgmt/membermgmt-data';
+import {
+  setMemberData,
+  postSignup,
+} from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
 
 class Page2 extends Component {
-  componentDidUpdate(prevProps) {
-    const {
-      membermgmtUI: { isValidating, currentStep },
-    } = this.props;
-    if (currentStep !== 2) return;
-    console.log(
-      ' PREV:',
-      prevProps.membermgmtUI.isValidating,
-      'CURR:',
-      isValidating,
-    );
-    console.log(
-      ' PREV:',
-      prevProps.membermgmtUI.currentStep,
-      'CURR:',
-      currentStep,
-    );
-    // const isPropChange = isValidating !== prevProps.membermgmtUI.isValidating;
-    const isPropChange = isValidating && !prevProps.membermgmtUI.isValidating;
-
-    if (!isValidating || !isPropChange) return;
-    this.validatePage();
-  }
-
   onChange = (e) => {
     const { value } = e.target;
     const {
@@ -161,11 +140,9 @@ Page2.propTypes = {
   dispatchNext: PropTypes.func.isRequired,
   performSignup: PropTypes.func.isRequired,
 
-  membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
 };
 const mapStateToProps = state => ({
-  membermgmtUI: state.membermgmt.ui,
   membermgmtData: state.membermgmt.data,
 });
 
