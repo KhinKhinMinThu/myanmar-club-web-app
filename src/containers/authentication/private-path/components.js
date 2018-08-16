@@ -14,14 +14,11 @@ import {
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
 } from '../../../actions/location';
-import {
-  setLogout,
-  initialLoginState,
-} from '../../../reducers/login/login-data';
+import { setLogout } from '../../../reducers/login/login-data';
 import { locationChange } from '../../../reducers/router';
 
 const commonTitles = {
-  DASHBOARD: { icon: <MenuIcon type="home" />, text: 'Dashboard' },
+  DASHBOARD: { icon: <MenuIcon type="home" />, text: 'Home' },
   PROFILE: { icon: <MenuIcon type="solution" />, text: 'Profile' },
   LOGOUT: {
     icon: <MenuIcon type="logout" />,
@@ -61,7 +58,7 @@ const MenuPanel = ({
 }) => {
   const onClick = (e) => {
     if (e.key === LOGOUT) {
-      performLogout(initialLoginState);
+      performLogout();
       // redirect to login page
       localStorage.clear();
       console.log('cleared local storage');

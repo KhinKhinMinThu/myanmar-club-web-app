@@ -23,7 +23,7 @@ const loginPersistConfig = {
   key: 'login',
   storage: localStorage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ['isLoggedIn', 'isAdmin'],
+  // whitelist: ['isLoggedIn', 'isAdmin'],
 };
 
 const rootReducer = combineReducers({

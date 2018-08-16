@@ -31,8 +31,9 @@ import {
   BackButton,
   PaymentTypeRadio,
   TotalAmountInput,
-} from './components';
-import { postUpdateMembershipAdmin } from '../../../reducers/membermgmt/membermgmt-data';
+  feesTbl,
+} from '../shared-components';
+import { postUpdateMembershipMember } from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
 
@@ -42,7 +43,7 @@ class MemberRenewal extends Component {
       membermgmtData: { isPostApiLoading, postErrMsg },
       membermgmtUI: { currentTab },
     } = this.props;
-    if (currentTab !== 'tab2') return;
+    if (currentTab !== 'tab1') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
@@ -110,6 +111,11 @@ class MemberRenewal extends Component {
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <Form onSubmit={this.onSubmit}>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+            <Row gutter={8} type="flex" justify="center">
+              <Col span={12}>{feesTbl}</Col>
+            </Row>
+          </Card>
           <Row gutter={8} justify="start">
             <Col span={24}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
@@ -163,7 +169,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  performUpdateMembership: postUpdateMembershipAdmin,
+  performUpdateMembership: postUpdateMembershipMember,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
@@ -171,9 +177,7 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   // return the fields
   return {
     membershipTypeReadOnly: Form.createFormField({
-      value: member.membershipType
-        ? member.membershipType.substr(member.membershipType.indexOf(':') + 1)
-        : '-',
+      value: member.membershipType,
     }),
     membershipStatus: Form.createFormField({ value: member.membershipStatus }),
     createdDate: Form.createFormField({

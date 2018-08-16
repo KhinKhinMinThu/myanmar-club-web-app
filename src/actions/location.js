@@ -9,7 +9,7 @@ export const PUBLIC_EVENT_VIEW = '/event-info';
 
 // private
 export const PROFILE = '/portal/profile';
-export const DASHBOARD = '/portal/dashboard';
+export const DASHBOARD = '/portal/home';
 export const ROLE_MANAGEMENT = '/portal/manage-roles';
 export const MEMBER_MANAGEMENT = '/portal/manage-members';
 export const MEMBER_EDIT = '/portal/edit-member';

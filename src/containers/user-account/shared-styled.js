@@ -33,3 +33,15 @@ export const FullButton = styled(Button)`
 export const LoginCard = styled(Card)`
   width: 450px;
 `;
+
+// Tabs
+export const TabIcon = styled(Icon)`
+  font-size: 16px;
+`;
+// end
+
+// Text
+export const BoldText = styled.span`
+  font-weight: bold;
+`;
+// end

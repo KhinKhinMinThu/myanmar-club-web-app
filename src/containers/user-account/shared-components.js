@@ -1,15 +1,18 @@
 import React from 'react';
 import {
-  Form, Tabs, Select, Radio, InputNumber,
+  Form, Tabs, Select, Radio, InputNumber, Table,
 } from 'antd';
 import {
   TabIcon,
   BoldText,
   FullButton,
   // BoldUnderlineText,
-} from '../shared-styled';
-import { layout, customInput } from '../../shared-profile-components/shared-components';
-import { ExtraInfoText } from '../../shared-profile-components/shared-styled';
+} from './shared-styled';
+import {
+  layout,
+  customInput,
+} from '../shared-profile-components/shared-components';
+import { ExtraInfoText } from '../shared-profile-components/shared-styled';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
@@ -23,7 +26,7 @@ export const ProfileTabs = ({ onChange, tabContents, props }) => {
     tab1: (
       <BoldText>
         <TabIcon type="user" />
-        Member Profile
+        Profile
       </BoldText>
     ),
     tab2: (
@@ -34,15 +37,15 @@ export const ProfileTabs = ({ onChange, tabContents, props }) => {
     ),
   };
 
-  const MemberEditPage = tabContents[0];
-  const MemberRenewalPage = tabContents[1];
+  const ProfileEditPage = tabContents[0];
+  const ProfileRenewalPage = tabContents[1];
   return (
     <Tabs onChange={onChange} type="card">
       <TabPane tab={tabTitles.tab1} key="tab1">
-        <MemberEditPage {...props} />
+        <ProfileEditPage {...props} />
       </TabPane>
       <TabPane tab={tabTitles.tab2} key="tab2">
-        <MemberRenewalPage {...props} />
+        <ProfileRenewalPage {...props} />
       </TabPane>
     </Tabs>
   );
@@ -64,44 +67,6 @@ export const RenewButton = () => (
 export const BackButton = ({ history }) => (
   <FullButton onClick={() => history.go(-1)}>Go Back</FullButton>
 );
-
-export const RoleInput = ({ decorator, allRoles, form }) => {
-  // const { decorator, allRoles } = this.props;
-
-  const children = [];
-  const description = [];
-  allRoles.forEach((item) => {
-    description.push(`${item.name}: ${item.description}`);
-    children.push(<Option key={item.id}>{item.name}</Option>);
-  });
-
-  return (
-    <FormItem {...layout} label="Roles" colon>
-      {decorator('roleNames', {
-        getValueFromEvent: (value) => {
-          const { getFieldValue } = form;
-          if (getFieldValue('isEcMember') === '0') return [];
-          if (value.includes('1')) return ['1'];
-          return value;
-        },
-      })(
-        <Select
-          mode="multiple"
-          placeholder="Please select member role"
-          style={{ width: '100%' }}
-        >
-          {children}
-        </Select>,
-      )}
-      {description.map(item => (
-        <ExtraInfoText key={item}>
-          {item}
-          <br />
-        </ExtraInfoText>
-      ))}
-    </FormItem>
-  );
-};
 
 // PaymentTypeRadio
 export const PaymentTypeRadio = ({ decorator }) => (
@@ -138,4 +103,71 @@ export const TotalAmountInput = ({ decorator }) => (
       />,
     )}
   </FormItem>
+);
+
+
+// feestable
+
+const columns = [
+  { title: '', dataIndex: 'NA', align: 'right' },
+  {
+    title: 'Life',
+    dataIndex: 'LI',
+    align: 'right',
+    width: '20%',
+  },
+  {
+    title: 'Ordinary',
+    dataIndex: 'OR',
+    align: 'right',
+    width: '20%',
+  },
+  {
+    title: 'Student/ Worker',
+    dataIndex: 'SW',
+    align: 'right',
+    width: '30%',
+  },
+];
+
+const data = [
+  {
+    key: '1',
+    NA: 'Entrance Fee',
+    LI: 'SGD 50',
+    OR: 'SGD 50',
+    SW: 'Waive',
+  },
+  {
+    key: '2',
+    NA: 'Annual Fee',
+    LI: 'NA',
+    OR: 'SGD 24',
+    SW: 'SGD 24',
+  },
+  {
+    key: '3',
+    NA: 'The Member',
+    LI: 'SGD 300',
+    OR: 'NA',
+    SW: 'NA',
+  },
+  {
+    key: '4',
+    NA: 'Total',
+    LI: 'SGD 350',
+    OR: 'SGD 74',
+    SW: 'SGD 24',
+  },
+];
+
+export const feesTbl = (
+  <Table
+    style={{ border: '1px solid black' }}
+    columns={columns}
+    dataSource={data}
+    pagination={false}
+    size="small"
+    bordered
+  />
 );

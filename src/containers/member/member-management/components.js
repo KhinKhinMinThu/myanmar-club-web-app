@@ -270,12 +270,20 @@ export class MembersTable extends Component {
       },
       {
         title: 'Membership Expiry',
-        dataIndex: 'membershipExpiry',
-        key: 'membershipExpiry',
-        sorter: (a, b) => new Date(a.membershipExpiry) - new Date(b.membershipExpiry),
+        dataIndex: 'membershipExpiryDate',
+        key: 'membershipExpiryDate',
+        sorter: (a, b) => new Date(a.membershipExpiryDate) - new Date(b.membershipExpiryDate),
         sortOrder:
-          sortedInfo.columnKey === 'membershipExpiry' && sortedInfo.order,
+          sortedInfo.columnKey === 'membershipExpiryDate' && sortedInfo.order,
         width: '15%',
+        render: (text, record) => (
+          <div>
+            {moment(record.membershipExpiryDate).format(DATE_FORMAT)
+            === DEFAULT_DATE
+              ? '-'
+              : record.membershipExpiryDate}
+          </div>
+        ),
       },
       {
         title: 'Status',

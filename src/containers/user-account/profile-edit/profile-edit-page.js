@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
   Form, message, Row, Col, Spin, Modal, Card,
@@ -34,15 +33,13 @@ import {
   HomePhoneInput,
   MobilePhoneInput,
   HobbiesInput,
-  IsEcMemberRadio,
   SubComInterest,
   ProfilePhoto,
   DeleteProfileSwitch,
 } from '../../shared-profile-components/shared-components';
-import { RoleInput, SaveUpdateButton, BackButton } from './components';
+import { SaveUpdateButton, BackButton } from '../shared-components';
 import NationalityInput from '../../shared-profile-components/nationalityInput';
 import ReligionInput from '../../shared-profile-components/religionInput';
-import PasswordInput from '../../shared-profile-components/passwordInput';
 import {
   postDeleteMembers,
   postUpdateMember,
@@ -61,7 +58,7 @@ class MemberEdit extends Component {
       membermgmtData: { isPostApiLoading, postErrMsg },
       membermgmtUI: { currentTab },
     } = this.props;
-    if (currentTab !== 'tab1') return;
+    if (currentTab !== 'tab2') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
@@ -73,21 +70,10 @@ class MemberEdit extends Component {
     }
   }
 
-  onChange = (e) => {
-    const { value } = e.target;
-    const {
-      form: { setFieldsValue },
-    } = this.props;
-    if (value === '0') {
-      setFieldsValue({ roleNames: [] });
-    }
-  };
-
   onSubmit = (e) => {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll, getFieldValue },
-      membermgmtData: { memberData },
       computedMatch: {
         params: { id },
       },
@@ -136,10 +122,6 @@ class MemberEdit extends Component {
           });
           const roleNames = [];
           formValues.roleNames.forEach(item => roleNames.push({ id: item }));
-          // encryp the password if it's changed.
-          const password = memberData.password !== formValues.password
-            ? CryptoJS.MD5(formValues.password).toString(CryptoJS.enc.Hex)
-            : memberData.password;
           const memberToUpdate = {
             ...formValues,
             id,
@@ -150,7 +132,6 @@ class MemberEdit extends Component {
             religion,
             subComInterest,
             roleNames,
-            password,
             uploadBtn: fileList,
           };
           performMemberData(memberToUpdate);
@@ -205,7 +186,6 @@ class MemberEdit extends Component {
     const allSubComInterest = memberFormFields
       ? memberFormFields.allSubComInterest
       : [];
-    const allRoles = memberFormFields ? memberFormFields.allRoles : [];
 
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
@@ -256,15 +236,6 @@ class MemberEdit extends Component {
                 <AddressInput decorator={getFieldDecorator} />
                 <PostalCodeInput decorator={getFieldDecorator} />
                 <EmailAddressInput decorator={getFieldDecorator} />
-                <PasswordInput
-                  decorator={getFieldDecorator}
-                  form={form}
-                  placeHolder="Account Password"
-                />
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
                 <FacebookAccountInput decorator={getFieldDecorator} />
                 <HomePhoneInput decorator={getFieldDecorator} />
                 <MobilePhoneInput decorator={getFieldDecorator} />
@@ -277,15 +248,6 @@ class MemberEdit extends Component {
             </Col>
             <Col span={24}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-                <IsEcMemberRadio
-                  decorator={getFieldDecorator}
-                  onChange={this.onChange}
-                />
-                <RoleInput
-                  form={form}
-                  decorator={getFieldDecorator}
-                  allRoles={allRoles}
-                />
                 <DeleteProfileSwitch decorator={getFieldDecorator} />
                 <br />
                 <Row gutter={8}>

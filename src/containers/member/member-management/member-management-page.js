@@ -37,7 +37,7 @@ class MemberManagement extends Component {
     } = this.props;
 
     return (
-      <Spin spinning={isGetApiLoading} size="large">
+      <Spin spinning={isGetApiLoading} size="large" delay={1000}>
         {this.isApiCalled && getErrMsg ? (
           <Alert
             message="Error"

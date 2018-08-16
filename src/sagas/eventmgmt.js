@@ -118,8 +118,11 @@ const postNotifyEvent = notification => api.post(APIPOST_NOTIFY_EVENT, {
 const assembleFormData = ({ eventId, imageFile }) => {
   if (eventId && imageFile) {
     const mpf = new FormData();
-    mpf.append('id', eventId.id);
+    mpf.append('id', eventId);
     mpf.append('eventPhoto', imageFile, imageFile.name);
+
+    // Object.entries(mpf).forEach(item => console.log('>>>>', item));
+
     return mpf;
   }
   return null;

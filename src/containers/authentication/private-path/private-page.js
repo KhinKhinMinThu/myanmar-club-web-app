@@ -21,12 +21,12 @@ import {
 import logo from '../../../images/logo.jpg';
 import MenuPanel from './components';
 // import SignupPage2 from '../../signup-page2';
-import ProfilePage from '../../profile-page';
 import Dashboard from './home-ex';
 import ErrorPage from '../error-page';
 import RoleManagementPage from '../../role-management';
 import MemberManagementPage from '../../member/member-management';
 import MemberProfileEditPage from '../../member/member-profile-edit';
+import ProfileEditPage from '../../user-account/profile-edit';
 import ClaimManagementPage from '../../claim/claim-management';
 import EventTransactionPage from '../../event/event-transaction';
 import EventCreation from '../../event/event-creation';
@@ -34,7 +34,9 @@ import EventManagementPage from '../../event/event-management';
 import EventEditPage from '../../event/event-edit';
 import EventViewPage from '../../event/event-view';
 
-const { Header, Content, Sider } = Layout;
+const {
+  Header, Content, Sider, Footer,
+} = Layout;
 const logoImage = (
   <img alt="logo" src={logo} style={{ width: 'auto', height: '55px' }} />
 );
@@ -47,7 +49,7 @@ class PrivatePage extends Component {
       case DASHBOARD:
         return Dashboard;
       case PROFILE:
-        return ProfilePage;
+        return ProfileEditPage;
       case LOGOUT:
         return Dashboard;
       default:
@@ -142,6 +144,10 @@ class PrivatePage extends Component {
           >
             <Page {...this.props} />
           </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            MClubPortal ©2018 Created by PentaHive as Singapore Management
+            University Final Year Project.
+          </Footer>
         </Layout>
       </Layout>
     );

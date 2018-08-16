@@ -15,8 +15,13 @@ export const GET_ERROR = '[MEMBERMGMT_DATA] GET_ERROR';
 export const POST_APILOADING = '[MEMBERMGMT_DATA] POST_APILOADING';
 export const POST_DELETEMEMBERS = '[MEMBERMGMT_DATA] POST_DELETEMEMBERS';
 export const POST_UPDATEMEMBER = '[MEMBERMGMT_DATA] POST_UPDATEMEMBER';
-export const POST_UPDATEMEMBERSHIP = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIP';
+export const POST_UPDATEMEMBERSHIPADMIN = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIP';
+export const POST_UPDATEMEMBERSHIPMEMBER = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIPMEMBER';
 export const POST_ERROR = '[MEMBERMGMT_DATA] POST_ERROR';
+// end
+
+// RESET
+export const RESET_MEMBERDATA = '[MEMBERMGMT_DATA] RESET_MEMBERDATA';
 // end
 
 export const getMemberFormFields = () => ({ type: GET_MEMBERFORMFIELDS });
@@ -25,6 +30,7 @@ export const setMemberFormFields = memberFormFields => ({
   payload: memberFormFields,
 });
 export const getMemberData = id => ({ type: GET_MEMBERDATA, id });
+export const resetMemberData = () => ({ type: RESET_MEMBERDATA });
 export const getMembersData = () => ({ type: GET_MEMBERSDATA });
 export const setMemberData = memberData => ({
   type: MEMBERDATA,
@@ -46,17 +52,14 @@ export const postUpdateMember = memberToUpdate => ({
   type: POST_UPDATEMEMBER,
   memberToUpdate,
 });
-export const postUpdateMembership = membershipToUpdate => ({
-  type: POST_UPDATEMEMBERSHIP,
+export const postUpdateMembershipAdmin = membershipToUpdate => ({
+  type: POST_UPDATEMEMBERSHIPADMIN,
   membershipToUpdate,
 });
-// delete
-export const SAVE = '[MEMBERMGMT_DATA] SAVE';
-export const save = formValues => ({
-  type: SAVE,
-  payload: formValues,
+export const postUpdateMembershipMember = membershipToUpdate => ({
+  type: POST_UPDATEMEMBERSHIPMEMBER,
+  membershipToUpdate,
 });
-// end delete
 
 export default function (
   state = {
@@ -67,44 +70,6 @@ export default function (
     ecMembersList: null,
     clubMembersList: null,
     memberData: null,
-
-    // reset back to null
-    memberData1: {
-      id: '2',
-      name: 'Yamin',
-      gender: 'Female',
-      dateOfBirth: '1995-09-09 00:00:00',
-      maritalStatus: 'Single',
-      educationLevel: 'Degree',
-      occupation: 'Student',
-      passType: 'Student Pass',
-      idNumber: 'G1234099E',
-      addressLine1: 'Woodland Street 19',
-      addressLine2: 'NA',
-      postalCode: '730421',
-      emailAddress: 'yamin712@gmail.com',
-      photoLink:
-        'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      facebookAccount:
-        'https://www.facebook.com/yamin.nyinyi?lst=1142744702%3A100003166412891%3A1533655872',
-      areaCodeHomePhone: '65',
-      homePhone: '',
-      areaCodeMobilePhone: '85',
-      mobilePhone: '65696090',
-      hobbies: 'Swimming',
-      isEcMember: '1',
-      nationality: 'Korean',
-      religion: 'kkkm',
-      subComInterest: [{ id: '1' }, { id: '2' }],
-      roleNames: [{ id: '1', name: 'Admin' }, { id: '3', name: 'treasurer' }],
-
-      memberRoleToAdd: ['1', '2'],
-      memberRoleToRemove: ['3'],
-      membershipType: 'Life',
-      membershipStatus: 'Active',
-      PaymentType: 'Cash',
-    },
-    // end
     memberFormFields: null,
   },
   action,
@@ -150,22 +115,12 @@ export default function (
         ...state,
         postErrMsg: action.payload,
       };
-
-    case SAVE:
+    case RESET_MEMBERDATA:
       return {
         ...state,
-        ...action.payload,
+        memberData: null,
       };
     default:
       return state;
   }
 }
-
-// roleNames        :        [{id: "2", name: "admin"},{ id: "4",  name:"treasurer" }],
-
-// membershipType         :        "Life",
-// membershipStatus         :        "Active",
-// createdDate         :        "01-01-2010 11:30:00",
-// membershipExpiryDate         :        "01-01-2019 11:30:00",
-// lastPaymentDate         :        "01-01-2019 11:30:00",
-// lastPaymentType         :        "cash",

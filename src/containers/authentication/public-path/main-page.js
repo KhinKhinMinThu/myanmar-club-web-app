@@ -11,4 +11,5 @@ const PublicMain = () => (
     <Link to={FORGOTPASSWORD}>FORGOT PASSWORD PAGE</Link>
   </div>
 );
+
 export default PublicMain;
