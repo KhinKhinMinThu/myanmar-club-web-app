@@ -169,7 +169,7 @@ class MemberEdit extends Component {
     const {
       history,
       form,
-      form: { getFieldDecorator, getFieldValue },
+      form: { getFieldDecorator },
       membermgmtData: { isPostApiLoading, memberFormFields },
     } = this.props;
     const layout = {
@@ -188,8 +188,8 @@ class MemberEdit extends Component {
       style: { marginBottom: 14 },
     };
 
-    const isOtherNat = getFieldValue('isOtherNat');
-    const isOtherRel = getFieldValue('isOtherRel');
+    // const isOtherNat = getFieldValue('isOtherNat');
+    // const isOtherRel = getFieldValue('isOtherRel');
     const allSubComInterest = memberFormFields
       ? memberFormFields.allSubComInterest
       : [];
@@ -213,12 +213,12 @@ class MemberEdit extends Component {
                 <NationalityInput
                   form={form}
                   decorator={getFieldDecorator}
-                  isOtherNat={isOtherNat}
+                  // isOtherNat={isOtherNat}
                 />
                 <ReligionInput
                   form={form}
                   decorator={getFieldDecorator}
-                  isOtherRel={isOtherRel}
+                  // isOtherRel={isOtherRel}
                 />
               </Card>
             </Col>
@@ -351,7 +351,7 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
     otherNationality: Form.createFormField({
       value: isOtherNat === 't' ? '' : member.nationality,
     }),
-    isOtherNat: Form.createFormField({ value: isOtherNat }),
+    // isOtherNat: Form.createFormField({ value: isOtherNat }),
     // end Nationality
 
     // Religion
@@ -361,7 +361,7 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
     otherReligion: Form.createFormField({
       value: isOtherRel === 't' ? '' : member.religion,
     }),
-    isOtherRel: Form.createFormField({ value: isOtherRel }),
+    // isOtherRel: Form.createFormField({ value: isOtherRel }),
     // end Religion
 
     maritalStatus: Form.createFormField({ value: member.maritalStatus }),
@@ -375,6 +375,12 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
     addressLine2: Form.createFormField({ value: member.addressLine2 }),
     postalCode: Form.createFormField({ value: member.postalCode }),
     emailAddress: Form.createFormField({ value: member.emailAddress }),
+    password: Form.createFormField({
+      value: member.password ? member.password : '',
+    }),
+    confirmPassword: Form.createFormField({
+      value: member.password ? member.password : '',
+    }),
     facebookAccount: Form.createFormField({
       value: member.facebookAccount,
     }),

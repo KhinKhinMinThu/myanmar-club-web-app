@@ -8,10 +8,13 @@ import FormStepAction from './form-step-action';
 import { MEMBERSHIP_FEES, MEMBERSHIP_TYPES } from '../../../actions/constants';
 import { CONFIRM_CREATEACC } from '../../../actions/message';
 import { MembershipTypeRadio } from '../../shared-profile-components/shared-components';
+import { MMText } from '../../shared-profile-components/shared-styled';
+import { HightlightedText } from '../shared-styled';
 import {
   PaymentTypeRadio,
   TotalAmountInput,
   feesTbl,
+  DeclarationCheckBox,
 } from '../shared-components';
 import { next } from '../../../reducers/membermgmt/membermgmt-ui';
 import { setMemberData } from '../../../reducers/membermgmt/membermgmt-data';
@@ -77,6 +80,7 @@ class Page2 extends Component {
             // perform backend post
             // dispatchMemberData(memberToAdd);
             dispatchNext();
+            document.documentElement.scrollTop = 0;
           },
         });
       }
@@ -106,6 +110,44 @@ class Page2 extends Component {
             </Card>
           </Col>
         </Row>
+        <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          <Row gutter={8} type="flex" justify="center">
+            <Col span={16}>
+              <HightlightedText>
+                Declaration by applicant{' '}
+                <MMText>(လျှောက်ထားသူမှ ခံဝန်ချက်)</MMText>
+              </HightlightedText>
+              <br />
+              I declare that the above particulars given by me are true and
+              correct and I agree to abide by the Constitution of the society.
+              <br />
+              <MMText>
+                အထက်ဖော်ပြပါ မိမိ၏ ကိုယ်ရေးအချက်အလက်များသည် မှန်ကန်ပါသည်။
+              </MMText>
+              <br />
+              <MMText>
+                မိမိသည် မြန်မာကလပ်(စင်္ကာပူ) အသင်း၏ ဖွဲ့စည်းပုံစည်းမျဉ်းများကို
+                လိုက်နာပါမည်။
+              </MMText>
+              <DeclarationCheckBox decorator={getFieldDecorator} />
+            </Col>
+          </Row>
+          <Row gutter={8} type="flex" justify="center">
+            <Col span={16}>
+              <br />
+              If you have any difficulties with online membership application,
+              you are invited to come to Myanmar Club Office at Peninsula Plaza
+              #05-42 from 13:00 to 19:00 hour on every Saturday.
+              <br />
+              <MMText>
+                အကယ်၍ အွန်လိုင်းအသင်းဝင်ခွင့် လျှောက်ထားခြင်းနှင့် ပါတ်သက်၍
+                အခက်အခဲရှိပါက မြန်မာကလပ် ရုံးခန်း (ပင်နီဆူလာပလာဇာ၊ ၅ထပ်
+                အခန်းအမှတ် ၄၁) သို့ စနေနေ့များတွင် နေ့လည် ၁နာရီမှ ညနေ ရနာရီအထိ
+                ကိုယ်တိုင်လာရောက် ဆောင်ရွက်နိုင်ပါသည်။
+              </MMText>
+            </Col>
+          </Row>
+        </Card>
         <FormStepAction />
       </Form>
     );

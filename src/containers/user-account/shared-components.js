@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  Form, Tabs, Radio, InputNumber, Table,
+  Form, Tabs, Radio, InputNumber, Table, Checkbox,
 } from 'antd';
+import { MMText } from '../shared-profile-components/shared-styled';
 import {
   TabIcon,
   BoldText,
@@ -17,6 +18,7 @@ const { TabPane } = Tabs;
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 
 /* eslint react/prop-types: 0 */
 export const ProfileTabs = ({ onChange, tabContents, props }) => {
@@ -170,3 +172,41 @@ export const feesTbl = (
     bordered
   />
 );
+
+// DeclarationCheckBox
+export const DeclarationCheckBox = ({ decorator }) => {
+  const declarationCheckList = [
+    {
+      label: (
+        <span>
+          True and Correct{' '}
+          <MMText>(ပေးပို့ထားသော ကိုယ်ရေးအချက်အလက်များမှာ မှန်ကန်ပါသည်)</MMText>
+        </span>
+      ),
+      value: '1',
+    },
+    {
+      label: (
+        <span>
+          I will abide by the Constitution of the Society{' '}
+          <MMText>(အသင်း၏ စည်းမျဉ်းများကိုလိုက်နာပါမည်)</MMText>
+        </span>
+      ),
+      value: '2',
+    },
+  ];
+  return (
+    <FormItem>
+      {decorator('declarationCheck', {
+        rules: [
+          {
+            type: 'array',
+            required: true,
+            message: 'Please tick both chechboxes!',
+            len: 2,
+          },
+        ],
+      })(<CheckboxGroup options={declarationCheckList} />)}
+    </FormItem>
+  );
+};

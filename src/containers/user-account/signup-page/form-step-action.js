@@ -37,7 +37,9 @@ const FormStepAction = ({ membermgmtUI: { currentStep }, dispatchPrev }) => {
     </FullButton>
   );
   const GoToLoginButton = () => (
-    <FullButton href={LOGIN}>Go To Login</FullButton>
+    <FullButton type="primary" href={LOGIN}>
+      Go To Login
+    </FullButton>
   );
 
   return (
@@ -45,7 +47,9 @@ const FormStepAction = ({ membermgmtUI: { currentStep }, dispatchPrev }) => {
       <Row gutter={8} style={stepActionStyles}>
         <Col span={24}>{currentStep === 0 && <NextButton />}</Col>
         <Col span={24}>{currentStep === 3 && <GoToLoginButton />}</Col>
-        <Col {...layout}>{currentStep > 0 && <PrevButton />}</Col>
+        <Col {...layout}>
+          {currentStep > 0 && currentStep !== 3 && <PrevButton />}
+        </Col>
         <Col {...layout}>
           {currentStep < 2 && currentStep > 0 && <NextButton />}
           {currentStep === 2 && <ApplyButton />}

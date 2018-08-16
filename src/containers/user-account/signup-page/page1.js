@@ -7,7 +7,11 @@ import {
   Form, Alert, Row, Col, Spin, Card,
 } from 'antd';
 import FormStepAction from './form-step-action';
-import { DATETIME_FORMAT_DB } from '../../../actions/constants';
+import {
+  DATETIME_FORMAT_DB,
+  NATIONALITY_LIST,
+  RELIGION_LIST,
+} from '../../../actions/constants';
 import {
   NameInput,
   GenderRadio,
@@ -102,6 +106,7 @@ class Page1 extends Component {
         };
         dispatchMemberData(memberToAdd);
         dispatchNext();
+        document.documentElement.scrollTop = 0;
       }
     });
   };
@@ -136,6 +141,8 @@ class Page1 extends Component {
       lg: { span: 12 },
       xl: { span: 12 },
     };
+    // const isOtherNat = getFieldValue('isOtherNat');
+    // const isOtherRel = getFieldValue('isOtherRel');
     const allSubComInterest = memberFormFields
       ? memberFormFields.allSubComInterest
       : [];
@@ -160,12 +167,12 @@ class Page1 extends Component {
                   <NationalityInput
                     form={form}
                     decorator={getFieldDecorator}
-                    // isOtherNat="f" // not others
+                    // isOtherNat={isOtherNat}
                   />
                   <ReligionInput
                     form={form}
                     decorator={getFieldDecorator}
-                    isOtherRel="t" // not others
+                    // isOtherRel={isOtherRel}
                   />
                 </Card>
               </Col>
@@ -237,7 +244,105 @@ const mapDispatchToProps = {
   dispatchMemberData: setMemberData,
   dispatchNext: next,
 };
-const FormPage1 = Form.create()(Page1);
+
+const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
+  const member = memberData || {};
+  let isOtherNat;
+  let isOtherRel;
+  let nationality = 'Myanmar';
+  let religion = 'Buddhism';
+  const subComInterest = {};
+  if (memberData) {
+    isOtherNat = NATIONALITY_LIST.includes(member.nationality.toLowerCase())
+      ? 't'
+      : 'f';
+    isOtherRel = RELIGION_LIST.includes(member.religion.toLowerCase())
+      ? 't'
+      : 'f';
+    member.subComInterest.forEach((item) => {
+      subComInterest['subComChk'.concat(item.id)] = Form.createFormField({
+        value: true,
+      });
+    });
+    nationality = isOtherNat === 't' ? member.nationality : 'Others';
+    religion = isOtherRel === 't' ? member.religion : 'Others';
+    // member.subComInterest.map{ subComChk1: Form.createFormField({ value: true }), subComChk2: Form.createFormField({ value: true }) };
+  }
+
+  // return the fields
+  return {
+    uploadBtn: Form.createFormField({
+      value: member.uploadBtn ? [member.uploadBtn[0]] : [],
+    }),
+    id: Form.createFormField({ value: member.id }),
+    name: Form.createFormField({ value: member.name }),
+    gender: Form.createFormField({
+      value: member.gender ? member.gender : 'Male',
+    }),
+    dateOfBirth: Form.createFormField({
+      value: member.dateOfBirth ? moment(new Date(member.dateOfBirth)) : null,
+    }),
+    // Nationality
+    nationality: Form.createFormField({
+      value: nationality,
+    }),
+    otherNationality: Form.createFormField({
+      value: isOtherNat === 't' ? '' : member.nationality,
+    }),
+    // isOtherNat: Form.createFormField({ value: isOtherNat }),
+    // end Nationality
+
+    // Religion
+    religion: Form.createFormField({
+      value: religion,
+    }),
+    otherReligion: Form.createFormField({
+      value: isOtherRel === 't' ? '' : member.religion,
+    }),
+    // isOtherRel: Form.createFormField({ value: isOtherRel }),
+    // end Religion
+
+    maritalStatus: Form.createFormField({
+      value: member.maritalStatus ? member.maritalStatus : 'Single',
+    }),
+    educationLevel: Form.createFormField({
+      value: member.educationLevel,
+    }),
+    occupation: Form.createFormField({ value: member.occupation }),
+    passType: Form.createFormField({ value: member.passType }),
+    idNumber: Form.createFormField({ value: member.idNumber }),
+    addressLine1: Form.createFormField({ value: member.addressLine1 }),
+    addressLine2: Form.createFormField({ value: member.addressLine2 }),
+    postalCode: Form.createFormField({ value: member.postalCode }),
+    emailAddress: Form.createFormField({ value: member.emailAddress }),
+    password: Form.createFormField({
+      value: member.password ? member.password : '',
+    }),
+    confirmPassword: Form.createFormField({
+      value: member.password ? member.password : '',
+    }),
+    facebookAccount: Form.createFormField({
+      value: member.facebookAccount,
+    }),
+    areaCodeHomePhone: Form.createFormField({
+      value: member.homePhone ? member.homePhone.substr(0, 2) : '65',
+    }),
+    homePhone: Form.createFormField({
+      value: member.homePhone ? member.homePhone.substr(2) : member.homePhone,
+    }),
+    areaCodeMobilePhone: Form.createFormField({
+      value: member.mobilePhone ? member.mobilePhone.substr(0, 2) : '65',
+    }),
+    mobilePhone: Form.createFormField({
+      value: member.mobilePhone
+        ? member.mobilePhone.substr(2)
+        : member.mobilePhone,
+    }),
+    hobbies: Form.createFormField({ value: member.hobbies }),
+    ...subComInterest,
+  };
+};
+const FormPage1 = Form.create({ mapPropsToFields })(Page1);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

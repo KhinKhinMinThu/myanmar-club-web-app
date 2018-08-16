@@ -9,17 +9,20 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 class ReligionInput extends Component {
-  componentWillReceiveProps(nextProps) {
-    const { isOtherRel } = this.props;
+  componentWillReceiveProps() {
+    const {
+      form: { getFieldValue },
+    } = this.props;
     // set the initial value of this.showInput only
     // when current value is undefined and nextProps has value
     // f: the value 'Others'
     // if (!isOtherRel && nextProps.isOtherRel) {
     //   this.showInput = nextProps.isOtherRel === 'f';
     // }
-    if (isOtherRel === 'default' && nextProps.isOtherRel !== 'default') {
-      this.showInput = nextProps.isOtherRel === 'f';
-    }
+    this.showInput = getFieldValue('religion') === 'Others';
+    // if (isOtherRel === 'default' && nextProps.isOtherRel !== 'default') {
+    //   this.showInput = nextProps.isOtherRel === 'f';
+    // }
   }
 
   onChange = (value) => {
@@ -66,13 +69,13 @@ class ReligionInput extends Component {
 }
 
 ReligionInput.propTypes = {
-  isOtherRel: PropTypes.string,
+  // isOtherRel: PropTypes.string,
   decorator: PropTypes.func.isRequired,
   form: PropTypes.shape({}).isRequired,
 };
 
-ReligionInput.defaultProps = {
-  isOtherRel: 'default',
-};
+// ReligionInput.defaultProps = {
+//   isOtherRel: 'default',
+// };
 
 export default ReligionInput;

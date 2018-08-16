@@ -9,6 +9,7 @@ import {
   BlockContainer,
   BoldText,
 } from './styled-components';
+import { LOGIN } from '../../../actions/location';
 
 const FormItem = Form.Item;
 
@@ -41,15 +42,19 @@ export const ResetButton = ({ loading }) => (
   </FullWidthButton>
 );
 
-export const BackButton = () => <FullWidthButton>Back</FullWidthButton>;
+export const BackButton = ({ history }) => (
+  <FullWidthButton onClick={() => history.go(-1)}>Back</FullWidthButton>
+);
 
 export const GoToLoginButton = () => (
-  <FullWidthButton type="primary">Go To Login Page</FullWidthButton>
+  <FullWidthButton href={LOGIN} type="primary">
+    Go To Login Page
+  </FullWidthButton>
 );
 
 export const CloseButton = () => <FullWidthButton>Close</FullWidthButton>;
 
-export const ErrorMessage = ({ postErrMsg }) => (
+export const ErrorMessage = ({ postErrMsg, history }) => (
   <Row gutter={8}>
     <Col span={24}>
       <BlockContainer>
@@ -57,7 +62,7 @@ export const ErrorMessage = ({ postErrMsg }) => (
       </BlockContainer>
     </Col>
     <Col span={24}>
-      <BackButton />
+      <BackButton history={history} />
     </Col>
   </Row>
 );

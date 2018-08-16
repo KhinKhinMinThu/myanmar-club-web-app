@@ -22,7 +22,12 @@ MMBulletText.propTypes = {
 };
 
 const PageInfo = ({ dispatchNext }) => (
-  <Form onSubmit={() => dispatchNext()}>
+  <Form
+    onSubmit={() => {
+      dispatchNext();
+      document.documentElement.scrollTop = 0;
+    }}
+  >
     <Card style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
       <Row gutter={8} type="flex" justify="center">
         <Col span={24} style={{ textAlign: 'center' }}>

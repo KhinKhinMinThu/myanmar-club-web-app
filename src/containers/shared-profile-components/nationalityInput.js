@@ -9,17 +9,20 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 class NationalityInput extends Component {
-  componentWillReceiveProps(nextProps) {
-    const { isOtherNat } = this.props;
+  componentWillReceiveProps() {
+    const {
+      form: { getFieldValue },
+    } = this.props;
     // set the initial value of this.showInput only
     // when current value is undefined and nextProps has value
     // f: the value 'Others'
     // if (!isOtherNat && nextProps.isOtherNat) {
     //   this.showInput = nextProps.isOtherNat === 'f';
     // }
-    if (isOtherNat === 'default' && nextProps.isOtherNat !== 'default') {
-      this.showInput = nextProps.isOtherNat === 'f';
-    }
+    this.showInput = getFieldValue('nationality') === 'Others';
+    // if (isOtherNat === 'default' && nextProps.isOtherNat !== 'default') {
+    //   this.showInput = nextProps.isOtherNat === 'f';
+    // }
   }
 
   onChange = (value) => {
@@ -71,13 +74,13 @@ class NationalityInput extends Component {
 }
 
 NationalityInput.propTypes = {
-  isOtherNat: PropTypes.string,
+  // isOtherNat: PropTypes.string,
   decorator: PropTypes.func.isRequired,
   form: PropTypes.shape({}).isRequired,
 };
 
-NationalityInput.defaultProps = {
-  isOtherNat: 'default',
-};
+// NationalityInput.defaultProps = {
+//   isOtherNat: 'default',
+// };
 
 export default NationalityInput;
