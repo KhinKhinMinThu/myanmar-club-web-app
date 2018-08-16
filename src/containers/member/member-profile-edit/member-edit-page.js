@@ -93,7 +93,7 @@ class MemberEdit extends Component {
       },
       performUpdateMember,
       performDeleteMembers,
-      performMemberData,
+      dispatchMemberData,
     } = this.props;
 
     const { fileList } = this.state;
@@ -153,7 +153,7 @@ class MemberEdit extends Component {
             password,
             uploadBtn: fileList,
           };
-          performMemberData(memberToUpdate);
+          dispatchMemberData(memberToUpdate);
           performUpdateMember(memberToUpdate);
         }
       });
@@ -312,7 +312,7 @@ MemberEdit.propTypes = {
 
   performUpdateMember: PropTypes.func.isRequired,
   performDeleteMembers: PropTypes.func.isRequired,
-  performMemberData: PropTypes.func.isRequired,
+  dispatchMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
@@ -325,7 +325,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   performUpdateMember: postUpdateMember,
   performDeleteMembers: postDeleteMembers,
-  performMemberData: setMemberData,
+  dispatchMemberData: setMemberData,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {

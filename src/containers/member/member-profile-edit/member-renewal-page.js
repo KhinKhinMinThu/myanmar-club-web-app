@@ -32,7 +32,7 @@ import {
   PaymentTypeRadio,
   TotalAmountInput,
 } from './components';
-import { postUpdateMembershipAdmin } from '../../../reducers/membermgmt/membermgmt-data';
+import { getMemberData, postUpdateMembershipAdmin } from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
 
@@ -153,6 +153,7 @@ MemberRenewal.propTypes = {
   form: PropTypes.shape({}).isRequired,
 
   performUpdateMembership: PropTypes.func.isRequired,
+  performGetMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
@@ -164,6 +165,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   performUpdateMembership: postUpdateMembershipAdmin,
+  performGetMemberData: getMemberData,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {

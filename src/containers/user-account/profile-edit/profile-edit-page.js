@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
   Form, message, Row, Col, Spin, Modal, Card,
@@ -40,6 +41,7 @@ import {
 import { SaveUpdateButton, BackButton } from '../shared-components';
 import NationalityInput from '../../shared-profile-components/nationalityInput';
 import ReligionInput from '../../shared-profile-components/religionInput';
+import PasswordInput from '../../shared-profile-components/passwordInput';
 import {
   postDeleteMembers,
   postUpdateMember,
@@ -74,12 +76,11 @@ class MemberEdit extends Component {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll, getFieldValue },
-      computedMatch: {
-        params: { id },
-      },
+      loginData: { id },
+      membermgmtData: { memberData },
       performUpdateMember,
       performDeleteMembers,
-      performMemberData,
+      dispatchMemberData,
     } = this.props;
 
     const { fileList } = this.state;
@@ -121,7 +122,11 @@ class MemberEdit extends Component {
             }
           });
           const roleNames = [];
-          formValues.roleNames.forEach(item => roleNames.push({ id: item }));
+          if (formValues.roleNames) formValues.roleNames.forEach(item => roleNames.push({ id: item }));
+          // encryp the password if it's changed.
+          const password = memberData.password !== formValues.password
+            ? CryptoJS.MD5(formValues.password).toString(CryptoJS.enc.Hex)
+            : memberData.password;
           const memberToUpdate = {
             ...formValues,
             id,
@@ -132,9 +137,11 @@ class MemberEdit extends Component {
             religion,
             subComInterest,
             roleNames,
+            isEcMember: memberData.isEcMember ? memberData.isEcMember : '0',
+            password,
             uploadBtn: fileList,
           };
-          performMemberData(memberToUpdate);
+          dispatchMemberData(memberToUpdate);
           performUpdateMember(memberToUpdate);
         }
       });
@@ -236,6 +243,15 @@ class MemberEdit extends Component {
                 <AddressInput decorator={getFieldDecorator} />
                 <PostalCodeInput decorator={getFieldDecorator} />
                 <EmailAddressInput decorator={getFieldDecorator} />
+                <PasswordInput
+                  decorator={getFieldDecorator}
+                  form={form}
+                  placeHolder="Account Password"
+                />
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
                 <FacebookAccountInput decorator={getFieldDecorator} />
                 <HomePhoneInput decorator={getFieldDecorator} />
                 <MobilePhoneInput decorator={getFieldDecorator} />
@@ -269,25 +285,26 @@ class MemberEdit extends Component {
 
 MemberEdit.propTypes = {
   history: PropTypes.shape({}).isRequired,
-  computedMatch: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
 
   performUpdateMember: PropTypes.func.isRequired,
   performDeleteMembers: PropTypes.func.isRequired,
-  performMemberData: PropTypes.func.isRequired,
+  dispatchMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
+  loginData: PropTypes.shape({}).isRequired,
 };
 const mapStateToProps = state => ({
   membermgmtUI: state.membermgmt.ui,
   membermgmtData: state.membermgmt.data,
+  loginData: state.login.data,
 });
 
 const mapDispatchToProps = {
   performUpdateMember: postUpdateMember,
   performDeleteMembers: postDeleteMembers,
-  performMemberData: setMemberData,
+  dispatchMemberData: setMemberData,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {

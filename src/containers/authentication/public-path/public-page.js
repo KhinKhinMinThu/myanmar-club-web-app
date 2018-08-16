@@ -16,7 +16,7 @@ import MenuPanel from './components';
 import MainPage from './main-page';
 import ErrorPage from '../error-page';
 import LoginPage from '../../user-account/login';
-import SignupPage from '../../signup-page';
+import SignupPage from '../../user-account/signup-page';
 import ForgotPasswordPage from '../../forgotpwd-page';
 
 const {

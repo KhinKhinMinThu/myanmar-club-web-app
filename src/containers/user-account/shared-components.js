@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Form, Tabs, Select, Radio, InputNumber, Table,
+  Form, Tabs, Radio, InputNumber, Table,
 } from 'antd';
 import {
   TabIcon,
@@ -12,13 +12,11 @@ import {
   layout,
   customInput,
 } from '../shared-profile-components/shared-components';
-import { ExtraInfoText } from '../shared-profile-components/shared-styled';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const { Option } = Select;
 
 /* eslint react/prop-types: 0 */
 export const ProfileTabs = ({ onChange, tabContents, props }) => {
@@ -76,6 +74,7 @@ export const PaymentTypeRadio = ({ decorator }) => (
       rules: [{ required: true, message: 'Please select payment type!' }],
     })(
       <RadioGroup name="paymentType">
+        <RadioButton value="Direct Payment">Bank Transfer</RadioButton>
         <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>
         <RadioButton value="Cash Payment">Cash Payment</RadioButton>
       </RadioGroup>,
@@ -97,14 +96,14 @@ export const TotalAmountInput = ({ decorator }) => (
     })(
       <InputNumber
         {...customInput}
-        formatter={value => `SGD ${value}`}
-        max={25}
+        formatter={value => `SGD ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        }
+        parser={value => value.replace(/[SGD]\s?|(,*)/g, '')}
         placeholder="Please input total amount"
       />,
     )}
   </FormItem>
 );
-
 
 // feestable
 

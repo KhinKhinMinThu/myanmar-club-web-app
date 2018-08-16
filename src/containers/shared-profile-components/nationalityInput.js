@@ -37,7 +37,7 @@ class NationalityInput extends Component {
         <Row gutter={8} type="flex" justify="start">
           <Col span={12}>
             <FormItem>
-              {decorator('nationality')(
+              {decorator('nationality', { initialValue: 'Myanmar' })(
                 <Select {...customInput} onChange={this.onChange}>
                   <Option value="Myanmar">Myanmar</Option>
                   <Option value="Singaporean">Singaporean</Option>

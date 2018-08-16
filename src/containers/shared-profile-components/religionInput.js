@@ -37,7 +37,7 @@ class ReligionInput extends Component {
         <Row gutter={8} type="flex" justify="start">
           <Col span={12}>
             <FormItem>
-              {decorator('religion')(
+              {decorator('religion', { initialValue: 'Buddhism' })(
                 <Select {...customInput} onChange={this.onChange}>
                   <Option value="Buddhism">Buddhism</Option>
                   <Option value="Islam">Islam</Option>

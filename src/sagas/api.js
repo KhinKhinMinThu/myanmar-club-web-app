@@ -24,7 +24,7 @@ api.interceptors.request.use((request) => {
   return request;
 });
 
-api.interceptors.request.use((response) => {
-  console.log('Getting Response', response);
-  return response;
+apiMultiPart.interceptors.request.use((request) => {
+  console.log('Getting Response Multipart', request);
+  return request;
 });

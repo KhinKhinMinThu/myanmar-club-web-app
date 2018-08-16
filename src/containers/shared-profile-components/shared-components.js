@@ -163,7 +163,9 @@ export const OccupationInput = ({ decorator }) => (
 // passType
 export const PassTypeSelect = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Singapore Pass">
-    {decorator('passType', initialValue)(
+    {decorator('passType', {
+      rules: [{ required: true, message: 'Please select pass type!' }],
+    })(
       <Select {...customInput} placeholder="Select pass type">
         <Option value="S Pass">S Pass</Option>
         <Option value="Employment Pass">Employment Pass</Option>
@@ -347,6 +349,7 @@ export class ProfilePhoto extends Component {
             this.newFile = fileList.length > 1 ? fileList.slice(1) : fileList;
             return this.newFile;
           },
+          rules: [{ required: true, message: 'Please input photo!' }],
         })(
           <Upload
             name="profilepic"

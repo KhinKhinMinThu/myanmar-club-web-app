@@ -34,15 +34,15 @@ export const PageCard = styled(Card)`
   width: 100%;
 `;
 
+export const MMText = styled.span`
+  font-family: Myanmar3;
+  text-align: justify;
+`;
+
 export const BulletIcon = styled(Icon)`
   color: rgba(0, 0, 0, 0.25);
   margin-right: 10px;
   padding-top: 5px;
-`;
-
-export const MMText = styled.span`
-  font-family: Myanmar3;
-  text-align: justify;
 `;
 
 export const HightlightedText = styled.div`

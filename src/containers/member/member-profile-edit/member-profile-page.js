@@ -8,7 +8,7 @@ import { ProfileTabs } from './components';
 import {
   resetState,
   setCurrentTab,
-} from '../../../reducers/eventmgmt/eventmgmt-ui';
+} from '../../../reducers/membermgmt/membermgmt-ui';
 import {
   getMemberData,
   getMemberFormFields,
