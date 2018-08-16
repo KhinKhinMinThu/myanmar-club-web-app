@@ -108,8 +108,8 @@ export const NameInput = ({ decorator }) => (
 );
 
 // Register Button
-export const EventRegisterButton = ({ clicked }) => (
-  <FullButton type="primary" htmlType="submit" onClick={clicked}>
+export const EventRegisterButton = () => (
+  <FullButton type="primary" htmlType="submit">
     Register for Event
   </FullButton>
 );
@@ -243,9 +243,8 @@ export const EventData = ({ decorator }) => (
         />,
       )}
     </FormItem>
-
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Id">
-      {decorator('id')(<Input {...readOnlyInput} />)}
+    <FormItem {...layout} style={{ marginBottom: 0 }}>
+      {decorator('id')(<Input type="hidden" {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Name">
       {decorator('name')(<Input {...readOnlyInput} />)}
@@ -264,9 +263,6 @@ export const EventData = ({ decorator }) => (
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Postal Code">
       {decorator('locationPostalCode')(<Input {...readOnlyInput} />)}
-    </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Status">
-      {decorator('eventStatus')(<Input {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Ticket Fee (SGD)">
       {decorator('ticketFee')(<Input {...readOnlyInput} />)}
@@ -289,12 +285,6 @@ export const EventData = ({ decorator }) => (
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
-    </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created By">
-      {decorator('createdBy')(<Input {...readOnlyInput} />)}
-    </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created Date">
-      {decorator('createdDate')(<Input {...readOnlyInput} />)}
     </FormItem>
   </Form>
 );

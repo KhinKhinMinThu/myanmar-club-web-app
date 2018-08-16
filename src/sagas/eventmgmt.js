@@ -68,7 +68,7 @@ const postNewEvent = newEventToAdd => api.post(APIPOST_ADD_EVENT, {
 });
 
 const postNewEventRSVP = newEventRSVPToAdd => api.post(APIPOST_ADD_EVENT_RSVP, {
-  eventId: newEventRSVPToAdd.id,
+  eventID: newEventRSVPToAdd.id,
   name: newEventRSVPToAdd.memberName,
   emailAddress: newEventRSVPToAdd.memberEmailAddress,
   mobilePhone: newEventRSVPToAdd.memberMobilePhone,
@@ -126,6 +126,7 @@ function* asyncPostProcessEvents(action) {
       action.newEventToAdd,
       action.eventToUpdate,
       action.notification,
+      action.newEventRSVPToAdd,
     );
 
     let id;
@@ -140,7 +141,7 @@ function* asyncPostProcessEvents(action) {
         response = yield call(postDeleteRSVP, action.eventRSVPToDelete);
         break;
       case POST_NEWEVENTRSVP:
-        response = yield call(postNewEventRSVP, action.new);
+        response = yield call(postNewEventRSVP, action.newEventRSVPToAdd);
         break;
       case POST_NEWEVENT:
         response = yield call(postNewEvent, action.newEventToAdd);
@@ -186,6 +187,10 @@ export const postDeleteRSVPSaga = takeLatest(
 );
 export const postNewEventSaga = takeLatest(
   POST_NEWEVENT,
+  asyncPostProcessEvents,
+);
+export const postNewEventRSVPSaga = takeLatest(
+  POST_NEWEVENTRSVP,
   asyncPostProcessEvents,
 );
 export const postUpdateEventSaga = takeLatest(

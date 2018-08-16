@@ -85,7 +85,7 @@ class PrivatePage extends Component {
               borderBottom: '3px solid #1DA57A',
             }}
           >
-            <HeaderText>Myanmar Club Web Portal</HeaderText>;
+            <HeaderText>Myanmar Club</HeaderText>;
           </Header>
           <div style={{ marginLeft: '4px' }}>
             <Anchor style={{ background: 'transparent' }}>

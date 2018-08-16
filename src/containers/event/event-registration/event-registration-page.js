@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Form, message, Card } from 'antd';
-import { SUCCESS_NOTIFYEVENT, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_NEWEVENTRSVP, SHOWFOR } from '../../../actions/message';
 import {
   TIME_FORMAT_DB,
   DATE_FORMAT,
   DEFAULT_DATE,
   DEFAULT_TIME,
-  BASE_URL,
 } from '../../../actions/constants';
-import { PUBLIC_EVENT_VIEW } from '../../../actions/location';
 import {
   EventData,
   NameInput,
@@ -22,9 +20,17 @@ import {
   EventRegisterButton,
 } from './components';
 import { EventCard } from '../shared-styled';
-import { postNewRSVP } from '../../../reducers/eventmgmt/eventmgmt-data';
+import {
+  getEventsData,
+  postNewRSVP,
+} from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventRegistration extends Component {
+  componentDidMount() {
+    const { performGetEventsData } = this.props;
+    performGetEventsData();
+  }
+
   componentDidUpdate(prevProps) {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
@@ -36,19 +42,9 @@ class EventRegistration extends Component {
     if (postErrMsg) {
       message.error(postErrMsg, SHOWFOR);
     } else {
-      message.success(SUCCESS_NOTIFYEVENT, SHOWFOR);
+      message.success(SUCCESS_NEWEVENTRSVP, SHOWFOR);
     }
   }
-
-  onClickNotify = () => {
-    const {
-      form: { getFieldValue },
-      performNotifyEvent,
-    } = this.props;
-    const id = getFieldValue('id');
-    const url = BASE_URL.concat(PUBLIC_EVENT_VIEW, '/', id);
-    performNotifyEvent({ id, url });
-  };
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -57,6 +53,7 @@ class EventRegistration extends Component {
       performNewRSVP,
     } = this.props;
     validateFieldsAndScroll((error, values) => {
+      console.log('form values', values);
       if (!error) {
         const formValues = values;
         const memberMobilePhone = formValues.memberMobilePhone
@@ -86,6 +83,7 @@ class EventRegistration extends Component {
               <MobileNoInput decorator={getFieldDecorator} />
               <TicketNumInput decorator={getFieldDecorator} />
               <Payment decorator={getFieldDecorator} />
+              <br />
               <EventRegisterButton />
             </Card>
           </Form>
@@ -97,7 +95,7 @@ class EventRegistration extends Component {
 
 EventRegistration.propTypes = {
   form: PropTypes.shape({}).isRequired,
-  performNotifyEvent: PropTypes.func.isRequired,
+  performGetEventsData: PropTypes.func.isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
   performNewRSVP: PropTypes.func.isRequired,
 };
@@ -124,13 +122,14 @@ const formatDate = (strDate) => {
 };
 
 const mapPropsToFields = ({
-  computedMatch: { params },
+  // computedMatch: { params },
   eventmgmtData: { eventsData },
 }) => {
-  const { id } = params;
-  const eventData = eventsData ? eventsData.find(item => item.id === id) : {};
+  // const { id } = params;
+  const eventData = eventsData ? eventsData.find(item => item.id === '2') : {};
   console.log('event data', eventData);
   return {
+    id: Form.createFormField({ value: eventData.id }),
     photoLink: Form.createFormField({ value: eventData.photoLink }),
     name: Form.createFormField({ value: eventData.name }),
     description: Form.createFormField({ value: eventData.description }),
@@ -158,6 +157,7 @@ const mapPropsToFields = ({
 };
 
 const mapDispatchToProps = {
+  performGetEventsData: getEventsData,
   performNewRSVP: postNewRSVP,
 };
 
