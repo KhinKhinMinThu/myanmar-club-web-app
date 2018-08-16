@@ -68,6 +68,7 @@ export const APIPOST_DELETE_EVENTTRANSC = '/event/deleteEventTransaction';
 export const APIPOST_ADD_EVENTTRANSC = '/event/addEventTransaction';
 export const APIPOST_DELETE_EVENT = '/event/deleteEvent';
 export const APIPOST_DELETE_EVENT_RSVP = '/event/deleteRegistrations';
+export const APIPOST_ADD_EVENT_RSVP = '/event/addEventRegistration';
 export const APIPOST_UPDATE_EVENT = '/event/updateEvent';
 export const APIPOST_ADD_EVENT = '/event/createEvent';
 export const APIPOST_ADD_EVENTPHOTO = '/event/eventPhoto';

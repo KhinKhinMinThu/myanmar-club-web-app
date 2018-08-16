@@ -10,6 +10,12 @@ export const FullWidthTable = styled(Table)`
   margin-top: 8px;
 `;
 
+export const ExtraInfoText = styled.span`
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+  margin-left: 8px;
+`;
+
 export const SelectedText = styled.span`
   margin-left: 8px;
 `;
@@ -73,6 +79,11 @@ export const BoldUnderlineText = styled.span`
 // Card
 export const EventCard = styled(Card)`
   width: 900px;
+`;
+
+export const EventCardSmall = styled(Card)`
+  width: 800px;
+  border-radius: 10px;
 `;
 // end
 

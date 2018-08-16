@@ -11,6 +11,7 @@ import {
   POST_DELETEEVENT,
   POST_DELETERSVP,
   POST_NEWEVENT,
+  POST_NEWEVENTRSVP,
   POST_UPDATEEVENT,
   POST_NOTIFYEVENT,
   POST_ERROR,
@@ -22,6 +23,7 @@ import {
   APIPOST_DELETE_EVENT_RSVP,
   APIPOST_UPDATE_EVENT,
   APIPOST_ADD_EVENT,
+  APIPOST_ADD_EVENT_RSVP,
   APIPOST_ADD_EVENTPHOTO,
   APIPOST_NOTIFY_EVENT,
 } from '../actions/constants';
@@ -89,6 +91,15 @@ const postNewEvent = newEventToAdd => api.post(APIPOST_ADD_EVENT, {
   eventStatus: newEventToAdd.eventStatus,
 });
 
+const postNewEventRSVP = newEventRSVPToAdd => api.post(APIPOST_ADD_EVENT_RSVP, {
+  eventID: newEventRSVPToAdd.id,
+  name: newEventRSVPToAdd.memberName,
+  emailAddress: newEventRSVPToAdd.memberEmailAddress,
+  mobilePhone: newEventRSVPToAdd.memberMobilePhone,
+  noOfPax: newEventRSVPToAdd.memberNoOfPax,
+  paymentType: newEventRSVPToAdd.paymentType,
+});
+
 const postUpdateEvent = eventToUpdate => api.post(APIPOST_UPDATE_EVENT, {
   id: eventToUpdate.id,
 
@@ -142,6 +153,7 @@ function* asyncPostProcessEvents(action) {
       action.newEventToAdd,
       action.eventToUpdate,
       action.notification,
+      action.newEventRSVPToAdd,
     );
 
     let multipartForm;
@@ -153,6 +165,9 @@ function* asyncPostProcessEvents(action) {
         break;
       case POST_DELETERSVP:
         response = yield call(postDeleteRSVP, action.eventRSVPToDelete);
+        break;
+      case POST_NEWEVENTRSVP:
+        response = yield call(postNewEventRSVP, action.newEventRSVPToAdd);
         break;
       case POST_NEWEVENT:
         response = yield call(postNewEvent, action.newEventToAdd);
@@ -207,6 +222,10 @@ export const postDeleteRSVPSaga = takeLatest(
 );
 export const postNewEventSaga = takeLatest(
   POST_NEWEVENT,
+  asyncPostProcessEvents,
+);
+export const postNewEventRSVPSaga = takeLatest(
+  POST_NEWEVENTRSVP,
   asyncPostProcessEvents,
 );
 export const postUpdateEventSaga = takeLatest(

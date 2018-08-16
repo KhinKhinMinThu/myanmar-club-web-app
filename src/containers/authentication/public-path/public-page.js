@@ -8,6 +8,7 @@ import {
   LOGIN,
   SIGNUP,
   FORGOTPASSWORD,
+  EVENT_REGISTER,
   // RESETPASSWORD,
   // PUBLIC_EVENT_VIEW,
 } from '../../../actions/location';
@@ -18,6 +19,7 @@ import ErrorPage from '../error-page';
 import LoginPage from '../../user-account/login';
 import SignupPage from '../../signup-page';
 import ForgotPasswordPage from '../../forgotpwd-page';
+import EventRegisterPage from '../../event/event-registration';
 
 const {
   Header, Content, Sider, Footer,
@@ -39,7 +41,8 @@ class PrivatePage extends Component {
         return SignupPage;
       case FORGOTPASSWORD:
         return ForgotPasswordPage;
-
+      case EVENT_REGISTER:
+        return EventRegisterPage;
       default:
         // should return to error page
         return ErrorPage;
@@ -84,7 +87,7 @@ class PrivatePage extends Component {
               borderBottom: '3px solid #1DA57A',
             }}
           >
-            <HeaderText>Myanmar Club Web Portal</HeaderText>;
+            <HeaderText>Myanmar Club</HeaderText>;
           </Header>
           <div style={{ marginLeft: '4px' }}>
             <Anchor style={{ background: 'transparent' }}>

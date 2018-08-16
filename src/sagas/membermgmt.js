@@ -160,7 +160,7 @@ function* asyncPostProcessMembers(action) {
     );
 
     let multipartForm;
-    const memberData = action.membershipToUpdate;
+    const memberData = action.memberToUpdate;
 
     switch (action.type) {
       case POST_DELETEMEMBERS:
