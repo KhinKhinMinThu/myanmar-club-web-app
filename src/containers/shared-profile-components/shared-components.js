@@ -101,7 +101,9 @@ export const IdReadOnly = ({ decorator }) => (
 export const NameInput = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Name">
     {decorator('name', {
-      rules: [{ required: true, message: 'Please input member name!' }],
+      rules: [
+        { required: true /* kkmt */, message: 'Please input member name!' },
+      ],
     })(<Input {...customInput} placeholder="Member Name" />)}
   </FormItem>
 );
@@ -122,7 +124,9 @@ export const GenderRadio = ({ decorator }) => (
 export const DateOfBirthInput = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Date of Birth">
     {decorator('dateOfBirth', {
-      rules: [{ required: true, message: 'Please enter date of birth!' }],
+      rules: [
+        { required: true /* kkmt */, message: 'Please enter date of birth!' },
+      ],
     })(<DatePicker format={DATE_FORMAT} />)}
   </FormItem>
 );
@@ -145,7 +149,12 @@ export const MaritalStatusSelect = ({ decorator }) => (
 export const EducationLevelInput = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Education Level">
     {decorator('educationLevel', {
-      rules: [{ required: true, message: 'Please ender education level!' }],
+      rules: [
+        {
+          required: true /* kkmt */,
+          message: 'Please ender education level!',
+        },
+      ],
     })(<Input {...customInput} placeholder="Education Level" />)}
     <ExtraInfoText> GCE A Level/Bachelor/Master/(PhD)</ExtraInfoText>
   </FormItem>
@@ -155,7 +164,9 @@ export const EducationLevelInput = ({ decorator }) => (
 export const OccupationInput = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Occupation">
     {decorator('occupation', {
-      rules: [{ required: true, message: 'Please ender occupation!' }],
+      rules: [
+        { required: true /* kkmt */, message: 'Please ender occupation!' },
+      ],
     })(<Input {...customInput} placeholder="Job Title" />)}
   </FormItem>
 );
@@ -163,7 +174,11 @@ export const OccupationInput = ({ decorator }) => (
 // passType
 export const PassTypeSelect = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Singapore Pass">
-    {decorator('passType', initialValue)(
+    {decorator('passType', {
+      rules: [
+        { required: true /* kkmt */, message: 'Please select pass type!' },
+      ],
+    })(
       <Select {...customInput} placeholder="Select pass type">
         <Option value="S Pass">S Pass</Option>
         <Option value="Employment Pass">Employment Pass</Option>
@@ -185,7 +200,7 @@ export const IdNumberInput = ({ decorator }) => (
           pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
           message: 'The input is not a valid ID Number!',
         },
-        { required: true, message: 'Please enter ID Number!' },
+        { required: true /* kkmt */, message: 'Please enter ID Number!' },
       ],
     })(<Input {...customInput} maxLength="9" placeholder="NRIC/ FIN No." />)}
     <ExtraInfoText> S1234567Z, G1234567Z etc.</ExtraInfoText>
@@ -199,7 +214,9 @@ export const AddressInput = ({ decorator }) => (
       <Col span={12}>
         <FormItem>
           {decorator('addressLine1', {
-            rules: [{ required: true, message: 'Please input address!' }],
+            rules: [
+              { required: true /* kkmt */, message: 'Please input address!' },
+            ],
           })(<Input placeholder="Street Address Line 1..." />)}
         </FormItem>
       </Col>
@@ -223,7 +240,10 @@ export const PostalCodeInput = ({ decorator }) => (
           pattern: '^([0-9]{6})$',
           message: 'The input is not a valid postal/zip code!',
         },
-        { required: true, message: 'Please enter postal/zip code!' },
+        {
+          required: true /* kkmt */,
+          message: 'Please enter postal/zip code!',
+        },
       ],
     })(<Input {...customInput} maxLength="6" placeholder="Postal/Zip Code" />)}
   </FormItem>
@@ -234,7 +254,7 @@ export const EmailAddressInput = ({ decorator }) => (
   <FormItem {...layout} label="Email Address">
     {decorator('emailAddress', {
       rules: [
-        { required: true, message: 'Please enter email address!' },
+        { required: true /* kkmt */, message: 'Please enter email address!' },
         { type: 'email', message: 'The input is not valid E-mail!' },
       ],
     })(<Input placeholder="Email Address" />)}
@@ -295,7 +315,10 @@ export const MobilePhoneInput = ({ decorator }) => {
     <FormItem {...layout} label="Mobile No">
       {decorator('mobilePhone', {
         rules: [
-          { required: true, message: 'Please enter mobile number!' },
+          {
+            required: true /* kkmt */,
+            message: 'Please enter mobile number!',
+          },
           {
             pattern: '^([0-9]{6,})$',
             message: 'The input is not a valid phone number!',
@@ -347,6 +370,9 @@ export class ProfilePhoto extends Component {
             this.newFile = fileList.length > 1 ? fileList.slice(1) : fileList;
             return this.newFile;
           },
+          rules: [
+            { required: true /* kkmt */, message: 'Please input photo!' },
+          ],
         })(
           <Upload
             name="profilepic"
@@ -480,7 +506,7 @@ export const MembershipTypeRadio = ({ decorator, onChange }) => (
     {decorator('membershipType', {
       rules: [
         {
-          required: true,
+          required: true /* kkmt */,
           message: 'Please select the membership type!',
         },
       ],

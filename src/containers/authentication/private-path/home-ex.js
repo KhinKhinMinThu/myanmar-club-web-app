@@ -3,21 +3,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import { connect } from 'react-redux';
-import dummyOtter from '../../../images/dummy_otter.jpg';
+import dashboardImg from '../../../images/dashaboard.jpg';
 
 const DashboardPage = ({ loginData }) => {
   const { name } = loginData;
   return (
-    <Row>
-      <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-        <h2>
-          Hi, {name} <br />
-          Welcome to Myanmar Club!
-        </h2>
-        <span>If you have any problem, please contact Myanmar Club.</span>
-      </Col>
-      <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-        <img src={dummyOtter} alt="dummyOtter" style={{ height: 600 }} />
+    <Row style={{ backgroundImage: `url(${dashboardImg})`, height: '600px' }}>
+      <Col span={24}>
+        <div style={{ padding: '2px', backgroundColor: 'white' }}>
+          <h2>Hi {name}, Welcome to Myanmar Club!</h2>
+          <span>If you have any problem, please contact Myanmar Club.</span>
+        </div>
       </Col>
     </Row>
   );

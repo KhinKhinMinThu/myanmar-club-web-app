@@ -17,6 +17,7 @@ export const POST_DELETEMEMBERS = '[MEMBERMGMT_DATA] POST_DELETEMEMBERS';
 export const POST_UPDATEMEMBER = '[MEMBERMGMT_DATA] POST_UPDATEMEMBER';
 export const POST_UPDATEMEMBERSHIPADMIN = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIP';
 export const POST_UPDATEMEMBERSHIPMEMBER = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIPMEMBER';
+export const POST_SIGNUP = '[MEMBERMGMT_DATA] POST_SIGNUP';
 export const POST_ERROR = '[MEMBERMGMT_DATA] POST_ERROR';
 // end
 
@@ -60,7 +61,10 @@ export const postUpdateMembershipMember = membershipToUpdate => ({
   type: POST_UPDATEMEMBERSHIPMEMBER,
   membershipToUpdate,
 });
-
+export const postSignup = memberToAdd => ({
+  type: POST_SIGNUP,
+  memberToAdd,
+});
 export default function (
   state = {
     isGetApiLoading: false,

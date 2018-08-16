@@ -16,3 +16,4 @@ export const SUCCESS_RENEWMEMBER = 'Member has been renewed!';
 export const CONFIRM_DELETEEVENT = 'Please confirm to delete this event!';
 export const CONFIRM_DELETEMEMBER = 'Please confirm to delete the member profile!';
 export const CONFIRM_RENEWMEMBER = 'Please confirm to renew the member!';
+export const CONFIRM_CREATEACC = 'Please confirm to signup!';

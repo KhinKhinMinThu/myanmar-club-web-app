@@ -3,6 +3,17 @@ import {
   Icon, Button, Input, Checkbox, Card,
 } from 'antd';
 
+// FormStep
+export const StepIcon = styled(Icon)`
+  font-size: 30;
+`;
+
+export const BulletIcon = styled(Icon)`
+  color: rgba(0, 0, 0, 0.25);
+  margin-right: 10px;
+  padding-top: 5px;
+`;
+// end
 export const FormInputIcon = styled(Icon)`
   color: rgba(0, 0, 0, 0.25);
 `;
@@ -43,5 +54,11 @@ export const TabIcon = styled(Icon)`
 // Text
 export const BoldText = styled.span`
   font-weight: bold;
+`;
+
+export const HightlightedText = styled.div`
+  font-weight: bold;
+  text-decoration: underline;
+  color: red;
 `;
 // end

@@ -6,20 +6,12 @@ export const SORTEDINFO = '[MEMBERMGMT_UI] SORTEDINFO';
 export const FILTEREDINFO = '[MEMBERMGMT_UI] FILTEREDINFO';
 export const RESETSTATE = '[MEMBERMGMT_UI] RESETSTATE';
 
-// delete
-export const VALIDATE_START = '[MEMBERMGMT_UI] VALIDATE_START';
-export const VALIDATE_END = '[MEMBERMGMT_UI] VALIDATE_END';
+// signup page
+export const SIGNUP_NEXT = '[MEMBERMGMT_UI] SIGNUP_NEXT';
+export const SIGNUP_PREV = '[MEMBERMGMT_UI] SIGNUP_PREV';
 
-export const startValidate = () => ({
-  type: VALIDATE_START,
-  payload: true,
-});
-
-export const endValidate = () => ({
-  type: VALIDATE_END,
-  payload: false,
-});
-// end delete
+export const next = () => ({ type: SIGNUP_NEXT });
+export const prev = () => ({ type: SIGNUP_PREV });
 
 export const setCurrentTab = currentTab => ({
   type: CURRENTTAB,
@@ -54,6 +46,10 @@ export const setFilteredInfo = filteredInfo => ({
 export const resetState = () => ({ type: RESETSTATE });
 
 const initialState = {
+  isValidating: false,
+  validationStatus: false,
+  currentStep: 0,
+
   selectedKeys: [],
   deselectAllLoading: false,
   selectAllLoading: false,
@@ -69,6 +65,16 @@ export default function (
   action,
 ) {
   switch (action.type) {
+    case SIGNUP_NEXT:
+      return {
+        ...state,
+        currentStep: state.currentStep + 1,
+      };
+    case SIGNUP_PREV:
+      return {
+        ...state,
+        currentStep: state.currentStep - 1,
+      };
     case CURRENTTAB:
       return {
         ...state,

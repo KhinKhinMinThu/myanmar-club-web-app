@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom/es';
 import { connect } from 'react-redux';
 import { Form, Row, Col } from 'antd';
 import {
@@ -10,7 +11,7 @@ import {
   ErrorMessage,
 } from './components';
 import { BoldText, ForgotPwdCard } from './styled-components';
-import { postForgotPwd } from '../../reducers/forgot-password/forgot-password-data';
+import { postForgotPwd } from '../../../reducers/forgot-password/forgot-password-data';
 
 class ForgotPasswordPage extends Component {
   componentWillUpdate(nextProps) {
@@ -33,6 +34,7 @@ class ForgotPasswordPage extends Component {
   };
 
   render() {
+    const { history } = this.props;
     const {
       form: { getFieldDecorator },
       forgotpasswordData: { email, isPostApiLoading, postErrMsg },
@@ -41,7 +43,7 @@ class ForgotPasswordPage extends Component {
     let message;
     if (this.isApiPost) {
       message = postErrMsg ? (
-        <ErrorMessage postErrMsg={postErrMsg} />
+        <ErrorMessage postErrMsg={postErrMsg} history={history} />
       ) : (
         <SuccessMessage email={email} />
       );
@@ -63,7 +65,7 @@ class ForgotPasswordPage extends Component {
                 <ResetButton loading={isPostApiLoading} />
               </Col>
               <Col span={12}>
-                <BackButton />
+                <BackButton history={history} />
               </Col>
             </Row>
           )}
@@ -76,7 +78,7 @@ class ForgotPasswordPage extends Component {
 ForgotPasswordPage.propTypes = {
   form: PropTypes.shape({}).isRequired,
   performForgotPwd: PropTypes.func.isRequired,
-
+  history: PropTypes.shape({}).isRequired,
   forgotpasswordData: PropTypes.shape({}).isRequired,
 };
 
@@ -89,4 +91,4 @@ const FormForgotPasswordPage = Form.create()(ForgotPasswordPage);
 export default connect(
   mapStateToProps,
   { performForgotPwd: postForgotPwd },
-)(FormForgotPasswordPage);
+)(withRouter(FormForgotPasswordPage));
