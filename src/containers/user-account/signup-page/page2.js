@@ -17,7 +17,7 @@ import {
   DeclarationCheckBox,
 } from '../shared-components';
 import { next } from '../../../reducers/membermgmt/membermgmt-ui';
-import { setMemberData } from '../../../reducers/membermgmt/membermgmt-data';
+import { setMemberData, postSignup } from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
 
@@ -61,6 +61,7 @@ class Page2 extends Component {
       membermgmtData: { memberData },
       dispatchMemberData,
       dispatchNext,
+      performSignup,
     } = this.props;
 
     validateFieldsAndScroll((error, values) => {
@@ -78,7 +79,7 @@ class Page2 extends Component {
           title: CONFIRM_CREATEACC,
           onOk() {
             // perform backend post
-            // dispatchMemberData(memberToAdd);
+            performSignup(memberToAdd);
             dispatchNext();
             document.documentElement.scrollTop = 0;
           },
@@ -158,6 +159,7 @@ Page2.propTypes = {
   form: PropTypes.shape({}).isRequired,
   dispatchMemberData: PropTypes.func.isRequired,
   dispatchNext: PropTypes.func.isRequired,
+  performSignup: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
@@ -170,6 +172,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   dispatchMemberData: setMemberData,
   dispatchNext: next,
+  performSignup: postSignup,
 };
 
 const FormPage2 = Form.create()(Page2);

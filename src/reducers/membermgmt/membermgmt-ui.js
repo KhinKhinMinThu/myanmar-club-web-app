@@ -9,30 +9,9 @@ export const RESETSTATE = '[MEMBERMGMT_UI] RESETSTATE';
 // signup page
 export const SIGNUP_NEXT = '[MEMBERMGMT_UI] SIGNUP_NEXT';
 export const SIGNUP_PREV = '[MEMBERMGMT_UI] SIGNUP_PREV';
-export const SIGNUP_VALIDATE_START = '[MEMBERMGMT_UI] SIGNUP_VALIDATE_START';
-export const SIGNUP_VALIDATE_END = '[MEMBERMGMT_UI] SIGNUP_VALIDATE_END';
-export const SIGNUP_VALIDATE_STATUS = '[MEMBERMGMT_UI] SIGNUP_VALIDATE_STATUS';
 
 export const next = () => ({ type: SIGNUP_NEXT });
 export const prev = () => ({ type: SIGNUP_PREV });
-
-// delete
-export const setValidateStatus = status => ({
-  type: SIGNUP_VALIDATE_STATUS,
-  payload: status,
-});
-// end
-
-export const startValidate = () => ({
-  type: SIGNUP_VALIDATE_START,
-  payload: true,
-});
-
-export const endValidate = () => ({
-  type: SIGNUP_VALIDATE_END,
-  payload: false,
-});
-// end delete
 
 export const setCurrentTab = currentTab => ({
   type: CURRENTTAB,
@@ -86,11 +65,6 @@ export default function (
   action,
 ) {
   switch (action.type) {
-    case SIGNUP_VALIDATE_STATUS:
-      return {
-        ...state,
-        validationStatus: action.payload,
-      };
     case SIGNUP_NEXT:
       return {
         ...state,
@@ -100,16 +74,6 @@ export default function (
       return {
         ...state,
         currentStep: state.currentStep - 1,
-      };
-    case SIGNUP_VALIDATE_START:
-      return {
-        ...state,
-        isValidating: action.payload,
-      };
-    case SIGNUP_VALIDATE_END:
-      return {
-        ...state,
-        isValidating: action.payload,
       };
     case CURRENTTAB:
       return {

@@ -15,6 +15,7 @@ import {
   POST_UPDATEMEMBER,
   POST_UPDATEMEMBERSHIPADMIN,
   POST_UPDATEMEMBERSHIPMEMBER,
+  POST_SIGNUP,
   POST_ERROR,
 } from '../reducers/membermgmt/membermgmt-data';
 import {
@@ -26,6 +27,7 @@ import {
   APIPOST_UPDATE_MEMBERSHIPADMIN,
   APIPOST_UPDATE_MEMBERSHIPMEMBER,
   APIPOST_ADD_MEMBERPHOTO,
+  APIPOST_SIGNUP,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -134,7 +136,31 @@ const postUpdateMembershipMember = membershipToUpdate => api.post(APIPOST_UPDATE
   totalAmount: membershipToUpdate.totalAmount,
 });
 const postMemberPhoto = multipartForm => apiMultiPart.post(APIPOST_ADD_MEMBERPHOTO, multipartForm);
-
+const postSignup = memberToAdd => api.post(APIPOST_SIGNUP, {
+  name: memberToAdd.name,
+  gender: memberToAdd.gender,
+  dateOfBirth: memberToAdd.dateOfBirth,
+  nationality: memberToAdd.nationality,
+  religion: memberToAdd.religion,
+  maritalStatus: memberToAdd.maritalStatus,
+  educationLevel: memberToAdd.educationLevel,
+  occupation: memberToAdd.occupation,
+  passType: memberToAdd.passType,
+  idNumber: memberToAdd.idNumber,
+  addressLine1: memberToAdd.addressLine1,
+  addressLine2: memberToAdd.addressLine2,
+  postalCode: memberToAdd.postalCode,
+  emailAddress: memberToAdd.emailAddress,
+  password: memberToAdd.password,
+  facebookAccount: memberToAdd.facebookAccount,
+  homePhone: memberToAdd.homePhone,
+  mobilePhone: memberToAdd.mobilePhone,
+  hobbies: memberToAdd.hobbies,
+  subComInterest: memberToAdd.subComInterest,
+  membershipType: memberToAdd.membershipType,
+  paymentType: memberToAdd.paymentType,
+  totalAmount: memberToAdd.totalAmount,
+});
 const assembleFormData = ({ memberId, imageFile }) => {
   if (memberId && imageFile) {
     const mpf = new FormData();
@@ -188,6 +214,9 @@ function* asyncPostProcessMembers(action) {
           action.membershipToUpdate,
         );
         break;
+      case POST_SIGNUP:
+        response = yield call(postSignup, action.memberToAdd);
+        break;
       default:
     }
 
@@ -235,3 +264,5 @@ export const postUpdateMembershipMemberSaga = takeLatest(
   POST_UPDATEMEMBERSHIPMEMBER,
   asyncPostProcessMembers,
 );
+
+export const postSignupSaga = takeLatest(POST_SIGNUP, asyncPostProcessMembers);
