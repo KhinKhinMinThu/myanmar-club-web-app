@@ -76,7 +76,7 @@ export const PaymentTypeRadio = ({ decorator }) => (
       rules: [{ required: true, message: 'Please select payment type!' }],
     })(
       <RadioGroup name="paymentType">
-        <RadioButton value="Direct Payment">Bank Transfer</RadioButton>
+        <RadioButton value="Direct Payment">Direct Payment</RadioButton>
         <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>
         <RadioButton value="Cash Payment">Cash Payment</RadioButton>
       </RadioGroup>,

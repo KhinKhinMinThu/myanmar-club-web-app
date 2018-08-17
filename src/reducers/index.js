@@ -3,13 +3,11 @@ import { persistReducer } from 'redux-persist';
 import localStorage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import loginReducer from './login';
-import signupReducer from './signup';
 import routerReducer from './router';
 import rolemgmtReducer from './rolemgmt';
 import membermgmtReducer from './membermgmt';
 import claimmgmtReducer from './claimmgmt';
 import eventTransactionReducer from './event-transaction';
-import userInfoReducer from './user-info';
 import forgotPasswordReducer from './forgot-password';
 import eventmgmtReducer from './eventmgmt';
 
@@ -28,7 +26,6 @@ const loginPersistConfig = {
 
 const rootReducer = combineReducers({
   login: persistReducer(loginPersistConfig, loginReducer),
-  signup: signupReducer,
   forgotpassword: forgotPasswordReducer,
   rolemgmt: rolemgmtReducer,
   membermgmt: membermgmtReducer,
@@ -36,7 +33,6 @@ const rootReducer = combineReducers({
   eventTransaction: eventTransactionReducer,
   eventmgmt: eventmgmtReducer,
   router: routerReducer,
-  userInfo: userInfoReducer,
 });
 
 export default rootReducer;

@@ -59,9 +59,7 @@ class MemberRenewal extends Component {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll },
-      computedMatch: {
-        params: { id },
-      },
+      loginData: { id },
       performUpdateMembership,
     } = this.props;
 
@@ -162,10 +160,12 @@ MemberRenewal.propTypes = {
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
+  loginData: PropTypes.shape({}).isRequired,
 };
 const mapStateToProps = state => ({
   membermgmtUI: state.membermgmt.ui,
   membermgmtData: state.membermgmt.data,
+  loginData: state.login.data,
 });
 
 const mapDispatchToProps = {
@@ -177,7 +177,9 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   // return the fields
   return {
     membershipTypeReadOnly: Form.createFormField({
-      value: member.membershipType,
+      value: member.membershipType
+        ? member.membershipType.substr(member.membershipType.indexOf(':') + 1)
+        : '-',
     }),
     membershipStatus: Form.createFormField({ value: member.membershipStatus }),
     createdDate: Form.createFormField({

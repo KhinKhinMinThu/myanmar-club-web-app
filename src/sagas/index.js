@@ -31,6 +31,7 @@ import {
   postSignupSaga,
 } from './membermgmt';
 import postForgotPwdSaga from './forgot-password';
+import { getRoleDataSaga, postAssignRolesSaga } from './rolemgmt';
 
 export default function* rootSaga() {
   yield all([
@@ -63,5 +64,8 @@ export default function* rootSaga() {
     postForgotPwdSaga,
     postNewEventSaga,
     postUpdateEventSaga,
+    // rolemgmt
+    getRoleDataSaga,
+    postAssignRolesSaga,
   ]);
 }

@@ -23,7 +23,7 @@ import MenuPanel from './components';
 // import SignupPage2 from '../../signup-page2';
 import Dashboard from './home-ex';
 import ErrorPage from '../error-page';
-import RoleManagementPage from '../../role-management';
+import RoleManagementPage from '../../user-role/user-role-management';
 import MemberManagementPage from '../../member/member-management';
 import MemberProfileEditPage from '../../member/member-profile-edit';
 import ProfileEditPage from '../../user-account/profile-edit';
@@ -95,7 +95,7 @@ class PrivatePage extends Component {
     const { pathname } = params;
     const Page = this.switchPage(`/portal/${pathname}`, isAdmin);
     console.log('private props:', this.props);
-    console.log('pathname:', pathname, `/${pathname}`);
+    console.log('pathname:', pathname, `/portal/${pathname}`);
 
     return (
       <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
@@ -119,7 +119,7 @@ class PrivatePage extends Component {
           </a>
           <Anchor>
             <MenuPanel
-              selectedKeys={['/'.concat(pathname)]}
+              selectedKeys={['/portal/'.concat(pathname)]}
               isAdmin={isAdmin}
             />
           </Anchor>

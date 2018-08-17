@@ -148,7 +148,12 @@ const displayMemberInfo = member => [
   { label: 'Member Id', text: member.id || '-' },
   { label: 'Name', text: member.name || '-' },
   { label: 'Gender', text: member.gender || '-' },
-  { label: 'Date of birth', text: member.dateOfBirth || '-' },
+  {
+    label: 'Date of birth',
+    text: member.dateOfBirth
+      ? moment(member.dateOfBirth).format(DATE_FORMAT)
+      : '-',
+  },
   { label: 'Nationality', text: member.nationality || '-' },
   { label: 'Religion', text: member.religion || '-' },
   { label: 'Marital Status', text: member.maritalStatus || '-' },
@@ -171,7 +176,12 @@ const displayMemberInfo = member => [
   { label: 'Hobbies', text: member.hobbies || '-' },
 ];
 const displayMembership = member => [
-  { label: 'Membership Type', text: member.membershipType || '-' },
+  {
+    label: 'Membership Type',
+    text: member.membershipType
+      ? member.membershipType.substr(member.membershipType.indexOf(':') + 1)
+      : '-',
+  },
   { label: 'Membership Status', text: member.membershipStatus || '-' },
   { label: 'Joined Date', text: member.createdDate || '-' },
   {

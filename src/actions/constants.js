@@ -40,7 +40,7 @@ export const MEMBERSHIP_INFO = [
 ];
 
 // APIGET API URLS
-export const APIGET_ROLEDATA = '/getRoleData';
+export const APIGET_ROLEDATA = '/admin/getRoleData';
 export const APIGET_MEMBERSDATA = '/admin/getMembersData';
 export const APIGET_CLAIMSDATA = '/claim/getClaimsData';
 export const APIGET_EVENTTRANSCDATA = '/event/getEventsTranscData';
@@ -51,7 +51,7 @@ export const APIGET_MEBERFORMFIELDS = '/admin/memberFormFields';
 // POST API URLS
 export const APIPOST_LOGIN = '/admin/login';
 
-export const APIPOST_UPDATE_ROLE = '/updateRole';
+export const APIPOST_ASSIGN_ROLES = '/admin/updateRole';
 
 export const APIGET_MEMBERDATA = '/admin/getMemberData';
 export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';

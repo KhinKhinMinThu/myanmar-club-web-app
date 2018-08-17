@@ -8,7 +8,10 @@ import {
   FullButton,
   // BoldUnderlineText,
 } from '../shared-styled';
-import { layout, customInput } from '../../shared-profile-components/shared-components';
+import {
+  layout,
+  customInput,
+} from '../../shared-profile-components/shared-components';
 import { ExtraInfoText } from '../../shared-profile-components/shared-styled';
 
 const { TabPane } = Tabs;
@@ -132,8 +135,9 @@ export const TotalAmountInput = ({ decorator }) => (
     })(
       <InputNumber
         {...customInput}
-        formatter={value => `SGD ${value}`}
-        max={25}
+        formatter={value => `SGD ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        }
+        parser={value => value.replace(/[SGD]\s?|(,*)/g, '')}
         placeholder="Please input total amount"
       />,
     )}

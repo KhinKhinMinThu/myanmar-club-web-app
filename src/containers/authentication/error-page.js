@@ -1,21 +1,25 @@
-// dummy home page: to be removed later
 import React from 'react';
+import { withRouter } from 'react-router-dom/es';
 import { Row, Col } from 'antd';
-import dummyOtter from '../../images/dummy_otter.jpg';
+import errorImg from '../../images/error.png';
+import { DASHBOARD } from '../../actions/location';
 
-const DashboardPage = () => (
-  <Row>
-    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-      <h2> ERRORERRORERRORERRORERRORERRORERRORERRORERROR</h2>
-      <span>If you have any problem, please contact Team PentaHive.</span>
+const ErrorPage = () => (
+  <Row type="flex" justify="center">
+    <Col span={24} style={{ textAlign: 'center' }}>
+      <a href={DASHBOARD}>
+        <img
+          alt="error"
+          src={errorImg}
+          style={{ width: 'auto', height: '550px' }}
+        />
+      </a>
       <br />
-      <br />
-      <span>MClubPortal ©2018 Created by PentaHive.</span>
-    </Col>
-    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-      <img src={dummyOtter} alt="dummyOtter" style={{ height: 600 }} />
+      <a style={{ fontSize: 10, color: 'grey' }} href="http://www.freepik.com">
+        © Designed by Freepik
+      </a>
     </Col>
   </Row>
 );
 
-export default DashboardPage;
+export default withRouter(ErrorPage);

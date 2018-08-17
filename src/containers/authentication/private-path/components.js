@@ -41,7 +41,7 @@ const adminTitles = {
   },
   EVENT_TRANSACTION: {
     icon: <MenuIcon type="calculator" />,
-    text: 'Event Transactions',
+    text: 'Event Finance',
   },
   EVENT_MANAGEMENT: {
     icon: <MenuIcon type="calendar" />,

@@ -124,9 +124,12 @@ class MemberEdit extends Component {
           const roleNames = [];
           if (formValues.roleNames) formValues.roleNames.forEach(item => roleNames.push({ id: item }));
           // encryp the password if it's changed.
-          const password = memberData.password !== formValues.password
-            ? CryptoJS.MD5(formValues.password).toString(CryptoJS.enc.Hex)
-            : memberData.password;
+          let password = '';
+          if (formValues.password) {
+            password = memberData.password !== formValues.password
+              ? CryptoJS.MD5(formValues.password).toString(CryptoJS.enc.Hex)
+              : memberData.password;
+          }
           const memberToUpdate = {
             ...formValues,
             id,

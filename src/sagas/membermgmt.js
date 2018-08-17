@@ -183,10 +183,11 @@ function* asyncPostProcessMembers(action) {
       action.membersToDelete,
       action.memberToUpdate,
       action.membershipToUpdate,
+      action.memberToAdd,
     );
 
     let multipartForm;
-    const memberData = action.memberToUpdate;
+    const memberData = action.memberToAdd || action.memberToUpdate;
 
     switch (action.type) {
       case POST_DELETEMEMBERS:
@@ -216,6 +217,12 @@ function* asyncPostProcessMembers(action) {
         break;
       case POST_SIGNUP:
         response = yield call(postSignup, action.memberToAdd);
+        multipartForm = assembleFormData({
+          memberId: response.data.id,
+          imageFile: memberData.uploadBtn[0],
+        });
+        console.log('memberId', response.data.id, 'mpf', multipartForm);
+        if (multipartForm) response = yield call(postMemberPhoto, multipartForm);
         break;
       default:
     }

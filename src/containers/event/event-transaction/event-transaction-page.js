@@ -190,7 +190,7 @@ class EventTransaction extends Component {
         ) : (
           <div>
             <div className="pageHeaderContainer">
-              <h2>Event Transactions Page</h2>
+              <h2>Event Finance Page</h2>
             </div>
             <Row type="flex" justify="start">
               <Col span={24}>

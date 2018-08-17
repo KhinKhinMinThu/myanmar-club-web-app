@@ -1,21 +1,31 @@
-export const VALIDATE = '[ROLEMGMT_UI] VALIDATE';
+export const SELECTEDROLE = '[ROLEMGMT_UI] SELECTEDROLE';
+export const RESETSTATE = '[ROLEMGMT_UI] RESETSTATE';
 
-export const validate = isValidating => ({
-  type: VALIDATE,
-  payload: isValidating,
+export const setSelectedRole = selectedRole => ({
+  type: SELECTEDROLE,
+  payload: selectedRole,
 });
+export const resetState = () => ({ type: RESETSTATE });
 
+const inititalState = {
+  selectedRole: null,
+};
 export default function (
   state = {
-    isValidating: false,
+    ...inititalState,
   },
   action,
 ) {
   switch (action.type) {
-    case VALIDATE:
+    case SELECTEDROLE:
       return {
         ...state,
-        isValidating: action.payload,
+        selectedRole: action.payload,
+      };
+    case RESETSTATE:
+      return {
+        ...state,
+        ...inititalState,
       };
     default:
       return state;
