@@ -31,26 +31,32 @@ function* asyncLogin(action) {
     console.log('API RESPONSE.........', response);
 
     const {
-      isLoggedIn, isAdmin, token, errorMsg, id, name,
+      // isLoggedIn, isAdmin, token, errorMsg, id, name,
+      isLoggedIn,
+      isEcMember,
+      id,
+      name,
+      roleNames,
+      token,
+      errorMsg,
     } = response.data;
     errMsg = errorMsg;
 
     successLogin = isLoggedIn;
 
+    const roleIdList = roleNames ? roleNames.map(item => item.id) : [];
+    const payload = {
+      isLoggedIn,
+      isEcMember,
+      id,
+      name,
+      roleIdList,
+      token,
+    };
     if (isLoggedIn) {
-      yield put({
-        type: LOGINDATA,
-        payload: {
-          isLoggedIn,
-          isAdmin,
-          token,
-          id,
-          name,
-        },
-      });
-
+      yield put({ type: LOGINDATA, payload });
       // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-      localStorage.setItem('loginState', JSON.stringify(response.data));
+      localStorage.setItem('loginState', JSON.stringify(payload));
     }
   } catch (e) {
     errMsg = e.message;

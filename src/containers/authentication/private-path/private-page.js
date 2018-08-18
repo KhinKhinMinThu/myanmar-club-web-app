@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Layout, Anchor } from 'antd';
 import { HeaderText } from '../shared-styled';
@@ -42,60 +41,108 @@ const logoImage = (
 );
 const siderWidth = 230;
 
+/* eslint react/prop-types: 0 */
 class PrivatePage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
-  switchPage = (pathname, isAdmin) => {
-    switch (pathname) {
-      case DASHBOARD:
-        return Dashboard;
-      case PROFILE:
-        return ProfileEditPage;
-      case LOGOUT:
-        return Dashboard;
-      default:
-        if (isAdmin) {
-          return this.switchAdminPage(pathname);
-        }
-        // should return to error page
-        return ErrorPage;
-    }
+  switchPageClubMember = (pathname) => {
+    if (pathname === DASHBOARD) return Dashboard;
+    if (pathname === PROFILE) return ProfileEditPage;
+    if (pathname === LOGOUT) return Dashboard;
+    return ErrorPage;
   };
 
-  switchAdminPage = (pathname) => {
-    switch (pathname) {
-      case ROLE_MANAGEMENT:
-        return RoleManagementPage;
-      case MEMBER_MANAGEMENT:
-        return MemberManagementPage;
-      case MEMBER_EDIT:
-        return MemberProfileEditPage;
-      case CLAIM_MANAGEMENT:
-        return ClaimManagementPage;
-      case EVENT_TRANSACTION:
-        return EventTransactionPage;
-      case EVENT_MANAGEMENT:
-        return EventManagementPage;
-      case EVENT_CREATION:
-        return EventCreation;
-      case EVENT_VIEW:
-        return EventViewPage;
-      case EVENT_EDIT:
-        return EventEditPage;
-      default:
-        // should return to error page
-        return ErrorPage;
-    }
+  switchPageEcMember = (pathname, id, roleIdList) => {
+    if (pathname === DASHBOARD) return Dashboard;
+    if (pathname === PROFILE) return ProfileEditPage;
+    if (pathname === LOGOUT) return Dashboard;
+    if (pathname === MEMBER_MANAGEMENT) return MemberManagementPage;
+    if (pathname === MEMBER_EDIT) return id ? MemberProfileEditPage : ErrorPage;
+    if (pathname === ROLE_MANAGEMENT && roleIdList.includes(1)) return RoleManagementPage;
+    if (
+      pathname === CLAIM_MANAGEMENT
+      && (roleIdList.includes(1) || roleIdList.includes(2))
+    ) return ClaimManagementPage;
+    if (
+      pathname === EVENT_TRANSACTION
+      && (roleIdList.includes(1) || roleIdList.includes(2))
+    ) return EventTransactionPage;
+    if (
+      pathname === EVENT_MANAGEMENT
+      && (roleIdList.includes(1) || roleIdList.includes(3))
+    ) return EventManagementPage;
+    if (
+      pathname === EVENT_CREATION
+      && (roleIdList.includes(1) || roleIdList.includes(3))
+    ) return EventCreation;
+    if (
+      pathname === EVENT_VIEW
+      && (roleIdList.includes(1) || roleIdList.includes(3))
+    ) return id ? EventViewPage : ErrorPage;
+    if (
+      pathname === EVENT_EDIT
+      && (roleIdList.includes(1) || roleIdList.includes(3))
+    ) return id ? EventEditPage : ErrorPage;
+
+    return ErrorPage;
   };
+  // switchPage = (pathname, isEcMember) => {
+  //   switch (pathname) {
+  //     case DASHBOARD:
+  //       return Dashboard;
+  //     case PROFILE:
+  //       return ProfileEditPage;
+  //     case LOGOUT:
+  //       return Dashboard;
+  //     default:
+  //       if (isAdmin) {
+  //         return this.switchAdminPage(pathname);
+  //       }
+  //       // should return to error page
+  //       return ErrorPage;
+  //   }
+  // };
+
+  // switchAdminPage = (pathname) => {
+  //   switch (pathname) {
+  //     case ROLE_MANAGEMENT:
+  //       return RoleManagementPage;
+  //     case MEMBER_MANAGEMENT:
+  //       return MemberManagementPage;
+  //     case MEMBER_EDIT:
+  //       return MemberProfileEditPage;
+  //     case CLAIM_MANAGEMENT:
+  //       return ClaimManagementPage;
+  //     case EVENT_TRANSACTION:
+  //       return EventTransactionPage;
+  //     case EVENT_MANAGEMENT:
+  //       return EventManagementPage;
+  //     case EVENT_CREATION:
+  //       return EventCreation;
+  //     case EVENT_VIEW:
+  //       return EventViewPage;
+  //     case EVENT_EDIT:
+  //       return EventEditPage;
+  //     default:
+  //       // should return to error page
+  //       return ErrorPage;
+  //   }
+  // };
 
   render() {
     const {
       computedMatch: { params },
-      isAdmin,
+      isEcMember,
+      roleIdList,
+      // token,
     } = this.props;
-    const { pathname } = params;
-    const Page = this.switchPage(`/portal/${pathname}`, isAdmin);
+    const { pathname, id } = params;
+    const path = '/portal/'.concat(pathname); // `/portal/${pathname}`;
+    const Page = isEcMember === '1'
+      ? this.switchPageEcMember(path, id, roleIdList)
+      : this.switchPageClubMember(path);
+
     console.log('private props:', this.props);
-    console.log('pathname:', pathname, `/portal/${pathname}`);
+    console.log('pathname:', path);
 
     return (
       <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
@@ -120,7 +167,8 @@ class PrivatePage extends Component {
           <Anchor>
             <MenuPanel
               selectedKeys={['/portal/'.concat(pathname)]}
-              isAdmin={isAdmin}
+              isEcMember={isEcMember}
+              roleIdList={roleIdList}
             />
           </Anchor>
         </Sider>
@@ -153,10 +201,5 @@ class PrivatePage extends Component {
     );
   }
 }
-
-PrivatePage.propTypes = {
-  computedMatch: PropTypes.shape({}).isRequired,
-  isAdmin: PropTypes.bool.isRequired,
-};
 
 export default connect()(PrivatePage);

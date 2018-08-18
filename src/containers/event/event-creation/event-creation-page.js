@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin,
+  Form, message, Row, Col, Spin, Card,
 } from 'antd';
 import { SUCCESS_NEWEVENT, SHOWFOR } from '../../../actions/message';
 import {
@@ -28,7 +28,6 @@ import {
   CreateButton,
   BackButton,
 } from '../shared-components';
-import { EventCard } from '../shared-styled';
 import { postNewEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventCreation extends Component {
@@ -144,7 +143,7 @@ class EventCreation extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
@@ -156,13 +155,13 @@ class EventCreation extends Component {
               beforeUpload={this.beforeUpload}
               removeFile={this.removeFile}
             />
-          </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          </Card>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
-          </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          </Card>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />
@@ -175,7 +174,7 @@ class EventCreation extends Component {
                 <BackButton history={history} />
               </Col>
             </Row>
-          </EventCard>
+          </Card>
         </Form>
       </Spin>
     );

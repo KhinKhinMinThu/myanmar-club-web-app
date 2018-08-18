@@ -54,7 +54,8 @@ const MenuPanel = ({
   updateLocation,
   currentLocation,
   selectedKeys,
-  isAdmin,
+  isEcMember,
+  roleIdList,
 }) => {
   const onClick = (e) => {
     if (e.key === LOGOUT) {
@@ -85,35 +86,39 @@ const MenuPanel = ({
         {commonTitles.PROFILE.icon}
         {commonTitles.PROFILE.text}
       </MenuItem>
-      {isAdmin && (
-        <MenuItem key={ROLE_MANAGEMENT}>
-          {adminTitles.ROLE_MANAGEMENT.icon}
-          {adminTitles.ROLE_MANAGEMENT.text}
-        </MenuItem>
+      {isEcMember === '1'
+        && roleIdList.includes(1) && (
+          <MenuItem key={ROLE_MANAGEMENT}>
+            {adminTitles.ROLE_MANAGEMENT.icon}
+            {adminTitles.ROLE_MANAGEMENT.text}
+          </MenuItem>
       )}
-      {isAdmin && (
+      {isEcMember === '1' && (
         <MenuItem key={MEMBER_MANAGEMENT}>
           {adminTitles.MEMBER_MANAGEMENT.icon}
           {adminTitles.MEMBER_MANAGEMENT.text}
         </MenuItem>
       )}
-      {isAdmin && (
-        <MenuItem key={CLAIM_MANAGEMENT}>
-          {adminTitles.CLAIM_MANAGEMENT.icon}
-          {adminTitles.CLAIM_MANAGEMENT.text}
-        </MenuItem>
+      {isEcMember === '1'
+        && (roleIdList.includes(1) || roleIdList.includes(2)) && (
+          <MenuItem key={CLAIM_MANAGEMENT}>
+            {adminTitles.CLAIM_MANAGEMENT.icon}
+            {adminTitles.CLAIM_MANAGEMENT.text}
+          </MenuItem>
       )}
-      {isAdmin && (
-        <MenuItem key={EVENT_TRANSACTION}>
-          {adminTitles.EVENT_TRANSACTION.icon}
-          {adminTitles.EVENT_TRANSACTION.text}
-        </MenuItem>
+      {isEcMember === '1'
+        && (roleIdList.includes(1) || roleIdList.includes(2)) && (
+          <MenuItem key={EVENT_TRANSACTION}>
+            {adminTitles.EVENT_TRANSACTION.icon}
+            {adminTitles.EVENT_TRANSACTION.text}
+          </MenuItem>
       )}
-      {isAdmin && (
-        <MenuItem key={EVENT_MANAGEMENT}>
-          {adminTitles.EVENT_MANAGEMENT.icon}
-          {adminTitles.EVENT_MANAGEMENT.text}
-        </MenuItem>
+      {isEcMember === '1'
+        && (roleIdList.includes(1) || roleIdList.includes(3)) && (
+          <MenuItem key={EVENT_MANAGEMENT}>
+            {adminTitles.EVENT_MANAGEMENT.icon}
+            {adminTitles.EVENT_MANAGEMENT.text}
+          </MenuItem>
       )}
       <MenuItem key={LOGOUT}>
         <a href={LOGIN}>
@@ -130,7 +135,8 @@ MenuPanel.propTypes = {
   updateLocation: PropTypes.func.isRequired,
   currentLocation: PropTypes.shape().isRequired,
   selectedKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isAdmin: PropTypes.bool.isRequired,
+  isEcMember: PropTypes.string.isRequired,
+  roleIdList: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 const mapDispatchToProps = {

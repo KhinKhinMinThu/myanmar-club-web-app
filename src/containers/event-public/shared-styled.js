@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { Icon, Table, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Table, Button } from 'antd';
 
 // Tables
 export const FullWidthTable = styled(Table)`
@@ -8,26 +7,14 @@ export const FullWidthTable = styled(Table)`
   margin-top: 8px;
 `;
 
-export const ExtraInfoText = styled.span`
-  color: rgba(0, 0, 0, 0.4);
-  font-style: italic;
-  margin-left: 8px;
-`;
-
-export const SelectedText = styled.span`
-  margin-left: 8px;
-`;
-
 export const MarginLeftButton = styled(Button)`
   margin-left: 8px;
 `;
 
-export const TableActionLink = styled(Link)`
-  color: #1da57a;
-  &:hover {
-    color: #1da57a;
-    opacity: 0.5;
-  }
+export const ExtraInfoText = styled.span`
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+  margin-left: 8px;
 `;
 
 export const TableActionButton = styled(Button)`
@@ -50,12 +37,6 @@ export const TableActionButton = styled(Button)`
 // &:link,
 // &:active
 
-// end
-
-// Tabs
-export const TabIcon = styled(Icon)`
-  font-size: 16px;
-`;
 // end
 
 // Text

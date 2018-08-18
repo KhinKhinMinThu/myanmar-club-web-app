@@ -52,8 +52,6 @@ export const GoToLoginButton = () => (
   </FullWidthButton>
 );
 
-export const CloseButton = () => <FullWidthButton>Close</FullWidthButton>;
-
 export const ErrorMessage = ({ postErrMsg, history }) => (
   <Row gutter={8}>
     <Col span={24}>
@@ -81,11 +79,8 @@ export const SuccessMessage = ({ email }) => (
         </BoldText>
       </BlockContainer>
     </Col>
-    <Col span={12}>
+    <Col span={24}>
       <GoToLoginButton />
-    </Col>
-    <Col span={12}>
-      <CloseButton />
     </Col>
   </Row>
 );

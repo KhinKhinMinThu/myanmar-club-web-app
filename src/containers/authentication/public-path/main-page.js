@@ -4,7 +4,7 @@ import {
   LOGIN,
   SIGNUP,
   FORGOTPASSWORD,
-  EVENT_REGISTER,
+  EVENT_LIST,
 } from '../../../actions/location';
 
 const PublicMain = () => (
@@ -15,7 +15,7 @@ const PublicMain = () => (
     <br />
     <Link to={FORGOTPASSWORD}>FORGOT PASSWORD PAGE</Link>
     <br />
-    <Link to={EVENT_REGISTER}>REGISTER FOR EVENT</Link>
+    <Link to={EVENT_LIST}>VIEW EVENT(S) TO REGISTER</Link>
   </div>
 );
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, Row, Col, message,
+  Form, Row, Col, message, Card,
 } from 'antd';
 
 import { SUCCESS_NOTIFYEVENT, SHOWFOR } from '../../../actions/message';
@@ -15,14 +15,13 @@ import {
   DEFAULT_TIME,
   BASE_URL,
 } from '../../../actions/constants';
-import { PUBLIC_EVENT_VIEW } from '../../../actions/location';
+import { EVENT_REGISTER } from '../../../actions/location';
 import {
   EventData,
   EditEventButton,
   ShareFacebookButton,
   NotifyMsgButton,
 } from './components';
-import { EventCard } from '../shared-styled';
 import { BackButton } from '../shared-components';
 import { postNotifyEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
@@ -48,7 +47,7 @@ class EventPage extends Component {
       performNotifyEvent,
     } = this.props;
     const id = getFieldValue('id');
-    const url = BASE_URL.concat(PUBLIC_EVENT_VIEW, '/', id);
+    const url = BASE_URL.concat(EVENT_REGISTER, '/', id);
     performNotifyEvent({ id, url });
   };
 
@@ -77,7 +76,7 @@ class EventPage extends Component {
 
     return (
       <div>
-        <EventCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+        <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
           <EventData decorator={getFieldDecorator} />
           <br />
           <Row gutter={8}>
@@ -106,7 +105,7 @@ class EventPage extends Component {
               <BackButton history={history} />
             </Col>
           </Row>
-        </EventCard>
+        </Card>
       </div>
     );
   }

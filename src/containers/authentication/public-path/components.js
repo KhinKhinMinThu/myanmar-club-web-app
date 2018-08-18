@@ -8,6 +8,7 @@ import {
   LOGIN,
   SIGNUP,
   DASHBOARD,
+  EVENT_LIST,
   // FORGOTPASSWORD,
   // RESETPASSWORD,
   // PUBLIC_EVENT_VIEW,
@@ -19,6 +20,7 @@ const commonTitles = {
   LOGIN: { icon: <MenuIcon type="user" />, text: 'Login' },
   SIGNUP: { icon: <MenuIcon type="form" />, text: 'Signup' },
   DASHBOARD: { icon: <MenuIcon type="appstore-o" />, text: 'Portal' },
+  EVENT_LIST: { icon: <MenuIcon type="star-o" />, text: 'Events' },
 };
 
 const MenuPanel = ({ updateLocation, currentLocation, selectedKeys }) => {
@@ -44,6 +46,10 @@ const MenuPanel = ({ updateLocation, currentLocation, selectedKeys }) => {
       <MenuItem {...height} key={DASHBOARD}>
         {commonTitles.DASHBOARD.icon}
         {commonTitles.DASHBOARD.text}
+      </MenuItem>
+      <MenuItem {...height} key={EVENT_LIST}>
+        {commonTitles.EVENT_LIST.icon}
+        {commonTitles.EVENT_LIST.text}
       </MenuItem>
     </Menu>
   );

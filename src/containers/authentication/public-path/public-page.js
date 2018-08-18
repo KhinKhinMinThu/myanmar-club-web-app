@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Layout, Anchor } from 'antd';
 import { HeaderText } from '../shared-styled';
@@ -8,6 +7,7 @@ import {
   LOGIN,
   SIGNUP,
   FORGOTPASSWORD,
+  EVENT_LIST,
   EVENT_REGISTER,
   // RESETPASSWORD,
   // PUBLIC_EVENT_VIEW,
@@ -17,7 +17,8 @@ import MenuPanel from './components';
 import MainPage from './main-page';
 import ErrorPage from '../error-page';
 import LoginPage from '../../user-account/login';
-import EventRegisterPage from '../../event/event-registration';
+import EventRegisterPage from '../../event-public/event-registration';
+import EventListPage from '../../event-public/event-list';
 import SignupPage from '../../user-account/signup-page';
 import ForgotPasswordPage from '../../user-account/forgotpwd-page';
 
@@ -29,9 +30,10 @@ const logoImage = (
 );
 const siderWidth = 230;
 
+/* eslint react/prop-types: 0 */
 class PrivatePage extends Component {
   // direct urls (e.g., type localhost:3000/dashboard and enter)
-  switchPage = (pathname) => {
+  switchPage = (pathname, id) => {
     switch (pathname) {
       case DEFAULT:
         return MainPage;
@@ -41,8 +43,10 @@ class PrivatePage extends Component {
         return SignupPage;
       case FORGOTPASSWORD:
         return ForgotPasswordPage;
+      case EVENT_LIST:
+        return EventListPage;
       case EVENT_REGISTER:
-        return EventRegisterPage;
+        return id ? EventRegisterPage : ErrorPage;
       default:
         // should return to error page
         return ErrorPage;
@@ -51,11 +55,15 @@ class PrivatePage extends Component {
 
   render() {
     const {
-      location: { pathname },
+      // location: { pathname },
+      computedMatch: { params },
     } = this.props;
-    const Page = this.switchPage(pathname);
+    const { pathname, id } = params;
+    const path = pathname ? '/'.concat(pathname) : DEFAULT;
+    const Page = this.switchPage(path, id);
+
     console.log('public props:', this.props);
-    console.log('pathname:', pathname);
+    console.log('pathname:', path);
 
     return (
       <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
@@ -91,7 +99,7 @@ class PrivatePage extends Component {
           </Header>
           <div style={{ marginLeft: '4px' }}>
             <Anchor style={{ background: 'transparent' }}>
-              <MenuPanel selectedKeys={[pathname]} />
+              <MenuPanel selectedKeys={[path]} />
             </Anchor>
           </div>
           <Content
@@ -112,9 +120,5 @@ class PrivatePage extends Component {
     );
   }
 }
-
-PrivatePage.propTypes = {
-  location: PropTypes.shape({}).isRequired,
-};
 
 export default connect()(PrivatePage);

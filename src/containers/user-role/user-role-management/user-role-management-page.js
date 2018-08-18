@@ -63,7 +63,10 @@ class RoleManagement extends Component {
         .ecMembers.map(item => `${item.id}`)
       : [];
     setFieldsValue({ roleTransfer: targetKeys });
-    dispatchSelectedRole(option.props.children.concat(':'));
+    dispatchSelectedRole({
+      selectedRole: option.props.children.concat(':'),
+      selectedRoleId: value,
+    });
   };
 
   onSubmit = (e) => {
@@ -154,11 +157,24 @@ class RoleManagement extends Component {
   };
 
   prepareList = (sourceList) => {
+    const {
+      rolemgmtUI: { selectedRoleId },
+      rolemgmtData: { roleData },
+    } = this.props;
+
+    // admin list if selected role is not admin
+    const admins = selectedRoleId !== 1
+      ? roleData
+        .find(item => item.roleId === 1)
+        .ecMembers.map(item => `${item.id}`)
+      : [];
+
     const preparedList = [];
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       title: `ID: ${item.id}`,
       description: `Member Id: ${item.id} - ${item.username}`,
+      disabled: admins.includes(item.id.toString()),
     }));
     return preparedList;
   };
@@ -200,22 +216,26 @@ class RoleManagement extends Component {
             <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
               <Row gutter={8} type="flex" justify="center">
                 <Col span={15}>
-                  <Col span={24}>
-                    <RoleNameSelect
-                      onChange={this.onChangeSelect}
-                      roleNameList={roleNameList}
-                      decorator={getFieldDecorator}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <Row gutter={8} type="flex" justify="center">
+                  <Row gutter={8} type="flex" justify="center">
+                    <Col span={24}>
+                      <RoleNameSelect
+                        onChange={this.onChangeSelect}
+                        roleNameList={roleNameList}
+                        decorator={getFieldDecorator}
+                      />
+                    </Col>
+                  </Row>
+
+                  <Row gutter={8} type="flex" justify="center">
+                    <Col span={24} style={{ textAlign: 'center' }}>
                       <RoleAssignTransfer
                         dataSource={dataSource}
                         decorator={getFieldDecorator}
                         selectedRole={selectedRole}
                       />
-                    </Row>
-                  </Col>
+                    </Col>
+                  </Row>
+
                   <br />
                   <Row gutter={8}>
                     <Col {...actionColLayout}>

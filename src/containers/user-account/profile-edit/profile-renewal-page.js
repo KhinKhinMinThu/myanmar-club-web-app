@@ -43,7 +43,7 @@ class MemberRenewal extends Component {
       membermgmtData: { isPostApiLoading, postErrMsg },
       membermgmtUI: { currentTab },
     } = this.props;
-    if (currentTab !== 'tab1') return;
+    if (currentTab !== 'tab2') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;

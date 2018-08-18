@@ -19,17 +19,20 @@ class PasswordInput extends Component {
     const { isExpand } = this.state;
     if (isExpand && !nextState.isExpand) {
       const {
-        form: { setFields },
+        form: { setFields, getFieldValue },
       } = this.props;
+      const password = getFieldValue('password');
+      const confirmPassword = getFieldValue('confirmPassword');
+
       setFields({
         password: {
-          value: '',
+          value: password || '',
           errors: null,
         },
       });
       setFields({
         confirmPassword: {
-          value: '',
+          value: confirmPassword || '',
           errors: null,
         },
       });
@@ -89,10 +92,7 @@ class PasswordInput extends Component {
   };
 
   render() {
-    const {
-      decorator,
-      placeHolder,
-    } = this.props;
+    const { decorator, placeHolder } = this.props;
     const { isExpand } = this.state;
     return (
       <FormItem {...layout} label={placeHolder} colon>

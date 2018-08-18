@@ -10,15 +10,15 @@ export const layout = {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 24 },
-    lg: { span: 5 },
-    xl: { span: 5 },
+    lg: { span: 8 },
+    xl: { span: 8 },
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 24 },
-    lg: { span: 19 },
-    xl: { span: 19 },
+    lg: { span: 16 },
+    xl: { span: 16 },
   },
 };
 
@@ -33,11 +33,7 @@ export const RoleNameSelect = ({ onChange, roleNameList, decorator }) => (
         },
       ],
     })(
-      <Select
-        onChange={onChange}
-        placeholder="Select a role"
-        style={{ width: 600 }}
-      >
+      <Select onChange={onChange} placeholder="Select a role">
         {roleNameList.map(item => (
           <Option key={item.id.toString} value={item.id}>
             {item.name}
@@ -63,6 +59,7 @@ export const RoleAssignTransfer = ({ decorator, dataSource, selectedRole }) => {
     <BoldUnderlineText>Member(s):</BoldUnderlineText>,
     <BoldUnderlineText>{selectedRole}</BoldUnderlineText>,
   ];
+
   return (
     <FormItem>
       {decorator('roleTransfer', { valuePropName: 'targetKeys' })(
@@ -74,6 +71,7 @@ export const RoleAssignTransfer = ({ decorator, dataSource, selectedRole }) => {
           listStyle={{
             width: 350,
             height: 300,
+            textAlign: 'left',
           }}
           render={item => item.description}
         />,

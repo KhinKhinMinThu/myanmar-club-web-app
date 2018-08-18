@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal,
+  Form, message, Row, Col, Spin, Modal, Card,
 } from 'antd';
 import {
   SUCCESS_UPDATEEVENT,
@@ -41,7 +41,6 @@ import {
   EventStatusSwitch,
   SaveUpdateButton,
 } from './components';
-import { EventCard } from '../shared-styled';
 import {
   getEventData,
   setEventData,
@@ -205,7 +204,7 @@ class EventEdit extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker decorator={getFieldDecorator} />
@@ -217,18 +216,18 @@ class EventEdit extends Component {
               beforeUpload={this.beforeUpload}
               removeFile={this.removeFile}
             />
-          </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          </Card>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <TicketFeeInput decorator={getFieldDecorator} />
             <NumPaxInput decorator={getFieldDecorator} />
             <RefreshmentRadio decorator={getFieldDecorator} />
-          </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          </Card>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <ContactPersonInput decorator={getFieldDecorator} />
             <EmailAddressInput decorator={getFieldDecorator} />
             <MobileNoInput decorator={getFieldDecorator} />
-          </EventCard>
-          <EventCard style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+          </Card>
+          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventStatusSwitch decorator={getFieldDecorator} />
             <DeleteEventSwitch decorator={getFieldDecorator} />
             <br />
@@ -240,7 +239,7 @@ class EventEdit extends Component {
                 <BackButton history={history} />
               </Col>
             </Row>
-          </EventCard>
+          </Card>
         </Form>
       </Spin>
     );
@@ -311,9 +310,7 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
     contactPerson: Form.createFormField({ value: event.contactPerson }),
     emailAddress: Form.createFormField({ value: event.emailAddress }),
     areaCode: Form.createFormField({
-      value: event.mobilePhone
-        ? event.mobilePhone.substr(0, 2)
-        : '65',
+      value: event.mobilePhone ? event.mobilePhone.substr(0, 2) : '65',
     }),
     mobilePhone: Form.createFormField({
       value: event.mobilePhone

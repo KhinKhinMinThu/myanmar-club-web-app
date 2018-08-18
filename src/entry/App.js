@@ -20,6 +20,7 @@ const App = () => (
             {/*  for paths with more than 1 params
             <PrivatePath name="TEST" exact path="/:pathname/:name?/:name2?" /> */}
 
+            <PublicPath exact path="/:pathname/:id?" />
             {/* all other paths */}
             <PublicPath path="*" />
           </Switch>

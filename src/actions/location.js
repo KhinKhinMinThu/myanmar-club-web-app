@@ -5,7 +5,7 @@ export const LOGOUT = '/logout';
 export const SIGNUP = '/signup';
 export const FORGOTPASSWORD = '/forgot-password';
 export const RESETPASSWORD = '/password-reset';
-export const PUBLIC_EVENT_VIEW = '/event-info';
+export const EVENT_LIST = '/event-list';
 export const EVENT_REGISTER = '/event-register';
 
 // private

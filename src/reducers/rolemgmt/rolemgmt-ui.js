@@ -9,6 +9,7 @@ export const resetState = () => ({ type: RESETSTATE });
 
 const inititalState = {
   selectedRole: null,
+  selectedRoleId: null,
 };
 export default function (
   state = {
@@ -20,7 +21,7 @@ export default function (
     case SELECTEDROLE:
       return {
         ...state,
-        selectedRole: action.payload,
+        ...action.payload,
       };
     case RESETSTATE:
       return {
