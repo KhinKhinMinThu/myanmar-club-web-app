@@ -181,7 +181,7 @@ class PrivatePage extends Component {
               borderBottom: '3px solid #1DA57A',
             }}
           >
-            <HeaderText>Myanmar Club Web Portal</HeaderText>;
+            <HeaderText>Myanmar Club (Singapore) Web Portal</HeaderText>;
           </Header>
           <Content
             style={{

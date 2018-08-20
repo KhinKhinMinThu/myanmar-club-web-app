@@ -43,14 +43,19 @@ class EventManagementPage extends Component {
     dispatchResetState();
   };
 
+  // filter closed event
   prepareList = (sourceList) => {
     const preparedList = [];
-    sourceList.map(item => preparedList.push({
-      key: `${item.id}`,
-      ...item,
-      location: `${item.locationLine1}, ${item.locationLine2},
+    sourceList.map(
+      item => (item.eventStatus !== '0'
+        ? preparedList.push({
+          key: `${item.id}`,
+          ...item,
+          location: `${item.locationLine1}, ${item.locationLine2},
        ${item.locationPostalCode}`,
-    }));
+        })
+        : ''),
+    );
     return preparedList;
   };
 

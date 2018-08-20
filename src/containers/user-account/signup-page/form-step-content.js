@@ -7,7 +7,7 @@ import Page2 from './page2';
 import Page3 from './page3';
 
 const stepContentStyles = {
-  marginTop: '20px',
+  marginTop: '15px',
   borderRadius: 15,
   backgroundColor: '#fafafa',
   padding: '8px',

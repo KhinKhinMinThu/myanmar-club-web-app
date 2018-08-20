@@ -85,6 +85,9 @@ class PrivatePage extends Component {
               {logoImage}
             </Header>
           </a>
+          <Anchor>
+            <MenuPanel selectedKeys={[path]} />
+          </Anchor>
         </Sider>
 
         <Layout>
@@ -95,13 +98,13 @@ class PrivatePage extends Component {
               borderBottom: '3px solid #1DA57A',
             }}
           >
-            <HeaderText>Myanmar Club</HeaderText>;
+            <HeaderText>Myanmar Club (Singapore)</HeaderText>;
           </Header>
-          <div style={{ marginLeft: '4px' }}>
+          {/* <div style={{ marginLeft: '4px' }}>
             <Anchor style={{ background: 'transparent' }}>
               <MenuPanel selectedKeys={[path]} />
             </Anchor>
-          </div>
+          </div> */}
           <Content
             style={{
               margin: '5px',

@@ -4,7 +4,6 @@ import {
 } from 'antd';
 import {
   TabIcon,
-  TableActionButton,
   BoldText,
   FullWidthTable,
   SelectedText,
@@ -216,12 +215,12 @@ export class ClaimsTable extends Component {
         dataIndex: 'photoLink',
         key: 'photoLink',
         render: (text, record) => (
-          <TableActionButton
+          <Button
             icon="picture"
             onClick={() => this.showModal(record)}
           >
            View receipt
-          </TableActionButton>
+          </Button>
         ),
         width: '12%',
       },

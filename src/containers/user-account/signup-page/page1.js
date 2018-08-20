@@ -46,8 +46,13 @@ class Page1 extends Component {
   };
 
   componentDidMount() {
-    const { performGetMemberFormFields } = this.props;
+    const {
+      performGetMemberFormFields,
+      form: { getFieldValue },
+    } = this.props;
     performGetMemberFormFields();
+    const uploadBtn = getFieldValue('uploadBtn');
+    if (uploadBtn) this.setState({ fileList: uploadBtn });
   }
 
   componentWillUpdate(nextProps) {
@@ -93,6 +98,7 @@ class Page1 extends Component {
         const password = formValues.password
           ? CryptoJS.MD5(formValues.password).toString(CryptoJS.enc.Hex)
           : '';
+
         const memberToAdd = {
           ...formValues,
           dateOfBirth,
@@ -272,10 +278,9 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   // return the fields
   return {
     uploadBtn: Form.createFormField({
-      value: member.uploadBtn ? [member.uploadBtn[0]] : [],
+      value: member.uploadBtn,
     }),
-    id: Form.createFormField({ value: member.id }),
-    name: Form.createFormField({ value: member.name }),
+    name: Form.createFormField({ value: member.name || '' }),
     gender: Form.createFormField({
       value: member.gender ? member.gender : 'Male',
     }),
@@ -306,15 +311,15 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
       value: member.maritalStatus ? member.maritalStatus : 'Single',
     }),
     educationLevel: Form.createFormField({
-      value: member.educationLevel,
+      value: member.educationLevel || '',
     }),
-    occupation: Form.createFormField({ value: member.occupation }),
+    occupation: Form.createFormField({ value: member.occupation || '' }),
     passType: Form.createFormField({ value: member.passType }),
-    idNumber: Form.createFormField({ value: member.idNumber }),
-    addressLine1: Form.createFormField({ value: member.addressLine1 }),
-    addressLine2: Form.createFormField({ value: member.addressLine2 }),
-    postalCode: Form.createFormField({ value: member.postalCode }),
-    emailAddress: Form.createFormField({ value: member.emailAddress }),
+    idNumber: Form.createFormField({ value: member.idNumber || '' }),
+    addressLine1: Form.createFormField({ value: member.addressLine1 || '' }),
+    addressLine2: Form.createFormField({ value: member.addressLine2 || '' }),
+    postalCode: Form.createFormField({ value: member.postalCode || '' }),
+    emailAddress: Form.createFormField({ value: member.emailAddress || '' }),
     password: Form.createFormField({
       value: member.password ? member.password : '',
     }),
@@ -322,23 +327,21 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
       value: member.password ? member.password : '',
     }),
     facebookAccount: Form.createFormField({
-      value: member.facebookAccount,
+      value: member.facebookAccount || '',
     }),
     areaCodeHomePhone: Form.createFormField({
       value: member.homePhone ? member.homePhone.substr(0, 2) : '65',
     }),
     homePhone: Form.createFormField({
-      value: member.homePhone ? member.homePhone.substr(2) : member.homePhone,
+      value: member.homePhone ? member.homePhone.substr(2) : '',
     }),
     areaCodeMobilePhone: Form.createFormField({
       value: member.mobilePhone ? member.mobilePhone.substr(0, 2) : '65',
     }),
     mobilePhone: Form.createFormField({
-      value: member.mobilePhone
-        ? member.mobilePhone.substr(2)
-        : member.mobilePhone,
+      value: member.mobilePhone ? member.mobilePhone.substr(2) : '',
     }),
-    hobbies: Form.createFormField({ value: member.hobbies }),
+    hobbies: Form.createFormField({ value: member.hobbies || '' }),
     ...subComInterest,
   };
 };

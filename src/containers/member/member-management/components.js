@@ -7,8 +7,8 @@ import { MEMBER_EDIT } from '../../../actions/location';
 import { DEFAULT_DATE, DATE_FORMAT } from '../../../actions/constants';
 import {
   FullWidthTable,
-  TableActionButton,
   TabIcon,
+  TableActionButton,
   BoldText,
   SelectedText,
   MarginLeftButton,

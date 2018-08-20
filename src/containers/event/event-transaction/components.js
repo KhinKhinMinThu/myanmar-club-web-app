@@ -3,8 +3,8 @@ import {
   Form, Row, Col, Popconfirm, Button, Input,
 } from 'antd';
 import {
-  TableActionButton,
   BoldText,
+  TableActionButton,
   BoldUnderlineText,
   FullWidthTable,
   HightlightedText,

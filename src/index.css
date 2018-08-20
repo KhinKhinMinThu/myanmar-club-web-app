@@ -59,6 +59,16 @@ h2 {
   margin-right: 20px;
 }
 
+h3 {
+  font-style: italic;
+  font-family: Impact;
+  font-size: 18px;
+  color: #312d2d;
+  opacity: 0.8;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
 div.pageHeaderContainer {
   position: absolute;
   width: 40%;
@@ -66,6 +76,13 @@ div.pageHeaderContainer {
   right: 10px;
   vertical-align: middle;
   text-align: right;
+}
+
+.ant-carousel .slick-slide {
+  text-align: center;
+  line-height: 60px;
+  background: #312d2d;
+  overflow: hidden;
 }
 
 /* END REQUIRED DO NOT DELETE */

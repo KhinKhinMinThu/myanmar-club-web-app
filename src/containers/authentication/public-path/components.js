@@ -16,7 +16,7 @@ import {
 import { locationChange } from '../../../reducers/router';
 
 const commonTitles = {
-  DEFAULT: { icon: <MenuIcon type="home" />, text: '' },
+  DEFAULT: { icon: <MenuIcon type="home" />, text: 'Home' },
   LOGIN: { icon: <MenuIcon type="user" />, text: 'Login' },
   SIGNUP: { icon: <MenuIcon type="form" />, text: 'Signup' },
   DASHBOARD: { icon: <MenuIcon type="appstore-o" />, text: 'Portal' },
@@ -30,7 +30,7 @@ const MenuPanel = ({ updateLocation, currentLocation, selectedKeys }) => {
   };
   const height = { style: { height: 40 } };
   return (
-    <Menu mode="horizontal" onClick={onClick} selectedKeys={selectedKeys}>
+    <Menu mode="inline" onClick={onClick} selectedKeys={selectedKeys}>
       <MenuItem {...height} key={DEFAULT}>
         {commonTitles.DEFAULT.icon}
         {commonTitles.DEFAULT.text}
@@ -43,13 +43,13 @@ const MenuPanel = ({ updateLocation, currentLocation, selectedKeys }) => {
         {commonTitles.SIGNUP.icon}
         {commonTitles.SIGNUP.text}
       </MenuItem>
-      <MenuItem {...height} key={DASHBOARD}>
-        {commonTitles.DASHBOARD.icon}
-        {commonTitles.DASHBOARD.text}
-      </MenuItem>
       <MenuItem {...height} key={EVENT_LIST}>
         {commonTitles.EVENT_LIST.icon}
         {commonTitles.EVENT_LIST.text}
+      </MenuItem>
+      <MenuItem {...height} key={DASHBOARD}>
+        {commonTitles.DASHBOARD.icon}
+        {commonTitles.DASHBOARD.text}
       </MenuItem>
     </Menu>
   );

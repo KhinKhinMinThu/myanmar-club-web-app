@@ -1,6 +1,7 @@
 import React from 'react';
-import { EVENT_VIEW, EVENT_REGISTER } from '../../../actions/location';
-import { FullWidthTable, TableActionButton } from '../shared-styled';
+import { Button } from 'antd';
+import { EVENT_REGISTER } from '../../../actions/location';
+import { FullWidthTable } from '../shared-styled';
 
 /* eslint react/prop-types: 0 */
 // EventsTable
@@ -77,14 +78,12 @@ const EventsTable = ({
       // render: (text, record) => ()
       render: record => (
         <div>
-          <TableActionButton
-            href={EVENT_VIEW.concat('/').concat(record.id)}
-            icon="folder-open"
-          />
-          <TableActionButton
+          <Button
             href={EVENT_REGISTER.concat('/').concat(record.id)}
-            icon="edit"
-          />
+            icon="form"
+          >
+            Register
+          </Button>
         </div>
       ),
     },
@@ -98,7 +97,7 @@ const EventsTable = ({
       onChange={onChange}
       bordered
       size="small"
-      pagination={{ position: 'top' }}
+      // pagination={{ position: 'top' }}
     />
   );
 };

@@ -29,27 +29,9 @@ export const TableActionLink = styled(Link)`
     opacity: 0.5;
   }
 `;
-
 export const TableActionButton = styled(Button)`
   margin-right: 8px;
-  border: 0;
-  color: #1da57a;
-  background-color: transparent;
-  &:focus,
-  &:visited {
-    background-color: transparent;
-    opacity: 1;
-  }
-  &:hover {
-    background-color: transparent;
-    opacity: 0.5;
-  }
-  font-size: 18px;
 `;
-// &:visited,
-// &:link,
-// &:active
-
 // end
 
 // Tabs

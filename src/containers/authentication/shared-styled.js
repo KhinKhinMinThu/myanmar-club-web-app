@@ -17,3 +17,8 @@ export const HeaderText = styled.h1`
   color: #ffffff;
   text-transform: uppercase;
 `;
+
+export const BoldUnderlineText = styled.span`
+  font-weight: bold;
+  text-decoration: underline;
+`;
