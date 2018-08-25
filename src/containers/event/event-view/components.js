@@ -172,7 +172,11 @@ export const RegistrationTable = ({
       key: 'name',
       filteredValue: filteredInfo.name || null,
       onFilter: (value, record) => record.name.toLowerCase().includes(value),
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       width: '19%',
     },
@@ -180,7 +184,11 @@ export const RegistrationTable = ({
       title: 'Email Address',
       dataIndex: 'emailAddress',
       key: 'emailAddress',
-      sorter: (a, b) => a.emailAddress.length - b.emailAddress.length,
+      sorter: (a, b) => {
+        if (a.emailAddress < b.emailAddress) return -1;
+        if (a.emailAddress > b.emailAddress) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'emailAddress' && sortedInfo.order,
       width: '28%',
     },
@@ -202,7 +210,11 @@ export const RegistrationTable = ({
       title: 'Payment',
       dataIndex: 'paymentType',
       key: 'paymentType',
-      sorter: (a, b) => a.paymentType.length - b.paymentType.length,
+      sorter: (a, b) => {
+        if (a.paymentType < b.paymentType) return -1;
+        if (a.paymentType > b.paymentType) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'paymentType' && sortedInfo.order,
       width: '15%',
     },

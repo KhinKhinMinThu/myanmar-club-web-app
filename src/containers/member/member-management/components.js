@@ -250,7 +250,11 @@ export class MembersTable extends Component {
 
         filteredValue: filteredInfo.name || null,
         onFilter: (value, record) => record.name.toLowerCase().includes(value),
-        sorter: (a, b) => a.name.length - b.name.length,
+        sorter: (a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        },
         sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
         width: '15%',
       },
@@ -258,7 +262,11 @@ export class MembersTable extends Component {
         title: 'Email Address',
         dataIndex: 'emailAddress',
         key: 'emailAddress',
-        sorter: (a, b) => a.emailAddress.length - b.emailAddress.length,
+        sorter: (a, b) => {
+          if (a.emailAddress < b.emailAddress) return -1;
+          if (a.emailAddress > b.emailAddress) return 1;
+          return 0;
+        },
         sortOrder: sortedInfo.columnKey === 'emailAddress' && sortedInfo.order,
         width: '22%',
       },
@@ -266,7 +274,11 @@ export class MembersTable extends Component {
         title: 'Mobile No',
         dataIndex: 'mobilePhone',
         key: 'mobilePhone',
-        sorter: (a, b) => a.mobilePhone.length - b.mobilePhone.length,
+        sorter: (a, b) => {
+          if (a.mobilePhone < b.mobilePhone) return -1;
+          if (a.mobilePhone > b.mobilePhone) return 1;
+          return 0;
+        },
         sortOrder: sortedInfo.columnKey === 'mobilePhone' && sortedInfo.order,
         width: '9%',
       },
@@ -274,7 +286,11 @@ export class MembersTable extends Component {
         title: 'Role Title(s)',
         dataIndex: 'roleNames',
         key: 'roleNames',
-        sorter: (a, b) => a.roleNames.length - b.roleNames.length,
+        sorter: (a, b) => {
+          if (a.roleNames < b.roleNames) return -1;
+          if (a.roleNames > b.roleNames) return 1;
+          return 0;
+        },
         sortOrder: sortedInfo.columnKey === 'roleNames' && sortedInfo.order,
         width: '12%',
       },
@@ -299,7 +315,11 @@ export class MembersTable extends Component {
         title: 'Status',
         dataIndex: 'membershipStatus',
         key: 'membershipStatus',
-        sorter: (a, b) => a.membershipStatus.length - b.membershipStatus.length,
+        sorter: (a, b) => {
+          if (a.membershipStatus < b.membershipStatus) return -1;
+          if (a.membershipStatus > b.membershipStatus) return 1;
+          return 0;
+        },
         sortOrder:
           sortedInfo.columnKey === 'membershipStatus' && sortedInfo.order,
         width: '8%',

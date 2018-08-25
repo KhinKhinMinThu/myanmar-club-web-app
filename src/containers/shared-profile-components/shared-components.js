@@ -355,6 +355,18 @@ export class ProfilePhoto extends Component {
     });
   };
 
+  validateImageType = (rule, value, callback) => {
+    if (value.length > 0) {
+      const isJPGPNG = ['image/jpeg', 'image/jpg', 'image/png'].includes(
+        value[0].type,
+      );
+      if (!isJPGPNG) {
+        callback('Please upload only jpeg, jpg or png file type!');
+      }
+    }
+    callback();
+  };
+
   render() {
     const { decorator, beforeUpload, removeFile } = this.props;
     const { isModalVisible, photoLink } = this.state;
@@ -365,14 +377,15 @@ export class ProfilePhoto extends Component {
         {decorator('uploadBtn', {
           valuePropName: 'fileList',
           initialValue: [],
+          rules: [
+            { required: true /* kkmt */, message: 'Please input photo!' },
+            { validator: this.validateImageType },
+          ],
           getValueFromEvent: (e) => {
             const { fileList } = e;
             this.newFile = fileList.length > 1 ? fileList.slice(1) : fileList;
             return this.newFile;
           },
-          rules: [
-            { required: true /* kkmt */, message: 'Please input photo!' },
-          ],
         })(
           <Upload
             name="profilepic"
@@ -384,6 +397,7 @@ export class ProfilePhoto extends Component {
             // Uploading will be stopped with false or a rejected Promise returned.
             // Warning：this function is not supported in IE9。
             action="//jsonplaceholder.typicode.com/posts/"
+            accept="image/jpeg,image/jpg,image/png"
           >
             {this.newFile.length >= 2 ? null : (
               <div>

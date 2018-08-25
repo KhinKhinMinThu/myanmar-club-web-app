@@ -109,7 +109,11 @@ export const EventsTable = ({
       key: 'name',
       filteredValue: filteredInfo.name || null,
       onFilter: (value, record) => record.name.toLowerCase().includes(value),
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       width: '11%',
     },
@@ -117,7 +121,11 @@ export const EventsTable = ({
       title: 'Event Description',
       dataIndex: 'description',
       key: 'description',
-      sorter: (a, b) => a.description.length - b.description.length,
+      sorter: (a, b) => {
+        if (a.description < b.description) return -1;
+        if (a.description > b.description) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'description' && sortedInfo.order,
       width: '17%',
     },
@@ -141,7 +149,11 @@ export const EventsTable = ({
       title: 'Location',
       dataIndex: 'location',
       key: 'location',
-      sorter: (a, b) => a.location.length - b.location.length,
+      sorter: (a, b) => {
+        if (a.location < b.location) return -1;
+        if (a.location > b.location) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'location' && sortedInfo.order,
       width: '17%',
     },
@@ -149,7 +161,11 @@ export const EventsTable = ({
       title: 'Status',
       dataIndex: 'eventStatus',
       key: 'eventStatus',
-      sorter: (a, b) => a.eventStatus.length - b.eventStatus.length,
+      sorter: (a, b) => {
+        if (a.eventStatus < b.eventStatus) return -1;
+        if (a.eventStatus > b.eventStatus) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'eventStatus' && sortedInfo.order,
       render: text => (text === '1' ? 'Open' : 'Closed'),
       width: '10%',
@@ -158,7 +174,11 @@ export const EventsTable = ({
       title: 'Created By',
       dataIndex: 'createdBy',
       key: 'createdBy',
-      sorter: (a, b) => a.createdBy.length - b.createdBy.length,
+      sorter: (a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      },
       sortOrder: sortedInfo.columnKey === 'createdBy' && sortedInfo.order,
       width: '10%',
     },

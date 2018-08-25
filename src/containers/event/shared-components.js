@@ -392,6 +392,18 @@ export class EventPhoto extends Component {
     });
   };
 
+  validateImageType = (rule, value, callback) => {
+    if (value.length > 0) {
+      const isJPGPNG = ['image/jpeg', 'image/jpg', 'image/png'].includes(
+        value[0].type,
+      );
+      if (!isJPGPNG) {
+        callback('Please upload only jpeg, jpg or png file type!');
+      }
+    }
+    callback();
+  };
+
   render() {
     const { decorator, beforeUpload, removeFile } = this.props;
     const { isModalVisible, photoLink } = this.state;
@@ -407,6 +419,7 @@ export class EventPhoto extends Component {
             this.newFile = fileList.length > 1 ? fileList.slice(1) : fileList;
             return this.newFile;
           },
+          rules: [{ validator: this.validateImageType }],
         })(
           <Upload
             name="eventpic"
@@ -418,6 +431,7 @@ export class EventPhoto extends Component {
             // Uploading will be stopped with false or a rejected Promise returned.
             // Warning：this function is not supported in IE9。
             action="//jsonplaceholder.typicode.com/posts/"
+            accept="image/jpeg,image/jpg,image/png"
           >
             {this.newFile.length >= 2 ? null : (
               <div>

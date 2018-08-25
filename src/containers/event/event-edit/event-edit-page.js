@@ -196,7 +196,6 @@ class EventEdit extends Component {
       xl: { span: 12 },
       style: { marginBottom: 14 },
     };
-
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <div className="pageHeaderContainer">

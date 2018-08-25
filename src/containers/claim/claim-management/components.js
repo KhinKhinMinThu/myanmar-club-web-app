@@ -189,7 +189,11 @@ export class ClaimsTable extends Component {
         title: 'Event Description',
         dataIndex: 'eventDesc',
         key: 'eventDesc',
-        sorter: (a, b) => a.eventDesc.length - b.eventDesc.length,
+        sorter: (a, b) => {
+          if (a.eventDesc < b.eventDesc) return -1;
+          if (a.eventDesc > b.eventDesc) return 1;
+          return 0;
+        },
         sortOrder: sortedInfo.columnKey === 'eventDesc' && sortedInfo.order,
         width: '25%',
       },
@@ -197,7 +201,11 @@ export class ClaimsTable extends Component {
         title: 'Category',
         dataIndex: 'category',
         key: 'category',
-        sorter: (a, b) => a.category.length - b.category.length,
+        sorter: (a, b) => {
+          if (a.category < b.category) return -1;
+          if (a.category > b.category) return 1;
+          return 0;
+        },
         sortOrder: sortedInfo.columnKey === 'category' && sortedInfo.order,
         width: '14%',
       },
@@ -215,11 +223,8 @@ export class ClaimsTable extends Component {
         dataIndex: 'photoLink',
         key: 'photoLink',
         render: (text, record) => (
-          <Button
-            icon="picture"
-            onClick={() => this.showModal(record)}
-          >
-           View receipt
+          <Button icon="picture" onClick={() => this.showModal(record)}>
+            View receipt
           </Button>
         ),
         width: '12%',
@@ -230,7 +235,11 @@ export class ClaimsTable extends Component {
         key: 'submittedBy',
         filteredValue: filteredInfo.submittedBy || null,
         onFilter: (value, record) => record.submittedBy.toLowerCase().includes(value),
-        sorter: (a, b) => a.submittedBy.length - b.submittedBy.length,
+        sorter: (a, b) => {
+          if (a.submittedBy < b.submittedBy) return -1;
+          if (a.submittedBy > b.submittedBy) return 1;
+          return 0;
+        },
         sortOrder: sortedInfo.columnKey === 'submittedBy' && sortedInfo.order,
         width: '14%',
       },
