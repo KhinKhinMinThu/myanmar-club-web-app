@@ -9,7 +9,7 @@ import {
   BlockContainer,
   BoldText,
 } from './styled-components';
-import { LOGIN } from '../../../actions/location';
+import { LOGIN, FORGOTPASSWORD } from '../../../actions/location';
 
 const FormItem = Form.Item;
 
@@ -52,7 +52,7 @@ export const GoToLoginButton = () => (
   </FullWidthButton>
 );
 
-export const ErrorMessage = ({ postErrMsg, history }) => (
+export const ErrorMessage = ({ postErrMsg }) => (
   <Row gutter={8}>
     <Col span={24}>
       <BlockContainer>
@@ -60,7 +60,7 @@ export const ErrorMessage = ({ postErrMsg, history }) => (
       </BlockContainer>
     </Col>
     <Col span={24}>
-      <BackButton history={history} />
+      <FullWidthButton href={FORGOTPASSWORD}>Back</FullWidthButton>
     </Col>
   </Row>
 );

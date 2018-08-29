@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import {
-  Form, Alert, Row, Col, Spin, Card,
+  Form, Alert, Row, Col, Spin, Card, message,
 } from 'antd';
 import FormStepAction from './form-step-action';
 import {
@@ -12,6 +12,7 @@ import {
   NATIONALITY_LIST,
   RELIGION_LIST,
 } from '../../../actions/constants';
+import { SHOWFOR } from '../../../actions/message';
 import {
   NameInput,
   GenderRadio,
@@ -38,6 +39,7 @@ import { next } from '../../../reducers/membermgmt/membermgmt-ui';
 import {
   getMemberFormFields,
   setMemberData,
+  postCheckEmail,
 } from '../../../reducers/membermgmt/membermgmt-data';
 
 class Page1 extends Component {
@@ -62,12 +64,39 @@ class Page1 extends Component {
     this.isApiCalled = !nextProps.membermgmtData.isGetApiLoading && isGetApiLoading;
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      membermgmtData: { isPostApiLoading, postErrMsg, isEmailFound },
+      form: { setFields, getFieldValue },
+      dispatchNext,
+    } = this.props;
+    const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
+
+    if (postErrMsg) message.error(postErrMsg, SHOWFOR);
+    if (isEmailFound === '1') {
+      setFields({
+        emailAddress: {
+          value: getFieldValue('emailAddress'),
+          errors: [
+            new Error(
+              'Email address already exists! Please choose a different email!',
+            ),
+          ],
+        },
+      });
+    } else {
+      dispatchNext();
+      document.documentElement.scrollTop = 0;
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll },
       dispatchMemberData,
-      dispatchNext,
+      performCheckEmail,
     } = this.props;
 
     const { fileList } = this.state;
@@ -111,8 +140,8 @@ class Page1 extends Component {
           uploadBtn: fileList,
         };
         dispatchMemberData(memberToAdd);
-        dispatchNext();
-        document.documentElement.scrollTop = 0;
+        const checkParams = { memberId: '', email: formValues.emailAddress };
+        performCheckEmail(checkParams);
       }
     });
   };
@@ -147,6 +176,7 @@ class Page1 extends Component {
       lg: { span: 12 },
       xl: { span: 12 },
     };
+
     // const isOtherNat = getFieldValue('isOtherNat');
     // const isOtherRel = getFieldValue('isOtherRel');
     const allSubComInterest = memberFormFields
@@ -234,6 +264,7 @@ class Page1 extends Component {
 Page1.propTypes = {
   form: PropTypes.shape({}).isRequired,
   performGetMemberFormFields: PropTypes.func.isRequired,
+  performCheckEmail: PropTypes.func.isRequired,
   dispatchMemberData: PropTypes.func.isRequired,
   dispatchNext: PropTypes.func.isRequired,
 
@@ -247,6 +278,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   performGetMemberFormFields: getMemberFormFields,
+  performCheckEmail: postCheckEmail,
   dispatchMemberData: setMemberData,
   dispatchNext: next,
 };
@@ -259,26 +291,32 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   let religion = 'Buddhism';
   const subComInterest = {};
   if (memberData) {
-    isOtherNat = NATIONALITY_LIST.includes(member.nationality.toLowerCase())
-      ? 't'
-      : 'f';
-    isOtherRel = RELIGION_LIST.includes(member.religion.toLowerCase())
-      ? 't'
-      : 'f';
-    member.subComInterest.forEach((item) => {
-      subComInterest['subComChk'.concat(item.id)] = Form.createFormField({
-        value: true,
+    if (member.nationality) {
+      isOtherNat = NATIONALITY_LIST.includes(member.nationality.toLowerCase())
+        ? 't'
+        : 'f';
+      nationality = isOtherNat === 't' ? member.nationality : 'Others';
+    }
+    if (member.religion) {
+      isOtherRel = RELIGION_LIST.includes(member.religion.toLowerCase())
+        ? 't'
+        : 'f';
+      religion = isOtherRel === 't' ? member.religion : 'Others';
+    }
+    if (member.subComInterest) {
+      member.subComInterest.forEach((item) => {
+        subComInterest['subComChk'.concat(item.id)] = Form.createFormField({
+          value: true,
+        });
       });
-    });
-    nationality = isOtherNat === 't' ? member.nationality : 'Others';
-    religion = isOtherRel === 't' ? member.religion : 'Others';
+    }
     // member.subComInterest.map{ subComChk1: Form.createFormField({ value: true }), subComChk2: Form.createFormField({ value: true }) };
   }
 
   // return the fields
   return {
     uploadBtn: Form.createFormField({
-      value: member.uploadBtn,
+      value: member.uploadBtn ? member.uploadBtn : [],
     }),
     name: Form.createFormField({ value: member.name || '' }),
     gender: Form.createFormField({

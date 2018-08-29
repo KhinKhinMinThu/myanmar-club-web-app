@@ -7,7 +7,6 @@ import {
   TableActionButton,
   BoldUnderlineText,
   FullWidthTable,
-  HightlightedText,
 } from '../shared-styled';
 
 const FormItem = Form.Item;
@@ -392,13 +391,20 @@ const TransactionTable = ({
       {totalExpenditure(preparedList).toFixed(2)}
     </BoldText>
   );
+  const totalBalanceAmt = totalBalance(preparedList).toFixed(2);
   const totalBalanceText = (
-    <HightlightedText>
+    <span
+      style={{
+        fontWeight: 'bold',
+        color: totalBalanceAmt < 0 ? '#B22222' : '#1DA57A',
+      }}
+    >
       <br />
       {'Nett Amount: SGD '}
-      {totalBalance(preparedList).toFixed(2)}
-    </HightlightedText>
+      {totalBalanceAmt}
+    </span>
   );
+
   return (
     <div style={{ background: '#ffffff', padding: 8 }}>
       <Row gutter={8}>

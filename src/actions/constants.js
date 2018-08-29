@@ -60,6 +60,7 @@ export const APIPOST_UPDATE_MEMBERSHIPADMIN = '/admin/updateMembershipByAdmin';
 export const APIPOST_UPDATE_MEMBERSHIPMEMBER = '/admin/updateMembershipByMember';
 export const APIPOST_ADD_MEMBERPHOTO = '/admin/memberPhoto';
 export const APIPOST_SIGNUP = '/admin/signup';
+export const APIPOST_CHECKEMAIL = '/admin/checkEmail';
 
 export const APIPOST_APPROVE_CLAIMS = '/claim/approveClaims';
 export const APIPOST_UNAPPROVE_CLAIMS = '/claim/unapproveClaims';

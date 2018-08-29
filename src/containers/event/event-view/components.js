@@ -1,4 +1,5 @@
 import React from 'react';
+import { FacebookShareButton } from 'react-share';
 import {
   Tabs, Button, Form, Input,
 } from 'antd';
@@ -134,9 +135,14 @@ export const EditEventButton = ({ eventId }) => (
     Edit Event
   </FullButton>
 );
-
-export const ShareFacebookButton = () => (
-  <Button icon="facebook" shape="circle" type="primary" ghost />
+export const ShareFacebookButton = ({ url }) => (
+  <FacebookShareButton
+    url={url}
+    // quote="TESTING"
+  >
+    <Button icon="facebook" shape="circle" type="primary" ghost /> Share on
+    facebook
+  </FacebookShareButton>
 );
 
 export const NotifyMsgButton = ({ onClickNotify, loading }) => (

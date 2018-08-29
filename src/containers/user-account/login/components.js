@@ -4,7 +4,6 @@ import { SIGNUP, FORGOTPASSWORD } from '../../../actions/location';
 import {
   FormInputIcon,
   CustomInput,
-  CustomCheckbox,
   CustomLinkRight,
   CustomLinkLeft,
   FullButton,
@@ -56,14 +55,24 @@ export const LoginButton = ({ loading }) => (
   </FullButton>
 );
 
-export const Footer = ({ decorator, loading }) => (
-  <FormItem>
-    {decorator('isRemembered', {
-      valuePropName: 'checked',
-      initialValue: false,
-    })(<CustomCheckbox>Remember me</CustomCheckbox>)}
+// export const Footer = ({ decorator, loading }) => (
+//   <FormItem>
+//     {decorator('isRemembered', {
+//       valuePropName: 'checked',
+//       initialValue: false,
+//     })(<CustomCheckbox>Remember me</CustomCheckbox>)}
+//     <LoginButton loading={loading} />
+//     <CustomLinkRight href={FORGOTPASSWORD}>Forgot password</CustomLinkRight>
+//     <CustomLinkLeft href={SIGNUP}>Signup now!</CustomLinkLeft>
+//   </FormItem>
+// );
+
+export const Footer = ({ loading }) => (
+  <div>
     <LoginButton loading={loading} />
+    <br />
+    <br />
     <CustomLinkRight href={FORGOTPASSWORD}>Forgot password</CustomLinkRight>
     <CustomLinkLeft href={SIGNUP}>Signup now!</CustomLinkLeft>
-  </FormItem>
+  </div>
 );

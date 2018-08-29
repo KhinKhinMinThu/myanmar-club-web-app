@@ -141,6 +141,7 @@ class EventEdit extends Component {
             mobilePhone,
             eventStatus: formValues.eventStatus ? '1' : '0',
             uploadBtn: fileList,
+            photoLink: getFieldValue('photoLink'),
           };
           performEventData(eventToUpdate);
           performUpdateEvent(eventToUpdate);
@@ -292,8 +293,9 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
   const event = eventData || {};
   return {
     uploadBtn: Form.createFormField({
-      value: event.photoLink ? [{ uid: event.id, url: event.photoLink }] : [],
+      value: event.photoLink ? [{ type: 'image/jpeg', uid: event.id, url: event.photoLink }] : [],
     }),
+    photoLink: Form.createFormField({ value: event.photoLink }),
     name: Form.createFormField({ value: event.name }),
     description: Form.createFormField({ value: event.description }),
     locationLine1: Form.createFormField({ value: event.locationLine1 }),

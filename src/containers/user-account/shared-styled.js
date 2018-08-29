@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  Icon, Button, Input, Checkbox, Card,
+  Icon, Button, Input, Card,
 } from 'antd';
 
 // FormStep
@@ -22,9 +22,9 @@ export const CustomInput = styled(Input)`
   width: 100%;
 `;
 
-export const CustomCheckbox = styled(Checkbox)`
-  float: left;
-`;
+// export const CustomCheckbox = styled(Checkbox)`
+//   float: left;
+// `;
 
 export const CustomLinkRight = styled.a`
   float: right;
@@ -42,7 +42,7 @@ export const FullButton = styled(Button)`
 
 // Card
 export const LoginCard = styled(Card)`
-  width: 450px;
+  width: 400px;
 `;
 
 // Tabs

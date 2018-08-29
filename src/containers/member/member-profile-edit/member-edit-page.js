@@ -58,16 +58,27 @@ class MemberEdit extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      membermgmtData: { isPostApiLoading, postErrMsg },
+      membermgmtData: { isPostApiLoading, postErrMsg, isEmailFound },
       membermgmtUI: { currentTab },
+      form: { setFields, getFieldValue },
     } = this.props;
     if (currentTab !== 'tab1') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+    if (postErrMsg) message.error(postErrMsg, SHOWFOR);
+    if (isEmailFound === '1') {
+      setFields({
+        emailAddress: {
+          value: getFieldValue('emailAddress'),
+          errors: [
+            new Error(
+              'Email address already exists! Please choose a different email!',
+            ),
+          ],
+        },
+      });
     } else {
       message.success(SUCCESS_UPDATEMEMBER, SHOWFOR);
     }
@@ -155,6 +166,7 @@ class MemberEdit extends Component {
             roleNames,
             password,
             uploadBtn: fileList,
+            photoLink: getFieldValue('photoLink'),
           };
           dispatchMemberData(memberToUpdate);
           performUpdateMember(memberToUpdate);
@@ -359,9 +371,10 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   return {
     uploadBtn: Form.createFormField({
       value: member.photoLink
-        ? [{ uid: member.id, url: member.photoLink }]
+        ? [{ type: 'image/jpeg', uid: member.id, url: member.photoLink }]
         : [],
     }),
+    photoLink: Form.createFormField({ value: member.photoLink }),
     id: Form.createFormField({ value: member.id }),
     name: Form.createFormField({ value: member.name }),
     gender: Form.createFormField({ value: member.gender }),

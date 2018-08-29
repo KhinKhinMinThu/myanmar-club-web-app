@@ -45,11 +45,6 @@ export const BoldText = styled.span`
   font-weight: bold;
 `;
 
-export const HightlightedText = styled.div`
-  font-weight: bold;
-  color: red;
-`;
-
 export const BoldUnderlineText = styled.span`
   font-weight: bold;
   text-decoration: underline;
