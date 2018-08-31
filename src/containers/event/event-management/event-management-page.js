@@ -116,8 +116,12 @@ class EventManagementPage extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
-      location: `${item.locationLine1}, ${item.locationLine2},
-       ${item.locationPostalCode}`,
+      location: item.locationLine1.concat(
+        ', ',
+        item.locationLine2 ? `${item.locationLine2}, ` : '',
+        item.locationPostalCode,
+      ),
+      // `${item.locationLine1} ${item.locationLine2}, ${item.locationPostalCode}`,
     }));
     return preparedList;
   };

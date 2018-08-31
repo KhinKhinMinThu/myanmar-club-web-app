@@ -432,12 +432,12 @@ export const HobbiesInput = ({ decorator }) => (
 );
 
 // isEcMember
-export const IsEcMemberRadio = ({ decorator, onChange }) => (
+export const IsEcMemberRadio = ({ decorator, onChange, disabled }) => (
   <FormItem {...layout} label="Committee Member?">
     {decorator('isEcMember', { initialValue: '0' })(
-      <RadioGroup name="isEcMember" onChange={onChange}>
-        <RadioButton value="1">Yes</RadioButton>
-        <RadioButton value="0">No</RadioButton>
+      <RadioGroup name="isEcMember" onChange={onChange} disabled={disabled}>
+        <Radio value="1">Yes</Radio>
+        <Radio value="0">No</Radio>
       </RadioGroup>,
     )}
   </FormItem>
@@ -467,7 +467,7 @@ export const SubComInterest = ({ decorator, allSubComInterest }) => {
 
 // DeleteProfileSwitch
 export const DeleteProfileSwitch = ({ decorator }) => (
-  <FormItem {...layout} label="Delete Profile?">
+  <FormItem {...layout} label="Delete Profile?" style={{ margin: 0 }}>
     {decorator('deleteProfile', { initialValue: false })(
       <Switch checkedChildren="Yes" unCheckedChildren="No" />,
     )}

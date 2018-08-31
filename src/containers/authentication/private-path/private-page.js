@@ -19,7 +19,6 @@ import {
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
 import MenuPanel from './components';
-// import SignupPage2 from '../../signup-page2';
 import Dashboard from './home-ex';
 import ErrorPage from '../error-page';
 import RoleManagementPage from '../../user-role/user-role-management';
@@ -51,94 +50,60 @@ class PrivatePage extends Component {
     return ErrorPage;
   };
 
-  switchPageEcMember = (pathname, id, roleIdList) => {
+  switchPageEcMember = (pathname, id, functNameList) => {
     if (pathname === DASHBOARD) return Dashboard;
     if (pathname === PROFILE) return ProfileEditPage;
-    if (pathname === LOGOUT) return Dashboard;
-    if (pathname === MEMBER_MANAGEMENT) return MemberManagementPage;
-    if (pathname === MEMBER_EDIT) return id ? MemberProfileEditPage : ErrorPage;
-    if (pathname === ROLE_MANAGEMENT && roleIdList.includes(1)) return RoleManagementPage;
-    if (
-      pathname === CLAIM_MANAGEMENT
-      && (roleIdList.includes(1) || roleIdList.includes(2))
-    ) return ClaimManagementPage;
-    if (
-      pathname === EVENT_TRANSACTION
-      && (roleIdList.includes(1) || roleIdList.includes(2))
-    ) return EventTransactionPage;
-    if (
-      pathname === EVENT_MANAGEMENT
-      && (roleIdList.includes(1) || roleIdList.includes(3))
-    ) return EventManagementPage;
-    if (
-      pathname === EVENT_CREATION
-      && (roleIdList.includes(1) || roleIdList.includes(3))
-    ) return EventCreation;
-    if (
-      pathname === EVENT_VIEW
-      && (roleIdList.includes(1) || roleIdList.includes(3))
-    ) return id ? EventViewPage : ErrorPage;
-    if (
-      pathname === EVENT_EDIT
-      && (roleIdList.includes(1) || roleIdList.includes(3))
-    ) return id ? EventEditPage : ErrorPage;
+    if (pathname === LOGOUT) return Dashboard; // prettier-ignore
+
+    if (pathname === MEMBER_MANAGEMENT && functNameList.includes(MEMBER_MANAGEMENT)) return MemberManagementPage; // prettier-ignore
+    if (pathname === MEMBER_EDIT && functNameList.includes(MEMBER_EDIT)) return id ? MemberProfileEditPage : ErrorPage; // prettier-ignore
+    if (pathname === ROLE_MANAGEMENT && functNameList.includes(ROLE_MANAGEMENT)) return RoleManagementPage; // prettier-ignore
+    if (pathname === CLAIM_MANAGEMENT && functNameList.includes(CLAIM_MANAGEMENT)) return ClaimManagementPage; // prettier-ignore
+    if (pathname === EVENT_TRANSACTION && functNameList.includes(EVENT_TRANSACTION)) return EventTransactionPage; // prettier-ignore
+    if (pathname === EVENT_MANAGEMENT && functNameList.includes(EVENT_MANAGEMENT)) return EventManagementPage; // prettier-ignore
+    if (pathname === EVENT_CREATION && functNameList.includes(EVENT_CREATION)) return EventCreation; // prettier-ignore
+    if (pathname === EVENT_VIEW && functNameList.includes(EVENT_VIEW)) return id ? EventViewPage : ErrorPage; // prettier-ignore
+    if (pathname === EVENT_EDIT && functNameList.includes(EVENT_EDIT)) return id ? EventEditPage : ErrorPage; // prettier-ignore
 
     return ErrorPage;
   };
-  // switchPage = (pathname, isEcMember) => {
-  //   switch (pathname) {
-  //     case DASHBOARD:
-  //       return Dashboard;
-  //     case PROFILE:
-  //       return ProfileEditPage;
-  //     case LOGOUT:
-  //       return Dashboard;
-  //     default:
-  //       if (isAdmin) {
-  //         return this.switchAdminPage(pathname);
-  //       }
-  //       // should return to error page
-  //       return ErrorPage;
-  //   }
-  // };
 
-  // switchAdminPage = (pathname) => {
-  //   switch (pathname) {
-  //     case ROLE_MANAGEMENT:
-  //       return RoleManagementPage;
-  //     case MEMBER_MANAGEMENT:
-  //       return MemberManagementPage;
-  //     case MEMBER_EDIT:
-  //       return MemberProfileEditPage;
-  //     case CLAIM_MANAGEMENT:
-  //       return ClaimManagementPage;
-  //     case EVENT_TRANSACTION:
-  //       return EventTransactionPage;
-  //     case EVENT_MANAGEMENT:
-  //       return EventManagementPage;
-  //     case EVENT_CREATION:
-  //       return EventCreation;
-  //     case EVENT_VIEW:
-  //       return EventViewPage;
-  //     case EVENT_EDIT:
-  //       return EventEditPage;
-  //     default:
-  //       // should return to error page
-  //       return ErrorPage;
-  //   }
-  // };
+  // if (
+  //   pathname === CLAIM_MANAGEMENT
+  //   && (roleIdList.includes(1) || roleIdList.includes(2))
+  // ) return ClaimManagementPage;
+  // if (
+  //   pathname === EVENT_TRANSACTION
+  //   && (roleIdList.includes(1) || roleIdList.includes(2))
+  // ) return EventTransactionPage;
+  // if (
+  //   pathname === EVENT_MANAGEMENT
+  //   && (roleIdList.includes(1) || roleIdList.includes(3))
+  // ) return EventManagementPage;
+  // if (
+  //   pathname === EVENT_CREATION
+  //   && (roleIdList.includes(1) || roleIdList.includes(3))
+  // ) return EventCreation;
+  // if (
+  //   pathname === EVENT_VIEW
+  //   && (roleIdList.includes(1) || roleIdList.includes(3))
+  // ) return id ? EventViewPage : ErrorPage;
+  // if (
+  //   pathname === EVENT_EDIT
+  //   && (roleIdList.includes(1) || roleIdList.includes(3))
+  // ) return id ? EventEditPage : ErrorPage;
 
   render() {
     const {
       computedMatch: { params },
       isEcMember,
-      roleIdList,
+      functNameList,
       // token,
     } = this.props;
     const { pathname, id } = params;
     const path = '/portal/'.concat(pathname); // `/portal/${pathname}`;
     const Page = isEcMember === '1'
-      ? this.switchPageEcMember(path, id, roleIdList)
+      ? this.switchPageEcMember(path, id, functNameList)
       : this.switchPageClubMember(path);
 
     console.log('private props:', this.props);
@@ -168,7 +133,7 @@ class PrivatePage extends Component {
             <MenuPanel
               selectedKeys={['/portal/'.concat(pathname)]}
               isEcMember={isEcMember}
-              roleIdList={roleIdList}
+              functNameList={functNameList}
             />
           </Anchor>
         </Sider>

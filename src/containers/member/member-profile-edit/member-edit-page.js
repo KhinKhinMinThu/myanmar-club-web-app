@@ -198,6 +198,7 @@ class MemberEdit extends Component {
       form,
       form: { getFieldDecorator },
       membermgmtData: { isPostApiLoading, memberFormFields },
+      loginData: { roleIdList },
     } = this.props;
     const layout = {
       xs: { span: 24 },
@@ -221,6 +222,7 @@ class MemberEdit extends Component {
       ? memberFormFields.allSubComInterest
       : [];
     const allRoles = memberFormFields ? memberFormFields.allRoles : [];
+    const disabled = !roleIdList.includes(1);
 
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
@@ -295,12 +297,16 @@ class MemberEdit extends Component {
                 <IsEcMemberRadio
                   decorator={getFieldDecorator}
                   onChange={this.onChange}
+                  disabled={disabled}
                 />
                 <RoleInput
                   form={form}
                   decorator={getFieldDecorator}
                   allRoles={allRoles}
+                  disabled={disabled}
                 />
+              </Card>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
                 <DeleteProfileSwitch decorator={getFieldDecorator} />
                 <br />
                 <Row gutter={8}>
@@ -331,10 +337,12 @@ MemberEdit.propTypes = {
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
+  loginData: PropTypes.shape({}).isRequired,
 };
 const mapStateToProps = state => ({
   membermgmtUI: state.membermgmt.ui,
   membermgmtData: state.membermgmt.data,
+  loginData: state.login.data,
 });
 
 const mapDispatchToProps = {

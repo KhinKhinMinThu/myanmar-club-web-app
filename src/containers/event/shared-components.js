@@ -262,6 +262,7 @@ export const PostalCodeInput = ({ decorator }) => (
           message: 'Please enter postal/zip code!',
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} maxLength="6" placeholder="Postal/Zip Code" />)}
   </FormItem>
 );
@@ -300,6 +301,7 @@ export const TicketFeeInput = ({ decorator }) => (
           validator: validateNumber,
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} />)}
   </FormItem>
 );
@@ -314,6 +316,7 @@ export const NumPaxInput = ({ decorator }) => (
           validator: validateNumber,
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} />)}
   </FormItem>
 );
@@ -329,6 +332,7 @@ export const EmailAddressInput = ({ decorator }) => (
           message: 'The input is not valid E-mail!',
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} placeholder="Email Address" />)}
   </FormItem>
 );
@@ -362,6 +366,7 @@ export const MobileNoInput = ({ decorator }) => {
             message: 'The input is not a valid phone number!',
           },
         ],
+        validateTrigger: 'onBlur',
       })(
         <Input
           {...customInput}

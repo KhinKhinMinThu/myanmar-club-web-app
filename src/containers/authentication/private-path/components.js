@@ -55,7 +55,7 @@ const MenuPanel = ({
   currentLocation,
   selectedKeys,
   isEcMember,
-  roleIdList,
+  functNameList,
 }) => {
   const onClick = (e) => {
     if (e.key === LOGOUT) {
@@ -87,34 +87,35 @@ const MenuPanel = ({
         {commonTitles.PROFILE.text}
       </MenuItem>
       {isEcMember === '1'
-        && roleIdList.includes(1) && (
+        && functNameList.includes(ROLE_MANAGEMENT) && (
           <MenuItem key={ROLE_MANAGEMENT}>
             {adminTitles.ROLE_MANAGEMENT.icon}
             {adminTitles.ROLE_MANAGEMENT.text}
           </MenuItem>
       )}
-      {isEcMember === '1' && (
-        <MenuItem key={MEMBER_MANAGEMENT}>
-          {adminTitles.MEMBER_MANAGEMENT.icon}
-          {adminTitles.MEMBER_MANAGEMENT.text}
-        </MenuItem>
+      {isEcMember === '1'
+        && functNameList.includes(MEMBER_MANAGEMENT) && (
+          <MenuItem key={MEMBER_MANAGEMENT}>
+            {adminTitles.MEMBER_MANAGEMENT.icon}
+            {adminTitles.MEMBER_MANAGEMENT.text}
+          </MenuItem>
       )}
       {isEcMember === '1'
-        && (roleIdList.includes(1) || roleIdList.includes(2)) && (
+        && functNameList.includes(CLAIM_MANAGEMENT) && (
           <MenuItem key={CLAIM_MANAGEMENT}>
             {adminTitles.CLAIM_MANAGEMENT.icon}
             {adminTitles.CLAIM_MANAGEMENT.text}
           </MenuItem>
       )}
       {isEcMember === '1'
-        && (roleIdList.includes(1) || roleIdList.includes(2)) && (
+        && functNameList.includes(EVENT_TRANSACTION) && (
           <MenuItem key={EVENT_TRANSACTION}>
             {adminTitles.EVENT_TRANSACTION.icon}
             {adminTitles.EVENT_TRANSACTION.text}
           </MenuItem>
       )}
       {isEcMember === '1'
-        && (roleIdList.includes(1) || roleIdList.includes(3)) && (
+        && functNameList.includes(EVENT_MANAGEMENT) && (
           <MenuItem key={EVENT_MANAGEMENT}>
             {adminTitles.EVENT_MANAGEMENT.icon}
             {adminTitles.EVENT_MANAGEMENT.text}
@@ -136,7 +137,7 @@ MenuPanel.propTypes = {
   currentLocation: PropTypes.shape().isRequired,
   selectedKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   isEcMember: PropTypes.string.isRequired,
-  roleIdList: PropTypes.arrayOf(PropTypes.number).isRequired,
+  functNameList: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 const mapDispatchToProps = {

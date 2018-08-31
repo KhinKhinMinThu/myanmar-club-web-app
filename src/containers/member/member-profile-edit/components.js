@@ -68,9 +68,9 @@ export const BackButton = ({ history }) => (
   <FullButton onClick={() => history.go(-1)}>Go Back</FullButton>
 );
 
-export const RoleInput = ({ decorator, allRoles, form }) => {
-  // const { decorator, allRoles } = this.props;
-
+export const RoleInput = ({
+  decorator, allRoles, form, disabled,
+}) => {
   const children = [];
   const description = [];
   allRoles.forEach((item) => {
@@ -79,7 +79,7 @@ export const RoleInput = ({ decorator, allRoles, form }) => {
   });
 
   return (
-    <FormItem {...layout} label="Roles" colon>
+    <FormItem {...layout} label="Roles" colon style={{ margin: 0 }}>
       {decorator('roleNames', {
         getValueFromEvent: (value) => {
           const { getFieldValue } = form;
@@ -92,16 +92,18 @@ export const RoleInput = ({ decorator, allRoles, form }) => {
           mode="multiple"
           placeholder="Please select member role"
           style={{ width: '100%' }}
+          disabled={disabled}
         >
           {children}
         </Select>,
       )}
-      {description.map(item => (
-        <ExtraInfoText key={item}>
-          {item}
-          <br />
-        </ExtraInfoText>
-      ))}
+      <dl style={{ lineHeight: 1.5 }}>
+        {description.map(item => (
+          <dt key={item}>
+            <ExtraInfoText> {item} </ExtraInfoText>
+          </dt>
+        ))}
+      </dl>
     </FormItem>
   );
 };

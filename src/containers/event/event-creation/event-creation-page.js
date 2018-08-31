@@ -66,8 +66,8 @@ class EventCreation extends Component {
           formValues.startTime,
         );
         const endDate = this.formatDateTime(
-          formValues.endDate,
-          formValues.endTime,
+          formValues.endDate ? formValues.endDate : formValues.startDate,
+          formValues.endTime ? formValues.endTime : formValues.startTime,
         );
         const mobilePhone = formValues.mobilePhone
           ? formValues.areaCode + formValues.mobilePhone
