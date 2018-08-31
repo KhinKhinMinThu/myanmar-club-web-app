@@ -137,7 +137,7 @@ MenuPanel.propTypes = {
   currentLocation: PropTypes.shape().isRequired,
   selectedKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   isEcMember: PropTypes.string.isRequired,
-  functNameList: PropTypes.arrayOf(PropTypes.number).isRequired,
+  functNameList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapDispatchToProps = {

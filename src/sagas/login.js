@@ -45,9 +45,22 @@ function* asyncLogin(action) {
     successLogin = isLoggedIn;
 
     const roleIdList = roleList ? roleList.map(item => item.id) : [];
-    const functNameList = functionList
-      ? functionList.map(item => item.name)
-      : [];
+    // const functNameList = functionList
+    //   ? functionList.map(item => item.name)
+    //   : [];
+
+    // delete below and uncomment above
+    const functNameList = [
+      '/portal/manage-roles',
+      '/portal/manage-members',
+      '/portal/edit-member',
+      '/portal/manage-claims',
+      '/portal/events-transactions',
+      '/portal/manage-events',
+      '/portal/create-new-event',
+      '/portal/edit-event',
+      '/portal/view-event',
+    ];
     const payload = {
       isLoggedIn,
       isEcMember,

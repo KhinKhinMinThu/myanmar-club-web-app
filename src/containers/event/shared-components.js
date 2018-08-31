@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import {
   Button,
   Form,
@@ -166,60 +167,118 @@ export const EventDescriptionInput = ({ decorator }) => (
   </FormItem>
 );
 
+// time range for DateTimePicker
+const range = (start, end) => {
+  const result = [];
+  for (let i = start; i < end; i += 1) {
+    result.push(i);
+  }
+  return result;
+};
+
 // Event Start Date/Time
-export const StartDateTimePicker = ({ decorator }) => (
-  <FormItem {...layout} label="Start Date/Time" colon required>
-    <Row type="flex" justify="start">
-      <Col {...inputLayout1}>
-        <FormItem>
-          {decorator('startDate', {
-            rules: [
-              {
-                required: true,
-                message: 'Please enter event start date!',
-              },
-            ],
-          })(<DatePicker {...customInput} format={DATE_FORMAT} />)}
-        </FormItem>
-      </Col>
-      <Col {...inputLayout2}>
-        <FormItem>
-          {decorator('startTime', {
-            rules: [
-              {
-                required: true,
-                message: 'Please enter event start time!',
-              },
-            ],
-          })(<TimePicker {...customInput} format={TIME_FORMAT} />)}
-        </FormItem>
-      </Col>
-    </Row>
-  </FormItem>
-);
+export const StartDateTimePicker = ({
+  decorator,
+  setFieldsValue,
+  getFieldValue,
+}) => {
+  const currentDT = new Date();
+  const endDate = getFieldValue('endDate');
+  const endTime = getFieldValue('endTime');
+  const onChangeDate = (value) => {
+    const shouldSetDate = endDate ? endDate < value : true;
+    if (shouldSetDate) setFieldsValue({ endDate: value });
+  };
+  const onChangeTime = (value) => {
+    const shouldSetTime = endTime ? endTime < value : true;
+    if (shouldSetTime) setFieldsValue({ endTime: value });
+  };
+  // disabled date before today
+  const disabledDate = current => current < moment(currentDT).add(-1, 'days');
+
+  return (
+    <FormItem {...layout} label="Start Date/Time" colon required>
+      <Row type="flex" justify="start">
+        <Col {...inputLayout1}>
+          <FormItem>
+            {decorator('startDate', {
+              rules: [{ required: true, message: 'Please enter start date!' }],
+            })(
+              <DatePicker
+                {...customInput}
+                format={DATE_FORMAT}
+                disabledDate={disabledDate}
+                onChange={onChangeDate}
+              />,
+            )}
+          </FormItem>
+        </Col>
+        <Col {...inputLayout2}>
+          <FormItem>
+            {decorator('startTime', {
+              rules: [{ required: true, message: 'Please enter start time!' }],
+            })(
+              <TimePicker
+                {...customInput}
+                format={TIME_FORMAT}
+                minuteStep={5}
+                disabledHours={() => range(0, currentDT.getHours())}
+                disabledMinutes={selectedHr => (selectedHr === currentDT.getHours()
+                  ? range(0, currentDT.getMinutes())
+                  : [])
+                }
+                onChange={onChangeTime}
+              />,
+            )}
+          </FormItem>
+        </Col>
+      </Row>
+    </FormItem>
+  );
+};
 
 // Event End Date/Time
-export const EndDateTimePicker = ({ decorator }) => (
-  <FormItem {...layout} label="End Date/Time">
-    <Row gutter={8} type="flex" justify="start">
-      <Col {...inputLayout1}>
-        <FormItem>
-          {decorator('endDate')(
-            <DatePicker {...customInput} format={DATE_FORMAT} />,
-          )}
-        </FormItem>
-      </Col>
+export const EndDateTimePicker = ({ decorator, getFieldValue }) => {
+  const startDate = getFieldValue('startDate');
+  const startTime = getFieldValue('startTime');
+  // disabled date before start date
+  const disabledDate = current => (startDate ? current < moment(startDate).add(0, 'days') : false);
+  return (
+    <FormItem {...layout} label="End Date/Time">
+      <Row gutter={8} type="flex" justify="start">
+        <Col {...inputLayout1}>
+          <FormItem>
+            {decorator('endDate')(
+              <DatePicker
+                {...customInput}
+                format={DATE_FORMAT}
+                disabledDate={disabledDate}
+              />,
+            )}
+          </FormItem>
+        </Col>
 
-      <Col {...inputLayout2}>
-        <FormItem>
-          {decorator('endTime')(
-            <TimePicker {...customInput} format={TIME_FORMAT} />,
-          )}
-        </FormItem>
-      </Col>
-    </Row>
-  </FormItem>
-);
+        <Col {...inputLayout2}>
+          <FormItem>
+            {decorator('endTime')(
+              <TimePicker
+                {...customInput}
+                format={TIME_FORMAT}
+                minuteStep={5}
+                disabledHours={() => (startTime ? range(0, new Date(startTime).getHours()) : [])
+                }
+                disabledMinutes={selectedHr => (startTime && selectedHr === new Date(startTime).getHours()
+                  ? range(0, new Date(startTime).getMinutes())
+                  : [])
+                }
+              />,
+            )}
+          </FormItem>
+        </Col>
+      </Row>
+    </FormItem>
+  );
+};
 
 // Location Address
 export const AddressInput = ({ decorator }) => (
