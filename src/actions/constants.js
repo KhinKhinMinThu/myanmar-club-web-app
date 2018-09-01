@@ -2,6 +2,7 @@
 // 'http://54.200.158.0/MyanmarClubAPI';
 export const BASE_URL = 'http://34.212.189.231/MyanmarClubAPI';
 
+export const TIMEZONE = 'Asia/Singapore';
 export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const TIME_FORMAT = 'HH:mm';

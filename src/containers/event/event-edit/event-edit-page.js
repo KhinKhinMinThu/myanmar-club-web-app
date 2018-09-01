@@ -23,8 +23,6 @@ import {
 import {
   EventNameInput,
   EventDescriptionInput,
-  StartDateTimePicker,
-  EndDateTimePicker,
   AddressInput,
   PostalCodeInput,
   EventPhoto,
@@ -36,6 +34,8 @@ import {
   MobileNoInput,
   BackButton,
 } from '../shared-components';
+import StartDateTimePicker from '../startDateTimePicker';
+import EndDateTimePicker from '../endDateTimePicker';
 import {
   DeleteEventSwitch,
   EventStatusSwitch,
@@ -187,7 +187,7 @@ class EventEdit extends Component {
   render() {
     const {
       history,
-      form: { getFieldDecorator, getFieldValue, setFieldsValue },
+      form: { getFieldDecorator, getFieldValue, setFields },
       eventmgmtData: { isPostApiLoading },
     } = this.props;
     const actionColLayout = {
@@ -210,12 +210,13 @@ class EventEdit extends Component {
             <EventDescriptionInput decorator={getFieldDecorator} />
             <StartDateTimePicker
               decorator={getFieldDecorator}
-              setFieldsValue={setFieldsValue}
               getFieldValue={getFieldValue}
+              setFields={setFields}
             />
             <EndDateTimePicker
               decorator={getFieldDecorator}
               getFieldValue={getFieldValue}
+              setFields={setFields}
             />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />

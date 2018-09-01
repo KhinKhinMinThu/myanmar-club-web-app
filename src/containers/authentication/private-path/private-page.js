@@ -158,8 +158,10 @@ class PrivatePage extends Component {
             <Page {...this.props} />
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            MClubPortal ©2018 Created by PentaHive as Singapore Management
-            University Final Year Project.
+            MyanmarClub Portal ©2018 developed by{' '}
+            <a href="https://wiki.smu.edu.sg/is480/IS480_Team_wiki%3A_2018T1_PentaHive_AboutPentaHive">
+              PentaHive
+            </a>
           </Footer>
         </Layout>
       </Layout>
