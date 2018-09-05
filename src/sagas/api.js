@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BASE_URL } from '../actions/constants';
 
-const loginState = state => state.login.data;
+// const loginState = state => state.login.data;
 export const api = axios.create({
   timeout: 5000,
   baseURL: BASE_URL,

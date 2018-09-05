@@ -46,12 +46,14 @@ export const APIGET_CLAIMSDATA = '/claim/getClaimsData';
 export const APIGET_EVENTTRANSCDATA = '/event/getEventsTranscData';
 export const APIGET_EVENTSDATA = '/event/getEventsData';
 export const APIGET_MEBERFORMFIELDS = '/admin/memberFormFields';
+export const APIGET_ACCESS_CONTROL = '/admin/getAccessControlData';
 // end
 
 // POST API URLS
 export const APIPOST_LOGIN = '/admin/login';
 
 export const APIPOST_ASSIGN_ROLES = '/admin/updateRole';
+export const APIPOST_DELETE_ROLE = '/admin/deleteRole';
 
 export const APIGET_MEMBERDATA = '/admin/getMemberData';
 export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';

@@ -11,6 +11,7 @@ import {
   RoleAssignTransfer,
   SaveButton,
   GoBackButton,
+  ManageRoleButton,
 } from './components';
 import {
   setSelectedRole,
@@ -214,6 +215,7 @@ class RoleManagement extends Component {
         ) : (
           <Form onSubmit={this.onSubmit}>
             <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+              <ManageRoleButton />
               <Row gutter={8} type="flex" justify="center">
                 <Col span={15}>
                   <Row gutter={8} type="flex" justify="center">

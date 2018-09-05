@@ -12,6 +12,7 @@ export const EVENT_REGISTER = '/event-register';
 export const PROFILE = '/portal/profile';
 export const DASHBOARD = '/portal/home';
 export const ROLE_MANAGEMENT = '/portal/manage-roles';
+export const ROLE_FUNCTION_MANAGEMENT = '/portal/manage-roles-functions';
 export const MEMBER_MANAGEMENT = '/portal/manage-members';
 export const MEMBER_EDIT = '/portal/edit-member';
 export const CLAIM_MANAGEMENT = '/portal/manage-claims';

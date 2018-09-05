@@ -30,6 +30,7 @@ import {
   postUpdateMembershipMemberSaga,
   postSignupSaga,
 } from './membermgmt';
+import { getAccessControlDataSaga, postDeleteRoleSaga } from './access-control';
 import postForgotPwdSaga from './forgot-password';
 import { getRoleDataSaga, postAssignRolesSaga } from './rolemgmt';
 
@@ -67,5 +68,8 @@ export default function* rootSaga() {
     // rolemgmt
     getRoleDataSaga,
     postAssignRolesSaga,
+    // access-control
+    getAccessControlDataSaga,
+    postDeleteRoleSaga,
   ]);
 }

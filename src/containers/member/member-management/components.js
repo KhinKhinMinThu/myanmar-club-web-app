@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {
-  Tabs, Button, Form, Modal, Col, Input,
+  Tabs, Button, Form, Modal, Col, Input, Tooltip,
 } from 'antd';
 import { MEMBER_EDIT } from '../../../actions/location';
 import { DEFAULT_DATE, DATE_FORMAT } from '../../../actions/constants';
@@ -331,14 +331,18 @@ export class MembersTable extends Component {
         // render: (text, record) => ()
         render: (text, record) => (
           <div>
-            <TableActionButton
-              icon="folder-open"
-              onClick={() => this.showModal(record)}
-            />
-            <TableActionButton
-              icon="edit"
-              href={MEMBER_EDIT.concat('/').concat(record.id)}
-            />
+            <Tooltip title="View Member Details">
+              <TableActionButton
+                icon="eye"
+                onClick={() => this.showModal(record)}
+              />
+            </Tooltip>
+            <Tooltip title="Edit Member">
+              <TableActionButton
+                icon="edit"
+                href={MEMBER_EDIT.concat('/').concat(record.id)}
+              />
+            </Tooltip>
           </div>
         ),
       },

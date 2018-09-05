@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import {
   EVENT_CREATION,
   EVENT_VIEW,
@@ -99,14 +99,18 @@ export const EventsTable = ({
       // render: (text, record) => ()
       render: record => (
         <div>
-          <TableActionButton
-            href={EVENT_VIEW.concat('/').concat(record.id)}
-            icon="folder-open"
-          />
-          <TableActionButton
-            href={EVENT_EDIT.concat('/').concat(record.id)}
-            icon="edit"
-          />
+          <Tooltip title="View Event Details">
+            <TableActionButton
+              href={EVENT_VIEW.concat('/').concat(record.id)}
+              icon="eye"
+            />
+          </Tooltip>
+          <Tooltip title="Edit Event">
+            <TableActionButton
+              href={EVENT_EDIT.concat('/').concat(record.id)}
+              icon="edit"
+            />
+          </Tooltip>
         </div>
       ),
     },

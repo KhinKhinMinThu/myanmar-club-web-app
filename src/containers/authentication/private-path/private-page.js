@@ -8,6 +8,7 @@ import {
   PROFILE,
   LOGOUT,
   ROLE_MANAGEMENT,
+  ROLE_FUNCTION_MANAGEMENT,
   MEMBER_MANAGEMENT,
   MEMBER_EDIT,
   CLAIM_MANAGEMENT,
@@ -23,6 +24,7 @@ import MenuPanel from './components';
 import Dashboard from './home-ex';
 import ErrorPage from '../error-page';
 import RoleManagementPage from '../../user-role/user-role-management';
+import RoleFunctionManagementPage from '../../access-control';
 import MemberManagementPage from '../../member/member-management';
 import MemberProfileEditPage from '../../member/member-profile-edit';
 import ProfileEditPage from '../../user-account/profile-edit';
@@ -82,6 +84,10 @@ class PrivatePage extends Component {
       pathname === EVENT_EDIT
       && (roleIdList.includes(1) || roleIdList.includes(3))
     ) return id ? EventEditPage : ErrorPage;
+    if (
+      pathname === ROLE_FUNCTION_MANAGEMENT
+      && (roleIdList.includes(1))
+    ) return RoleFunctionManagementPage;
 
     return ErrorPage;
   };

@@ -10,6 +10,7 @@ import claimmgmtReducer from './claimmgmt';
 import eventTransactionReducer from './event-transaction';
 import forgotPasswordReducer from './forgot-password';
 import eventmgmtReducer from './eventmgmt';
+import accessControlReducer from './access-control';
 
 /**
  * LocalStorage: storage engine for storing redux state
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   eventTransaction: eventTransactionReducer,
   eventmgmt: eventmgmtReducer,
   router: routerReducer,
+  accessControl: accessControlReducer,
 });
 
 export default rootReducer;

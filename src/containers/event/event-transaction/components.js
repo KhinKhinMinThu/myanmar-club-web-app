@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Form, Row, Col, Popconfirm, Button, Input,
+  Form, Row, Col, Popconfirm, Button, Input, Tooltip,
 } from 'antd';
 import {
   BoldText,
@@ -243,7 +243,9 @@ export const CancelButton = ({ record, action }) => (
 
 // EditButton for TransactionTable
 export const EditButton = ({ record, action }) => (
-  <TableActionButton icon="edit" onClick={() => action(record.id)} />
+  <Tooltip title="Edit Income">
+    <TableActionButton icon="edit" onClick={() => action(record.id)} />
+  </Tooltip>
 );
 
 // DeleteButton for TransactionTable
@@ -252,7 +254,9 @@ export const DeleteButton = ({ record, action }) => (
     title="Confirm to remove this transaction record?"
     onConfirm={() => action(record.id)}
   >
-    <TableActionButton icon="delete" />
+    <Tooltip title="Delete Income">
+      <TableActionButton icon="delete" />
+    </Tooltip>
   </Popconfirm>
 );
 
