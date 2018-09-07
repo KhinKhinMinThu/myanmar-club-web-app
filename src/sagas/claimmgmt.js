@@ -27,11 +27,13 @@ function* asyncGetClaimsData() {
     const response = yield call(getClaimsData);
     const { claimsData, errorMsg } = response.data;
     errMsg = errorMsg;
-    const newClaimsList = claimsData.filter(item => item.isApproved === '0');
-    const oldClaimsList = claimsData.filter(item => item.isApproved === '1');
+    if (claimsData) {
+      const newClaimsList = claimsData.filter(item => item.isApproved === '0');
+      const oldClaimsList = claimsData.filter(item => item.isApproved === '1');
 
-    yield put({ type: NEWCLAIMSDATA, payload: newClaimsList });
-    yield put({ type: OLDCLAIMSDATA, payload: oldClaimsList });
+      yield put({ type: NEWCLAIMSDATA, payload: newClaimsList });
+      yield put({ type: OLDCLAIMSDATA, payload: oldClaimsList });
+    }
     console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
