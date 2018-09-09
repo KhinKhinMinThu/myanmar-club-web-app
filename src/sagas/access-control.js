@@ -64,7 +64,7 @@ function* asyncPostProcessAccessControl(action) {
       action.eventTranscToAdd,
     );
 
-    if (action.type === POST_DELETEROLE) response = yield call(postDeleteRole, action.eventsToDelete);
+    if (action.type === POST_DELETEROLE) response = yield call(postDeleteRole, action.rolesToDelete);
     if (action.type === POST_NEWROLE) response = yield call(postNewRole, action.newRoleToAdd);
     if (action.type === POST_ASSIGNFUNCTIONS) response = yield call(postAssignFunctions, action.functionsAssignment);
     const { errorMsg } = response.data;

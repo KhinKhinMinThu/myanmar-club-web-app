@@ -81,31 +81,34 @@ class RoleCreation extends Component {
               {decorator('functions')(
                 <CheckboxGroup>
                   <Checkbox style={checkboxStyle} value="1">
-                    Role Management
+                    Role Management - Manage Member Role(s)
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="2">
-                    Member Management
+                    Member Management - Manage Member Account(s)
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="3">
-                    Member Edit
+                    Member Edit - Edit Member Profile(s)
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="4">
-                    Claim Management
+                    Claim Management - Manage Claim Process
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="5">
-                    Event Finance
+                    Event Finance - Manage Transaction(s) of Event
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="6">
-                    Event Management
+                    Event Management - Manage Event(s)
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="7">
-                    Event Creation
+                    Event Creation - Create New Event
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="8">
-                    Event Edit
+                    Event Edit - Edit Event(s)
                   </Checkbox>
                   <Checkbox style={checkboxStyle} value="9">
-                    Event View
+                    Event View - View Event(s)
+                  </Checkbox>
+                  <Checkbox style={checkboxStyle} value="10">
+                    Access Control - Manage Roles and Functions
                   </Checkbox>
                 </CheckboxGroup>,
               )}

@@ -266,7 +266,7 @@ class AccessControl extends Component {
     functions.map(item => funcList.push({
       key: `${item.id}`,
       title: `ID: ${item.id}`,
-      description: `Function Id: ${item.id} - ${item.description}`,
+      description: `${item.name} - ${item.description}`,
     }));
     return funcList;
   };

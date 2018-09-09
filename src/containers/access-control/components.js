@@ -66,8 +66,8 @@ export const RolesTable = ({
     },
     {
       title: 'Created Date',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'createAt',
+      key: 'createAt',
       sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       sortOrder: sortedInfo.columnKey === 'createdAt' && sortedInfo.order,
       width: '12%',
