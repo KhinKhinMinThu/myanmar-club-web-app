@@ -2,6 +2,7 @@
 // 'http://54.200.158.0/MyanmarClubAPI';
 export const BASE_URL = 'http://34.212.189.231/MyanmarClubAPI';
 
+export const TIMEZONE = 'Asia/Singapore';
 export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const TIME_FORMAT = 'HH:mm';
@@ -54,6 +55,8 @@ export const APIPOST_LOGIN = '/admin/login';
 
 export const APIPOST_ASSIGN_ROLES = '/admin/updateRole';
 export const APIPOST_DELETE_ROLE = '/admin/deleteRole';
+export const APIPOST_ADD_ROLE = '/admin/createRole';
+export const APIPOST_UPDATE_ACCESSCONTROL = 'admin/updateAccessControl';
 
 export const APIGET_MEMBERDATA = '/admin/getMemberData';
 export const APIPOST_DELETE_MEMBERS = '/admin/deleteMembers';
@@ -62,6 +65,7 @@ export const APIPOST_UPDATE_MEMBERSHIPADMIN = '/admin/updateMembershipByAdmin';
 export const APIPOST_UPDATE_MEMBERSHIPMEMBER = '/admin/updateMembershipByMember';
 export const APIPOST_ADD_MEMBERPHOTO = '/admin/memberPhoto';
 export const APIPOST_SIGNUP = '/admin/signup';
+export const APIPOST_CHECKEMAIL = '/admin/checkEmail';
 
 export const APIPOST_APPROVE_CLAIMS = '/claim/approveClaims';
 export const APIPOST_UNAPPROVE_CLAIMS = '/claim/unapproveClaims';

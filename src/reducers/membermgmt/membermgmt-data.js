@@ -7,6 +7,7 @@ export const ECMEMBERSDATA = '[MEMBERMGMT_DATA] ECMEMBERSDATA';
 export const CLUBMEMBERSDATA = '[MEMBERMGMT_DATA] CLUBMEMBERSDATA';
 export const GET_MEMBERFORMFIELDS = '[MEMBERMGMT_DATA] GET_MEMBERFORMFIELDS';
 export const MEMBERFORMFIELDS = '[MEMBERMGMT_DATA] MEMBERFORMFIELDS';
+export const CHECKEMAIL = '[MEMBERMGMT_DATA] CHECKEMAIL';
 export const GET_ERROR = '[MEMBERMGMT_DATA] GET_ERROR';
 
 // end
@@ -18,6 +19,7 @@ export const POST_UPDATEMEMBER = '[MEMBERMGMT_DATA] POST_UPDATEMEMBER';
 export const POST_UPDATEMEMBERSHIPADMIN = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIP';
 export const POST_UPDATEMEMBERSHIPMEMBER = '[MEMBERMGMT_DATA] POST_UPDATEMEMBERSHIPMEMBER';
 export const POST_SIGNUP = '[MEMBERMGMT_DATA] POST_SIGNUP';
+export const POST_CHECKEMAIL = '[MEMBERMGMT_DATA] POST_CHECKEMAIL';
 export const POST_ERROR = '[MEMBERMGMT_DATA] POST_ERROR';
 // end
 
@@ -65,6 +67,11 @@ export const postSignup = memberToAdd => ({
   type: POST_SIGNUP,
   memberToAdd,
 });
+export const postCheckEmail = checkParams => ({
+  type: POST_CHECKEMAIL,
+  checkParams,
+});
+
 export default function (
   state = {
     isGetApiLoading: false,
@@ -75,6 +82,7 @@ export default function (
     clubMembersList: null,
     memberData: null,
     memberFormFields: null,
+    isEmailFound: null,
   },
   action,
 ) {
@@ -123,6 +131,11 @@ export default function (
       return {
         ...state,
         memberData: null,
+      };
+    case CHECKEMAIL:
+      return {
+        ...state,
+        isEmailFound: action.payload,
       };
     default:
       return state;

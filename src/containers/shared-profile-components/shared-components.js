@@ -101,10 +101,8 @@ export const IdReadOnly = ({ decorator }) => (
 export const NameInput = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Name">
     {decorator('name', {
-      rules: [
-        { required: true /* kkmt */, message: 'Please input member name!' },
-      ],
-    })(<Input {...customInput} placeholder="Member Name" />)}
+      rules: [{ required: true /* kkmt */, message: 'Please input the name!' }],
+    })(<Input {...customInput} placeholder="Full Name" />)}
   </FormItem>
 );
 
@@ -152,7 +150,7 @@ export const EducationLevelInput = ({ decorator }) => (
       rules: [
         {
           required: true /* kkmt */,
-          message: 'Please ender education level!',
+          message: 'Please enter education level!',
         },
       ],
     })(<Input {...customInput} placeholder="Education Level" />)}
@@ -165,7 +163,7 @@ export const OccupationInput = ({ decorator }) => (
   <FormItem {...layoutHalf} label="Occupation">
     {decorator('occupation', {
       rules: [
-        { required: true /* kkmt */, message: 'Please ender occupation!' },
+        { required: true /* kkmt */, message: 'Please enter occupation!' },
       ],
     })(<Input {...customInput} placeholder="Job Title" />)}
   </FormItem>
@@ -202,6 +200,7 @@ export const IdNumberInput = ({ decorator }) => (
         },
         { required: true /* kkmt */, message: 'Please enter ID Number!' },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} maxLength="9" placeholder="NRIC/ FIN No." />)}
     <ExtraInfoText> S1234567Z, G1234567Z etc.</ExtraInfoText>
   </FormItem>
@@ -245,6 +244,7 @@ export const PostalCodeInput = ({ decorator }) => (
           message: 'Please enter postal/zip code!',
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} maxLength="6" placeholder="Postal/Zip Code" />)}
   </FormItem>
 );
@@ -257,6 +257,7 @@ export const EmailAddressInput = ({ decorator }) => (
         { required: true /* kkmt */, message: 'Please enter email address!' },
         { type: 'email', message: 'The input is not valid E-mail!' },
       ],
+      validateTrigger: 'onBlur',
     })(<Input placeholder="Email Address" />)}
   </FormItem>
 );
@@ -290,6 +291,7 @@ export const HomePhoneInput = ({ decorator }) => {
             message: 'The input is not a valid phone number!',
           },
         ],
+        validateTrigger: 'onBlur',
       })(
         <Input
           {...customInput}
@@ -324,6 +326,7 @@ export const MobilePhoneInput = ({ decorator }) => {
             message: 'The input is not a valid phone number!',
           },
         ],
+        validateTrigger: 'onBlur',
       })(
         <Input
           {...customInput}
@@ -429,12 +432,12 @@ export const HobbiesInput = ({ decorator }) => (
 );
 
 // isEcMember
-export const IsEcMemberRadio = ({ decorator, onChange }) => (
+export const IsEcMemberRadio = ({ decorator, onChange, disabled }) => (
   <FormItem {...layout} label="Committee Member?">
     {decorator('isEcMember', { initialValue: '0' })(
-      <RadioGroup name="isEcMember" onChange={onChange}>
-        <RadioButton value="1">Yes</RadioButton>
-        <RadioButton value="0">No</RadioButton>
+      <RadioGroup name="isEcMember" onChange={onChange} disabled={disabled}>
+        <Radio value="1">Yes</Radio>
+        <Radio value="0">No</Radio>
       </RadioGroup>,
     )}
   </FormItem>
@@ -464,7 +467,7 @@ export const SubComInterest = ({ decorator, allSubComInterest }) => {
 
 // DeleteProfileSwitch
 export const DeleteProfileSwitch = ({ decorator }) => (
-  <FormItem {...layout} label="Delete Profile?">
+  <FormItem {...layout} label="Delete Profile?" style={{ margin: 0 }}>
     {decorator('deleteProfile', { initialValue: false })(
       <Switch checkedChildren="Yes" unCheckedChildren="No" />,
     )}

@@ -7,13 +7,15 @@ import {
   GET_ERROR,
   POST_APILOADING,
   POST_DELETEROLE,
-  POST_ADDTRANSC,
   POST_ERROR,
+  POST_NEWROLE,
+  POST_ASSIGNFUNCTIONS,
 } from '../reducers/access-control/access-control-data';
 import {
   APIGET_ACCESS_CONTROL,
-  APIPOST_ADD_EVENTTRANSC,
   APIPOST_DELETE_ROLE,
+  APIPOST_ADD_ROLE,
+  APIPOST_UPDATE_ACCESSCONTROL,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -40,13 +42,15 @@ function* asyncGetAccessControlData() {
 
 // POST REQUEST
 
+const postAssignFunctions = functionsAssignment => api.post(APIPOST_UPDATE_ACCESSCONTROL, functionsAssignment);
+
 const postDeleteRole = rolesToDelete => api.post(APIPOST_DELETE_ROLE, rolesToDelete);
 
-const postAddEventTransc = eventTranscToAdd => api.post(APIPOST_ADD_EVENTTRANSC, {
-  eventId: eventTranscToAdd.eventId,
-  transacDataToAdd: eventTranscToAdd.transacDataToAdd,
+const postNewRole = newRoleToAdd => api.post(APIPOST_ADD_ROLE, {
+  name: newRoleToAdd.name,
+  description: newRoleToAdd.description,
+  functions: newRoleToAdd.functions,
 });
-
 function* asyncPostProcessAccessControl(action) {
   let errMsg;
   try {
@@ -61,8 +65,8 @@ function* asyncPostProcessAccessControl(action) {
     );
 
     if (action.type === POST_DELETEROLE) response = yield call(postDeleteRole, action.eventsToDelete);
-    if (action.type === POST_ADDTRANSC) response = yield call(postAddEventTransc, action.eventTranscToAdd);
-
+    if (action.type === POST_NEWROLE) response = yield call(postNewRole, action.newRoleToAdd);
+    if (action.type === POST_ASSIGNFUNCTIONS) response = yield call(postAssignFunctions, action.functionsAssignment);
     const { errorMsg } = response.data;
     errMsg = errorMsg;
 
@@ -81,12 +85,17 @@ export const getAccessControlDataSaga = takeLatest(
   asyncGetAccessControlData,
 );
 
-export const postAddTranscSaga = takeLatest(
-  POST_ADDTRANSC,
+export const postDeleteRoleSaga = takeLatest(
+  POST_DELETEROLE,
   asyncPostProcessAccessControl,
 );
 
-export const postDeleteRoleSaga = takeLatest(
-  POST_DELETEROLE,
+export const postAddRoleSaga = takeLatest(
+  POST_NEWROLE,
+  asyncPostProcessAccessControl,
+);
+
+export const postAssignFunctionsSaga = takeLatest(
+  POST_ASSIGNFUNCTIONS,
   asyncPostProcessAccessControl,
 );

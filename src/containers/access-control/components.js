@@ -6,10 +6,10 @@ import {
   TableActionButton,
   FullWidthTable,
   MarginLeftButton,
-  FullButton,
   HalfWidthButton,
   SelectedText,
   BoldUnderlineText,
+  FullButton,
 } from './styled-components';
 
 const FormItem = Form.Item;
@@ -18,14 +18,16 @@ const TextArea = Form.text;
 
 // RolesTable
 export const RolesTable = ({
-  roleList,
   rowSelection,
+  roleList,
+  functionList,
   decorator,
   onChange,
   sortedInfo,
   filteredInfo,
   expandedRowKeys,
   onExpand,
+  onSubmit,
   header,
 }) => {
   const columns = [
@@ -112,18 +114,17 @@ export const RolesTable = ({
       rowSelection={rowSelection}
       onChange={onChange}
       decorator={decorator}
+      functionList={functionList}
+      selectedFunction={expandedRowKeys}
+      onSubmit={onSubmit}
       bordered
       size="small"
       style={{ marginBottom: '30px' }}
       pagination={{ position: 'top' }}
       expandedRowKeys={expandedRowKeys}
       onExpand={onExpand}
-      expandedRowRender={({ dataSource, selectedFunction }) => (
-        <FunctionTransfer
-          decorator={decorator}
-          data={dataSource}
-          selectedFunction={selectedFunction}
-        />
+      expandedRowRender={() => (
+        <FunctionTransfer decorator={decorator} dataSource={functionList} onSubmit={onSubmit} />
       )}
     />
   );
@@ -251,22 +252,29 @@ export const DeleteSeletedButton = ({
 );
 
 // BackButton
-export const BackButton = ({ history }) => (
-  <FullButton onClick={() => history.go(-1)}>Go Back</FullButton>
+export const CreateRoleButton = ({ showModal }) => (
+  <Button
+    style={{ marginTop: '10px', marginBottom: '20px' }}
+    type="primary"
+    onClick={showModal}
+  >
+    + Create New Role
+  </Button>
 );
 
 export const FunctionTransfer = ({
   decorator,
   dataSource,
-  selectedFunction,
+  isPostApiLoading,
+  onSubmit,
 }) => {
   const titles = [
-    <BoldUnderlineText>Function(s):</BoldUnderlineText>,
-    <BoldUnderlineText>{selectedFunction}</BoldUnderlineText>,
+    <BoldUnderlineText>Function(s) to be assigned:</BoldUnderlineText>,
+    <BoldUnderlineText>Assigned Function(s):</BoldUnderlineText>,
   ];
 
   return (
-    <Col offset={5}>
+    <Col span={15} offset={5}>
       <FormItem>
         {decorator('functionTransfer', { valuePropName: 'targetKeys' })(
           <Transfer
@@ -283,6 +291,11 @@ export const FunctionTransfer = ({
           />,
         )}
       </FormItem>
+      <FormItem>
+        <FullButton type="primary" htmlType="submit" onClick={onSubmit} loading={isPostApiLoading}>
+          Save Updates
+        </FullButton>
+      </FormItem>
     </Col>
   );
 };
@@ -297,6 +310,8 @@ export const RoleNameInput = ({ decorator }) => (
 // Role Description
 export const RoleDescriptionInput = ({ decorator }) => (
   <FormItem label="Description">
-    {decorator('description')(<TextArea rows={2} placeholder="Role Description" />)}
+    {decorator('description')(
+      <TextArea rows={2} placeholder="Role Description" />,
+    )}
   </FormItem>
 );

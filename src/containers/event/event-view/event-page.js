@@ -6,14 +6,12 @@ import { connect } from 'react-redux';
 import {
   Form, Row, Col, message, Card,
 } from 'antd';
-
 import { SUCCESS_NOTIFYEVENT, SHOWFOR } from '../../../actions/message';
 import {
   TIME_FORMAT_DB,
   DATE_FORMAT,
   DEFAULT_DATE,
   DEFAULT_TIME,
-  BASE_URL,
 } from '../../../actions/constants';
 import { EVENT_REGISTER } from '../../../actions/location';
 import {
@@ -41,20 +39,15 @@ class EventPage extends Component {
     }
   }
 
-  onClickNotify = () => {
-    const {
-      form: { getFieldValue },
-      performNotifyEvent,
-    } = this.props;
-    const id = getFieldValue('id');
-    const url = BASE_URL.concat(EVENT_REGISTER, '/', id);
+  onClickNotify = (id, url) => {
+    const { performNotifyEvent } = this.props;
     performNotifyEvent({ id, url });
   };
 
   render() {
     const {
       history,
-      form: { getFieldDecorator },
+      form: { getFieldDecorator, getFieldValue },
       eventmgmtData: { isPostApiLoading, eventData },
     } = this.props;
     const shareColLayout = {
@@ -73,7 +66,10 @@ class EventPage extends Component {
       xl: { span: 12 },
       style: { marginBottom: 14 },
     };
-
+    const id = getFieldValue('id');
+    // const url = 'http://myanmarclub.com.s3-website-ap-southeast-1.amazonaws.com/event-register/15';
+    const url = window.location.hostname.concat(EVENT_REGISTER, '/', id);
+    // console.log(url);
     return (
       <div>
         <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
@@ -87,11 +83,11 @@ class EventPage extends Component {
                 xl: { span: 6, offset: 6 },
               }}
             >
-              <ShareFacebookButton /> Share on facebook
+              <ShareFacebookButton url={url} />
             </Col>
             <Col {...shareColLayout}>
               <NotifyMsgButton
-                onClickNotify={this.onClickNotify}
+                onClickNotify={() => this.onClickNotify(id, url)}
                 loading={isPostApiLoading}
               />{' '}
               Notify Club Members

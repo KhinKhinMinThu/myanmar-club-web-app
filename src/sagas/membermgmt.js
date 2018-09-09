@@ -15,6 +15,8 @@ import {
   POST_UPDATEMEMBER,
   POST_UPDATEMEMBERSHIPADMIN,
   POST_UPDATEMEMBERSHIPMEMBER,
+  POST_CHECKEMAIL,
+  CHECKEMAIL,
   POST_SIGNUP,
   POST_ERROR,
 } from '../reducers/membermgmt/membermgmt-data';
@@ -28,6 +30,7 @@ import {
   APIPOST_UPDATE_MEMBERSHIPMEMBER,
   APIPOST_ADD_MEMBERPHOTO,
   APIPOST_SIGNUP,
+  APIPOST_CHECKEMAIL,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -161,6 +164,10 @@ const postSignup = memberToAdd => api.post(APIPOST_SIGNUP, {
   paymentType: memberToAdd.paymentType,
   totalAmount: memberToAdd.totalAmount,
 });
+const postCheckEmail = checkParams => api.post(APIPOST_CHECKEMAIL, {
+  memberId: checkParams.memberId,
+  email: checkParams.email,
+});
 const assembleFormData = ({ memberId, imageFile }) => {
   if (memberId && imageFile) {
     const mpf = new FormData();
@@ -184,9 +191,11 @@ function* asyncPostProcessMembers(action) {
       action.memberToUpdate,
       action.membershipToUpdate,
       action.memberToAdd,
+      action.checkParams,
     );
 
     let multipartForm;
+    let isEmailFound = '0';
     const memberData = action.memberToAdd || action.memberToUpdate;
 
     switch (action.type) {
@@ -194,14 +203,23 @@ function* asyncPostProcessMembers(action) {
         response = yield call(postDeleteMembers, action.membersToDelete);
         break;
       case POST_UPDATEMEMBER:
-        response = yield call(postUpdateMember, action.memberToUpdate);
-        multipartForm = assembleFormData({
+        // **********************
+        // check for existing email
+        response = yield call(postCheckEmail, {
           memberId: memberData.id,
-          imageFile: memberData.uploadBtn[0],
+          email: memberData.emailAddress,
         });
-        console.log('memberId', memberData.id, 'mpf', multipartForm);
-        if (multipartForm) response = yield call(postMemberPhoto, multipartForm);
-
+        isEmailFound = response.data.isFound;
+        yield put({ type: CHECKEMAIL, payload: response.data.isFound });
+        // **********************
+        if (isEmailFound === '0') {
+          response = yield call(postUpdateMember, action.memberToUpdate);
+          multipartForm = assembleFormData({
+            memberId: memberData.id,
+            imageFile: memberData.uploadBtn[0],
+          });
+          if (multipartForm) response = yield call(postMemberPhoto, multipartForm);
+        }
         break;
       case POST_UPDATEMEMBERSHIPADMIN:
         response = yield call(
@@ -221,8 +239,11 @@ function* asyncPostProcessMembers(action) {
           memberId: response.data.id,
           imageFile: memberData.uploadBtn[0],
         });
-        console.log('memberId', response.data.id, 'mpf', multipartForm);
         if (multipartForm) response = yield call(postMemberPhoto, multipartForm);
+        break;
+      case POST_CHECKEMAIL:
+        response = yield call(postCheckEmail, action.checkParams);
+        yield put({ type: CHECKEMAIL, payload: response.data.isFound });
         break;
       default:
     }
@@ -273,3 +294,8 @@ export const postUpdateMembershipMemberSaga = takeLatest(
 );
 
 export const postSignupSaga = takeLatest(POST_SIGNUP, asyncPostProcessMembers);
+
+export const postCheckEmailSaga = takeLatest(
+  POST_CHECKEMAIL,
+  asyncPostProcessMembers,
+);

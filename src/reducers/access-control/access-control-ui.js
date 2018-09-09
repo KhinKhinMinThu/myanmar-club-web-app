@@ -8,6 +8,18 @@ export const EDITINGKEY = '[ACCESSCONTROL_UI] EDITINGKEY';
 export const SELECTEDKEYS = '[ACCESSCONTROL_UI] SELECTEDKEYS';
 export const DESELECTALL_LOADING = '[ACCESSCONTROL_UI] DESELECTALL_LOADING';
 export const SELECTALL_LOADING = '[ACCESSCONTROL_UI] SELECTALL_LOADING';
+export const CURRENTBUTTON = '[ACCESSCONTROL_UI] CURRENTBUTTON';
+export const SELECTEDROLE = '[ACCESSCONTROL_UI] SELECTEDROLE';
+
+export const setCurrentButton = currentButton => ({
+  type: CURRENTBUTTON,
+  payload: currentButton,
+});
+
+export const setSelectedRole = selectedRole => ({
+  type: SELECTEDROLE,
+  payload: selectedRole,
+});
 
 export const validate = isValidating => ({
   type: VALIDATE,
@@ -64,14 +76,21 @@ const initialState = {
   expandedRowKeys: [],
   dummyTransacIndex: 0,
   editingKey: null,
+  selectedRole: null,
 };
 export default function (
   state = {
     ...initialState,
+    currentButton: 'tab1',
   },
   action,
 ) {
   switch (action.type) {
+    case CURRENTBUTTON:
+      return {
+        ...state,
+        currentButton: action.payload,
+      };
     case VALIDATE:
       return {
         ...state,
@@ -91,6 +110,11 @@ export default function (
       return {
         ...state,
         selectAllLoading: action.payload,
+      };
+    case SELECTEDROLE:
+      return {
+        ...state,
+        ...action.payload,
       };
     case SORTEDINFO:
       return {

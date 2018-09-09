@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Spin, Alert, Row, Col, Collapse,
+  Form, message, Spin, Alert, Row, Col,
 } from 'antd';
-
-import { SUCCESS_DELETEROLE, SHOWFOR } from '../../actions/message';
+import RoleCreationForm from './role-creation-page';
+import { SUCCESS_DELETEROLE, SUCCESS_UPDATEROLE, SHOWFOR } from '../../actions/message';
 import {
   RolesTable,
   DeSeletAllButton,
@@ -13,12 +13,8 @@ import {
   SelectedInfo,
   DeleteSeletedButton,
   SearchNamePanel,
-  SaveButton,
-  GoBackButton,
-  RoleNameInput,
-  RoleDescriptionInput,
+  CreateRoleButton,
 } from './components';
-
 import {
   setSelectedKeys,
   setDeSelectAllLoading,
@@ -27,17 +23,21 @@ import {
   setFilteredInfo,
   resetState,
   setExpandedRowKeys,
-  setEditingKey,
+  setCurrentButton,
 } from '../../reducers/access-control/access-control-ui';
 import {
   getAccessControlData,
   setAccessControlData,
   postDeleteRole,
+  postAssignFunctions,
 } from '../../reducers/access-control/access-control-data';
 
-const FormItem = Form.Item;
-const { Panel } = Collapse;
 class AccessControl extends Component {
+  state = {
+    isModalVisible: false,
+    selectedRole: null,
+  };
+
   componentDidMount() {
     const { dispatchResetState, performGetAccessControlData } = this.props;
     dispatchResetState();
@@ -54,6 +54,7 @@ class AccessControl extends Component {
   componentDidUpdate(prevProps) {
     const {
       accesscontrolData: { isPostApiLoading, postErrMsg },
+      accesscontrolUI: { currentButton },
     } = this.props;
 
     const isApiPost = prevProps.accesscontrolData.isPostApiLoading && !isPostApiLoading;
@@ -61,10 +62,45 @@ class AccessControl extends Component {
 
     if (postErrMsg) {
       message.error(postErrMsg, SHOWFOR);
-    } else {
+    } else if (currentButton === 'delete') {
       message.success(SUCCESS_DELETEROLE, SHOWFOR);
+    } else if (currentButton === 'save') {
+      message.success(SUCCESS_UPDATEROLE, SHOWFOR);
     }
   }
+
+  onCloseModal = () => {
+    this.setState({
+      isModalVisible: false,
+    });
+  };
+
+  onChange = () => {
+    const { isExpand } = this.state;
+    this.setState({ isExpand: !isExpand });
+  };
+
+  onExpand = (expanded, record) => {
+    const {
+      accesscontrolData: { accesscontrolData },
+      form: { setFieldsValue },
+      dispatchExpandedRowKeys,
+    } = this.props;
+    // set the targetKeys as the list of ecMembers for selected role
+    const keys = expanded ? [record.roleId.toString()] : [];
+    console.log('keys', keys);
+    const targetKeys = accesscontrolData
+      ? accesscontrolData
+        .find(item => item.roleId === record.roleId)
+        .functions.map(item => `${item.id}`)
+      : [];
+    setFieldsValue({ functionTransfer: targetKeys });
+    console.log('target keys', targetKeys);
+    dispatchExpandedRowKeys(keys);
+    this.setState({
+      selectedRole: record.roleId,
+    });
+  };
 
   // handle de-select all button
   onClickDeselectAll = () => {
@@ -93,8 +129,9 @@ class AccessControl extends Component {
       accesscontrolUI: { selectedKeys },
       performDeleteRole,
       dispatchSetAccessControlData,
+      dispatchCurrentButton,
     } = this.props;
-
+    dispatchCurrentButton('delete');
     performDeleteRole({ rolesToDelete: selectedKeys });
     // to remove the selected role from the table display
     const updatedData = accesscontrolData.filter(
@@ -119,15 +156,119 @@ class AccessControl extends Component {
     dispatchResetState();
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    const {
+      form: { validateFieldsAndScroll },
+      accesscontrolData: { accesscontrolData },
+      performAssignFunctions,
+      dispatchCurrentButton,
+    } = this.props;
+    const { selectedRole } = this.state;
+    validateFieldsAndScroll((err, values) => {
+      if (err) return;
+      const { functionTransfer } = values;
+      const roleId = selectedRole.toString();
+      // get the original list of selected role
+      const affectedRole = accesscontrolData
+        .find(item => item.roleId === roleId)
+        .functions.map(item => `${item.id}`);
+
+      /* compare the changes:
+        e.g role1 member ids = [1, 2, 3]
+        roleTransfer member ids (right box) = [2, 4]
+        transferTo: [4]
+        transferFrom: [1, 3]
+      */
+      const roleIdStr = roleId.toString();
+      const transferTo = functionTransfer.filter(
+        item => !affectedRole.includes(item),
+      );
+      const transferFrom = affectedRole.filter(
+        item => !functionTransfer.includes(item),
+      );
+
+      // to update the roleData in state to reflect the update on page
+      this.removeTrasferFrom(roleId, transferFrom);
+      this.addTransferTo(roleId, transferTo);
+      dispatchCurrentButton('save');
+      performAssignFunctions({ roleId: roleIdStr, transferTo, transferFrom });
+    });
+  };
+
+  removeTrasferFrom = (roleId, transferFrom) => {
+    if (transferFrom.length > 0) {
+      // console.log('removeTrasferFrom...................');
+      const {
+        accesscontrolData: { accesscontrolData },
+        dispatchSetAccessControlData,
+      } = this.props;
+      const selectedRoleData = accesscontrolData.find(item => item.roleId === roleId);
+      const { functions } = selectedRoleData;
+      const updatedFunctionList = functions.filter(
+        item => !transferFrom.includes(item.id.toString()),
+      );
+      // console.log('updatedEcList', updatedEcList);
+
+      selectedRoleData.ecMembers = updatedFunctionList;
+      // console.log('selectedRoleData', selectedRoleData);
+
+      const newRoleData = accesscontrolData.filter(item => item.roleId !== roleId);
+      newRoleData.push(selectedRoleData);
+      // console.log('newRoleData', newRoleData);
+
+      dispatchSetAccessControlData(newRoleData);
+    }
+  };
+
+  addTransferTo = (roleId, transferTo) => {
+    if (transferTo.length > 0) {
+      // console.log('addTransferTo...................');
+      const {
+        accesscontrolData: { accesscontrolData, allFunctionList },
+        dispatchSetAccessControlData,
+      } = this.props;
+      const selectedRoleData = accesscontrolData.find(item => item.roleId === roleId);
+      const { functions } = selectedRoleData;
+      const updatedFunctionList = allFunctionList.filter(item => transferTo.includes(item.id.toString()));
+      console.log('updatedFunctionList', updatedFunctionList);
+
+      selectedRoleData.functions = [...functions, ...updatedFunctionList];
+      // console.log('selectedRoleData', selectedRoleData);
+
+      const newRoleData = accesscontrolData.filter(item => item.roleId !== roleId);
+      newRoleData.push(selectedRoleData);
+      // console.log('newRoleData', newRoleData);
+
+      dispatchSetAccessControlData(newRoleData);
+    }
+  };
+
+  showModal = () => {
+    this.setState({
+      isModalVisible: true,
+    });
+  };
+
   prepareList = (sourceList) => {
     const preparedList = [];
     sourceList.map(item => preparedList.push({
       key: `${item.roleId}`,
       ...item,
-      location: `${item.locationLine1}, ${item.locationLine2},
-       ${item.locationPostalCode}`,
     }));
     return preparedList;
+  };
+
+  funcList = (sourceList) => {
+    const funcList = [];
+    const selectedRoleData = sourceList.find(item => item.roleId === '0');
+    const { functions } = selectedRoleData;
+    functions.map(item => funcList.push({
+      key: `${item.id}`,
+      title: `ID: ${item.id}`,
+      description: `Function Id: ${item.id} - ${item.description}`,
+    }));
+    return funcList;
   };
 
   render() {
@@ -139,7 +280,6 @@ class AccessControl extends Component {
         sortedInfo,
         filteredInfo,
         expandedRowKeys,
-        editingKey,
       },
       accesscontrolData: {
         accesscontrolData,
@@ -151,11 +291,9 @@ class AccessControl extends Component {
       dispatchSortedInfo,
       dispatchFilteredInfo,
       dispatchSelectedKeys,
-      dispatchExpandedRowKeys,
-      dispatchEditingKey,
-      history,
+      form,
     } = this.props;
-
+    const { isModalVisible } = this.state;
     const rowSelection = {
       selectedRowKeys: selectedKeys,
       onChange: keys => dispatchSelectedKeys(keys),
@@ -163,6 +301,7 @@ class AccessControl extends Component {
     const hasSelected = selectedKeys.length > 0;
 
     if (accesscontrolData) this.roleList = this.prepareList(accesscontrolData);
+    const dataSource = accesscontrolData ? this.funcList(accesscontrolData) : [];
     const header = this.roleList
       ? 'Total roles: '.concat(this.roleList.length)
       : '';
@@ -181,16 +320,13 @@ class AccessControl extends Component {
               <h2>Role Management Page</h2>
             </div>
             <Row type="flex" justify="start">
-              <Col span={24}>
-                <Collapse onChange={this.onChange}>
-                  <Panel header="click to create new role">
-                    <FormItem>
-                      <RoleNameInput decorator={getFieldDecorator} />
-                      <RoleDescriptionInput decorator={getFieldDecorator} />
-                    </FormItem>
-                  </Panel>
-                </Collapse>
-              </Col>
+              <CreateRoleButton showModal={this.showModal} />
+              <RoleCreationForm
+                form={form}
+                decorator={getFieldDecorator}
+                isModalVisible={isModalVisible}
+                onCloseModal={this.onCloseModal}
+              />
               <Col span={24}>
                 <SearchNamePanel
                   onChange={(e) => {
@@ -233,6 +369,7 @@ class AccessControl extends Component {
               <Col span={24}>
                 <RolesTable
                   roleList={this.roleList}
+                  functionList={dataSource}
                   decorator={getFieldDecorator}
                   rowSelection={rowSelection}
                   onChange={(pagination, filters, sorter) => {
@@ -242,23 +379,11 @@ class AccessControl extends Component {
                   sortedInfo={sortedInfo || {}}
                   filteredInfo={filteredInfo || {}}
                   expandedRowKeys={expandedRowKeys}
-                  onExpand={(expanded, record) => {
-                    const keys = expanded ? [record.roleId.toString()] : [];
-                    dispatchExpandedRowKeys(keys);
-                    console.log('keys', keys);
-                  }}
-                  onClickAddRow={this.onClickAddRow}
-                  cancelTransaction={() => dispatchEditingKey(null)}
-                  editTransaction={transacId => dispatchEditingKey(transacId)}
-                  saveTransaction={this.saveTransaction}
-                  editingKey={editingKey}
+                  onExpand={this.onExpand}
                   isPostApiLoading={isPostApiLoading}
+                  onSubmit={this.onSubmit}
                   header={header}
                 />
-              </Col>
-              <Col span={12} offset={6}>
-                <SaveButton isPostApiLoading={isPostApiLoading} />
-                <GoBackButton history={history} />
               </Col>
             </Row>
           </div>
@@ -269,7 +394,6 @@ class AccessControl extends Component {
 }
 
 AccessControl.propTypes = {
-  history: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
   dispatchSelectedKeys: PropTypes.func.isRequired,
   dispatchDeselectAllLoading: PropTypes.func.isRequired,
@@ -278,10 +402,11 @@ AccessControl.propTypes = {
   dispatchFilteredInfo: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
   dispatchExpandedRowKeys: PropTypes.func.isRequired,
-  dispatchEditingKey: PropTypes.func.isRequired,
   performGetAccessControlData: PropTypes.func.isRequired,
   dispatchSetAccessControlData: PropTypes.func.isRequired,
   performDeleteRole: PropTypes.func.isRequired,
+  dispatchCurrentButton: PropTypes.func.isRequired,
+  performAssignFunctions: PropTypes.func.isRequired,
 
   accesscontrolUI: PropTypes.shape({}).isRequired,
   accesscontrolData: PropTypes.shape({}).isRequired,
@@ -299,10 +424,11 @@ const mapDispatchToProps = {
   dispatchFilteredInfo: setFilteredInfo,
   dispatchResetState: resetState,
   dispatchExpandedRowKeys: setExpandedRowKeys,
-  dispatchEditingKey: setEditingKey,
   performGetAccessControlData: getAccessControlData,
   dispatchSetAccessControlData: setAccessControlData,
   performDeleteRole: postDeleteRole,
+  dispatchCurrentButton: setCurrentButton,
+  performAssignFunctions: postAssignFunctions,
 };
 
 const AccessControlPage = Form.create()(AccessControl);

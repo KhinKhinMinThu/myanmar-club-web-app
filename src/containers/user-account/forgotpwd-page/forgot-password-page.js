@@ -10,7 +10,7 @@ import {
   SuccessMessage,
   ErrorMessage,
 } from './components';
-import { BoldText, ForgotPwdCard } from './styled-components';
+import { BoldText, LoginCard } from '../shared-styled';
 import { postForgotPwd } from '../../../reducers/forgot-password/forgot-password-data';
 
 class ForgotPasswordPage extends Component {
@@ -43,13 +43,13 @@ class ForgotPasswordPage extends Component {
     let message;
     if (this.isApiPost) {
       message = postErrMsg ? (
-        <ErrorMessage postErrMsg={postErrMsg} history={history} />
+        <ErrorMessage postErrMsg={postErrMsg} />
       ) : (
         <SuccessMessage email={email} />
       );
     }
     return (
-      <ForgotPwdCard style={{ borderRadius: 15, margin: 'auto' }}>
+      <LoginCard style={{ borderRadius: 15, margin: 'auto', marginTop: 100 }}>
         <Form onSubmit={this.onSubmit}>
           {this.isApiPost ? (
             message
@@ -59,6 +59,8 @@ class ForgotPasswordPage extends Component {
                 <BoldText>
                   Enter your email address to reset the password...
                 </BoldText>
+                <br />
+                <br />
                 <EmailInput decorator={getFieldDecorator} />
               </Col>
               <Col span={12}>
@@ -70,7 +72,7 @@ class ForgotPasswordPage extends Component {
             </Row>
           )}
         </Form>
-      </ForgotPwdCard>
+      </LoginCard>
     );
   }
 }

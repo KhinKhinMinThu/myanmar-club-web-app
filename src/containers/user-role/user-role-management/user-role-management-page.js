@@ -162,7 +162,7 @@ class RoleManagement extends Component {
       rolemgmtUI: { selectedRoleId },
       rolemgmtData: { roleData },
     } = this.props;
-
+    console.log('eclist', sourceList);
     // admin list if selected role is not admin
     const admins = selectedRoleId !== 1
       ? roleData

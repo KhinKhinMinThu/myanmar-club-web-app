@@ -38,6 +38,6 @@ api.interceptors.request.use((request) => {
 });
 
 apiMultiPart.interceptors.request.use((request) => {
-  console.log('Getting Response Multipart', request);
+  console.log('Starting Request Multipart', request);
   return request;
 });

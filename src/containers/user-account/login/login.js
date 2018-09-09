@@ -43,11 +43,11 @@ class LoginForm extends Component {
       loginData: { isPostApiLoading },
     } = this.props;
     return (
-      <LoginCard style={{ borderRadius: 15, margin: '0 auto 0 auto' }}>
+      <LoginCard style={{ borderRadius: 15, margin: 'auto', marginTop: 100 }}>
         <Form onSubmit={this.onSubmit}>
           <UsernameInput decorator={getFieldDecorator} />
           <PasswordInput decorator={getFieldDecorator} />
-          <Footer decorator={getFieldDecorator} loading={isPostApiLoading} />
+          <Footer loading={isPostApiLoading} />
         </Form>
       </LoginCard>
     );

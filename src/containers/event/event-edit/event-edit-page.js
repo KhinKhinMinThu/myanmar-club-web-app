@@ -23,8 +23,6 @@ import {
 import {
   EventNameInput,
   EventDescriptionInput,
-  StartDateTimePicker,
-  EndDateTimePicker,
   AddressInput,
   PostalCodeInput,
   EventPhoto,
@@ -36,6 +34,8 @@ import {
   MobileNoInput,
   BackButton,
 } from '../shared-components';
+import StartDateTimePicker from '../startDateTimePicker';
+import EndDateTimePicker from '../endDateTimePicker';
 import {
   DeleteEventSwitch,
   EventStatusSwitch,
@@ -122,8 +122,8 @@ class EventEdit extends Component {
             formValues.startTime,
           );
           const endDate = this.formatDateTime(
-            formValues.endDate,
-            formValues.endTime,
+            formValues.endDate ? formValues.endDate : formValues.startDate,
+            formValues.endTime ? formValues.endTime : formValues.startTime,
           );
           const mobilePhone = formValues.mobilePhone
             ? formValues.areaCode + formValues.mobilePhone
@@ -141,6 +141,7 @@ class EventEdit extends Component {
             mobilePhone,
             eventStatus: formValues.eventStatus ? '1' : '0',
             uploadBtn: fileList,
+            photoLink: getFieldValue('photoLink'),
           };
           performEventData(eventToUpdate);
           performUpdateEvent(eventToUpdate);
@@ -166,6 +167,7 @@ class EventEdit extends Component {
   // convert string date to Date object and combine date and time.
   formatDateTime = (strDate, strTime) => {
     // to set the default date and time for end date/time
+    // unnecessary since end date will be the same as start date if left blank
     const defaultDT = new Date(DEFAULT_DATETIME);
     const date = strDate ? new Date(strDate) : defaultDT;
     const time = strTime ? new Date(strTime) : defaultDT;
@@ -185,7 +187,7 @@ class EventEdit extends Component {
   render() {
     const {
       history,
-      form: { getFieldDecorator },
+      form: { getFieldDecorator, getFieldValue, setFields },
       eventmgmtData: { isPostApiLoading },
     } = this.props;
     const actionColLayout = {
@@ -206,8 +208,16 @@ class EventEdit extends Component {
           <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
-            <StartDateTimePicker decorator={getFieldDecorator} />
-            <EndDateTimePicker decorator={getFieldDecorator} />
+            <StartDateTimePicker
+              decorator={getFieldDecorator}
+              getFieldValue={getFieldValue}
+              setFields={setFields}
+            />
+            <EndDateTimePicker
+              decorator={getFieldDecorator}
+              getFieldValue={getFieldValue}
+              setFields={setFields}
+            />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
             <EventPhoto
@@ -292,8 +302,11 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
   const event = eventData || {};
   return {
     uploadBtn: Form.createFormField({
-      value: event.photoLink ? [{ uid: event.id, url: event.photoLink }] : [],
+      value: event.photoLink
+        ? [{ type: 'image/jpeg', uid: event.id, url: event.photoLink }]
+        : [],
     }),
+    photoLink: Form.createFormField({ value: event.photoLink }),
     name: Form.createFormField({ value: event.name }),
     description: Form.createFormField({ value: event.description }),
     locationLine1: Form.createFormField({ value: event.locationLine1 }),

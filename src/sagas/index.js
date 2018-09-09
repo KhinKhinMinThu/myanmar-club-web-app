@@ -29,8 +29,14 @@ import {
   postUpdateMembershipAdminSaga,
   postUpdateMembershipMemberSaga,
   postSignupSaga,
+  postCheckEmailSaga,
 } from './membermgmt';
-import { getAccessControlDataSaga, postDeleteRoleSaga } from './access-control';
+import {
+  getAccessControlDataSaga,
+  postDeleteRoleSaga,
+  postAddRoleSaga,
+  postAssignFunctionsSaga,
+} from './access-control';
 import postForgotPwdSaga from './forgot-password';
 import { getRoleDataSaga, postAssignRolesSaga } from './rolemgmt';
 
@@ -61,6 +67,7 @@ export default function* rootSaga() {
     postUpdateMembershipAdminSaga,
     postUpdateMembershipMemberSaga,
     postSignupSaga,
+    postCheckEmailSaga,
     // forgot-password
     postForgotPwdSaga,
     postNewEventSaga,
@@ -71,5 +78,7 @@ export default function* rootSaga() {
     // access-control
     getAccessControlDataSaga,
     postDeleteRoleSaga,
+    postAddRoleSaga,
+    postAssignFunctionsSaga,
   ]);
 }

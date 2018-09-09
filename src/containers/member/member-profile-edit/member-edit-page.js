@@ -58,16 +58,27 @@ class MemberEdit extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      membermgmtData: { isPostApiLoading, postErrMsg },
+      membermgmtData: { isPostApiLoading, postErrMsg, isEmailFound },
       membermgmtUI: { currentTab },
+      form: { setFields, getFieldValue },
     } = this.props;
     if (currentTab !== 'tab1') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+    if (postErrMsg) message.error(postErrMsg, SHOWFOR);
+    if (isEmailFound === '1') {
+      setFields({
+        emailAddress: {
+          value: getFieldValue('emailAddress'),
+          errors: [
+            new Error(
+              'Email address already exists! Please choose a different email!',
+            ),
+          ],
+        },
+      });
     } else {
       message.success(SUCCESS_UPDATEMEMBER, SHOWFOR);
     }
@@ -155,6 +166,7 @@ class MemberEdit extends Component {
             roleNames,
             password,
             uploadBtn: fileList,
+            photoLink: getFieldValue('photoLink'),
           };
           dispatchMemberData(memberToUpdate);
           performUpdateMember(memberToUpdate);
@@ -186,6 +198,7 @@ class MemberEdit extends Component {
       form,
       form: { getFieldDecorator },
       membermgmtData: { isPostApiLoading, memberFormFields },
+      loginData: { roleIdList },
     } = this.props;
     const layout = {
       xs: { span: 24 },
@@ -209,6 +222,7 @@ class MemberEdit extends Component {
       ? memberFormFields.allSubComInterest
       : [];
     const allRoles = memberFormFields ? memberFormFields.allRoles : [];
+    const disabled = !roleIdList.includes(1);
 
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
@@ -283,12 +297,16 @@ class MemberEdit extends Component {
                 <IsEcMemberRadio
                   decorator={getFieldDecorator}
                   onChange={this.onChange}
+                  disabled={disabled}
                 />
                 <RoleInput
                   form={form}
                   decorator={getFieldDecorator}
                   allRoles={allRoles}
+                  disabled={disabled}
                 />
+              </Card>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
                 <DeleteProfileSwitch decorator={getFieldDecorator} />
                 <br />
                 <Row gutter={8}>
@@ -319,10 +337,12 @@ MemberEdit.propTypes = {
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
+  loginData: PropTypes.shape({}).isRequired,
 };
 const mapStateToProps = state => ({
   membermgmtUI: state.membermgmt.ui,
   membermgmtData: state.membermgmt.data,
+  loginData: state.login.data,
 });
 
 const mapDispatchToProps = {
@@ -359,9 +379,10 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
   return {
     uploadBtn: Form.createFormField({
       value: member.photoLink
-        ? [{ uid: member.id, url: member.photoLink }]
+        ? [{ type: 'image/jpeg', uid: member.id, url: member.photoLink }]
         : [],
     }),
+    photoLink: Form.createFormField({ value: member.photoLink }),
     id: Form.createFormField({ value: member.id }),
     name: Form.createFormField({ value: member.name }),
     gender: Form.createFormField({ value: member.gender }),

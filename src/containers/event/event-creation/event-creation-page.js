@@ -14,8 +14,6 @@ import {
 import {
   EventNameInput,
   EventDescriptionInput,
-  StartDateTimePicker,
-  EndDateTimePicker,
   AddressInput,
   PostalCodeInput,
   EventPhoto,
@@ -28,6 +26,8 @@ import {
   CreateButton,
   BackButton,
 } from '../shared-components';
+import StartDateTimePicker from '../startDateTimePicker';
+import EndDateTimePicker from '../endDateTimePicker';
 import { postNewEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventCreation extends Component {
@@ -66,8 +66,8 @@ class EventCreation extends Component {
           formValues.startTime,
         );
         const endDate = this.formatDateTime(
-          formValues.endDate,
-          formValues.endTime,
+          formValues.endDate ? formValues.endDate : formValues.startDate,
+          formValues.endTime ? formValues.endTime : formValues.startTime,
         );
         const mobilePhone = formValues.mobilePhone
           ? formValues.areaCode + formValues.mobilePhone
@@ -106,6 +106,7 @@ class EventCreation extends Component {
   // convert string date to Date object and combine date and time.
   formatDateTime = (strDate, strTime) => {
     // to set the default date and time for end date/time
+    // unnecessary since end date will be the same as start date if left blank
     const defaultDT = new Date(DEFAULT_DATETIME);
     const date = strDate ? new Date(strDate) : defaultDT;
     const time = strTime ? new Date(strTime) : defaultDT;
@@ -125,7 +126,9 @@ class EventCreation extends Component {
   render() {
     const {
       history,
-      form: { getFieldDecorator },
+      form: {
+        getFieldDecorator, getFieldValue, setFields,
+      },
       eventmgmtData: { isPostApiLoading },
     } = this.props;
     const actionColLayout = {
@@ -136,6 +139,7 @@ class EventCreation extends Component {
       xl: { span: 12 },
       style: { marginBottom: 14 },
     };
+
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <div className="pageHeaderContainer">
@@ -146,8 +150,16 @@ class EventCreation extends Component {
           <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />
-            <StartDateTimePicker decorator={getFieldDecorator} />
-            <EndDateTimePicker decorator={getFieldDecorator} />
+            <StartDateTimePicker
+              decorator={getFieldDecorator}
+              getFieldValue={getFieldValue}
+              setFields={setFields}
+            />
+            <EndDateTimePicker
+              decorator={getFieldDecorator}
+              getFieldValue={getFieldValue}
+              setFields={setFields}
+            />
             <AddressInput decorator={getFieldDecorator} />
             <PostalCodeInput decorator={getFieldDecorator} />
             <EventPhoto

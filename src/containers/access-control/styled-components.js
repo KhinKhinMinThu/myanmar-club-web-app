@@ -58,7 +58,7 @@ export const BoldUnderlineText = styled.span`
 
 // Button
 export const FullButton = styled(Button)`
-  width: 100%;
+  width: 98%;
 `;
 
 export const HalfWidthButton = styled(Button)`

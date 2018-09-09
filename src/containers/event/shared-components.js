@@ -7,14 +7,11 @@ import {
   Modal,
   Upload,
   Input,
-  DatePicker,
-  TimePicker,
   Row,
   Col,
   Icon,
 } from 'antd';
 import { SelectedText, MarginLeftButton, FullButton } from './shared-styled';
-import { DATE_FORMAT, TIME_FORMAT } from '../../actions/constants';
 
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -40,14 +37,14 @@ export const layout = {
   },
 };
 
-const inputLayout1 = {
+export const inputLayout1 = {
   xs: { span: 8 },
   sm: { span: 8 },
   md: { span: 8 },
   lg: { span: 10 },
   xl: { span: 10 },
 };
-const inputLayout2 = {
+export const inputLayout2 = {
   xs: { span: 16 },
   sm: { span: 16 },
   md: { span: 16 },
@@ -136,7 +133,7 @@ export const BackButton = ({ history }) => (
 
 // Event form data
 const initialValue = { initialValue: '' };
-const customInput = { style: { width: '200px' } };
+export const customInput = { style: { width: '200px' } };
 
 // Event Name
 export const EventNameInput = ({ decorator }) => (
@@ -166,65 +163,10 @@ export const EventDescriptionInput = ({ decorator }) => (
   </FormItem>
 );
 
-// Event Start Date/Time
-export const StartDateTimePicker = ({ decorator }) => (
-  <FormItem {...layout} label="Start Date/Time" colon required>
-    <Row type="flex" justify="start">
-      <Col {...inputLayout1}>
-        <FormItem>
-          {decorator('startDate', {
-            rules: [
-              {
-                required: true,
-                message: 'Please enter event start date!',
-              },
-            ],
-          })(<DatePicker {...customInput} format={DATE_FORMAT} />)}
-        </FormItem>
-      </Col>
-      <Col {...inputLayout2}>
-        <FormItem>
-          {decorator('startTime', {
-            rules: [
-              {
-                required: true,
-                message: 'Please enter event start time!',
-              },
-            ],
-          })(<TimePicker {...customInput} format={TIME_FORMAT} />)}
-        </FormItem>
-      </Col>
-    </Row>
-  </FormItem>
-);
-
-// Event End Date/Time
-export const EndDateTimePicker = ({ decorator }) => (
-  <FormItem {...layout} label="End Date/Time">
-    <Row gutter={8} type="flex" justify="start">
-      <Col {...inputLayout1}>
-        <FormItem>
-          {decorator('endDate')(
-            <DatePicker {...customInput} format={DATE_FORMAT} />,
-          )}
-        </FormItem>
-      </Col>
-
-      <Col {...inputLayout2}>
-        <FormItem>
-          {decorator('endTime')(
-            <TimePicker {...customInput} format={TIME_FORMAT} />,
-          )}
-        </FormItem>
-      </Col>
-    </Row>
-  </FormItem>
-);
-
 // Location Address
 export const AddressInput = ({ decorator }) => (
   <FormItem {...layout} label="Location" colon required>
-    <Row gutter={8} type="flex" justify="start">
+    <Row type="flex" justify="start">
       <Col {...inputLayout1}>
         <FormItem>
           {decorator('locationLine1', {
@@ -262,6 +204,7 @@ export const PostalCodeInput = ({ decorator }) => (
           message: 'Please enter postal/zip code!',
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} maxLength="6" placeholder="Postal/Zip Code" />)}
   </FormItem>
 );
@@ -300,6 +243,7 @@ export const TicketFeeInput = ({ decorator }) => (
           validator: validateNumber,
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} />)}
   </FormItem>
 );
@@ -314,6 +258,7 @@ export const NumPaxInput = ({ decorator }) => (
           validator: validateNumber,
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} />)}
   </FormItem>
 );
@@ -329,6 +274,7 @@ export const EmailAddressInput = ({ decorator }) => (
           message: 'The input is not valid E-mail!',
         },
       ],
+      validateTrigger: 'onBlur',
     })(<Input {...customInput} placeholder="Email Address" />)}
   </FormItem>
 );
@@ -362,6 +308,7 @@ export const MobileNoInput = ({ decorator }) => {
             message: 'The input is not a valid phone number!',
           },
         ],
+        validateTrigger: 'onBlur',
       })(
         <Input
           {...customInput}

@@ -31,12 +31,12 @@ function* asyncLogin(action) {
     console.log('API RESPONSE.........', response);
 
     const {
-      // isLoggedIn, isAdmin, token, errorMsg, id, name,
       isLoggedIn,
       isEcMember,
       id,
       name,
-      roleNames,
+      roleList,
+      functionList,
       token,
       errorMsg,
     } = response.data;
@@ -44,13 +44,18 @@ function* asyncLogin(action) {
 
     successLogin = isLoggedIn;
 
-    const roleIdList = roleNames ? roleNames.map(item => item.id) : [];
+    const roleIdList = roleList ? roleList.map(item => item.id) : [];
+    const functNameList = functionList
+      ? functionList.map(item => item.path)
+      : [];
+
     const payload = {
       isLoggedIn,
       isEcMember,
       id,
       name,
-      roleIdList,
+      roleIdList, // required for controlling RoleAssignment at MemberEdit Page for Admin
+      functNameList, // required for menu & page access control
       token,
     };
     if (isLoggedIn) {
@@ -67,7 +72,7 @@ function* asyncLogin(action) {
       yield put(push(DASHBOARD));
     } else {
       yield put(push(LOGIN));
-    } // login path; // home path
+    } // login path;
   }
 }
 
