@@ -48,23 +48,27 @@ function* asyncGetMemberData(action) {
       response = yield call(getMemberData, action.id);
       const { memberData, errorMsg } = response.data;
       errMsg = errorMsg;
-
       console.log('API RESPONSE.........', response);
-      yield put({ type: MEMBERDATA, payload: memberData });
+      if (memberData) {
+        yield put({ type: MEMBERDATA, payload: memberData });
+        // call formfields
+        yield put({ type: GET_MEMBERFORMFIELDS });
+      }
     }
     if (action.type === GET_MEMBERFORMFIELDS) {
       response = yield call(getMemberFormFields);
       const { memberFormFields, errorMsg } = response.data;
       errMsg = errorMsg;
       console.log('API RESPONSE.........', response);
-
-      memberFormFields.allSubComInterest.forEach((item, index) => {
-        memberFormFields.allSubComInterest[index] = {
-          ...item,
-          id: 'subComChk'.concat(item.id),
-        };
-      });
-      yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
+      if (memberFormFields) {
+        memberFormFields.allSubComInterest.forEach((item, index) => {
+          memberFormFields.allSubComInterest[index] = {
+            ...item,
+            id: 'subComChk'.concat(item.id),
+          };
+        });
+        yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
+      }
     }
   } catch (e) {
     errMsg = e.message;
@@ -81,11 +85,15 @@ function* asyncGetMembersData() {
     const response = yield call(getMembersData);
     const { membersData, errorMsg } = response.data;
     errMsg = errorMsg;
-    const ecMembersList = membersData.filter(item => item.isEcMember === '1');
-    const clubMembersList = membersData.filter(item => item.isEcMember === '0');
+    if (membersData) {
+      const ecMembersList = membersData.filter(item => item.isEcMember === '1');
+      const clubMembersList = membersData.filter(
+        item => item.isEcMember === '0',
+      );
 
-    yield put({ type: ECMEMBERSDATA, payload: ecMembersList });
-    yield put({ type: CLUBMEMBERSDATA, payload: clubMembersList });
+      yield put({ type: ECMEMBERSDATA, payload: ecMembersList });
+      yield put({ type: CLUBMEMBERSDATA, payload: clubMembersList });
+    }
     console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;

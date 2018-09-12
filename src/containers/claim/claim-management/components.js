@@ -186,7 +186,7 @@ export class ClaimsTable extends Component {
         width: '5%',
       },
       {
-        title: 'Event Description',
+        title: 'Event Name',
         dataIndex: 'eventDesc',
         key: 'eventDesc',
         sorter: (a, b) => {

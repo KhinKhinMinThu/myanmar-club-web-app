@@ -7,8 +7,8 @@ import {
   DASHBOARD,
   PROFILE,
   LOGOUT,
+  ROLE_ASSIGN,
   ROLE_MANAGEMENT,
-  ROLE_FUNCTION_MANAGEMENT,
   MEMBER_MANAGEMENT,
   MEMBER_EDIT,
   CLAIM_MANAGEMENT,
@@ -59,8 +59,8 @@ class PrivatePage extends Component {
 
     if (pathname === MEMBER_MANAGEMENT && functNameList.includes(MEMBER_MANAGEMENT)) return MemberManagementPage; // prettier-ignore
     if (pathname === MEMBER_EDIT && functNameList.includes(MEMBER_EDIT)) return id ? MemberProfileEditPage : ErrorPage; // prettier-ignore
-    if (pathname === ROLE_MANAGEMENT && functNameList.includes(ROLE_MANAGEMENT)) return RoleManagementPage; // prettier-ignore
-    if (pathname === ROLE_FUNCTION_MANAGEMENT) return RoleFunctionManagementPage; // prettier-ignore
+    if (pathname === ROLE_ASSIGN && functNameList.includes(ROLE_ASSIGN)) return RoleManagementPage; // prettier-ignore
+    if (pathname === ROLE_MANAGEMENT && functNameList.includes(ROLE_MANAGEMENT)) return RoleFunctionManagementPage; // prettier-ignore
     if (pathname === CLAIM_MANAGEMENT && functNameList.includes(CLAIM_MANAGEMENT)) return ClaimManagementPage; // prettier-ignore
     if (pathname === EVENT_TRANSACTION && functNameList.includes(EVENT_TRANSACTION)) return EventTransactionPage; // prettier-ignore
     if (pathname === EVENT_MANAGEMENT && functNameList.includes(EVENT_MANAGEMENT)) return EventManagementPage; // prettier-ignore

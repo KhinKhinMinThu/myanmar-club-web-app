@@ -11,6 +11,11 @@ export const MenuItem = styled(Menu.Item)`
   }
 `;
 
+export const SubMenu = styled(Menu.SubMenu)`
+  &:hover {
+    background: rgba(216, 230, 223, 0.5);
+  }
+`;
 export const HeaderText = styled.h1`
   font-style: italic;
   font-family: Impact;

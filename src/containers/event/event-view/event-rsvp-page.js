@@ -62,6 +62,20 @@ class EventRSVPPage extends Component {
     }, 1000);
   };
 
+  // delete registraion
+  // deleteRegistration = (regId) => {
+  //   const {
+  //     eventmgmtData: { eventData },
+  //     performDeleteRSVP,
+  //     dispatchSetEventData,
+  //   } = this.props;
+  //   performDeleteRSVP({ eventRSVPToDelete: selectedKeys });
+
+  //   const { eventRSVPData } = eventData;
+  //   // FeventRSVPData.
+  //   dispatchSetEventData(eventData);
+  // };
+
   // delete selected rsvp
   onClickDeleteSelected = () => {
     const {
@@ -134,6 +148,10 @@ class EventRSVPPage extends Component {
       ? this.prepareList(eventData.eventRSVPData)
       : [];
 
+    const header = this.registrationList
+      ? 'Total registration: '.concat(this.registrationList.length)
+      : '';
+
     return (
       <div>
         <Row type="flex" justify="start">
@@ -186,6 +204,7 @@ class EventRSVPPage extends Component {
               }}
               sortedInfo={sortedInfo || {}}
               filteredInfo={filteredInfo || {}}
+              header={header}
             />
           </Col>
         </Row>

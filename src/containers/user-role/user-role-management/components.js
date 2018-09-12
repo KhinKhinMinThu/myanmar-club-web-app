@@ -3,7 +3,7 @@ import {
   Form, Select, Transfer, Button,
 } from 'antd';
 import { FullButton, BoldUnderlineText } from '../shared-styled';
-import { ROLE_FUNCTION_MANAGEMENT } from '../../../actions/location';
+import { ROLE_MANAGEMENT } from '../../../actions/location';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -85,7 +85,7 @@ export const RoleAssignTransfer = ({ decorator, dataSource, selectedRole }) => {
 
 // Manage Role Button
 export const ManageRoleButton = () => (
-  <Button type="primary" icon="form" href={ROLE_FUNCTION_MANAGEMENT}>
+  <Button type="primary" icon="form" href={ROLE_MANAGEMENT}>
     Manage Role(s)
   </Button>
 );

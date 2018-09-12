@@ -11,7 +11,6 @@ import {
 } from '../../../reducers/eventmgmt/eventmgmt-ui';
 import {
   getMemberData,
-  getMemberFormFields,
   resetMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
 import ProfileEditPage from './profile-edit-page';
@@ -23,12 +22,11 @@ class Profile extends Component {
       loginData: { id },
       // need to reset to prevent from showing member data in profile
       // if the user goes from edit-member to profile.
-      performGetMemberFormFields,
       performGetMemberData,
       performResetMemberData,
     } = this.props;
     performResetMemberData();
-    performGetMemberFormFields();
+    // performGetMemberFormFields();
     if (id) performGetMemberData({ id });
   }
 
@@ -88,7 +86,6 @@ Profile.propTypes = {
   dispatchResetState: PropTypes.func.isRequired,
   dispatchCurrentTab: PropTypes.func.isRequired,
   performGetMemberData: PropTypes.func.isRequired,
-  performGetMemberFormFields: PropTypes.func.isRequired,
   performResetMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
@@ -106,7 +103,6 @@ const mapDispatchToProps = {
   dispatchResetState: resetState,
   dispatchCurrentTab: setCurrentTab,
   performGetMemberData: getMemberData,
-  performGetMemberFormFields: getMemberFormFields,
   performResetMemberData: resetMemberData,
 };
 

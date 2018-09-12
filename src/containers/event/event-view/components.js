@@ -1,7 +1,7 @@
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import {
-  Tabs, Button, Form, Input,
+  Tabs, Button, Form, Input, Popconfirm, Tooltip,
 } from 'antd';
 import { EVENT_EDIT } from '../../../actions/location';
 import {
@@ -9,6 +9,7 @@ import {
   BoldText,
   FullWidthTable,
   FullButton,
+  TableActionButton,
 } from '../shared-styled';
 import { layout } from '../shared-components';
 
@@ -162,6 +163,8 @@ export const RegistrationTable = ({
   onChange,
   sortedInfo,
   filteredInfo,
+  header,
+  deleteRegistration,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -224,10 +227,22 @@ export const RegistrationTable = ({
       sortOrder: sortedInfo.columnKey === 'paymentType' && sortedInfo.order,
       width: '15%',
     },
+    {
+      title: '',
+      key: '',
+      width: 100,
+      // render: (text, record) => ()
+      render: record => (
+        <div>
+          <DeleteButton record={record} action={deleteRegistration} />
+        </div>
+      ),
+    },
   ];
 
   return (
     <FullWidthTable
+      title={() => header}
       columns={columns}
       dataSource={registrationList}
       rowSelection={rowSelection}
@@ -238,3 +253,15 @@ export const RegistrationTable = ({
     />
   );
 };
+
+// DeleteButton for RegistrationTable
+export const DeleteButton = ({ record, action }) => (
+  <Popconfirm
+    title="Confirm to remove this registration?"
+    onConfirm={() => action(record.id)}
+  >
+    <Tooltip title="Delete Registraiton">
+      <TableActionButton icon="delete" />
+    </Tooltip>
+  </Popconfirm>
+);
