@@ -14,6 +14,7 @@ import {
   POST_NEWEVENTRSVP,
   POST_UPDATEEVENT,
   POST_NOTIFYEVENT,
+  POST_UPDATEREGPAYMENT,
   POST_ERROR,
 } from '../reducers/eventmgmt/eventmgmt-data';
 import {
@@ -26,6 +27,7 @@ import {
   APIPOST_ADD_EVENT_RSVP,
   APIPOST_ADD_EVENTPHOTO,
   APIPOST_NOTIFY_EVENT,
+  APIPOST_UPDATE_REGPAYMENT,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -126,6 +128,8 @@ const postNotifyEvent = notification => api.post(APIPOST_NOTIFY_EVENT, {
   url: notification.url,
 });
 
+const postUpdateRegPayment = eventRSVPPayment => api.post(APIPOST_UPDATE_REGPAYMENT, eventRSVPPayment);
+
 const assembleFormData = ({ eventId, imageFile }) => {
   if (eventId && imageFile) {
     const mpf = new FormData();
@@ -154,6 +158,7 @@ function* asyncPostProcessEvents(action) {
       action.eventToUpdate,
       action.notification,
       action.newEventRSVPToAdd,
+      action.eventRSVPPayment,
     );
 
     let multipartForm;
@@ -190,6 +195,9 @@ function* asyncPostProcessEvents(action) {
         break;
       case POST_NOTIFYEVENT:
         response = yield call(postNotifyEvent, action.notification);
+        break;
+      case POST_UPDATEREGPAYMENT:
+        response = yield call(postUpdateRegPayment, action.eventRSVPPayment);
         break;
       default:
     }
@@ -234,5 +242,9 @@ export const postUpdateEventSaga = takeLatest(
 );
 export const postNotifyEventSaga = takeLatest(
   POST_NOTIFYEVENT,
+  asyncPostProcessEvents,
+);
+export const postUpdateRegPaymentSaga = takeLatest(
+  POST_UPDATEREGPAYMENT,
   asyncPostProcessEvents,
 );

@@ -187,7 +187,7 @@ export const RegistrationTable = ({
         return 0;
       },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
-      width: '19%',
+      width: '16%',
     },
     {
       title: 'Email Address',
@@ -199,13 +199,13 @@ export const RegistrationTable = ({
         return 0;
       },
       sortOrder: sortedInfo.columnKey === 'emailAddress' && sortedInfo.order,
-      width: '28%',
+      width: '26%',
     },
     {
       title: 'Mobile No',
       dataIndex: 'mobilePhone',
       key: 'mobilePhone',
-      width: '19%',
+      width: '10%',
     },
     {
       title: 'No. of Ticket(s)',
@@ -228,9 +228,21 @@ export const RegistrationTable = ({
       width: '15%',
     },
     {
+      title: 'Paid?',
+      dataIndex: 'isPaid',
+      key: 'isPaid',
+      sorter: (a, b) => {
+        if (a.isPaid < b.isPaid) return -1;
+        if (a.isPaid > b.isPaid) return 1;
+        return 0;
+      },
+      sortOrder: sortedInfo.columnKey === 'isPaid' && sortedInfo.order,
+      width: '7%',
+    },
+    {
       title: '',
       key: '',
-      width: 100,
+      width: '7%',
       // render: (text, record) => ()
       render: record => (
         <div>

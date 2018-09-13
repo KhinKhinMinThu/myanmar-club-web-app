@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   Form, Row, Col, message,
 } from 'antd';
-import { SUCCESS_DELETERSVP, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_UPDATERSVP, SHOWFOR } from '../../../actions/message';
 import { RegistrationTable } from './components';
 import {
   DeSeletAllButton,
@@ -20,17 +20,21 @@ import {
   setSortedInfo,
   setFilteredInfo,
   resetState,
+  setAction,
 } from '../../../reducers/eventmgmt/eventmgmt-ui';
 import {
   setEventData,
   postDeleteRSVP,
+  postUpdateRegPayment,
 } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventRSVPPage extends Component {
   componentDidUpdate(prevProps) {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
+      eventmgmtUI: { currentTab },
     } = this.props;
+    if (currentTab !== 'tab2') return;
 
     const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
@@ -38,7 +42,7 @@ class EventRSVPPage extends Component {
     if (postErrMsg) {
       message.error(postErrMsg, SHOWFOR);
     } else {
-      message.success(SUCCESS_DELETERSVP, SHOWFOR);
+      message.success(SUCCESS_UPDATERSVP, SHOWFOR);
     }
   }
 
@@ -62,36 +66,32 @@ class EventRSVPPage extends Component {
     }, 1000);
   };
 
-  // delete registraion
-  // deleteRegistration = (regId) => {
-  //   const {
-  //     eventmgmtData: { eventData },
-  //     performDeleteRSVP,
-  //     dispatchSetEventData,
-  //   } = this.props;
-  //   performDeleteRSVP({ eventRSVPToDelete: selectedKeys });
-
-  //   const { eventRSVPData } = eventData;
-  //   // FeventRSVPData.
-  //   dispatchSetEventData(eventData);
-  // };
-
-  // delete selected rsvp
-  onClickDeleteSelected = () => {
+  // update paid regsitrations
+  onClickUpdatePayment = (type) => {
     const {
       eventmgmtData: { eventData },
       eventmgmtUI: { selectedKeys },
-      performDeleteRSVP,
+      performUpdatePayment,
       dispatchSetEventData,
+      dispatchSetAction,
       dispatchResetState,
     } = this.props;
-    performDeleteRSVP({ eventRSVPToDelete: selectedKeys });
+    dispatchSetAction(type);
+    const eventRSVPPayment = {
+      eventId: eventData.id,
+      paidReg: type === 'paid' ? selectedKeys : [],
+      unpaidReg: type === 'unpaid' ? selectedKeys : [],
+    };
+    performUpdatePayment(eventRSVPPayment);
 
+    // update RSVP payment statements
     const { eventRSVPData } = eventData;
-
     selectedKeys.forEach((item) => {
-      const index = eventRSVPData.findIndex(rsvp => rsvp.id === item);
-      if (index !== -1) eventRSVPData.splice(index, 1);
+      const reg = eventRSVPData.find(rsvp => rsvp.id === item);
+      if (reg) {
+        if (type === 'paid') reg.isPaid = '1';
+        if (type === 'unpaid') reg.isPaid = '0';
+      }
     });
     dispatchSetEventData(eventData);
     dispatchResetState();
@@ -118,8 +118,26 @@ class EventRSVPPage extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
+      isPaid: item.isPaid === '1' ? 'Yes' : 'No',
     }));
     return preparedList;
+  };
+
+  // delete registraion
+  deleteRegistration = (regId) => {
+    const {
+      eventmgmtData: { eventData },
+      performDeleteRSVP,
+      dispatchSetEventData,
+      dispatchSetAction,
+    } = this.props;
+    dispatchSetAction('delete');
+    performDeleteRSVP({ eventRSVPToDelete: [regId] });
+
+    const { eventRSVPData } = eventData;
+    const index = eventRSVPData.findIndex(rsvp => rsvp.id === regId);
+    if (index !== -1) eventRSVPData.splice(index, 1);
+    dispatchSetEventData(eventData);
   };
 
   render() {
@@ -130,6 +148,7 @@ class EventRSVPPage extends Component {
         selectAllLoading,
         sortedInfo,
         filteredInfo,
+        action,
       },
       eventmgmtData: { eventData, isPostApiLoading },
       form: { getFieldDecorator },
@@ -182,10 +201,16 @@ class EventRSVPPage extends Component {
               loading={deselectAllLoading}
             />
             <DeleteSeletedButton
-              onClick={this.onClickDeleteSelected}
+              onClick={() => this.onClickUpdatePayment('paid')}
               hasSelected={hasSelected}
-              isPostApiLoading={isPostApiLoading}
-              placeHolder="Delete Selected Registration(s)"
+              isPostApiLoading={action === 'paid' ? isPostApiLoading : false}
+              placeHolder="Paid"
+            />
+            <DeleteSeletedButton
+              onClick={() => this.onClickUpdatePayment('unpaid')}
+              hasSelected={hasSelected}
+              isPostApiLoading={action === 'unpaid' ? isPostApiLoading : false}
+              placeHolder="Not Paid"
             />
             {hasSelected ? (
               <SelectedInfo
@@ -205,6 +230,7 @@ class EventRSVPPage extends Component {
               sortedInfo={sortedInfo || {}}
               filteredInfo={filteredInfo || {}}
               header={header}
+              deleteRegistration={this.deleteRegistration}
             />
           </Col>
         </Row>
@@ -221,9 +247,11 @@ EventRSVPPage.propTypes = {
   dispatchSortedInfo: PropTypes.func.isRequired,
   dispatchFilteredInfo: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
+  dispatchSetAction: PropTypes.func.isRequired,
 
   dispatchSetEventData: PropTypes.func.isRequired,
   performDeleteRSVP: PropTypes.func.isRequired,
+  performUpdatePayment: PropTypes.func.isRequired,
 
   eventmgmtUI: PropTypes.shape({}).isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
@@ -240,9 +268,11 @@ const mapDispatchToProps = {
   dispatchSortedInfo: setSortedInfo,
   dispatchFilteredInfo: setFilteredInfo,
   dispatchResetState: resetState,
+  dispatchSetAction: setAction,
 
   dispatchSetEventData: setEventData,
   performDeleteRSVP: postDeleteRSVP,
+  performUpdatePayment: postUpdateRegPayment,
 };
 
 const FormEventRSVPPage = Form.create()(EventRSVPPage);
