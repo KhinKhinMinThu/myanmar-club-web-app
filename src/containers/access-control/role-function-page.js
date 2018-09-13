@@ -35,7 +35,7 @@ import {
 class AccessControl extends Component {
   state = {
     isModalVisible: false,
-    selectedRole: null,
+    selectedRole: '0',
   };
 
   componentDidMount() {
@@ -88,14 +88,12 @@ class AccessControl extends Component {
     } = this.props;
     // set the targetKeys as the list of ecMembers for selected role
     const keys = expanded ? [record.roleId.toString()] : [];
-    console.log('keys', keys);
     const targetKeys = accesscontrolData
       ? accesscontrolData
         .find(item => item.roleId === record.roleId)
         .functions.map(item => `${item.id}`)
       : [];
     setFieldsValue({ functionTransfer: targetKeys });
-    console.log('target keys', targetKeys);
     dispatchExpandedRowKeys(keys);
     this.setState({
       selectedRole: record.roleId,
@@ -252,10 +250,12 @@ class AccessControl extends Component {
 
   prepareList = (sourceList) => {
     const preparedList = [];
-    sourceList.map(item => preparedList.push({
-      key: `${item.roleId}`,
-      ...item,
-    }));
+    sourceList.map(item => (item.roleId !== '0'
+      ? preparedList.push({
+        key: `${item.roleId}`,
+        ...item,
+      })
+      : ''));
     return preparedList;
   };
 
@@ -293,15 +293,19 @@ class AccessControl extends Component {
       dispatchSelectedKeys,
       form,
     } = this.props;
-    const { isModalVisible } = this.state;
+    const { isModalVisible, selectedRole } = this.state;
     const rowSelection = {
       selectedRowKeys: selectedKeys,
       onChange: keys => dispatchSelectedKeys(keys),
     };
     const hasSelected = selectedKeys.length > 0;
-
     if (accesscontrolData) this.roleList = this.prepareList(accesscontrolData);
     const dataSource = accesscontrolData ? this.funcList(accesscontrolData) : [];
+    const targetKeys = accesscontrolData
+      ? accesscontrolData
+        .find(item => item.roleId === selectedRole)
+        .functions.map(item => `${item.id}`)
+      : [];
     const header = this.roleList
       ? 'Total roles: '.concat(this.roleList.length)
       : '';
@@ -371,6 +375,7 @@ class AccessControl extends Component {
                   roleList={this.roleList}
                   functionList={dataSource}
                   decorator={getFieldDecorator}
+                  targetKeys={targetKeys}
                   rowSelection={rowSelection}
                   onChange={(pagination, filters, sorter) => {
                     dispatchSortedInfo(sorter);

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Card,
+  Form, message, Row, Col, Spin, Card, Tooltip, BackTop,
 } from 'antd';
 import { SUCCESS_NEWEVENT, SHOWFOR } from '../../../actions/message';
 import {
@@ -126,9 +126,7 @@ class EventCreation extends Component {
   render() {
     const {
       history,
-      form: {
-        getFieldDecorator, getFieldValue, setFields,
-      },
+      form: { getFieldDecorator, getFieldValue, setFields },
       eventmgmtData: { isPostApiLoading },
     } = this.props;
     const actionColLayout = {
@@ -147,6 +145,9 @@ class EventCreation extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
+          <Tooltip title="Click to go back to the top">
+            <BackTop />
+          </Tooltip>
           <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />

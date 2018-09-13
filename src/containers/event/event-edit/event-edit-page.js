@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card,
+  Form,
+  message,
+  Row,
+  Col,
+  Spin,
+  Modal,
+  Card,
+  Tooltip,
+  BackTop,
 } from 'antd';
 import {
   SUCCESS_UPDATEEVENT,
@@ -205,6 +213,9 @@ class EventEdit extends Component {
         </div>
 
         <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
+          <Tooltip title="Click to go back to the top">
+            <BackTop />
+          </Tooltip>
           <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <EventNameInput decorator={getFieldDecorator} />
             <EventDescriptionInput decorator={getFieldDecorator} />

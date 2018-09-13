@@ -26,6 +26,7 @@ export const RolesTable = ({
   sortedInfo,
   filteredInfo,
   expandedRowKeys,
+  targetKeys,
   onExpand,
   onSubmit,
   header,
@@ -66,8 +67,8 @@ export const RolesTable = ({
     },
     {
       title: 'Created Date',
-      dataIndex: 'createAt',
-      key: 'createAt',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       sortOrder: sortedInfo.columnKey === 'createdAt' && sortedInfo.order,
       width: '12%',
@@ -106,6 +107,12 @@ export const RolesTable = ({
     },
   ];
 
+  const preparedList = [];
+  functionList.map(item => preparedList.push({
+    key: `${item.id}`,
+    ...item,
+  }));
+
   return (
     <FullWidthTable
       title={() => header}
@@ -117,6 +124,7 @@ export const RolesTable = ({
       functionList={functionList}
       selectedFunction={expandedRowKeys}
       onSubmit={onSubmit}
+      targetKeys={targetKeys}
       bordered
       size="small"
       style={{ marginBottom: '30px' }}
@@ -124,7 +132,7 @@ export const RolesTable = ({
       expandedRowKeys={expandedRowKeys}
       onExpand={onExpand}
       expandedRowRender={() => (
-        <FunctionTransfer decorator={decorator} dataSource={functionList} onSubmit={onSubmit} />
+        <FunctionTransfer decorator={decorator} targetKeys={targetKeys} dataSource={functionList} onSubmit={onSubmit} />
       )}
     />
   );
@@ -263,9 +271,9 @@ export const CreateRoleButton = ({ showModal }) => (
 );
 
 export const FunctionTransfer = ({
-  decorator,
   dataSource,
   isPostApiLoading,
+  targetKeys,
   onSubmit,
 }) => {
   const titles = [
@@ -276,20 +284,21 @@ export const FunctionTransfer = ({
   return (
     <Col span={15} offset={5}>
       <FormItem>
-        {decorator('functionTransfer', { valuePropName: 'targetKeys' })(
-          <Transfer
-            dataSource={dataSource}
-            titles={titles}
-            showSearch
-            searchPlaceholder="Search function"
-            listStyle={{
-              width: 350,
-              height: 300,
-              textAlign: 'left',
-            }}
-            render={item => item.description}
-          />,
-        )}
+
+        <Transfer
+          dataSource={dataSource}
+          titles={titles}
+          targetKeys={targetKeys}
+          showSearch
+          searchPlaceholder="Search function"
+          listStyle={{
+            width: 350,
+            height: 300,
+            textAlign: 'left',
+          }}
+          render={item => item.description}
+        />,
+
       </FormItem>
       <FormItem>
         <FullButton type="primary" htmlType="submit" onClick={onSubmit} loading={isPostApiLoading}>

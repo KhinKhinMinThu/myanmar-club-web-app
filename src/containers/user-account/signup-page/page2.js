@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, Row, Col, Card, Modal,
+  Form, Row, Col, Card, Modal, BackTop, Tooltip,
 } from 'antd';
 import FormStepAction from './form-step-action';
 import { MEMBERSHIP_FEES, MEMBERSHIP_TYPES } from '../../../actions/constants';
@@ -73,6 +73,9 @@ class Page2 extends Component {
     } = this.props;
     return (
       <Form onSubmit={this.onSubmit}>
+        <Tooltip title="Click to go back to the top">
+          <BackTop />
+        </Tooltip>
         <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
           <Row gutter={8} type="flex" justify="center">
             <Col span={12}>{feesTbl}</Col>

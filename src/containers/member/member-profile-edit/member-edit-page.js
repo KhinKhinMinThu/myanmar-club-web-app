@@ -5,7 +5,7 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card,
+  Form, message, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
 } from 'antd';
 import {
   SUCCESS_UPDATEMEMBER,
@@ -227,6 +227,9 @@ class MemberEdit extends Component {
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <Form onSubmit={this.onSubmit}>
+          <Tooltip title="Click to go back to the top">
+            <BackTop />
+          </Tooltip>
           <Row gutter={8} justify="start">
             <Col span={24}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>

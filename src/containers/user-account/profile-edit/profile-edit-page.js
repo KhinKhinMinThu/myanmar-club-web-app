@@ -5,7 +5,7 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card,
+  Form, message, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
 } from 'antd';
 import {
   SUCCESS_UPDATEMEMBER,
@@ -47,6 +47,9 @@ import {
   postUpdateMember,
   setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
+import {
+  setLogout,
+} from '../../../reducers/login/login-data';
 
 const { confirm } = Modal;
 
@@ -91,6 +94,7 @@ class MemberEdit extends Component {
       membermgmtData: { memberData },
       performUpdateMember,
       performDeleteMembers,
+      performLogout,
       dispatchMemberData,
     } = this.props;
 
@@ -103,6 +107,7 @@ class MemberEdit extends Component {
         title: CONFIRM_DELETEMEMBER,
         onOk() {
           performDeleteMembers({ membersToDelete: [id] });
+          performLogout();
         },
         // onCancel() {
         //   console.log('Cancel');
@@ -212,6 +217,9 @@ class MemberEdit extends Component {
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <Form onSubmit={this.onSubmit}>
+          <Tooltip title="Click to go back to the top">
+            <BackTop />
+          </Tooltip>
           <Row gutter={8} justify="start">
             <Col span={24}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
@@ -304,6 +312,7 @@ MemberEdit.propTypes = {
 
   performUpdateMember: PropTypes.func.isRequired,
   performDeleteMembers: PropTypes.func.isRequired,
+  performLogout: PropTypes.func.isRequired,
   dispatchMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
@@ -319,6 +328,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   performUpdateMember: postUpdateMember,
   performDeleteMembers: postDeleteMembers,
+  performLogout: setLogout,
   dispatchMemberData: setMemberData,
 };
 

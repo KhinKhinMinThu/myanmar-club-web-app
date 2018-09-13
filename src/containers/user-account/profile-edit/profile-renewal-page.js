@@ -4,7 +4,15 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card,
+  Form,
+  message,
+  Row,
+  Col,
+  Spin,
+  Modal,
+  Card,
+  BackTop,
+  Tooltip,
 } from 'antd';
 import {
   SUCCESS_RENEWMEMBER,
@@ -109,6 +117,9 @@ class MemberRenewal extends Component {
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <Form onSubmit={this.onSubmit}>
+          <Tooltip title="Click to go back to the top">
+            <BackTop />
+          </Tooltip>
           <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
             <Row gutter={8} type="flex" justify="center">
               <Col span={12}>{feesTbl}</Col>

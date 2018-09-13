@@ -4,7 +4,15 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card,
+  Form,
+  message,
+  Row,
+  Col,
+  Spin,
+  Modal,
+  Card,
+  Tooltip,
+  BackTop,
 } from 'antd';
 import {
   SUCCESS_RENEWMEMBER,
@@ -32,7 +40,10 @@ import {
   PaymentTypeRadio,
   TotalAmountInput,
 } from './components';
-import { getMemberData, postUpdateMembershipAdmin } from '../../../reducers/membermgmt/membermgmt-data';
+import {
+  getMemberData,
+  postUpdateMembershipAdmin,
+} from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
 
@@ -110,6 +121,9 @@ class MemberRenewal extends Component {
     return (
       <Spin spinning={isPostApiLoading} size="large" delay={1000}>
         <Form onSubmit={this.onSubmit}>
+          <Tooltip title="Click to go back to the top">
+            <BackTop />
+          </Tooltip>
           <Row gutter={8} justify="start">
             <Col span={24}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>

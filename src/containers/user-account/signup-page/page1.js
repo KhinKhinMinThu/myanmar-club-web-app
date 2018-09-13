@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import {
-  Form, Alert, Row, Col, Spin, Card, message,
+  Form, Alert, Row, Col, Spin, Card, message, BackTop, Tooltip,
 } from 'antd';
 import FormStepAction from './form-step-action';
 import {
@@ -194,6 +194,9 @@ class Page1 extends Component {
           />
         ) : (
           <Form onSubmit={this.onSubmit}>
+            <Tooltip title="Click to scroll up to the top">
+              <BackTop />
+            </Tooltip>
             <Row type="flex" gutter={8} justify="start">
               <Col {...layout}>
                 <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>

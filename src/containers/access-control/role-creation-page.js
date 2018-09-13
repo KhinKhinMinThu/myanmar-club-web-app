@@ -72,7 +72,14 @@ class RoleCreation extends Component {
         <Spin spinning={isPostApiLoading} size="large" delay={1000}>
           <Form>
             <FormItem label="Role Name">
-              {decorator('name')(<Input type="text" />)}
+              {decorator('name', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please input role name!',
+                  },
+                ],
+              })(<Input type="text" />)}
             </FormItem>
             <FormItem label="Role Description">
               {decorator('description')(<Input type="text" />)}
