@@ -15,6 +15,7 @@ export const POST_NEWEVENT = '[EVENTMGMT_DATA] POST_NEWEVENT';
 export const POST_NEWEVENTRSVP = '[EVENTMGMT_DATA] POST_NEWEVENTRSVP';
 export const POST_UPDATEEVENT = '[EVENTMGMT_DATA] POST_UPDATEEVENT';
 export const POST_NOTIFYEVENT = '[EVENTMGMT_DATA] POST_NOTIFYEVENT';
+export const POST_UPDATEREGPAYMENT = '[EVENTMGMT_DATA] POST_UPDATEREGPAYMENT';
 export const POST_ERROR = '[EVENTMGMT_DATA] POST_ERROR';
 // end
 
@@ -52,7 +53,10 @@ export const postNotifyEvent = notification => ({
   type: POST_NOTIFYEVENT,
   notification,
 });
-
+export const postUpdateRegPayment = eventRSVPPayment => ({
+  type: POST_UPDATEREGPAYMENT,
+  eventRSVPPayment,
+});
 export default function (
   state = {
     isGetApiLoading: false,

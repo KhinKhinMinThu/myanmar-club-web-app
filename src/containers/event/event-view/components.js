@@ -1,7 +1,7 @@
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import {
-  Tabs, Button, Form, Input,
+  Tabs, Button, Form, Input, Popconfirm, Tooltip,
 } from 'antd';
 import { EVENT_EDIT } from '../../../actions/location';
 import {
@@ -9,6 +9,7 @@ import {
   BoldText,
   FullWidthTable,
   FullButton,
+  TableActionButton,
 } from '../shared-styled';
 import { layout } from '../shared-components';
 
@@ -162,6 +163,8 @@ export const RegistrationTable = ({
   onChange,
   sortedInfo,
   filteredInfo,
+  header,
+  deleteRegistration,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -184,7 +187,7 @@ export const RegistrationTable = ({
         return 0;
       },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
-      width: '19%',
+      width: '16%',
     },
     {
       title: 'Email Address',
@@ -196,13 +199,13 @@ export const RegistrationTable = ({
         return 0;
       },
       sortOrder: sortedInfo.columnKey === 'emailAddress' && sortedInfo.order,
-      width: '28%',
+      width: '26%',
     },
     {
       title: 'Mobile No',
       dataIndex: 'mobilePhone',
       key: 'mobilePhone',
-      width: '19%',
+      width: '10%',
     },
     {
       title: 'No. of Ticket(s)',
@@ -224,10 +227,34 @@ export const RegistrationTable = ({
       sortOrder: sortedInfo.columnKey === 'paymentType' && sortedInfo.order,
       width: '15%',
     },
+    {
+      title: 'Paid?',
+      dataIndex: 'isPaid',
+      key: 'isPaid',
+      sorter: (a, b) => {
+        if (a.isPaid < b.isPaid) return -1;
+        if (a.isPaid > b.isPaid) return 1;
+        return 0;
+      },
+      sortOrder: sortedInfo.columnKey === 'isPaid' && sortedInfo.order,
+      width: '7%',
+    },
+    {
+      title: '',
+      key: '',
+      width: '7%',
+      // render: (text, record) => ()
+      render: record => (
+        <div>
+          <DeleteButton record={record} action={deleteRegistration} />
+        </div>
+      ),
+    },
   ];
 
   return (
     <FullWidthTable
+      title={() => header}
       columns={columns}
       dataSource={registrationList}
       rowSelection={rowSelection}
@@ -238,3 +265,15 @@ export const RegistrationTable = ({
     />
   );
 };
+
+// DeleteButton for RegistrationTable
+export const DeleteButton = ({ record, action }) => (
+  <Popconfirm
+    title="Confirm to remove this registration?"
+    onConfirm={() => action(record.id)}
+  >
+    <Tooltip title="Delete Registraiton">
+      <TableActionButton icon="delete" />
+    </Tooltip>
+  </Popconfirm>
+);

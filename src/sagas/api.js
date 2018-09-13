@@ -2,12 +2,23 @@ import axios from 'axios';
 import { BASE_URL } from '../actions/constants';
 
 // const loginState = state => state.login.data;
+// export function* saveProjectTask() {
+//   while(true) {
+//     yield take(SAVE_PROJECT);
+//     let project = yield select(getProject); // <-- get the project
+//     yield call(fetch, '/api/project', { body: project, method: 'PUT' });
+//     yield put({type: SAVE_PROJECT_SUCCESS});
+//   }
+// }
+
+// axios.defaults.headers.common.Authorization = 'Bearer ABC';
 export const api = axios.create({
   timeout: 5000,
   baseURL: BASE_URL,
   headers: {
     'content-type': 'application/json',
-    // Authorization: `Bearer ${loginState.token ? loginState.token : ''}`,
+    // Authorization: `Bearer ${state.login.data.token}`,
+    // Authorization: 'Bearer ABC',
   },
 });
 

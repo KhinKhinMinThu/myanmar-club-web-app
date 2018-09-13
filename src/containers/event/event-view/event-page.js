@@ -27,7 +27,9 @@ class EventPage extends Component {
   componentDidUpdate(prevProps) {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
+      eventmgmtUI: { currentTab },
     } = this.props;
+    if (currentTab !== 'tab1') return;
 
     const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
@@ -111,11 +113,13 @@ EventPage.propTypes = {
   form: PropTypes.shape({}).isRequired,
   performNotifyEvent: PropTypes.func.isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
+  eventmgmtUI: PropTypes.shape({}).isRequired,
   history: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
   eventmgmtData: state.eventmgmt.data,
+  eventmgmtUI: state.eventmgmt.ui,
 });
 
 const formatDate = (strDate) => {

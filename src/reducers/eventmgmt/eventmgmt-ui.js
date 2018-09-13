@@ -4,6 +4,7 @@ export const DESELECTALL_LOADING = '[EVENTMGMT_UI] DESELECTALL_LOADING';
 export const SELECTALL_LOADING = '[EVENTMGMT_UI] SELECTALL_LOADING';
 export const SORTEDINFO = '[EVENTMGMT_UI] SORTEDINFO';
 export const FILTEREDINFO = '[EVENTMGMT_UI] FILTEREDINFO';
+export const SETACTION = '[EVENTMGMT_UI] SETACTION';
 export const RESETSTATE = '[EVENTMGMT_UI] RESETSTATE';
 
 export const setCurrentTab = currentTab => ({
@@ -36,6 +37,10 @@ export const setFilteredInfo = filteredInfo => ({
   payload: filteredInfo,
 });
 
+export const setAction = action => ({
+  type: SETACTION,
+  payload: action,
+});
 export const resetState = () => ({ type: RESETSTATE });
 
 const initialState = {
@@ -50,6 +55,7 @@ export default function (
   state = {
     ...initialState,
     currentTab: 'tab1',
+    action: null,
   },
   action,
 ) {
@@ -88,6 +94,11 @@ export default function (
       return {
         ...state,
         ...initialState,
+      };
+    case SETACTION:
+      return {
+        ...state,
+        action: action.payload,
       };
     default:
       return state;

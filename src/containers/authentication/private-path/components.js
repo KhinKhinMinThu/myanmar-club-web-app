@@ -2,17 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Menu } from 'antd';
-import { MenuItem, MenuIcon } from '../shared-styled';
+import { MenuItem, SubMenu, MenuIcon } from '../shared-styled';
 import {
   DASHBOARD,
   PROFILE,
   LOGOUT,
   LOGIN,
+  ROLE_ASSIGN,
   ROLE_MANAGEMENT,
   MEMBER_MANAGEMENT,
   CLAIM_MANAGEMENT,
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
+  EVENT_CREATION,
 } from '../../../actions/location';
 import { setLogout } from '../../../reducers/login/login-data';
 import { locationChange } from '../../../reducers/router';
@@ -27,9 +29,13 @@ const commonTitles = {
 };
 
 const adminTitles = {
+  ROLE_ASSIGN: {
+    icon: <MenuIcon type="setting" />,
+    text: 'Assign Roles',
+  },
   ROLE_MANAGEMENT: {
     icon: <MenuIcon type="setting" />,
-    text: 'Roles Management',
+    text: 'Create/ Update Roles',
   },
   MEMBER_MANAGEMENT: {
     icon: <MenuIcon type="user" />,
@@ -45,7 +51,11 @@ const adminTitles = {
   },
   EVENT_MANAGEMENT: {
     icon: <MenuIcon type="calendar" />,
-    text: 'Events Management',
+    text: 'View Events List',
+  },
+  EVENT_CREATION: {
+    icon: <MenuIcon type="calendar" />,
+    text: 'Create New Event',
   },
 };
 
@@ -68,10 +78,22 @@ const MenuPanel = ({
       updateLocation({ location });
     }
   };
+  const roleMgmtSubMenu = (
+    <span>
+      <MenuIcon type="setting" />
+      <span>Role Management</span>
+    </span>
+  );
+  const eventMgmtSubMenu = (
+    <span>
+      <MenuIcon type="calendar" />
+      <span>Event Management</span>
+    </span>
+  );
 
   return (
     <Menu
-      mode="inline"
+      mode="vertical"
       onClick={onClick}
       selectedKeys={selectedKeys}
       style={{
@@ -88,10 +110,16 @@ const MenuPanel = ({
       </MenuItem>
       {isEcMember === '1'
         && functNameList.includes(ROLE_MANAGEMENT) && (
-          <MenuItem key={ROLE_MANAGEMENT}>
-            {adminTitles.ROLE_MANAGEMENT.icon}
-            {adminTitles.ROLE_MANAGEMENT.text}
-          </MenuItem>
+          <SubMenu key="roleMgmtSubMenu" title={roleMgmtSubMenu}>
+            <MenuItem key={ROLE_MANAGEMENT}>
+              {adminTitles.ROLE_MANAGEMENT.icon}
+              {adminTitles.ROLE_MANAGEMENT.text}
+            </MenuItem>
+            <MenuItem key={ROLE_ASSIGN}>
+              {adminTitles.ROLE_ASSIGN.icon}
+              {adminTitles.ROLE_ASSIGN.text}
+            </MenuItem>
+          </SubMenu>
       )}
       {isEcMember === '1'
         && functNameList.includes(MEMBER_MANAGEMENT) && (
@@ -116,10 +144,16 @@ const MenuPanel = ({
       )}
       {isEcMember === '1'
         && functNameList.includes(EVENT_MANAGEMENT) && (
-          <MenuItem key={EVENT_MANAGEMENT}>
-            {adminTitles.EVENT_MANAGEMENT.icon}
-            {adminTitles.EVENT_MANAGEMENT.text}
-          </MenuItem>
+          <SubMenu key="eventMgmtSubMenu" title={eventMgmtSubMenu}>
+            <MenuItem key={EVENT_MANAGEMENT}>
+              {adminTitles.EVENT_MANAGEMENT.icon}
+              {adminTitles.EVENT_MANAGEMENT.text}
+            </MenuItem>
+            <MenuItem key={EVENT_CREATION}>
+              {adminTitles.EVENT_CREATION.icon}
+              {adminTitles.EVENT_CREATION.text}
+            </MenuItem>
+          </SubMenu>
       )}
       <MenuItem key={LOGOUT}>
         <a href={LOGIN}>
