@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api, apiMultiPart } from './api';
+import { api, apiMultiPart, getAuthHeader } from './api';
 import {
   GET_EVENTSDATA,
   GET_EVENTDATA,
@@ -31,14 +31,15 @@ import {
 } from '../actions/constants';
 
 // GET REQUEST
-const getEventsData = () => api.get(APIGET_EVENTSDATA);
+const getEventsData = authHeader => api.get(APIGET_EVENTSDATA, authHeader);
 // POST TO GET DATA -.-
-const getEventData = id => api.post(APIGET_EVENTDATA, id);
+const getEventData = (id, authHeader) => api.post(APIGET_EVENTDATA, id, authHeader);
 function* asyncGetEventData(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getEventData, action.id);
+    const response = yield call(getEventData, action.id, authHeader);
     const { eventData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: EVENTDATA, payload: eventData });
@@ -54,8 +55,9 @@ function* asyncGetEventData(action) {
 function* asyncGetEventsData() {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getEventsData);
+    const response = yield call(getEventsData, authHeader);
     const { eventsData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: EVENTSDATA, payload: eventsData });
@@ -70,13 +72,13 @@ function* asyncGetEventsData() {
 // end
 
 // POST REQUEST
-const postDeleteEvent = eventsToDelete => api.post(APIPOST_DELETE_EVENT, eventsToDelete);
+const postDeleteEvent = (eventsToDelete, authHeader) => api.post(APIPOST_DELETE_EVENT, eventsToDelete, authHeader);
 
-const postDeleteRSVP = eventRSVPToDelete => api.post(APIPOST_DELETE_EVENT_RSVP, eventRSVPToDelete);
+const postDeleteRSVP = (eventRSVPToDelete, authHeader) => api.post(APIPOST_DELETE_EVENT_RSVP, eventRSVPToDelete, authHeader);
 
 // not posting with api.post(APIPOST_ADD_EVENT, { newEvenToAdd });
 // in order to filter uncessary data
-const postNewEvent = newEventToAdd => api.post(APIPOST_ADD_EVENT, {
+const postNewEvent = (newEventToAdd, authHeader) => api.post(APIPOST_ADD_EVENT, {
   name: newEventToAdd.name,
   description: newEventToAdd.description,
   startDate: newEventToAdd.startDate,
@@ -91,18 +93,18 @@ const postNewEvent = newEventToAdd => api.post(APIPOST_ADD_EVENT, {
   emailAddress: newEventToAdd.emailAddress,
   mobilePhone: newEventToAdd.mobilePhone,
   eventStatus: newEventToAdd.eventStatus,
-});
+}, authHeader);
 
-const postNewEventRSVP = newEventRSVPToAdd => api.post(APIPOST_ADD_EVENT_RSVP, {
+const postNewEventRSVP = (newEventRSVPToAdd, authHeader) => api.post(APIPOST_ADD_EVENT_RSVP, {
   eventID: newEventRSVPToAdd.id,
   name: newEventRSVPToAdd.memberName,
   emailAddress: newEventRSVPToAdd.memberEmailAddress,
   mobilePhone: newEventRSVPToAdd.memberMobilePhone,
   noOfPax: newEventRSVPToAdd.memberNoOfPax,
   paymentType: newEventRSVPToAdd.paymentType,
-});
+}, authHeader);
 
-const postUpdateEvent = eventToUpdate => api.post(APIPOST_UPDATE_EVENT, {
+const postUpdateEvent = (eventToUpdate, authHeader) => api.post(APIPOST_UPDATE_EVENT, {
   id: eventToUpdate.id,
 
   name: eventToUpdate.name,
@@ -119,16 +121,16 @@ const postUpdateEvent = eventToUpdate => api.post(APIPOST_UPDATE_EVENT, {
   emailAddress: eventToUpdate.emailAddress,
   mobilePhone: eventToUpdate.mobilePhone,
   eventStatus: eventToUpdate.eventStatus,
-});
+}, authHeader);
 
-const postEventPhoto = multipartForm => apiMultiPart.post(APIPOST_ADD_EVENTPHOTO, multipartForm);
+const postEventPhoto = (multipartForm, authHeader) => apiMultiPart.post(APIPOST_ADD_EVENTPHOTO, multipartForm, authHeader);
 
-const postNotifyEvent = notification => api.post(APIPOST_NOTIFY_EVENT, {
+const postNotifyEvent = (notification, authHeader) => api.post(APIPOST_NOTIFY_EVENT, {
   id: notification.id,
   url: notification.url,
-});
+}, authHeader);
 
-const postUpdateRegPayment = eventRSVPPayment => api.post(APIPOST_UPDATE_REGPAYMENT, eventRSVPPayment);
+const postUpdateRegPayment = (eventRSVPPayment, authHeader) => api.post(APIPOST_UPDATE_REGPAYMENT, eventRSVPPayment, authHeader);
 
 const assembleFormData = ({ eventId, imageFile }) => {
   if (eventId && imageFile) {
@@ -146,6 +148,7 @@ const assembleFormData = ({ eventId, imageFile }) => {
 function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -166,44 +169,41 @@ function* asyncPostProcessEvents(action) {
 
     switch (action.type) {
       case POST_DELETEEVENT:
-        response = yield call(postDeleteEvent, action.eventsToDelete);
+        response = yield call(postDeleteEvent, action.eventsToDelete, authHeader);
         break;
       case POST_DELETERSVP:
-        response = yield call(postDeleteRSVP, action.eventRSVPToDelete);
+        response = yield call(postDeleteRSVP, action.eventRSVPToDelete, authHeader);
         break;
       case POST_NEWEVENTRSVP:
-        response = yield call(postNewEventRSVP, action.newEventRSVPToAdd);
+        response = yield call(postNewEventRSVP, action.newEventRSVPToAdd, authHeader);
         break;
       case POST_NEWEVENT:
-        response = yield call(postNewEvent, action.newEventToAdd);
+        response = yield call(postNewEvent, action.newEventToAdd, authHeader);
         multipartForm = assembleFormData({
           eventId: response.data.id,
           imageFile: eventData.uploadBtn[0],
         });
         console.log('eventId', response.data.id, 'mpf', multipartForm);
-        if (multipartForm) response = yield call(postEventPhoto, multipartForm);
+        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authHeader);
         break;
       case POST_UPDATEEVENT:
-        response = yield call(postUpdateEvent, action.eventToUpdate);
+        response = yield call(postUpdateEvent, action.eventToUpdate, authHeader);
         multipartForm = assembleFormData({
           eventId: eventData.id,
           imageFile: eventData.uploadBtn[0],
         });
         console.log('eventId', eventData.id, 'mpf', multipartForm);
-        if (multipartForm) response = yield call(postEventPhoto, multipartForm);
+        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authHeader);
 
         break;
       case POST_NOTIFYEVENT:
-        response = yield call(postNotifyEvent, action.notification);
+        response = yield call(postNotifyEvent, action.notification, authHeader);
         break;
       case POST_UPDATEREGPAYMENT:
-        response = yield call(postUpdateRegPayment, action.eventRSVPPayment);
+        response = yield call(postUpdateRegPayment, action.eventRSVPPayment, authHeader);
         break;
       default:
     }
-    // console.log('eventId', eventId, 'mpf', multipartForm);
-    // if (multipartForm) response = yield call(postEventPhoto, multipartForm);
-
     const { errorMsg } = response.data;
     errMsg = errorMsg;
 

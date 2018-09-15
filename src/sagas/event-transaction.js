@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api } from './api';
+import { api, getAuthHeader } from './api';
 import {
   GET_EVENTTRANSACDATA,
   GET_APILOADING,
@@ -17,13 +17,14 @@ import {
 } from '../actions/constants';
 
 // GET REQUEST
-const getEventTranscData = () => api.get(APIGET_EVENTTRANSCDATA);
+const getEventTranscData = authHeader => api.get(APIGET_EVENTTRANSCDATA, authHeader);
 
 function* asyncGetEventTranscData() {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getEventTranscData);
+    const response = yield call(getEventTranscData, authHeader);
     const { eventsData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: EVENTTRANSACDATA, payload: eventsData });
@@ -39,19 +40,28 @@ function* asyncGetEventTranscData() {
 // end
 
 // POST REQUEST
-const postDeleteEventTransc = eventTranscToDelete => api.post(APIPOST_DELETE_EVENTTRANSC, {
-  eventId: eventTranscToDelete.eventId,
-  transacIdToRemove: eventTranscToDelete.transacIdToRemove,
-});
+const postDeleteEventTransc = (eventTranscToDelete, authHeader) => api.post(
+  APIPOST_DELETE_EVENTTRANSC,
+  {
+    eventId: eventTranscToDelete.eventId,
+    transacIdToRemove: eventTranscToDelete.transacIdToRemove,
+  },
+  authHeader,
+);
 
-const postAddEventTransc = eventTranscToAdd => api.post(APIPOST_ADD_EVENTTRANSC, {
-  eventId: eventTranscToAdd.eventId,
-  transacDataToAdd: eventTranscToAdd.transacDataToAdd,
-});
+const postAddEventTransc = (eventTranscToAdd, authHeader) => api.post(
+  APIPOST_ADD_EVENTTRANSC,
+  {
+    eventId: eventTranscToAdd.eventId,
+    transacDataToAdd: eventTranscToAdd.transacDataToAdd,
+  },
+  authHeader,
+);
 
 function* asyncPostProcessEventTransc(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -62,8 +72,20 @@ function* asyncPostProcessEventTransc(action) {
       action.eventTranscToAdd,
     );
 
-    if (action.type === POST_DELETETRANSC) response = yield call(postDeleteEventTransc, action.eventTranscToDelete);
-    if (action.type === POST_ADDTRANSC) response = yield call(postAddEventTransc, action.eventTranscToAdd);
+    if (action.type === POST_DELETETRANSC) {
+      response = yield call(
+        postDeleteEventTransc,
+        action.eventTranscToDelete,
+        authHeader,
+      );
+    }
+    if (action.type === POST_ADDTRANSC) {
+      response = yield call(
+        postAddEventTransc,
+        action.eventTranscToAdd,
+        authHeader,
+      );
+    }
 
     const { errorMsg } = response.data;
     errMsg = errorMsg;

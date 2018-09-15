@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api, apiMultiPart } from './api';
+import { api, apiMultiPart, getAuthHeader } from './api';
 import {
   GET_MEMBERSDATA,
   GET_MEMBERDATA,
@@ -34,18 +34,19 @@ import {
 } from '../actions/constants';
 
 // GET REQUEST
-const getMembersData = () => api.get(APIGET_MEMBERSDATA);
-const getMemberFormFields = () => api.get(APIGET_MEBERFORMFIELDS);
+const getMembersData = authHeader => api.get(APIGET_MEMBERSDATA, authHeader);
+const getMemberFormFields = authHeader => api.get(APIGET_MEBERFORMFIELDS, authHeader);
 // POST TO GET DATA -.-
-const getMemberData = id => api.post(APIGET_MEMBERDATA, id);
+const getMemberData = (id, authHeader) => api.post(APIGET_MEMBERDATA, id, authHeader);
 function* asyncGetMemberData(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     let response;
 
     yield put({ type: GET_APILOADING, payload: true });
     if (action.type === GET_MEMBERDATA) {
-      response = yield call(getMemberData, action.id);
+      response = yield call(getMemberData, action.id, authHeader);
       const { memberData, errorMsg } = response.data;
       errMsg = errorMsg;
       console.log('API RESPONSE.........', response);
@@ -56,7 +57,7 @@ function* asyncGetMemberData(action) {
       }
     }
     if (action.type === GET_MEMBERFORMFIELDS) {
-      response = yield call(getMemberFormFields);
+      response = yield call(getMemberFormFields, authHeader);
       const { memberFormFields, errorMsg } = response.data;
       errMsg = errorMsg;
       console.log('API RESPONSE.........', response);
@@ -81,8 +82,9 @@ function* asyncGetMemberData(action) {
 function* asyncGetMembersData() {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getMembersData);
+    const response = yield call(getMembersData, authHeader);
     const { membersData, errorMsg } = response.data;
     errMsg = errorMsg;
     if (membersData) {
@@ -105,77 +107,97 @@ function* asyncGetMembersData() {
 // end
 
 // POST REQUEST
-const postDeleteMembers = membersToDelete => api.post(APIPOST_DELETE_MEMBERS, membersToDelete);
+const postDeleteMembers = (membersToDelete, authHeader) => api.post(APIPOST_DELETE_MEMBERS, membersToDelete, authHeader);
 
 // not posting with api.post(APIPOST_ADD_EVENT, { memberToUpdate });
 // in order to filter uncessary data
-const postUpdateMember = memberToUpdate => api.post(APIPOST_UPDATE_PROFILE, {
-  id: memberToUpdate.id,
-  name: memberToUpdate.name,
-  gender: memberToUpdate.gender,
-  dateOfBirth: memberToUpdate.dateOfBirth,
-  maritalStatus: memberToUpdate.maritalStatus,
-  educationLevel: memberToUpdate.educationLevel,
-  occupation: memberToUpdate.occupation,
-  passType: memberToUpdate.passType,
-  idNumber: memberToUpdate.idNumber,
-  addressLine1: memberToUpdate.addressLine1,
-  addressLine2: memberToUpdate.addressLine2,
-  postalCode: memberToUpdate.postalCode,
-  emailAddress: memberToUpdate.emailAddress,
-  password: memberToUpdate.password,
-  facebookAccount: memberToUpdate.facebookAccount,
-  homePhone: memberToUpdate.homePhone,
-  mobilePhone: memberToUpdate.mobilePhone,
-  hobbies: memberToUpdate.hobbies,
-  isEcMember: memberToUpdate.isEcMember,
-  nationality: memberToUpdate.nationality,
-  religion: memberToUpdate.religion,
-  subComInterest: memberToUpdate.subComInterest,
-  roleNames: memberToUpdate.roleNames,
-});
-const postUpdateMembershipAdmin = membershipToUpdate => api.post(APIPOST_UPDATE_MEMBERSHIPADMIN, {
-  id: membershipToUpdate.id,
-  paymentType: membershipToUpdate.paymentType,
-  membershipType: membershipToUpdate.membershipType,
-  totalAmount: membershipToUpdate.totalAmount,
-});
-const postUpdateMembershipMember = membershipToUpdate => api.post(APIPOST_UPDATE_MEMBERSHIPMEMBER, {
-  id: membershipToUpdate.id,
-  paymentType: membershipToUpdate.paymentType,
-  membershipType: membershipToUpdate.membershipType,
-  totalAmount: membershipToUpdate.totalAmount,
-});
-const postMemberPhoto = multipartForm => apiMultiPart.post(APIPOST_ADD_MEMBERPHOTO, multipartForm);
-const postSignup = memberToAdd => api.post(APIPOST_SIGNUP, {
-  name: memberToAdd.name,
-  gender: memberToAdd.gender,
-  dateOfBirth: memberToAdd.dateOfBirth,
-  nationality: memberToAdd.nationality,
-  religion: memberToAdd.religion,
-  maritalStatus: memberToAdd.maritalStatus,
-  educationLevel: memberToAdd.educationLevel,
-  occupation: memberToAdd.occupation,
-  passType: memberToAdd.passType,
-  idNumber: memberToAdd.idNumber,
-  addressLine1: memberToAdd.addressLine1,
-  addressLine2: memberToAdd.addressLine2,
-  postalCode: memberToAdd.postalCode,
-  emailAddress: memberToAdd.emailAddress,
-  password: memberToAdd.password,
-  facebookAccount: memberToAdd.facebookAccount,
-  homePhone: memberToAdd.homePhone,
-  mobilePhone: memberToAdd.mobilePhone,
-  hobbies: memberToAdd.hobbies,
-  subComInterest: memberToAdd.subComInterest,
-  membershipType: memberToAdd.membershipType,
-  paymentType: memberToAdd.paymentType,
-  totalAmount: memberToAdd.totalAmount,
-});
-const postCheckEmail = checkParams => api.post(APIPOST_CHECKEMAIL, {
-  memberId: checkParams.memberId,
-  email: checkParams.email,
-});
+const postUpdateMember = (memberToUpdate, authHeader) => api.post(
+  APIPOST_UPDATE_PROFILE,
+  {
+    id: memberToUpdate.id,
+    name: memberToUpdate.name,
+    gender: memberToUpdate.gender,
+    dateOfBirth: memberToUpdate.dateOfBirth,
+    maritalStatus: memberToUpdate.maritalStatus,
+    educationLevel: memberToUpdate.educationLevel,
+    occupation: memberToUpdate.occupation,
+    passType: memberToUpdate.passType,
+    idNumber: memberToUpdate.idNumber,
+    addressLine1: memberToUpdate.addressLine1,
+    addressLine2: memberToUpdate.addressLine2,
+    postalCode: memberToUpdate.postalCode,
+    emailAddress: memberToUpdate.emailAddress,
+    password: memberToUpdate.password,
+    facebookAccount: memberToUpdate.facebookAccount,
+    homePhone: memberToUpdate.homePhone,
+    mobilePhone: memberToUpdate.mobilePhone,
+    hobbies: memberToUpdate.hobbies,
+    isEcMember: memberToUpdate.isEcMember,
+    nationality: memberToUpdate.nationality,
+    religion: memberToUpdate.religion,
+    subComInterest: memberToUpdate.subComInterest,
+    roleNames: memberToUpdate.roleNames,
+  },
+  authHeader,
+);
+const postUpdateMembershipAdmin = (membershipToUpdate, authHeader) => api.post(
+  APIPOST_UPDATE_MEMBERSHIPADMIN,
+  {
+    id: membershipToUpdate.id,
+    paymentType: membershipToUpdate.paymentType,
+    membershipType: membershipToUpdate.membershipType,
+    totalAmount: membershipToUpdate.totalAmount,
+  },
+  authHeader,
+);
+const postUpdateMembershipMember = (membershipToUpdate, authHeader) => api.post(
+  APIPOST_UPDATE_MEMBERSHIPMEMBER,
+  {
+    id: membershipToUpdate.id,
+    paymentType: membershipToUpdate.paymentType,
+    membershipType: membershipToUpdate.membershipType,
+    totalAmount: membershipToUpdate.totalAmount,
+  },
+  authHeader,
+);
+const postMemberPhoto = (multipartForm, authHeader) => apiMultiPart.post(APIPOST_ADD_MEMBERPHOTO, multipartForm, authHeader);
+const postSignup = (memberToAdd, authHeader) => api.post(
+  APIPOST_SIGNUP,
+  {
+    name: memberToAdd.name,
+    gender: memberToAdd.gender,
+    dateOfBirth: memberToAdd.dateOfBirth,
+    nationality: memberToAdd.nationality,
+    religion: memberToAdd.religion,
+    maritalStatus: memberToAdd.maritalStatus,
+    educationLevel: memberToAdd.educationLevel,
+    occupation: memberToAdd.occupation,
+    passType: memberToAdd.passType,
+    idNumber: memberToAdd.idNumber,
+    addressLine1: memberToAdd.addressLine1,
+    addressLine2: memberToAdd.addressLine2,
+    postalCode: memberToAdd.postalCode,
+    emailAddress: memberToAdd.emailAddress,
+    password: memberToAdd.password,
+    facebookAccount: memberToAdd.facebookAccount,
+    homePhone: memberToAdd.homePhone,
+    mobilePhone: memberToAdd.mobilePhone,
+    hobbies: memberToAdd.hobbies,
+    subComInterest: memberToAdd.subComInterest,
+    membershipType: memberToAdd.membershipType,
+    paymentType: memberToAdd.paymentType,
+    totalAmount: memberToAdd.totalAmount,
+  },
+  authHeader,
+);
+const postCheckEmail = (checkParams, authHeader) => api.post(
+  APIPOST_CHECKEMAIL,
+  {
+    memberId: checkParams.memberId,
+    email: checkParams.email,
+  },
+  authHeader,
+);
 const assembleFormData = ({ memberId, imageFile }) => {
   if (memberId && imageFile) {
     const mpf = new FormData();
@@ -189,6 +211,7 @@ const assembleFormData = ({ memberId, imageFile }) => {
 function* asyncPostProcessMembers(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -208,49 +231,63 @@ function* asyncPostProcessMembers(action) {
 
     switch (action.type) {
       case POST_DELETEMEMBERS:
-        response = yield call(postDeleteMembers, action.membersToDelete);
+        response = yield call(
+          postDeleteMembers,
+          action.membersToDelete,
+          authHeader,
+        );
         break;
       case POST_UPDATEMEMBER:
         // **********************
         // check for existing email
-        response = yield call(postCheckEmail, {
-          memberId: memberData.id,
-          email: memberData.emailAddress,
-        });
+        response = yield call(
+          postCheckEmail,
+          {
+            memberId: memberData.id,
+            email: memberData.emailAddress,
+          },
+          authHeader,
+        );
         isEmailFound = response.data.isFound;
         yield put({ type: CHECKEMAIL, payload: response.data.isFound });
         // **********************
         if (isEmailFound === '0') {
-          response = yield call(postUpdateMember, action.memberToUpdate);
+          response = yield call(
+            postUpdateMember,
+            action.memberToUpdate,
+            authHeader,
+          );
           multipartForm = assembleFormData({
             memberId: memberData.id,
             imageFile: memberData.uploadBtn[0],
           });
-          if (multipartForm) response = yield call(postMemberPhoto, multipartForm);
+          if (multipartForm) response = yield call(postMemberPhoto, multipartForm, authHeader);
         }
         break;
       case POST_UPDATEMEMBERSHIPADMIN:
         response = yield call(
           postUpdateMembershipAdmin,
           action.membershipToUpdate,
+          authHeader,
         );
         break;
       case POST_UPDATEMEMBERSHIPMEMBER:
         response = yield call(
           postUpdateMembershipMember,
           action.membershipToUpdate,
+          authHeader,
         );
         break;
       case POST_SIGNUP:
-        response = yield call(postSignup, action.memberToAdd);
+        response = yield call(postSignup, action.memberToAdd, authHeader);
         multipartForm = assembleFormData({
           memberId: response.data.id,
           imageFile: memberData.uploadBtn[0],
         });
-        if (multipartForm) response = yield call(postMemberPhoto, multipartForm);
+        if (multipartForm) response = yield call(postMemberPhoto, multipartForm, authHeader);
         break;
       case POST_CHECKEMAIL:
-        response = yield call(postCheckEmail, action.checkParams);
+        response = yield call(postCheckEmail, action.checkParams, authHeader);
         yield put({ type: CHECKEMAIL, payload: response.data.isFound });
         break;
       default:
