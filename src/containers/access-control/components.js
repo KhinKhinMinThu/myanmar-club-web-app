@@ -13,7 +13,6 @@ import {
 } from './styled-components';
 
 const FormItem = Form.Item;
-const TextArea = Form.text;
 /* eslint react/prop-types: 0 */
 
 // RolesTable
@@ -26,7 +25,6 @@ export const RolesTable = ({
   sortedInfo,
   filteredInfo,
   expandedRowKeys,
-  targetKeys,
   onExpand,
   onSubmit,
   header,
@@ -124,7 +122,6 @@ export const RolesTable = ({
       functionList={functionList}
       selectedFunction={expandedRowKeys}
       onSubmit={onSubmit}
-      targetKeys={targetKeys}
       bordered
       size="small"
       style={{ marginBottom: '30px' }}
@@ -132,7 +129,11 @@ export const RolesTable = ({
       expandedRowKeys={expandedRowKeys}
       onExpand={onExpand}
       expandedRowRender={() => (
-        <FunctionTransfer decorator={decorator} targetKeys={targetKeys} dataSource={functionList} onSubmit={onSubmit} />
+        <FunctionTransfer
+          decorator={decorator}
+          dataSource={functionList}
+          onSubmit={onSubmit}
+        />
       )}
     />
   );
@@ -273,8 +274,8 @@ export const CreateRoleButton = ({ showModal }) => (
 export const FunctionTransfer = ({
   dataSource,
   isPostApiLoading,
-  targetKeys,
   onSubmit,
+  decorator,
 }) => {
   const titles = [
     <BoldUnderlineText>Function(s) to be assigned:</BoldUnderlineText>,
@@ -284,43 +285,33 @@ export const FunctionTransfer = ({
   return (
     <Col span={15} offset={5}>
       <FormItem>
-
-        <Transfer
-          dataSource={dataSource}
-          titles={titles}
-          targetKeys={targetKeys}
-          showSearch
-          searchPlaceholder="Search function"
-          listStyle={{
-            width: 350,
-            height: 300,
-            textAlign: 'left',
-          }}
-          render={item => item.description}
-        />,
-
+        {decorator('functionTransfer', {
+          valuePropName: 'targetKeys',
+        })(
+          <Transfer
+            dataSource={dataSource}
+            titles={titles}
+            showSearch
+            searchPlaceholder="Search function"
+            listStyle={{
+              width: 350,
+              height: 300,
+              textAlign: 'left',
+            }}
+            render={item => item.description}
+          />,
+        )}
       </FormItem>
       <FormItem>
-        <FullButton type="primary" htmlType="submit" onClick={onSubmit} loading={isPostApiLoading}>
+        <FullButton
+          type="primary"
+          htmlType="submit"
+          onClick={onSubmit}
+          loading={isPostApiLoading}
+        >
           Save Updates
         </FullButton>
       </FormItem>
     </Col>
   );
 };
-
-// Role Name
-export const RoleNameInput = ({ decorator }) => (
-  <FormItem label="Role Name">
-    {decorator('name')(<Input placeholder="Role Name" />)}
-  </FormItem>
-);
-
-// Role Description
-export const RoleDescriptionInput = ({ decorator }) => (
-  <FormItem label="Description">
-    {decorator('description')(
-      <TextArea rows={2} placeholder="Role Description" />,
-    )}
-  </FormItem>
-);

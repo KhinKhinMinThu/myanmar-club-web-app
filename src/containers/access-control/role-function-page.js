@@ -164,8 +164,9 @@ class AccessControl extends Component {
     } = this.props;
     const { selectedRole } = this.state;
     validateFieldsAndScroll((err, values) => {
-      if (err) return;
+      // if (err) return;
       const { functionTransfer } = values;
+      console.log('values', values);
       const roleId = selectedRole.toString();
       // get the original list of selected role
       const affectedRole = accesscontrolData
@@ -293,7 +294,7 @@ class AccessControl extends Component {
       dispatchSelectedKeys,
       form,
     } = this.props;
-    const { isModalVisible, selectedRole } = this.state;
+    const { isModalVisible } = this.state;
     const rowSelection = {
       selectedRowKeys: selectedKeys,
       onChange: keys => dispatchSelectedKeys(keys),
@@ -301,11 +302,6 @@ class AccessControl extends Component {
     const hasSelected = selectedKeys.length > 0;
     if (accesscontrolData) this.roleList = this.prepareList(accesscontrolData);
     const dataSource = accesscontrolData ? this.funcList(accesscontrolData) : [];
-    const targetKeys = accesscontrolData
-      ? accesscontrolData
-        .find(item => item.roleId === selectedRole)
-        .functions.map(item => `${item.id}`)
-      : [];
     const header = this.roleList
       ? 'Total roles: '.concat(this.roleList.length)
       : '';
@@ -375,7 +371,6 @@ class AccessControl extends Component {
                   roleList={this.roleList}
                   functionList={dataSource}
                   decorator={getFieldDecorator}
-                  targetKeys={targetKeys}
                   rowSelection={rowSelection}
                   onChange={(pagination, filters, sorter) => {
                     dispatchSortedInfo(sorter);
