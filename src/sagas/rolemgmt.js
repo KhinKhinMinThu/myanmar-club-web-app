@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api } from './api';
+import { api, getAuthHeader } from './api';
 import {
   GET_ROLEDATA,
   ROLEDATA,
@@ -14,12 +14,13 @@ import {
 import { APIGET_ROLEDATA, APIPOST_ASSIGN_ROLES } from '../actions/constants';
 
 // GET REQUEST
-const getRoleData = () => api.get(APIGET_ROLEDATA);
+const getRoleData = authHeader => api.get(APIGET_ROLEDATA, authHeader);
 function* asyncGetRoleData() {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getRoleData);
+    const response = yield call(getRoleData, authHeader);
     console.log('API RESPONSE.........', response);
 
     const { roleData, errorMsg } = response.data;
@@ -48,11 +49,12 @@ function* asyncGetRoleData() {
 // end
 
 // POST REQUEST
-const postAssignRoles = rolesAssignmnet => api.post(APIPOST_ASSIGN_ROLES, rolesAssignmnet);
+const postAssignRoles = (rolesAssignmnet, authHeader) => api.post(APIPOST_ASSIGN_ROLES, rolesAssignmnet, authHeader);
 
 function* asyncPostProcessRoles(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -60,7 +62,11 @@ function* asyncPostProcessRoles(action) {
 
     switch (action.type) {
       case POST_ASSIGNROLES:
-        response = yield call(postAssignRoles, action.rolesAssignment);
+        response = yield call(
+          postAssignRoles,
+          action.rolesAssignment,
+          authHeader,
+        );
         break;
       default:
     }

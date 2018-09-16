@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api } from './api';
+import { api, getAuthHeader } from './api';
 import {
   GET_CLAIMSDATA,
   GET_APILOADING,
@@ -18,13 +18,14 @@ import {
 } from '../actions/constants';
 
 // GET REQUEST
-const getClaimsData = () => api.get(APIGET_CLAIMSDATA);
+const getClaimsData = authHeader => api.get(APIGET_CLAIMSDATA, authHeader);
 
 function* asyncGetClaimsData() {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getClaimsData);
+    const response = yield call(getClaimsData, authHeader);
     const { claimsData, errorMsg } = response.data;
     errMsg = errorMsg;
     if (claimsData) {
@@ -45,14 +46,15 @@ function* asyncGetClaimsData() {
 // end
 
 // POST REQUEST
-const postApproveClaims = claimsToApprove => api.post(APIPOST_APPROVE_CLAIMS, claimsToApprove);
+const postApproveClaims = (claimsToApprove, authHeader) => api.post(APIPOST_APPROVE_CLAIMS, claimsToApprove, authHeader);
 
 // name must Ae claimsToUnApprove with capital A
-const postUnapproveClaims = claimsToUnApprove => api.post(APIPOST_UNAPPROVE_CLAIMS, claimsToUnApprove);
+const postUnapproveClaims = (claimsToUnApprove, authHeader) => api.post(APIPOST_UNAPPROVE_CLAIMS, claimsToUnApprove, authHeader);
 
 function* asyncPostProcessClaims(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -63,8 +65,20 @@ function* asyncPostProcessClaims(action) {
       action.claimsToUnApprove,
     );
 
-    if (action.type === POST_APPROVECLAIMS) response = yield call(postApproveClaims, action.claimsToApprove);
-    if (action.type === POST_UNAPPROVECLAIMS) response = yield call(postUnapproveClaims, action.claimsToUnApprove);
+    if (action.type === POST_APPROVECLAIMS) {
+      response = yield call(
+        postApproveClaims,
+        action.claimsToApprove,
+        authHeader,
+      );
+    }
+    if (action.type === POST_UNAPPROVECLAIMS) {
+      response = yield call(
+        postUnapproveClaims,
+        action.claimsToUnApprove,
+        authHeader,
+      );
+    }
     const { errorMsg } = response.data;
     errMsg = errorMsg;
 

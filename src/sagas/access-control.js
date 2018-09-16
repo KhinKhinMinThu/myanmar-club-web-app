@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api } from './api';
+import { api, getAuthHeader } from './api';
 import {
   GET_ACCESSCONTROLDATA,
   GET_APILOADING,
@@ -19,13 +19,14 @@ import {
 } from '../actions/constants';
 
 // GET REQUEST
-const getAccessControlData = () => api.get(APIGET_ACCESS_CONTROL);
+const getAccessControlData = authHeader => api.get(APIGET_ACCESS_CONTROL, authHeader);
 
 function* asyncGetAccessControlData() {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getAccessControlData);
+    const response = yield call(getAccessControlData, authHeader);
     const { accesscontrolData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: ACCESSCONTROLDATA, payload: accesscontrolData });
@@ -42,18 +43,23 @@ function* asyncGetAccessControlData() {
 
 // POST REQUEST
 
-const postAssignFunctions = functionsAssignment => api.post(APIPOST_UPDATE_ACCESSCONTROL, functionsAssignment);
+const postAssignFunctions = (functionsAssignment, authHeader) => api.post(APIPOST_UPDATE_ACCESSCONTROL, functionsAssignment, authHeader);
 
-const postDeleteRole = rolesToDelete => api.post(APIPOST_DELETE_ROLE, rolesToDelete);
+const postDeleteRole = (rolesToDelete, authHeader) => api.post(APIPOST_DELETE_ROLE, rolesToDelete, authHeader);
 
-const postNewRole = newRoleToAdd => api.post(APIPOST_ADD_ROLE, {
-  name: newRoleToAdd.name,
-  description: newRoleToAdd.description,
-  functions: newRoleToAdd.functions,
-});
+const postNewRole = (newRoleToAdd, authHeader) => api.post(
+  APIPOST_ADD_ROLE,
+  {
+    name: newRoleToAdd.name,
+    description: newRoleToAdd.description,
+    functions: newRoleToAdd.functions,
+  },
+  authHeader,
+);
 function* asyncPostProcessAccessControl(action) {
   let errMsg;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -64,9 +70,15 @@ function* asyncPostProcessAccessControl(action) {
       action.eventTranscToAdd,
     );
 
-    if (action.type === POST_DELETEROLE) response = yield call(postDeleteRole, action.rolesToDelete);
-    if (action.type === POST_NEWROLE) response = yield call(postNewRole, action.newRoleToAdd);
-    if (action.type === POST_ASSIGNFUNCTIONS) response = yield call(postAssignFunctions, action.functionsAssignment);
+    if (action.type === POST_DELETEROLE) response = yield call(postDeleteRole, action.rolesToDelete, authHeader);
+    if (action.type === POST_NEWROLE) response = yield call(postNewRole, action.newRoleToAdd, authHeader);
+    if (action.type === POST_ASSIGNFUNCTIONS) {
+      response = yield call(
+        postAssignFunctions,
+        action.functionsAssignment,
+        authHeader,
+      );
+    }
     const { errorMsg } = response.data;
     errMsg = errorMsg;
 

@@ -1,6 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { api } from './api';
+import { api, getAuthHeader } from './api';
 import {
   POST_LOGIN,
   LOGINDATA,
@@ -10,24 +10,23 @@ import {
 import { DASHBOARD, LOGIN } from '../actions/location';
 import { APIPOST_LOGIN } from '../actions/constants';
 
-const postLogin = userData => api
-  .post(APIPOST_LOGIN, {
+const postLogin = (userData, authHeader) => api.post(
+  APIPOST_LOGIN,
+  {
     username: userData.username,
     password: userData.password,
-  })
-  .then((response) => {
-    console.log('res:', response);
-    return response;
-  });
+  },
+  authHeader,
+);
 
 function* asyncLogin(action) {
   let errMsg;
   let successLogin = false;
   try {
+    const authHeader = yield call(getAuthHeader);
     yield put({ type: POST_APILOADING, payload: true });
-
     console.log('Calling API.........', action.type, action.userData);
-    const response = yield call(postLogin, action.userData);
+    const response = yield call(postLogin, action.userData, authHeader);
     console.log('API RESPONSE.........', response);
 
     const {
