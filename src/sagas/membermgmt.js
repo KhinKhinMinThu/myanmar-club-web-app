@@ -1,5 +1,10 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api, apiMultiPart, getAuthHeader } from './api';
+import {
+  api,
+  apiMultiPart,
+  getAuthHeader,
+  getAuthMultiPartHeader,
+} from './api';
 import {
   GET_MEMBERSDATA,
   GET_MEMBERDATA,
@@ -160,7 +165,11 @@ const postUpdateMembershipMember = (membershipToUpdate, authHeader) => api.post(
   },
   authHeader,
 );
-const postMemberPhoto = (multipartForm, authHeader) => apiMultiPart.post(APIPOST_ADD_MEMBERPHOTO, multipartForm, authHeader);
+const postMemberPhoto = (multipartForm, authMultiPartHeader) => apiMultiPart.post(
+  APIPOST_ADD_MEMBERPHOTO,
+  multipartForm,
+  authMultiPartHeader,
+);
 const postSignup = (memberToAdd, authHeader) => api.post(
   APIPOST_SIGNUP,
   {
@@ -212,6 +221,7 @@ function* asyncPostProcessMembers(action) {
   let errMsg;
   try {
     const authHeader = yield call(getAuthHeader);
+    const authMultiPartHeader = yield call(getAuthMultiPartHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -261,7 +271,13 @@ function* asyncPostProcessMembers(action) {
             memberId: memberData.id,
             imageFile: memberData.uploadBtn[0],
           });
-          if (multipartForm) response = yield call(postMemberPhoto, multipartForm, authHeader);
+          if (multipartForm) {
+            response = yield call(
+              postMemberPhoto,
+              multipartForm,
+              authMultiPartHeader,
+            );
+          }
         }
         break;
       case POST_UPDATEMEMBERSHIPADMIN:
@@ -284,7 +300,13 @@ function* asyncPostProcessMembers(action) {
           memberId: response.data.id,
           imageFile: memberData.uploadBtn[0],
         });
-        if (multipartForm) response = yield call(postMemberPhoto, multipartForm, authHeader);
+        if (multipartForm) {
+          response = yield call(
+            postMemberPhoto,
+            multipartForm,
+            authMultiPartHeader,
+          );
+        }
         break;
       case POST_CHECKEMAIL:
         response = yield call(postCheckEmail, action.checkParams, authHeader);

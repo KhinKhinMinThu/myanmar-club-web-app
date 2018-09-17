@@ -1,5 +1,10 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { api, apiMultiPart, getAuthHeader } from './api';
+import {
+  api,
+  apiMultiPart,
+  getAuthHeader,
+  getAuthMultiPartHeader,
+} from './api';
 import {
   GET_EVENTSDATA,
   GET_EVENTDATA,
@@ -78,57 +83,73 @@ const postDeleteRSVP = (eventRSVPToDelete, authHeader) => api.post(APIPOST_DELET
 
 // not posting with api.post(APIPOST_ADD_EVENT, { newEvenToAdd });
 // in order to filter uncessary data
-const postNewEvent = (newEventToAdd, authHeader) => api.post(APIPOST_ADD_EVENT, {
-  name: newEventToAdd.name,
-  description: newEventToAdd.description,
-  startDate: newEventToAdd.startDate,
-  endDate: newEventToAdd.endDate,
-  locationLine1: newEventToAdd.locationLine1,
-  locationLine2: newEventToAdd.locationLine2,
-  locationPostalCode: newEventToAdd.locationPostalCode,
-  ticketFee: newEventToAdd.ticketFee,
-  noOfPax: newEventToAdd.noOfPax,
-  isRefreshmentProvided: newEventToAdd.isRefreshmentProvided,
-  contactPerson: newEventToAdd.contactPerson,
-  emailAddress: newEventToAdd.emailAddress,
-  mobilePhone: newEventToAdd.mobilePhone,
-  eventStatus: newEventToAdd.eventStatus,
-}, authHeader);
+const postNewEvent = (newEventToAdd, authHeader) => api.post(
+  APIPOST_ADD_EVENT,
+  {
+    name: newEventToAdd.name,
+    description: newEventToAdd.description,
+    startDate: newEventToAdd.startDate,
+    endDate: newEventToAdd.endDate,
+    locationLine1: newEventToAdd.locationLine1,
+    locationLine2: newEventToAdd.locationLine2,
+    locationPostalCode: newEventToAdd.locationPostalCode,
+    ticketFee: newEventToAdd.ticketFee,
+    noOfPax: newEventToAdd.noOfPax,
+    isRefreshmentProvided: newEventToAdd.isRefreshmentProvided,
+    contactPerson: newEventToAdd.contactPerson,
+    emailAddress: newEventToAdd.emailAddress,
+    mobilePhone: newEventToAdd.mobilePhone,
+    eventStatus: newEventToAdd.eventStatus,
+  },
+  authHeader,
+);
 
-const postNewEventRSVP = (newEventRSVPToAdd, authHeader) => api.post(APIPOST_ADD_EVENT_RSVP, {
-  eventID: newEventRSVPToAdd.id,
-  name: newEventRSVPToAdd.memberName,
-  emailAddress: newEventRSVPToAdd.memberEmailAddress,
-  mobilePhone: newEventRSVPToAdd.memberMobilePhone,
-  noOfPax: newEventRSVPToAdd.memberNoOfPax,
-  paymentType: newEventRSVPToAdd.paymentType,
-}, authHeader);
+const postNewEventRSVP = (newEventRSVPToAdd, authHeader) => api.post(
+  APIPOST_ADD_EVENT_RSVP,
+  {
+    eventID: newEventRSVPToAdd.id,
+    name: newEventRSVPToAdd.memberName,
+    emailAddress: newEventRSVPToAdd.memberEmailAddress,
+    mobilePhone: newEventRSVPToAdd.memberMobilePhone,
+    noOfPax: newEventRSVPToAdd.memberNoOfPax,
+    paymentType: newEventRSVPToAdd.paymentType,
+  },
+  authHeader,
+);
 
-const postUpdateEvent = (eventToUpdate, authHeader) => api.post(APIPOST_UPDATE_EVENT, {
-  id: eventToUpdate.id,
+const postUpdateEvent = (eventToUpdate, authHeader) => api.post(
+  APIPOST_UPDATE_EVENT,
+  {
+    id: eventToUpdate.id,
 
-  name: eventToUpdate.name,
-  description: eventToUpdate.description,
-  startDate: eventToUpdate.startDate,
-  endDate: eventToUpdate.endDate,
-  locationLine1: eventToUpdate.locationLine1,
-  locationLine2: eventToUpdate.locationLine2,
-  locationPostalCode: eventToUpdate.locationPostalCode,
-  ticketFee: eventToUpdate.ticketFee,
-  noOfPax: eventToUpdate.noOfPax,
-  isRefreshmentProvided: eventToUpdate.isRefreshmentProvided,
-  contactPerson: eventToUpdate.contactPerson,
-  emailAddress: eventToUpdate.emailAddress,
-  mobilePhone: eventToUpdate.mobilePhone,
-  eventStatus: eventToUpdate.eventStatus,
-}, authHeader);
+    name: eventToUpdate.name,
+    description: eventToUpdate.description,
+    startDate: eventToUpdate.startDate,
+    endDate: eventToUpdate.endDate,
+    locationLine1: eventToUpdate.locationLine1,
+    locationLine2: eventToUpdate.locationLine2,
+    locationPostalCode: eventToUpdate.locationPostalCode,
+    ticketFee: eventToUpdate.ticketFee,
+    noOfPax: eventToUpdate.noOfPax,
+    isRefreshmentProvided: eventToUpdate.isRefreshmentProvided,
+    contactPerson: eventToUpdate.contactPerson,
+    emailAddress: eventToUpdate.emailAddress,
+    mobilePhone: eventToUpdate.mobilePhone,
+    eventStatus: eventToUpdate.eventStatus,
+  },
+  authHeader,
+);
 
-const postEventPhoto = (multipartForm, authHeader) => apiMultiPart.post(APIPOST_ADD_EVENTPHOTO, multipartForm, authHeader);
+const postEventPhoto = (multipartForm, authMultiPartHeader) => apiMultiPart.post(APIPOST_ADD_EVENTPHOTO, multipartForm, authMultiPartHeader);
 
-const postNotifyEvent = (notification, authHeader) => api.post(APIPOST_NOTIFY_EVENT, {
-  id: notification.id,
-  url: notification.url,
-}, authHeader);
+const postNotifyEvent = (notification, authHeader) => api.post(
+  APIPOST_NOTIFY_EVENT,
+  {
+    id: notification.id,
+    url: notification.url,
+  },
+  authHeader,
+);
 
 const postUpdateRegPayment = (eventRSVPPayment, authHeader) => api.post(APIPOST_UPDATE_REGPAYMENT, eventRSVPPayment, authHeader);
 
@@ -149,6 +170,7 @@ function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
     const authHeader = yield call(getAuthHeader);
+    const authMultiPartHeader = yield call(getAuthMultiPartHeader);
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
@@ -169,13 +191,25 @@ function* asyncPostProcessEvents(action) {
 
     switch (action.type) {
       case POST_DELETEEVENT:
-        response = yield call(postDeleteEvent, action.eventsToDelete, authHeader);
+        response = yield call(
+          postDeleteEvent,
+          action.eventsToDelete,
+          authHeader,
+        );
         break;
       case POST_DELETERSVP:
-        response = yield call(postDeleteRSVP, action.eventRSVPToDelete, authHeader);
+        response = yield call(
+          postDeleteRSVP,
+          action.eventRSVPToDelete,
+          authHeader,
+        );
         break;
       case POST_NEWEVENTRSVP:
-        response = yield call(postNewEventRSVP, action.newEventRSVPToAdd, authHeader);
+        response = yield call(
+          postNewEventRSVP,
+          action.newEventRSVPToAdd,
+          authHeader,
+        );
         break;
       case POST_NEWEVENT:
         response = yield call(postNewEvent, action.newEventToAdd, authHeader);
@@ -184,23 +218,31 @@ function* asyncPostProcessEvents(action) {
           imageFile: eventData.uploadBtn[0],
         });
         console.log('eventId', response.data.id, 'mpf', multipartForm);
-        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authHeader);
+        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authMultiPartHeader);
         break;
       case POST_UPDATEEVENT:
-        response = yield call(postUpdateEvent, action.eventToUpdate, authHeader);
+        response = yield call(
+          postUpdateEvent,
+          action.eventToUpdate,
+          authHeader,
+        );
         multipartForm = assembleFormData({
           eventId: eventData.id,
           imageFile: eventData.uploadBtn[0],
         });
         console.log('eventId', eventData.id, 'mpf', multipartForm);
-        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authHeader);
+        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authMultiPartHeader);
 
         break;
       case POST_NOTIFYEVENT:
         response = yield call(postNotifyEvent, action.notification, authHeader);
         break;
       case POST_UPDATEREGPAYMENT:
-        response = yield call(postUpdateRegPayment, action.eventRSVPPayment, authHeader);
+        response = yield call(
+          postUpdateRegPayment,
+          action.eventRSVPPayment,
+          authHeader,
+        );
         break;
       default:
     }
