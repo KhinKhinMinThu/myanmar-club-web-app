@@ -17,6 +17,7 @@ import {
   EVENT_CREATION,
   EVENT_VIEW,
   EVENT_EDIT,
+  INCIDENT_SEARCH,
   INCIDENT_MANAGMENT,
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
@@ -34,7 +35,8 @@ import EventCreation from '../../event/event-creation';
 import EventManagementPage from '../../event/event-management';
 import EventEditPage from '../../event/event-edit';
 import EventViewPage from '../../event/event-view';
-import SearchIncidentPage from '../../incident/incident-managment';
+import SearchIncidentPage from '../../incident/incident-search';
+import IncidentManagementPage from '../../incident/incident-management';
 
 const {
   Header, Content, Sider, Footer,
@@ -69,7 +71,8 @@ class PrivatePage extends Component {
     if (pathname === EVENT_CREATION && functNameList.includes(EVENT_CREATION)) return EventCreation; // prettier-ignore
     if (pathname === EVENT_VIEW && functNameList.includes(EVENT_VIEW)) return id ? EventViewPage : ErrorPage; // prettier-ignore
     if (pathname === EVENT_EDIT && functNameList.includes(EVENT_EDIT)) return id ? EventEditPage : ErrorPage; // prettier-ignore
-    if (pathname === INCIDENT_MANAGMENT && functNameList.includes(INCIDENT_MANAGMENT)) return SearchIncidentPage; // prettier-ignore
+    if (pathname === INCIDENT_SEARCH && functNameList.includes(INCIDENT_SEARCH)) return SearchIncidentPage; // prettier-ignore
+    if (pathname === INCIDENT_MANAGMENT && functNameList.includes(INCIDENT_MANAGMENT)) return IncidentManagementPage; // prettier-ignore
     return ErrorPage;
   };
 

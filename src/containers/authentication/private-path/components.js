@@ -15,7 +15,7 @@ import {
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
   EVENT_CREATION,
-  INCIDENT_MANAGMENT,
+  INCIDENT_SEARCH,
 } from '../../../actions/location';
 import { setLogout } from '../../../reducers/login/login-data';
 import { locationChange } from '../../../reducers/router';
@@ -64,7 +64,7 @@ const adminTitles = {
     icon: <MenuIcon type="calendar" theme="filled" />,
     text: 'Create New Event',
   },
-  INCIDENT_MANAGMENT: {
+  INCIDENT_SEARCH: {
     icon: <MenuIcon type="alert" theme="filled" />,
     text: 'Incidents Management',
   },
@@ -167,10 +167,10 @@ const MenuPanel = ({
           </SubMenu>
       )}
       {isEcMember === '1'
-        && functNameList.includes(INCIDENT_MANAGMENT) && (
-          <MenuItem key={INCIDENT_MANAGMENT}>
-            {adminTitles.INCIDENT_MANAGMENT.icon}
-            {adminTitles.INCIDENT_MANAGMENT.text}
+        && functNameList.includes(INCIDENT_SEARCH) && (
+          <MenuItem key={INCIDENT_SEARCH}>
+            {adminTitles.INCIDENT_SEARCH.icon}
+            {adminTitles.INCIDENT_SEARCH.text}
           </MenuItem>
       )}
       <MenuItem key={LOGOUT}>
