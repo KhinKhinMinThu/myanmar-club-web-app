@@ -30,14 +30,6 @@ export const postAssignRoles = rolesAssignment => ({
   type: POST_ASSIGNROLES,
   rolesAssignment,
 });
-// delete
-export const SAVE = '[ROLEMGMT_DATA] SAVE';
-
-export const save = values => ({
-  type: SAVE,
-  payload: values,
-});
-// end
 
 export default function (
   state = {
@@ -48,52 +40,10 @@ export default function (
     roleData: null,
     roleNameList: [],
     allEcList: [],
-
-    // to get the data from API
-    roleData1: [
-      {
-        roleId: 0,
-        roleName: 'ECMEMBERS',
-        executives: [
-          { id: 1, name: 'Member1' },
-          { id: 2, name: 'Member2' },
-          { id: 3, name: 'Member3' },
-          { id: 4, name: 'Member4' },
-        ],
-      },
-      {
-        roleId: 1,
-        roleName: 'ROLE1',
-        executives: [
-          { id: 1, name: 'Member1' },
-          { id: 2, name: 'Member2' },
-          { id: 3, name: 'Member3' },
-        ],
-      },
-      {
-        roleId: 2,
-        roleName: 'ROLE2',
-        executives: [{ id: 1, name: 'Member1' }, { id: 4, name: 'Member4' }],
-      },
-    ],
-    // end
-
-    // to update to API
-    roleId: 0,
-    transferFrom: [],
-    transferTo: [],
-    // end
   },
   action,
 ) {
   switch (action.type) {
-    // delete
-    case SAVE:
-      return {
-        ...state,
-        ...action.payload,
-      };
-    // end
     case ROLEDATA:
       return {
         ...state,

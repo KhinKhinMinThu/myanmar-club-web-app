@@ -1,6 +1,6 @@
 // export const BASE_URL = 'http://demo0532724.mockable.io';
 // 'http://54.200.158.0/MyanmarClubAPI';
-export const BASE_URL = 'http://34.212.189.231/MyanmarClubAPI';
+export const BASE_URL = 'http://52.39.145.149/MyanmarClubAPI';
 
 export const TIMEZONE = 'Asia/Singapore';
 export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
@@ -48,6 +48,8 @@ export const APIGET_EVENTTRANSCDATA = '/event/getEventsTranscData';
 export const APIGET_EVENTSDATA = '/event/getEventsData';
 export const APIGET_MEBERFORMFIELDS = '/admin/memberFormFields';
 export const APIGET_ACCESS_CONTROL = '/admin/getAccessControlData';
+export const APIGET_INCIDENTTPYES = '/incident/getIncidentTypes';
+export const APIGET_SUBMITTEDBY = '/incident/getSubmittedBy';
 // end
 
 // POST API URLS
@@ -83,4 +85,6 @@ export const APIPOST_NOTIFY_EVENT = '/event/sendEventNotification';
 export const APIPOST_UPDATE_REGPAYMENT = '/event/updateRegPayment';
 
 export const APIPOST_FORGOTPWD = '/admin/forgotPassword';
+
+export const APIPOST_SEARCH_INCIDENTS = '/incident/getIncidents';
 // end

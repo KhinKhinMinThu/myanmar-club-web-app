@@ -15,47 +15,58 @@ import {
   EVENT_TRANSACTION,
   EVENT_MANAGEMENT,
   EVENT_CREATION,
+  INCIDENT_MANAGMENT,
 } from '../../../actions/location';
 import { setLogout } from '../../../reducers/login/login-data';
 import { locationChange } from '../../../reducers/router';
 
 const commonTitles = {
-  DASHBOARD: { icon: <MenuIcon type="home" />, text: 'Home' },
-  PROFILE: { icon: <MenuIcon type="solution" />, text: 'Profile' },
+  DASHBOARD: {
+    icon: <MenuIcon type="home" theme="filled" />,
+    text: 'Home',
+  },
+  PROFILE: {
+    icon: <MenuIcon type="profile" theme="filled" />,
+    text: 'Profile',
+  },
   LOGOUT: {
-    icon: <MenuIcon type="logout" />,
+    icon: <MenuIcon type="logout" theme="outlined" />,
     text: 'Logout',
   },
 };
 
 const adminTitles = {
   ROLE_ASSIGN: {
-    icon: <MenuIcon type="setting" />,
+    icon: <MenuIcon type="setting" theme="filled" />,
     text: 'Assign Roles',
   },
   ROLE_MANAGEMENT: {
-    icon: <MenuIcon type="setting" />,
+    icon: <MenuIcon type="setting" theme="filled" />,
     text: 'Create/ Update Roles',
   },
   MEMBER_MANAGEMENT: {
-    icon: <MenuIcon type="user" />,
+    icon: <MenuIcon type="user" theme="outlined" />,
     text: 'Members Management',
   },
   CLAIM_MANAGEMENT: {
-    icon: <MenuIcon type="file-text" />,
+    icon: <MenuIcon type="file-text" theme="filled" />,
     text: 'Claims Management',
   },
   EVENT_TRANSACTION: {
-    icon: <MenuIcon type="calculator" />,
+    icon: <MenuIcon type="calculator" theme="filled" />,
     text: 'Event Finance',
   },
   EVENT_MANAGEMENT: {
-    icon: <MenuIcon type="calendar" />,
+    icon: <MenuIcon type="calendar" theme="filled" />,
     text: 'View Events List',
   },
   EVENT_CREATION: {
-    icon: <MenuIcon type="calendar" />,
+    icon: <MenuIcon type="calendar" theme="filled" />,
     text: 'Create New Event',
+  },
+  INCIDENT_MANAGMENT: {
+    icon: <MenuIcon type="alert" theme="filled" />,
+    text: 'Incidents Management',
   },
 };
 
@@ -80,13 +91,13 @@ const MenuPanel = ({
   };
   const roleMgmtSubMenu = (
     <span>
-      <MenuIcon type="setting" />
+      <MenuIcon type="setting" theme="filled" />
       <span>Role Management</span>
     </span>
   );
   const eventMgmtSubMenu = (
     <span>
-      <MenuIcon type="calendar" />
+      <MenuIcon type="calendar" theme="filled" />
       <span>Event Management</span>
     </span>
   );
@@ -154,6 +165,13 @@ const MenuPanel = ({
               {adminTitles.EVENT_CREATION.text}
             </MenuItem>
           </SubMenu>
+      )}
+      {isEcMember === '1'
+        && functNameList.includes(INCIDENT_MANAGMENT) && (
+          <MenuItem key={INCIDENT_MANAGMENT}>
+            {adminTitles.INCIDENT_MANAGMENT.icon}
+            {adminTitles.INCIDENT_MANAGMENT.text}
+          </MenuItem>
       )}
       <MenuItem key={LOGOUT}>
         <a href={LOGIN}>

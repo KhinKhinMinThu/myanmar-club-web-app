@@ -21,3 +21,4 @@ export const EVENT_MANAGEMENT = '/portal/manage-events';
 export const EVENT_CREATION = '/portal/create-new-event';
 export const EVENT_EDIT = '/portal/edit-event';
 export const EVENT_VIEW = '/portal/view-event';
+export const INCIDENT_MANAGMENT = '/portal/search-incidents';
