@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom/es';
-import { Form, Row, Col } from 'antd';
-
+import {
+  Form, Row, Col, message,
+} from 'antd';
 import { BackButton } from '../shared-components';
-// import { SUCCESS_DELETEEVENT, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_DELETEINCIDENT, SHOWFOR } from '../../../actions/message';
 import {
   IncidentsTable,
   DeSeletAllButton,
@@ -23,40 +24,31 @@ import {
   setFilteredInfo,
   resetState,
 } from '../../../reducers/incidentmgmt/incidentmgmt-ui';
-// import {
-//   getEventsData,
-//   setEventsData,
-//   postDeleteEvent,
-// } from '../../../reducers/eventmgmt/eventmgmt-data';
+import {
+  setIncidents,
+  postDeleteIncidents,
+} from '../../../reducers/incidentmgmt/incidentmgmt-data';
 
 class IncidentManagement extends Component {
-  //   componentDidMount() {
-  //     const { dispatchResetState, performGetEventsData } = this.props;
-  //     dispatchResetState();
-  //     performGetEventsData();
-  //   }
+  componentDidMount() {
+    const { dispatchResetState } = this.props;
+    dispatchResetState();
+  }
 
-  //   componentWillUpdate(nextProps) {
-  //     const {
-  //       eventmgmtData: { isGetApiLoading },
-  //     } = this.props;
-  //     this.isApiCalled = !nextProps.eventmgmtData.isGetApiLoading && isGetApiLoading;
-  //   }
+  componentDidUpdate(prevProps) {
+    const {
+      incidentmgmtData: { isPostApiLoading, postErrMsg },
+    } = this.props;
 
-  //   componentDidUpdate(prevProps) {
-  //     const {
-  //       eventmgmtData: { isPostApiLoading, postErrMsg },
-  //     } = this.props;
+    const isApiPost = prevProps.incidentmgmtData.isPostApiLoading && !isPostApiLoading;
+    if (!isApiPost) return;
 
-  //     const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
-  //     if (!isApiPost) return;
-
-  //     if (postErrMsg) {
-  //       message.error(postErrMsg, SHOWFOR);
-  //     } else {
-  //       message.success(SUCCESS_DELETEEVENT, SHOWFOR);
-  //     }
-  //   }
+    if (postErrMsg) {
+      message.error(postErrMsg, SHOWFOR);
+    } else {
+      message.success(SUCCESS_DELETEINCIDENT, SHOWFOR);
+    }
+  }
 
   // handle de-select all button
   onClickDeselectAll = () => {
@@ -77,22 +69,23 @@ class IncidentManagement extends Component {
       dispatchSelectedKeys([...this.incidentsList.map(item => item.key)]);
     }, 1000);
   };
-  // delete selected incidents
-  //   onClickDeleteSelected = () => {
-  //     const {
-  //       eventmgmtData: { eventsData },
-  //       eventmgmtUI: { selectedKeys },
-  //       performDeleteEvent,
-  //       dispatchSetEventsData,
-  //     } = this.props;
 
-  //     performDeleteEvent({ eventsToDelete: selectedKeys });
-  //     // to remove the selected event from the table display
-  //     const updatedData = eventsData.filter(
-  //       item => !selectedKeys.includes(item.id),
-  //     );
-  //     dispatchSetEventsData(updatedData);
-  //   };
+  // delete selected incidents
+  onClickDeleteSelected = () => {
+    const {
+      incidentmgmtData: { incidents },
+      incidentmgmtUI: { selectedKeys },
+      performDeleteIncidents,
+      dispatchSetIncidents,
+    } = this.props;
+
+    performDeleteIncidents({ incidentsToDelete: selectedKeys });
+    // to remove the selected incidents from the table display
+    const updatedData = incidents.filter(
+      item => !selectedKeys.includes(item.id),
+    );
+    dispatchSetIncidents(updatedData);
+  };
 
   // handle onClick from Reset button
   onClickReset = () => {
@@ -115,7 +108,6 @@ class IncidentManagement extends Component {
     sourceList.map(item => preparedList.push({
       key: `${item.id}`,
       ...item,
-      incidentType: item.incidentType.name,
     }));
     return preparedList;
   };
@@ -130,11 +122,7 @@ class IncidentManagement extends Component {
         sortedInfo,
         filteredInfo,
       },
-      incidentmgmtData: {
-        incidents,
-
-        isPostApiLoading,
-      },
+      incidentmgmtData: { incidents, isPostApiLoading },
       form: { getFieldDecorator },
       dispatchSortedInfo,
       dispatchFilteredInfo,
@@ -227,8 +215,8 @@ IncidentManagement.propTypes = {
   dispatchFilteredInfo: PropTypes.func.isRequired,
   dispatchResetState: PropTypes.func.isRequired,
 
-  // dispatchSetEventsData: PropTypes.func.isRequired,
-  // performDeleteEvent: PropTypes.func.isRequired,
+  dispatchSetIncidents: PropTypes.func.isRequired,
+  performDeleteIncidents: PropTypes.func.isRequired,
 
   incidentmgmtUI: PropTypes.shape({}).isRequired,
   incidentmgmtData: PropTypes.shape({}).isRequired,
@@ -246,9 +234,8 @@ const mapDispatchToProps = {
   dispatchFilteredInfo: setFilteredInfo,
   dispatchResetState: resetState,
 
-  //   performGetEventsData: getEventsData,
-  //   dispatchSetEventsData: setEventsData,
-  //   performDeleteEvent: postDeleteEvent,
+  dispatchSetIncidents: setIncidents,
+  performDeleteIncidents: postDeleteIncidents,
 };
 
 const FormIncidentManagementPage = Form.create()(IncidentManagement);

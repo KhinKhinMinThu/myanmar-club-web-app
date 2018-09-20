@@ -16,6 +16,8 @@ export const SUCCESS_UPDATEASSIGNROLE = 'Member(s) Role has been updated!';
 export const SUCCESS_DELETEROLE = 'Deleted Selected Role(s)';
 export const SUCCESS_NEWROLE = 'New Role has been created!';
 export const SUCCESS_UPDATEROLE = 'Role has been updated with newly assigned functions!';
+export const SUCCESS_DELETEINCIDENT = 'Deleted Selected Incident(s)';
+export const SUCCESS_NEWINCIDENT = 'New Incident has been created!';
 
 export const CONFIRM_DELETEEVENT = 'Please confirm to delete this event!';
 export const CONFIRM_DELETEMEMBER = 'Please confirm to delete the member profile!';

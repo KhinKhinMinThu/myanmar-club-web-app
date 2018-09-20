@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom/es';
-import moment from 'moment';
 import {
-  Form, Spin, Alert, Row, Col, Card, message,
+  Form,
+  message,
+  Row,
+  Col,
+  Spin,
+  Card,
+  Alert,
 } from 'antd';
-import { DATETIME_FORMAT_DB } from '../../../actions/constants';
-import { SHOWFOR } from '../../../actions/message';
+import { SUCCESS_NEWINCIDENT, SHOWFOR } from '../../../actions/message';
+import IncidentTypeInput from '../incidentTypeInput';
 import {
-  IncidentTypeSearchSelect,
-  SubmittedBySelect,
-  SearchButton,
+  IncidentNameInput,
+  IncidentDescriptionInput,
+  RequesterAgeSelect,
+  RequesterNameInput,
   BackButton,
+  CreateIncidentButton,
 } from '../shared-components';
-import SubmittedDatePicker from '../submittedDatePicker';
 import {
-  postSearchIncident,
+  postNewIncident,
   getSearchParams,
 } from '../../../reducers/incidentmgmt/incidentmgmt-data';
 
-class SearchIncident extends Component {
+class IncidentCreation extends Component {
   componentDidMount() {
     const { performGetSearchParams } = this.props;
     performGetSearchParams();
@@ -43,6 +49,8 @@ class SearchIncident extends Component {
 
     if (postErrMsg) {
       message.error(postErrMsg, SHOWFOR);
+    } else {
+      message.success(SUCCESS_NEWINCIDENT, SHOWFOR);
     }
   }
 
@@ -50,50 +58,45 @@ class SearchIncident extends Component {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll },
-      performSearchIncident,
+      incidentmgmtData: { incidentTypes },
+      performNewIncident,
     } = this.props;
 
     validateFieldsAndScroll((error, values) => {
       if (!error) {
         const formValues = values;
-        const startDate = this.formatDate(formValues.startDate);
-        const endDate = this.formatDate(
-          formValues.endDate ? formValues.endDate : formValues.startDate,
-        );
-        const searchParams = {
-          incidentTypeId:
-            formValues.incidentType === '0' ? '' : formValues.incidentType,
-          submittedBy:
-            formValues.submittedBy === '0' ? '' : formValues.submittedBy,
-          startDate,
-          endDate,
-        };
-        performSearchIncident(searchParams);
+        let incidentTypeId;
+        let incidentType;
+        if (formValues.incidentType === '-1') {
+          incidentTypeId = '-1';
+          incidentType = formValues.otherIncidentType || '';
+        } else {
+          const incident = incidentTypes[Number(formValues.incidentType)];
+          incidentTypeId = incident.id;
+          incidentType = incident.name;
+        }
+        delete formValues.otherIncidentType;
+
+        performNewIncident({
+          ...formValues,
+          incidentTypeId,
+          incidentType,
+        });
       }
     });
-  };
-
-  // convert string date to Date object and combine date and time.
-  formatDate = (strDate) => {
-    if (strDate) {
-      const date = new Date();
-      return moment(
-        new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-      ).format(DATETIME_FORMAT_DB);
-    }
-    return '';
   };
 
   render() {
     const {
       history,
+      form,
+      form: { getFieldDecorator },
       incidentmgmtData: {
         incidentTypes,
-        submittedBy,
         isGetApiLoading,
         getErrMsg,
+        isPostApiLoading,
       },
-      form: { getFieldDecorator, getFieldValue, setFields },
     } = this.props;
     const actionColLayout = {
       xs: { span: 24 },
@@ -107,7 +110,7 @@ class SearchIncident extends Component {
     return (
       <Spin spinning={isGetApiLoading} size="large" delay={1000}>
         <div className="pageHeaderContainer">
-          <h2>Search Incidents Page</h2>
+          <h2>Add New Incident Page</h2>
         </div>
         {this.isApiCalled && getErrMsg ? (
           <Alert
@@ -119,23 +122,19 @@ class SearchIncident extends Component {
         ) : (
           <Form onSubmit={this.onSubmit} style={{ marginTop: 50 }}>
             <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-              <IncidentTypeSearchSelect
+              <IncidentNameInput decorator={getFieldDecorator} />
+              <IncidentTypeInput
+                form={form}
                 decorator={getFieldDecorator}
                 incidentTypes={incidentTypes}
               />
-              <SubmittedBySelect
-                decorator={getFieldDecorator}
-                submittedBy={submittedBy}
-              />
-              <SubmittedDatePicker
-                decorator={getFieldDecorator}
-                getFieldValue={getFieldValue}
-                setFields={setFields}
-              />
+              <RequesterNameInput decorator={getFieldDecorator} />
+              <RequesterAgeSelect decorator={getFieldDecorator} />
+              <IncidentDescriptionInput decorator={getFieldDecorator} />
               <br />
               <Row gutter={8}>
                 <Col {...actionColLayout}>
-                  <SearchButton />
+                  <CreateIncidentButton loading={isPostApiLoading} />
                 </Col>
                 <Col {...actionColLayout}>
                   <BackButton history={history} />
@@ -149,11 +148,10 @@ class SearchIncident extends Component {
   }
 }
 
-SearchIncident.propTypes = {
+IncidentCreation.propTypes = {
   history: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
-
-  performSearchIncident: PropTypes.func.isRequired,
+  performNewIncident: PropTypes.func.isRequired,
   performGetSearchParams: PropTypes.func.isRequired,
 
   incidentmgmtData: PropTypes.shape({}).isRequired,
@@ -162,14 +160,14 @@ SearchIncident.propTypes = {
 const mapStateToProps = state => ({
   incidentmgmtData: state.incidentmgmt.data,
 });
-
 const mapDispatchToProps = {
-  performSearchIncident: postSearchIncident,
+  performNewIncident: postNewIncident,
   performGetSearchParams: getSearchParams,
 };
 
-const FormSearchIncident = Form.create()(SearchIncident);
+const FormIncidentCreation = Form.create()(IncidentCreation);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(FormSearchIncident));
+)(withRouter(FormIncidentCreation));

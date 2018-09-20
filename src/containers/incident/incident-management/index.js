@@ -1,6 +1,6 @@
 import React from 'react';
 import IncidentManagement from './incident-management-page';
 
-const incidentManagementPage = () => <IncidentManagement />;
+const IncidentManagementPage = () => <IncidentManagement />;
 
-export default incidentManagementPage;
+export default IncidentManagementPage;

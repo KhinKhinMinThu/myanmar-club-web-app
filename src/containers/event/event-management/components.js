@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Tooltip } from 'antd';
+import {
+  Button, Tooltip, Row, Col,
+} from 'antd';
 import {
   EVENT_CREATION,
   EVENT_VIEW,
@@ -118,7 +120,16 @@ export const EventsTable = ({
 
   return (
     <FullWidthTable
-      title={() => header}
+      title={() => (
+        <Row>
+          <Col span={12} style={{ textAlign: 'left' }}>
+            {header}
+          </Col>
+          <Col span={12} style={{ textAlign: 'right' }}>
+            <CreateNewEventButton />
+          </Col>
+        </Row>
+      )}
       columns={columns}
       dataSource={eventsList}
       rowSelection={rowSelection}
@@ -127,7 +138,7 @@ export const EventsTable = ({
       size="small"
       pagination={{
         position: 'top',
-        showTotal: () => <CreateNewEventButton />,
+        // showTotal: () => <CreateNewEventButton />,
       }}
     />
   );

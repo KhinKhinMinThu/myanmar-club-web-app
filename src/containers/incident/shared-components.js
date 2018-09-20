@@ -1,9 +1,11 @@
 import React from 'react';
 import { Form, Input, Select } from 'antd';
 import { FullButton } from './shared-styled';
+import { AGE_RANGE } from '../../actions/constants';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const { TextArea } = Input;
 
 export const layout = {
   labelCol: {
@@ -54,43 +56,37 @@ const readOnlyInput = {
 export const customInput = { style: { width: '200px' } };
 
 // incident type
-export const IncidentTypeSearchSelect = ({ decorator, incidentTypes }) => {
-  console.log(incidentTypes);
-  return (
-    <FormItem {...layout} label="Incident Type">
-      {decorator('incidentType', { initialValue: '0' })(
-        <Select {...customInput}>
-          <Option value="0">Select</Option>
-          {incidentTypes.map(item => (
-            <Option key={item.id} value={item.id}>
-              {item.name}
-            </Option>
-          ))}
-          <Option value="-1">Others</Option>
-        </Select>,
-      )}
-    </FormItem>
-  );
-};
+export const IncidentTypeSearchSelect = ({ decorator, incidentTypes }) => (
+  <FormItem {...layout} label="Incident Type">
+    {decorator('incidentType', { initialValue: '0' })(
+      <Select {...customInput}>
+        <Option value="0">Select</Option>
+        {incidentTypes.map(item => (
+          <Option key={item.id} value={item.id}>
+            {item.name}
+          </Option>
+        ))}
+        <Option value="-1">Others</Option>
+      </Select>,
+    )}
+  </FormItem>
+);
 
 // submitted by
-export const SubmittedBySelect = ({ decorator, submittedBy }) => {
-  console.log(submittedBy);
-  return (
-    <FormItem {...layout} label="Submitted By">
-      {decorator('submittedBy', { initialValue: '0' })(
-        <Select {...customInput}>
-          <Option value="0">Select</Option>
-          {submittedBy.map(item => (
-            <Option key={item.id} value={item.id}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>,
-      )}
-    </FormItem>
-  );
-};
+export const SubmittedBySelect = ({ decorator, submittedBy }) => (
+  <FormItem {...layout} label="Submitted By">
+    {decorator('submittedBy', { initialValue: '0' })(
+      <Select {...customInput}>
+        <Option value="0">Select</Option>
+        {submittedBy.map(item => (
+          <Option key={item.id} value={item.id}>
+            {item.name}
+          </Option>
+        ))}
+      </Select>,
+    )}
+  </FormItem>
+);
 
 // BackButton
 export const BackButton = ({ history }) => (
@@ -103,9 +99,17 @@ export const SearchButton = () => (
     Search
   </FullButton>
 );
+
+// CreateIncident
+export const CreateIncidentButton = ({ loading }) => (
+  <FullButton type="primary" htmlType="submit" loading={loading}>
+    Create Incident
+  </FullButton>
+);
 // end
 
 // edit incident form data
+// Incident Id
 export const IdReadOnly = ({ decorator }) => (
   <FormItem
     {...{
@@ -128,6 +132,69 @@ export const IdReadOnly = ({ decorator }) => (
     style={{ margin: 0 }}
   >
     {decorator('id')(<Input {...readOnlyInput} />)}
+  </FormItem>
+);
+
+// Incident Name
+export const IncidentNameInput = ({ decorator }) => (
+  <FormItem {...layout} label="Incident Name">
+    {decorator('name', {
+      rules: [
+        {
+          required: true,
+          message: 'Please input incident name!',
+        },
+      ],
+    })(<Input {...customInput} placeholder="Incident Name" />)}
+  </FormItem>
+);
+
+// Requester Name
+export const RequesterNameInput = ({ decorator }) => (
+  <FormItem {...layout} label="Requester Name">
+    {decorator('requesterName', {
+      rules: [
+        {
+          required: true,
+          message: 'Please input requester name!',
+        },
+      ],
+    })(<Input {...customInput} placeholder="Requester Name" />)}
+  </FormItem>
+);
+
+// Requester Age
+export const RequesterAgeSelect = ({ decorator }) => (
+  <FormItem {...layout} label="Requester Age">
+    {decorator('requesterAge', { initialValue: AGE_RANGE[0] })(
+      <Select {...customInput}>
+        {AGE_RANGE.map((item, index) => (
+          <Option key={index.toString()} value={item}>
+            {item}
+          </Option>
+        ))}
+      </Select>,
+    )}
+  </FormItem>
+);
+
+// Incident Description
+export const IncidentDescriptionInput = ({ decorator }) => (
+  <FormItem {...layout} label="Description">
+    {decorator('description', {
+      rules: [
+        {
+          required: true,
+          message: 'Please input incident description!',
+        },
+      ],
+    })(
+      <TextArea
+        style={{ width: '500px' }}
+        rows={4}
+        placeholder="Incident Description"
+      />,
+    )}
   </FormItem>
 );
 

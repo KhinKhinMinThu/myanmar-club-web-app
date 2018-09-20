@@ -9,6 +9,8 @@ import {
   GET_APILOADING,
   GET_ERROR,
   POST_SEARCHINCIDENTS,
+  POST_DELETEINCIDENTS,
+  POST_NEWINCIDENT,
   POST_APILOADING,
   POST_ERROR,
 } from '../reducers/incidentmgmt/incidentmgmt-data';
@@ -16,6 +18,8 @@ import {
   APIGET_INCIDENTTPYES,
   APIGET_SUBMITTEDBY,
   APIPOST_SEARCH_INCIDENTS,
+  APIPOST_DELETE_INCIDENTS,
+  APIPOST_ADD_INCIDENT,
 } from '../actions/constants';
 import { INCIDENT_MANAGMENT } from '../actions/location';
 
@@ -64,6 +68,10 @@ function* asyncGetIncidentData() {
 // POST REQUEST
 const postSearchIncidents = (searchParams, authHeader) => api.post(APIPOST_SEARCH_INCIDENTS, searchParams, authHeader);
 
+const postDeleteIncidents = (incidentsToDelete, authHeader) => api.post(APIPOST_DELETE_INCIDENTS, incidentsToDelete, authHeader);
+
+const postNewIncident = (newIncidentToAdd, authHeader) => api.post(APIPOST_ADD_INCIDENT, newIncidentToAdd, authHeader);
+
 function* asyncPostProcessIncident(action) {
   let errMsg;
   try {
@@ -71,7 +79,13 @@ function* asyncPostProcessIncident(action) {
     yield put({ type: POST_APILOADING, payload: true });
     let response;
 
-    console.log('Calling API.........', action.type, action.searchParams);
+    console.log(
+      'Calling API.........',
+      action.type,
+      action.searchParams,
+      action.incidentsToDelete,
+      action.newIncidentToAdd,
+    );
 
     switch (action.type) {
       case POST_SEARCHINCIDENTS:
@@ -90,7 +104,8 @@ function* asyncPostProcessIncident(action) {
               name: 'incident name',
               requesterName: 'helper Oo',
               requesterAge: '10-15',
-              incidentType: { id: '1', name: 'Abuse' }, // if others -> { id: "-1", name: "abc" }
+              incidentTypeId: '1',
+              incidentType: 'Abuse',
               description: 'abcd',
               createdDate: '2010-10-01',
               createdBy: 'Ye Myint', // return name
@@ -102,7 +117,8 @@ function* asyncPostProcessIncident(action) {
               name: 'abc name',
               requesterName: 'helper Oo',
               requesterAge: '10-15',
-              incidentType: { id: '1', name: 'Abuse' }, // if others -> { id: "-1", name: "abc" }
+              incidentTypeId: '2',
+              incidentType: 'Sexual',
               description: 'abcd',
               createdDate: '2010-10-01',
               createdBy: 'Ye Myint', // return name
@@ -114,6 +130,20 @@ function* asyncPostProcessIncident(action) {
         // delete end
         if (response.data.incidents) yield put({ type: INCIDENTS, payload: response.data.incidents });
 
+        break;
+      case POST_DELETEINCIDENTS:
+        response = yield call(
+          postDeleteIncidents,
+          action.incidentsToDelete,
+          authHeader,
+        );
+        break;
+      case POST_NEWINCIDENT:
+        response = yield call(
+          postNewIncident,
+          action.newIncidentToAdd,
+          authHeader,
+        );
         break;
       default:
     }
@@ -138,5 +168,13 @@ export const getSearchParamSaga = takeLatest(
 );
 export const postSearchIncidentSaga = takeLatest(
   POST_SEARCHINCIDENTS,
+  asyncPostProcessIncident,
+);
+export const postDeleteIncidentsSaga = takeLatest(
+  POST_DELETEINCIDENTS,
+  asyncPostProcessIncident,
+);
+export const postNewIncidentSaga = takeLatest(
+  POST_NEWINCIDENT,
   asyncPostProcessIncident,
 );

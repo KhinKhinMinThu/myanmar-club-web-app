@@ -7,7 +7,7 @@ import dashboardImg from '../../../images/dashaboard.jpg';
 const DashboardPage = ({ loginData }) => {
   const { name } = loginData;
   return (
-    <Row style={{ backgroundImage: `url(${dashboardImg})`, height: '600px' }}>
+    <Row style={{ backgroundImage: `url(${dashboardImg})`, height: '580px' }}>
       <Col span={24}>
         <div style={{ padding: '2px', backgroundColor: 'white' }}>
           <h2>Hi {name}, Welcome to Myanmar Club!</h2>

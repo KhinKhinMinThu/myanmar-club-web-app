@@ -1,6 +1,6 @@
 // export const BASE_URL = 'http://demo0532724.mockable.io';
 // 'http://54.200.158.0/MyanmarClubAPI';
-export const BASE_URL = 'http://52.39.145.149/MyanmarClubAPI';
+export const BASE_URL = 'http://52.39.145.149/MyanmarClubAPI2';
 
 export const TIMEZONE = 'Asia/Singapore';
 export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
@@ -39,7 +39,17 @@ export const MEMBERSHIP_INFO = [
   'Membership Card ရိုက်နှိပ်ခအတွက် စင်္ကာပူ ဒေါ်လာ (၅) သီးခြားပေးရမည်ဖြစ်ပါသည်။',
   'မြန်မာကလပ်(စင်္ကာပူ)၏ ဘဏ်အကောင့် (UOB 146-301-836-2) သို့ အသင်းကြေးပေးသွင်းပြီးပါက ဘဏ္ဍာရေးမှူး ဒေါ်မြမြစိန် H.P - 8233 5682 သို့ လူကြီးမင်း၏ အမည်နှင့်တကွ ပေးသွင်းသော အသင်းကြေးငွေ ပမာဏကို message ပို့ပေးပါရန်။',
 ];
-
+export const AGE_RANGE = [
+  '15-20',
+  '21-25',
+  '26-30',
+  '31-35',
+  '36-40',
+  '41-45',
+  '46-50',
+  '51-55',
+  '56-60',
+];
 // APIGET API URLS
 export const APIGET_ROLEDATA = '/admin/getRoleData';
 export const APIGET_MEMBERSDATA = '/admin/getMembersData';
@@ -87,4 +97,6 @@ export const APIPOST_UPDATE_REGPAYMENT = '/event/updateRegPayment';
 export const APIPOST_FORGOTPWD = '/admin/forgotPassword';
 
 export const APIPOST_SEARCH_INCIDENTS = '/incident/getIncidents';
+export const APIPOST_DELETE_INCIDENTS = '/incident/deleteIncidents';
+export const APIPOST_ADD_INCIDENT = '/incident/createIncident';
 // end

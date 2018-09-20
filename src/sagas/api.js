@@ -18,7 +18,7 @@ export function* getAuthHeader() {
   const headers = {
     headers: {
       'Content-Type': 'application/json',
-      // Authorization: `Bearer ${loginData.token}`,
+      Authorization: `Bearer ${loginData.token}`,
     },
   };
   return headers;
@@ -30,7 +30,7 @@ export function* getAuthMultiPartHeader() {
   const headers = {
     headers: {
       'content-type': 'multipart/form-data',
-      // Authorization: `Bearer ${loginData.token}`,
+      Authorization: `Bearer ${loginData.token}`,
     },
   };
   return headers;

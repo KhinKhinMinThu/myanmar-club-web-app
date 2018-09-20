@@ -11,6 +11,8 @@ export const GET_ERROR = '[INCIDENTMGMT_DATA] GET_ERROR';
 // POST to API
 export const POST_APILOADING = '[INCIDENTMGMT_DATA] POST_APILOADING';
 export const POST_SEARCHINCIDENTS = '[INCIDENTMGMT_DATA] POST_SEARCHINCIDENTS';
+export const POST_DELETEINCIDENTS = '[INCIDENTMGMT_DATA] POST_DELETEINCIDENTS';
+export const POST_NEWINCIDENT = '[INCIDENTMGMT_DATA] POST_NEWINCIDENT';
 export const POST_ERROR = '[INCIDENTMGMT_DATA] POST_ERROR';
 // end
 
@@ -19,6 +21,19 @@ export const getSearchParams = () => ({ type: GET_SEARCHPARAM });
 export const postSearchIncident = searchParams => ({
   type: POST_SEARCHINCIDENTS,
   searchParams,
+});
+export const postDeleteIncidents = incidentsToDelete => ({
+  type: POST_DELETEINCIDENTS,
+  incidentsToDelete,
+});
+
+export const setIncidents = incidents => ({
+  type: INCIDENTS,
+  payload: incidents,
+});
+export const postNewIncident = newIncidentToAdd => ({
+  type: POST_NEWINCIDENT,
+  newIncidentToAdd,
 });
 
 export default function (

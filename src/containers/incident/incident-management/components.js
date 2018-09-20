@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {
-  Button, Form, Input, Col, Tooltip, Modal,
+  Button, Form, Input, Col, Tooltip, Modal, Row,
 } from 'antd';
 import { DATE_FORMAT } from '../../../actions/constants';
-import { INCIDENT_EDIT } from '../../../actions/location';
+import { INCIDENT_EDIT, INCIDENT_CREATION } from '../../../actions/location';
 import {
   FullWidthTable,
   TableActionButton,
@@ -275,7 +275,16 @@ export class IncidentsTable extends Component {
     return (
       <div>
         <FullWidthTable
-          title={() => header}
+          title={() => (
+            <Row>
+              <Col span={12} style={{ textAlign: 'left' }}>
+                {header}
+              </Col>
+              <Col span={12} style={{ textAlign: 'right' }}>
+                <CreateNewIncidentButton />
+              </Col>
+            </Row>
+          )}
           columns={columns}
           dataSource={incidentsList}
           rowSelection={rowSelection}
@@ -284,6 +293,7 @@ export class IncidentsTable extends Component {
           size="small"
           pagination={{
             position: 'top',
+            // showTotal: () => <CreateNewIncidentButton />,
           }}
         />
         <Modal
@@ -311,3 +321,8 @@ export class IncidentsTable extends Component {
     );
   }
 }
+export const CreateNewIncidentButton = () => (
+  <Button type="primary" icon="file-add" href={INCIDENT_CREATION}>
+    Create a New Incident
+  </Button>
+);

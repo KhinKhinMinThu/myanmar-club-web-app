@@ -40,7 +40,12 @@ import {
 } from './access-control';
 import postForgotPwdSaga from './forgot-password';
 import { getRoleDataSaga, postAssignRolesSaga } from './rolemgmt';
-import { getSearchParamSaga, postSearchIncidentSaga } from './incidentmgmt';
+import {
+  getSearchParamSaga,
+  postSearchIncidentSaga,
+  postDeleteIncidentsSaga,
+  postNewIncidentSaga,
+} from './incidentmgmt';
 
 export default function* rootSaga() {
   yield all([
@@ -86,5 +91,7 @@ export default function* rootSaga() {
     // incidementmgmt
     getSearchParamSaga,
     postSearchIncidentSaga,
+    postDeleteIncidentsSaga,
+    postNewIncidentSaga,
   ]);
 }
