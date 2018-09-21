@@ -21,7 +21,6 @@ function* asyncGetRoleData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getRoleData, authHeader);
-    console.log('API RESPONSE.........', response);
 
     const { roleData, errorMsg } = response.data;
     errMsg = errorMsg;
@@ -70,7 +69,6 @@ function* asyncPostProcessRoles(action) {
         break;
       default:
     }
-    console.log('API RESPONSE.........', response);
 
     const { errorMsg } = response.data;
     errMsg = errorMsg;

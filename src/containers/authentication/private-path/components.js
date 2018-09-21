@@ -100,6 +100,7 @@ const MenuPanel = ({
       localStorage.clear();
       console.log('cleared local storage');
     } else {
+      document.documentElement.scrollTop = 0;
       const location = { ...currentLocation, pathname: e.key };
       updateLocation({ location });
     }

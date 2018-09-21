@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import {
-  Button, Form, Input, Col, Tooltip, Modal, Row,
+  Button, Form, Input, Col, Tooltip, Modal, Row, Card,
 } from 'antd';
 import { DATE_FORMAT } from '../../../actions/constants';
 import { INCIDENT_EDIT, INCIDENT_CREATION } from '../../../actions/location';
@@ -29,6 +30,23 @@ export const layout = {
     md: { span: 24 },
     lg: { span: 14 },
     xl: { span: 14 },
+  },
+  colon: true,
+};
+const modalLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 8 },
+    xl: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 16 },
+    xl: { span: 16 },
   },
   colon: true,
 };
@@ -107,13 +125,15 @@ export const DeleteSeletedButton = ({
 );
 
 // Incident Info
-const displayIncidentInfo = incident => [
+const displayIncidentInfo1 = incident => [
   { label: 'Incident Id', text: incident.id || '-' },
   { label: 'Incident Name', text: incident.name || '-' },
   { label: 'Incident Type', text: incident.incidentType || '-' },
   { label: 'Requester Name', text: incident.requesterName || '-' },
   { label: 'Requester Age', text: incident.requesterAge || '-' },
   { label: 'Description', text: incident.description || '-' },
+];
+const displayIncidentInfo2 = incident => [
   {
     label: 'Created Date',
     text: incident.createdDate
@@ -262,10 +282,9 @@ export class IncidentsTable extends Component {
               />
             </Tooltip>
             <Tooltip title="Edit Incident">
-              <TableActionButton
-                href={INCIDENT_EDIT.concat('/').concat(record.id)}
-                icon="edit"
-              />
+              <Link to={INCIDENT_EDIT.concat('/').concat(record.id)}>
+                <TableActionButton icon="edit" />
+              </Link>
             </Tooltip>
           </div>
         ),
@@ -306,23 +325,39 @@ export class IncidentsTable extends Component {
             </Button>,
           ]}
         >
-          {displayIncidentInfo(incident).map(item => (
-            <FormItem
-              key={item.label}
-              {...layout}
-              style={{ marginBottom: 0 }}
-              label={item.label}
-            >
-              <BottomUnder>{item.text}</BottomUnder>
-            </FormItem>
-          ))}
+          <Card style={{ borderRadius: 15, margin: '0 auto 4px auto' }}>
+            {displayIncidentInfo1(incident).map(item => (
+              <FormItem
+                key={item.label}
+                {...modalLayout}
+                style={{ marginBottom: 0 }}
+                label={item.label}
+              >
+                <BottomUnder>{item.text}</BottomUnder>
+              </FormItem>
+            ))}
+          </Card>
+          <Card style={{ borderRadius: 15, margin: '0 auto 4px auto' }}>
+            {displayIncidentInfo2(incident).map(item => (
+              <FormItem
+                key={item.label}
+                {...modalLayout}
+                style={{ marginBottom: 0 }}
+                label={item.label}
+              >
+                <BottomUnder>{item.text}</BottomUnder>
+              </FormItem>
+            ))}
+          </Card>
         </Modal>
       </div>
     );
   }
 }
 export const CreateNewIncidentButton = () => (
-  <Button type="primary" icon="file-add" href={INCIDENT_CREATION}>
-    Create a New Incident
-  </Button>
+  <Link to={INCIDENT_CREATION}>
+    <Button type="primary" icon="file-add">
+      Create a New Incident
+    </Button>
+  </Link>
 );

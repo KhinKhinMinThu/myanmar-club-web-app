@@ -95,7 +95,12 @@ class PasswordInput extends Component {
     const { decorator, placeHolder } = this.props;
     const { isExpand } = this.state;
     return (
-      <FormItem {...layout} label={placeHolder} colon>
+      <FormItem
+        {...layout}
+        label={placeHolder}
+        colon
+        style={{ marginBottom: 0 }}
+      >
         <Collapse onChange={this.onChange}>
           <Panel header="click to expand...">
             <FormItem {...layout} label="Password">

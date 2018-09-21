@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import {
-  Tabs, Button, Form, Modal, Col, Input, Tooltip,
+  Tabs, Button, Form, Modal, Col, Input, Tooltip, Card,
 } from 'antd';
 import { MEMBER_EDIT } from '../../../actions/location';
 import { DEFAULT_DATE, DATE_FORMAT } from '../../../actions/constants';
@@ -36,7 +37,23 @@ export const layout = {
   },
   colon: true,
 };
-
+const modalLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 8 },
+    xl: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 16 },
+    xl: { span: 16 },
+  },
+  colon: true,
+};
 /* eslint react/prop-types: 0 */
 // MemberTabs
 export const MemberTabs = ({ onChange, tabContents }) => {
@@ -144,7 +161,7 @@ export const DeleteSeletedButton = ({
 );
 
 // Member Object Labels
-const displayMemberInfo = member => [
+const displayMemberInfo1 = member => [
   { label: 'Member Id', text: member.id || '-' },
   { label: 'Name', text: member.name || '-' },
   { label: 'Gender', text: member.gender || '-' },
@@ -156,11 +173,15 @@ const displayMemberInfo = member => [
   },
   { label: 'Nationality', text: member.nationality || '-' },
   { label: 'Religion', text: member.religion || '-' },
+];
+const displayMemberInfo2 = member => [
   { label: 'Marital Status', text: member.maritalStatus || '-' },
   { label: 'Education Level', text: member.educationLevel || '-' },
   { label: 'Occupation', text: member.occupation || '-' },
   { label: 'Singapore Pass', text: member.passType || '-' },
   { label: 'ID Number', text: member.idNumber || '-' },
+];
+const displayMemberInfo3 = member => [
   {
     label: 'Address',
     text: [
@@ -185,7 +206,7 @@ const displayMembership = member => [
   { label: 'Membership Status', text: member.membershipStatus || '-' },
   { label: 'Joined Date', text: member.createdDate || '-' },
   {
-    label: 'Membership Expiry Date',
+    label: 'Expiry Date',
     text:
       moment(member.membershipExpiryDate).format(DATE_FORMAT) === DEFAULT_DATE
         ? '-'
@@ -338,10 +359,9 @@ export class MembersTable extends Component {
               />
             </Tooltip>
             <Tooltip title="Edit Member">
-              <TableActionButton
-                icon="edit"
-                href={MEMBER_EDIT.concat('/').concat(record.id)}
-              />
+              <Link to={MEMBER_EDIT.concat('/').concat(record.id)}>
+                <TableActionButton icon="edit" />
+              </Link>
             </Tooltip>
           </div>
         ),
@@ -376,22 +396,48 @@ export class MembersTable extends Component {
         >
           <Tabs onChange={onChange} type="card">
             <TabPane tab="Member's Info" key="tab1">
-              {displayMemberInfo(member).map(item => (
-                <FormItem
-                  key={item.label}
-                  {...layout}
-                  style={{ marginBottom: 0 }}
-                  label={item.label}
-                >
-                  <BottomUnder>{item.text}</BottomUnder>
-                </FormItem>
-              ))}
+              <Card style={{ borderRadius: 15, margin: '0 auto 4px auto' }}>
+                {displayMemberInfo1(member).map(item => (
+                  <FormItem
+                    key={item.label}
+                    {...modalLayout}
+                    style={{ marginBottom: 0 }}
+                    label={item.label}
+                  >
+                    <BottomUnder>{item.text}</BottomUnder>
+                  </FormItem>
+                ))}
+              </Card>
+              <Card style={{ borderRadius: 15, margin: '0 auto 4px auto' }}>
+                {displayMemberInfo2(member).map(item => (
+                  <FormItem
+                    key={item.label}
+                    {...modalLayout}
+                    style={{ marginBottom: 0 }}
+                    label={item.label}
+                  >
+                    <BottomUnder>{item.text}</BottomUnder>
+                  </FormItem>
+                ))}
+              </Card>
+              <Card style={{ borderRadius: 15, margin: '0 auto 4px auto' }}>
+                {displayMemberInfo3(member).map(item => (
+                  <FormItem
+                    key={item.label}
+                    {...modalLayout}
+                    style={{ marginBottom: 0 }}
+                    label={item.label}
+                  >
+                    <BottomUnder>{item.text}</BottomUnder>
+                  </FormItem>
+                ))}
+              </Card>
             </TabPane>
             <TabPane tab="Membership" key="tab2">
               {displayMembership(member).map(item => (
                 <FormItem
                   key={item.label}
-                  {...layout}
+                  {...modalLayout}
                   style={{ marginBottom: 0 }}
                   label={item.label}
                 >
@@ -417,70 +463,3 @@ export class MembersTable extends Component {
     );
   }
 }
-/* <ModalItem {...layout} label="Member Id">
-        <BoldText>{viewMember.id}</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Name">
-        <BoldText>{viewMember.name}</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Gender">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Date of Birth">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Nationality">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Religion">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Marital Status">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Education Level">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Occupation">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Singapore Pass">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Identification Number">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Address">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Postal Code">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Email Address">
-        <BoldText>{viewMember.emailAddress}</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Facebook Account">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Home Phone Number">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Mobile Number">
-        <BoldText>{viewMember.mobilePhone}</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Hobbies">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Sub-Committee Member">
-        <BoldText>??</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Member Type">
-        <BoldText>{viewMember.membership_type}</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Member Status">
-        <BoldText>{viewMember.membershipStatus}</BoldText>
-      </ModalItem>
-      <ModalItem {...layout} label="Membership Expiry Date">
-        <BoldText>{viewMember.membershipExpiry}</BoldText>
-      </ModalItem>
-    </Modal> */

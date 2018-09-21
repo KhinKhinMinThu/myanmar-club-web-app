@@ -5,10 +5,23 @@ import CryptoJS from 'crypto-js';
 import { Form, message } from 'antd';
 import { SHOWFOR } from '../../../actions/message';
 import { UsernameInput, PasswordInput, Footer } from './components';
-import { postLogin } from '../../../reducers/login/login-data';
+import { postLogin, setLogout } from '../../../reducers/login/login-data';
 import { LoginCard } from '../shared-styled';
 
 class LoginForm extends Component {
+  componentDidMount() {
+    const {
+      loginData: { tokenErrMsg },
+      dispatchLogout,
+    } = this.props;
+    if (tokenErrMsg) {
+      message.error(tokenErrMsg, SHOWFOR);
+      // to set the tokenErrMsg: null
+      // and prevent rehydration setting it more than once
+      dispatchLogout();
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const {
       loginData: { isPostApiLoading, postErrMsg },
@@ -57,6 +70,7 @@ class LoginForm extends Component {
 LoginForm.propTypes = {
   form: PropTypes.shape({}).isRequired,
   performLogin: PropTypes.func.isRequired,
+  dispatchLogout: PropTypes.func.isRequired,
   loginData: PropTypes.shape({}).isRequired,
 };
 
@@ -66,6 +80,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   performLogin: postLogin,
+  dispatchLogout: setLogout,
 };
 
 const FormLoginPage = Form.create()(LoginForm);

@@ -48,7 +48,6 @@ function* asyncGetEventData(action) {
     const { eventData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: EVENTDATA, payload: eventData });
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -66,7 +65,6 @@ function* asyncGetEventsData() {
     const { eventsData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: EVENTSDATA, payload: eventsData });
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -218,7 +216,13 @@ function* asyncPostProcessEvents(action) {
           imageFile: eventData.uploadBtn[0],
         });
         console.log('eventId', response.data.id, 'mpf', multipartForm);
-        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authMultiPartHeader);
+        if (multipartForm) {
+          response = yield call(
+            postEventPhoto,
+            multipartForm,
+            authMultiPartHeader,
+          );
+        }
         break;
       case POST_UPDATEEVENT:
         response = yield call(
@@ -231,7 +235,13 @@ function* asyncPostProcessEvents(action) {
           imageFile: eventData.uploadBtn[0],
         });
         console.log('eventId', eventData.id, 'mpf', multipartForm);
-        if (multipartForm) response = yield call(postEventPhoto, multipartForm, authMultiPartHeader);
+        if (multipartForm) {
+          response = yield call(
+            postEventPhoto,
+            multipartForm,
+            authMultiPartHeader,
+          );
+        }
 
         break;
       case POST_NOTIFYEVENT:
@@ -248,8 +258,6 @@ function* asyncPostProcessEvents(action) {
     }
     const { errorMsg } = response.data;
     errMsg = errorMsg;
-
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {

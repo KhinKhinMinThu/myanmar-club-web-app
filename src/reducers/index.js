@@ -19,15 +19,15 @@ import incidentmgmtReducer from './incidentmgmt';
  * this will check initial state and overrides it,
  * else it will replace initial state without checking (ignoring possible new entries)
  */
-const loginPersistConfig = {
+export const loginPersistConfig = {
   key: 'login',
   storage: localStorage,
   stateReconciler: autoMergeLevel2,
-  // whitelist: ['isLoggedIn', 'isAdmin'],
 };
 
 const rootReducer = combineReducers({
   login: persistReducer(loginPersistConfig, loginReducer),
+
   forgotpassword: forgotPasswordReducer,
   rolemgmt: rolemgmtReducer,
   membermgmt: membermgmtReducer,

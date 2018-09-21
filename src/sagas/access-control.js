@@ -30,8 +30,6 @@ function* asyncGetAccessControlData() {
     const { accesscontrolData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: ACCESSCONTROLDATA, payload: accesscontrolData });
-
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -81,8 +79,6 @@ function* asyncPostProcessAccessControl(action) {
     }
     const { errorMsg } = response.data;
     errMsg = errorMsg;
-
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {

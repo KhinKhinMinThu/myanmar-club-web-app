@@ -54,7 +54,7 @@ function* asyncGetMemberData(action) {
       response = yield call(getMemberData, action.id, authHeader);
       const { memberData, errorMsg } = response.data;
       errMsg = errorMsg;
-      console.log('API RESPONSE.........', response);
+
       if (memberData) {
         yield put({ type: MEMBERDATA, payload: memberData });
         // call formfields
@@ -65,7 +65,7 @@ function* asyncGetMemberData(action) {
       response = yield call(getMemberFormFields, authHeader);
       const { memberFormFields, errorMsg } = response.data;
       errMsg = errorMsg;
-      console.log('API RESPONSE.........', response);
+
       if (memberFormFields) {
         memberFormFields.allSubComInterest.forEach((item, index) => {
           memberFormFields.allSubComInterest[index] = {
@@ -101,7 +101,6 @@ function* asyncGetMembersData() {
       yield put({ type: ECMEMBERSDATA, payload: ecMembersList });
       yield put({ type: CLUBMEMBERSDATA, payload: clubMembersList });
     }
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -314,8 +313,6 @@ function* asyncPostProcessMembers(action) {
         break;
       default:
     }
-
-    console.log('API RESPONSE.........', response);
 
     const { errorMsg } = response.data;
     errMsg = errorMsg;

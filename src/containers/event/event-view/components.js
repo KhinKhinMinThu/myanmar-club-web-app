@@ -1,5 +1,6 @@
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
+import { Link } from 'react-router-dom';
 import {
   Tabs, Button, Form, Input, Popconfirm, Tooltip,
 } from 'antd';
@@ -132,9 +133,9 @@ export const EventData = ({ decorator }) => (
 );
 
 export const EditEventButton = ({ eventId }) => (
-  <FullButton type="primary" href={EVENT_EDIT.concat('/').concat(eventId)}>
-    Edit Event
-  </FullButton>
+  <Link to={EVENT_EDIT.concat('/').concat(eventId)}>
+    <FullButton type="primary">Edit Event</FullButton>
+  </Link>
 );
 export const ShareFacebookButton = ({ url }) => (
   <FacebookShareButton

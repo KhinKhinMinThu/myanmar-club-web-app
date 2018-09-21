@@ -1,5 +1,7 @@
 import React from 'react';
-import { Form, Input, Select } from 'antd';
+import {
+  Form, Input, Select, Switch,
+} from 'antd';
 import { FullButton } from './shared-styled';
 import { AGE_RANGE } from '../../actions/constants';
 
@@ -45,7 +47,7 @@ const readOnlyInput = {
     outline: 0,
     borderRadius: 0,
     padding: 0,
-    borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+    // borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
   },
   readOnly: true,
 };
@@ -106,31 +108,19 @@ export const CreateIncidentButton = ({ loading }) => (
     Create Incident
   </FullButton>
 );
+
+// SaveUpdate
+export const SaveUpdateButton = ({ loading }) => (
+  <FullButton type="primary" htmlType="submit" loading={loading}>
+    Save Update
+  </FullButton>
+);
 // end
 
 // edit incident form data
 // Incident Id
 export const IdReadOnly = ({ decorator }) => (
-  <FormItem
-    {...{
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 24 },
-        md: { span: 24 },
-        lg: { span: 3 },
-        xl: { span: 3 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 24 },
-        md: { span: 24 },
-        lg: { span: 21 },
-        xl: { span: 21 },
-      },
-    }}
-    label="Member Id"
-    style={{ margin: 0 }}
-  >
+  <FormItem {...layout} label="Incident Id" style={{ margin: 0 }}>
     {decorator('id')(<Input {...readOnlyInput} />)}
   </FormItem>
 );
@@ -180,7 +170,7 @@ export const RequesterAgeSelect = ({ decorator }) => (
 
 // Incident Description
 export const IncidentDescriptionInput = ({ decorator }) => (
-  <FormItem {...layout} label="Description">
+  <FormItem {...layout} label="Description" style={{ marginBottom: 0 }}>
     {decorator('description', {
       rules: [
         {
@@ -199,3 +189,12 @@ export const IncidentDescriptionInput = ({ decorator }) => (
 );
 
 // end
+
+// for edit
+export const DeleteIncidentSwitch = ({ decorator }) => (
+  <FormItem {...layout} label="Delete Incident?" style={{ marginBottom: 0 }}>
+    {decorator('deleteIncident', { initialValue: false })(
+      <Switch checkedChildren="Yes" unCheckedChildren="No" />,
+    )}
+  </FormItem>
+);

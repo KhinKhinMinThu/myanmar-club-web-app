@@ -45,6 +45,8 @@ import {
   postSearchIncidentSaga,
   postDeleteIncidentsSaga,
   postNewIncidentSaga,
+  getIncidentSaga,
+  postUpdateIncidentSaga,
 } from './incidentmgmt';
 
 export default function* rootSaga() {
@@ -93,5 +95,7 @@ export default function* rootSaga() {
     postSearchIncidentSaga,
     postDeleteIncidentsSaga,
     postNewIncidentSaga,
+    getIncidentSaga,
+    postUpdateIncidentSaga,
   ]);
 }

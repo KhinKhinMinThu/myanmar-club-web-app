@@ -20,6 +20,7 @@ import {
   INCIDENT_SEARCH,
   INCIDENT_CREATION,
   INCIDENT_MANAGMENT,
+  INCIDENT_EDIT,
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
 import MenuPanel from './components';
@@ -39,6 +40,7 @@ import EventViewPage from '../../event/event-view';
 import SearchIncidentPage from '../../incident/incident-search';
 import IncidentManagementPage from '../../incident/incident-management';
 import IncidentCreationPage from '../../incident/incident-creation';
+import IncidentEditPage from '../../incident/incident-edit';
 
 const {
   Header, Content, Sider, Footer,
@@ -76,6 +78,8 @@ class PrivatePage extends Component {
     if (pathname === INCIDENT_SEARCH && functNameList.includes(INCIDENT_SEARCH)) return SearchIncidentPage; // prettier-ignore
     if (pathname === INCIDENT_MANAGMENT && functNameList.includes(INCIDENT_MANAGMENT)) return IncidentManagementPage; // prettier-ignore
     if (pathname === INCIDENT_CREATION && functNameList.includes(INCIDENT_CREATION)) return IncidentCreationPage; // prettier-ignore
+    if (pathname === INCIDENT_EDIT && functNameList.includes(INCIDENT_EDIT)) return IncidentEditPage; // prettier-ignore
+
     return ErrorPage;
   };
 

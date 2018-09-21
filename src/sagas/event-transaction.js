@@ -28,8 +28,6 @@ function* asyncGetEventTranscData() {
     const { eventsData, errorMsg } = response.data;
     errMsg = errorMsg;
     yield put({ type: EVENTTRANSACDATA, payload: eventsData });
-
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -89,8 +87,6 @@ function* asyncPostProcessEventTransc(action) {
 
     const { errorMsg } = response.data;
     errMsg = errorMsg;
-
-    console.log('API RESPONSE.........', response);
   } catch (e) {
     errMsg = e.message;
   } finally {
