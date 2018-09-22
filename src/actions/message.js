@@ -25,3 +25,5 @@ export const CONFIRM_DELETEMEMBER = 'Please confirm to delete the member profile
 export const CONFIRM_RENEWMEMBER = 'Please confirm to renew the member!';
 export const CONFIRM_CREATEACC = 'Please confirm to signup!';
 export const CONFIRM_DELETEINCIDENT = 'Please confirm to delete this incident!';
+
+export const FB_EVENT_PRETEXT = 'Myanmar Club New Event! ';

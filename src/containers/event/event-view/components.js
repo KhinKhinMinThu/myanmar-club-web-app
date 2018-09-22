@@ -60,23 +60,8 @@ export const EventViewTabs = ({ onChange, tabContents, props }) => {
     </Tabs>
   );
 };
-
-export const EventData = ({ decorator }) => (
-  <Form>
-    <FormItem>
-      {decorator('photoLink', { valuePropName: 'src' })(
-        <img
-          alt="example"
-          style={{
-            width: 'auto',
-            height: '200px',
-            margin: '0 auto 0 auto',
-            display: 'block',
-          }}
-        />,
-      )}
-    </FormItem>
-
+export const EventData1 = ({ decorator }) => (
+  <div>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Id">
       {decorator('id')(<Input {...readOnlyInput} />)}
     </FormItem>
@@ -86,6 +71,11 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Description">
       {decorator('description')(<Input {...readOnlyInput} />)}
     </FormItem>
+  </div>
+);
+export const EventData2 = ({ decorator }) => (
+  <div>
+    {' '}
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Start Date/Time">
       {decorator('startDate')(<Input {...readOnlyInput} />)}
     </FormItem>
@@ -98,6 +88,10 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Postal Code">
       {decorator('locationPostalCode')(<Input {...readOnlyInput} />)}
     </FormItem>
+  </div>
+);
+export const EventData3 = ({ decorator }) => (
+  <div>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Status">
       {decorator('eventStatus')(<Input {...readOnlyInput} />)}
     </FormItem>
@@ -114,6 +108,10 @@ export const EventData = ({ decorator }) => (
     >
       {decorator('isRefreshmentProvided')(<Input {...readOnlyInput} />)}
     </FormItem>
+  </div>
+);
+export const EventData4 = ({ decorator }) => (
+  <div>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Contact Person">
       {decorator('contactPerson')(<Input {...readOnlyInput} />)}
     </FormItem>
@@ -123,13 +121,34 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
     </FormItem>
+  </div>
+);
+export const EventData5 = ({ decorator }) => (
+  <div>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Created By">
       {decorator('createdBy')(<Input {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Created Date">
       {decorator('createdDate')(<Input {...readOnlyInput} />)}
     </FormItem>
-  </Form>
+  </div>
+);
+export const EventPhoto = ({ decorator }) => (
+  <div>
+    <FormItem style={{ marginBottom: 0 }}>
+      {decorator('photoLink', { valuePropName: 'src' })(
+        <img
+          alt="example"
+          style={{
+            width: 'auto',
+            height: '265px',
+            margin: '0 auto 0 auto',
+            display: 'block',
+          }}
+        />,
+      )}
+    </FormItem>
+  </div>
 );
 
 export const EditEventButton = ({ eventId }) => (
@@ -137,13 +156,9 @@ export const EditEventButton = ({ eventId }) => (
     <FullButton type="primary">Edit Event</FullButton>
   </Link>
 );
-export const ShareFacebookButton = ({ url }) => (
-  <FacebookShareButton
-    url={url}
-    // quote="TESTING"
-  >
-    <Button icon="facebook" shape="circle" type="primary" ghost /> Share on
-    facebook
+export const ShareFacebookButton = ({ url, quote }) => (
+  <FacebookShareButton url={url} quote={quote}>
+    <Button icon="facebook" shape="circle" type="primary" /> Share on facebook
   </FacebookShareButton>
 );
 
@@ -152,7 +167,6 @@ export const NotifyMsgButton = ({ onClickNotify, loading }) => (
     icon="message"
     shape="circle"
     type="primary"
-    ghost
     onClick={onClickNotify}
     loading={loading}
   />

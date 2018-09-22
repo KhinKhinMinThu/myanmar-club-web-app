@@ -11,10 +11,10 @@ import {
   SHOWFOR,
 } from '../../../actions/message';
 import IncidentTypeInput from '../incidentTypeInput';
+import IncidentDescriptionInput from '../incidentDescriptionInput';
 import {
   IdReadOnly,
   IncidentNameInput,
-  IncidentDescriptionInput,
   RequesterAgeSelect,
   RequesterNameInput,
   DeleteIncidentSwitch,

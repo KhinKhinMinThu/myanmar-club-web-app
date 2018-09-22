@@ -7,7 +7,6 @@ import { AGE_RANGE } from '../../actions/constants';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-const { TextArea } = Input;
 
 export const layout = {
   labelCol: {
@@ -164,26 +163,6 @@ export const RequesterAgeSelect = ({ decorator }) => (
           </Option>
         ))}
       </Select>,
-    )}
-  </FormItem>
-);
-
-// Incident Description
-export const IncidentDescriptionInput = ({ decorator }) => (
-  <FormItem {...layout} label="Description" style={{ marginBottom: 0 }}>
-    {decorator('description', {
-      rules: [
-        {
-          required: true,
-          message: 'Please input incident description!',
-        },
-      ],
-    })(
-      <TextArea
-        style={{ width: '500px' }}
-        rows={4}
-        placeholder="Incident Description"
-      />,
     )}
   </FormItem>
 );

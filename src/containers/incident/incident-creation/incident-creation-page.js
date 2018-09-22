@@ -13,9 +13,9 @@ import {
 } from 'antd';
 import { SUCCESS_NEWINCIDENT, SHOWFOR } from '../../../actions/message';
 import IncidentTypeInput from '../incidentTypeInput';
+import IncidentDescriptionInput from '../incidentDescriptionInput';
 import {
   IncidentNameInput,
-  IncidentDescriptionInput,
   RequesterAgeSelect,
   RequesterNameInput,
   BackButton,
