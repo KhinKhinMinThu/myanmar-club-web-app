@@ -14,22 +14,8 @@ import { TIMEZONE, DATE_FORMAT } from '../../actions/constants';
 const FormItem = Form.Item;
 /* eslint react/prop-types: 0 */
 
-// ***** set endDate if endDate < startDate
-// ***** reset startTime & endTime
-const onChangeStartDate = ({ value, endDate, setFields }) => {
-  const shouldSetDate = endDate ? endDate < value : true;
-  if (shouldSetDate) setFields({ endDate: { value } });
-  if (!value) setFields({ endDate: { value } });
-};
-
 // Submitted Start Date
-const SubmittedDatePicker = ({ decorator, getFieldValue, setFields }) => {
-  const endDate = getFieldValue('endDate')
-    ? moment.tz(new Date(getFieldValue('endDate')), TIMEZONE)
-    : null;
-
-  const disabledStartDate = current => current < moment().startOf('day'); // disabled date before today .add(0, 'days')
-
+const SubmittedDatePicker = ({ decorator, getFieldValue }) => {
   const startDate = getFieldValue('startDate')
     ? moment.tz(new Date(getFieldValue('startDate')), TIMEZONE)
     : null;
@@ -45,13 +31,13 @@ const SubmittedDatePicker = ({ decorator, getFieldValue, setFields }) => {
               <DatePicker
                 {...customInput}
                 format={DATE_FORMAT}
-                disabledDate={disabledStartDate}
-                onChange={value => onChangeStartDate({
-                  value,
-                  endDate,
-                  setFields,
-                })
-                }
+                // disabledDate={disabledStartDate}
+                // onChange={value => onChangeStartDate({
+                //   value,
+                //   endDate,
+                //   setFields,
+                // })
+                // }
               />,
             )}
           </FormItem>

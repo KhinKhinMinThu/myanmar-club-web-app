@@ -80,7 +80,7 @@ export const SubmittedBySelect = ({ decorator, submittedBy }) => (
       <Select {...customInput}>
         <Option value="0">Select</Option>
         {submittedBy.map(item => (
-          <Option key={item.id} value={item.id}>
+          <Option key={item.id} value={item.id.toString()}>
             {item.name}
           </Option>
         ))}

@@ -57,9 +57,7 @@ class SearchIncident extends Component {
       if (!error) {
         const formValues = values;
         const startDate = this.formatDate(formValues.startDate);
-        const endDate = this.formatDate(
-          formValues.endDate ? formValues.endDate : formValues.startDate,
-        );
+        const endDate = this.formatDate(formValues.endDate);
         const searchParams = {
           incidentTypeId:
             formValues.incidentType === '0' ? '' : formValues.incidentType,
@@ -76,7 +74,7 @@ class SearchIncident extends Component {
   // convert string date to Date object and combine date and time.
   formatDate = (strDate) => {
     if (strDate) {
-      const date = new Date();
+      const date = new Date(strDate);
       return moment(
         new Date(date.getFullYear(), date.getMonth(), date.getDate()),
       ).format(DATETIME_FORMAT_DB);
@@ -93,7 +91,7 @@ class SearchIncident extends Component {
         isGetApiLoading,
         getErrMsg,
       },
-      form: { getFieldDecorator, getFieldValue, setFields },
+      form: { getFieldDecorator, getFieldValue },
     } = this.props;
     const actionColLayout = {
       xs: { span: 24 },
@@ -130,7 +128,6 @@ class SearchIncident extends Component {
               <SubmittedDatePicker
                 decorator={getFieldDecorator}
                 getFieldValue={getFieldValue}
-                setFields={setFields}
               />
               <br />
               <Row gutter={8}>

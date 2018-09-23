@@ -35,10 +35,16 @@ const getSubmittedBy = authHeader => api.get(APIGET_SUBMITTEDBY, authHeader);
 const getIncident = (id, authHeader) => api.post(APIGET_INCIDENT, id, authHeader);
 function* asyncGetIncidentData(action) {
   let errMsg;
+  let response;
   try {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
-    const response = yield call(getIncident, action.id, authHeader);
+
+    response = yield call(getIncidentTypes, authHeader);
+    const { incidentTypes } = response.data;
+    if (incidentTypes) yield put({ type: INCIDENTTYPES, payload: incidentTypes });
+
+    response = yield call(getIncident, action.id, authHeader);
     const { incident, errorMsg } = response.data;
 
     // delete below

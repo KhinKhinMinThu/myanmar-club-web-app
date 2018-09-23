@@ -27,7 +27,7 @@ import {
   postDeleteIncidents,
   setIncident,
   getIncident,
-  getSearchParams,
+  // getSearchParams,
 } from '../../../reducers/incidentmgmt/incidentmgmt-data';
 
 const { confirm } = Modal;
@@ -43,10 +43,10 @@ class IncidentEdit extends Component {
     if (id) performGetIncident({ id });
   }
 
-  componentDidMount() {
-    const { performGetSearchParams } = this.props;
-    performGetSearchParams();
-  }
+  // componentDidMount() {
+  //   const { performGetSearchParams } = this.props;
+  //   performGetSearchParams();
+  // }
 
   componentWillUpdate(nextProps) {
     const {
@@ -191,7 +191,7 @@ IncidentEdit.propTypes = {
   computedMatch: PropTypes.shape({}).isRequired,
   form: PropTypes.shape({}).isRequired,
 
-  performGetSearchParams: PropTypes.func.isRequired,
+  // performGetSearchParams: PropTypes.func.isRequired,
   performGetIncident: PropTypes.func.isRequired,
   performUpdateIncident: PropTypes.func.isRequired,
   dispatchSetIncident: PropTypes.func.isRequired,
@@ -205,7 +205,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  performGetSearchParams: getSearchParams,
+  // performGetSearchParams: getSearchParams,
   performGetIncident: getIncident,
   performUpdateIncident: postUpdateIncident,
   dispatchSetIncident: setIncident,
