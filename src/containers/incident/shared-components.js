@@ -60,7 +60,14 @@ export const customInput = { style: { width: '200px' } };
 export const IncidentTypeSearchSelect = ({ decorator, incidentTypes }) => (
   <FormItem {...layout} label="Incident Type">
     {decorator('incidentType', { initialValue: '0' })(
-      <Select {...customInput}>
+      <Select
+        {...customInput}
+        showSearch
+        placeholder="Select incident type"
+        optionFilterProp="children"
+        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
         <Option value="0">Select</Option>
         {incidentTypes.map(item => (
           <Option key={item.id} value={item.id}>

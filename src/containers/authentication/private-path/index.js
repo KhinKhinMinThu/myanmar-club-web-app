@@ -6,6 +6,7 @@ import PrivatePage from './private-page';
 
 /* eslint react/prop-types: 0 */
 const PrivatePath = ({
+  name,
   isLoggedIn,
   isEcMember,
   roleIdList,
@@ -18,6 +19,7 @@ const PrivatePath = ({
     render={() => (
       <PrivatePage
         {...props}
+        name={name}
         isEcMember={isEcMember}
         functNameList={functNameList}
         token={token}
@@ -31,9 +33,10 @@ const PrivatePath = ({
 const mapStateToProps = (state) => {
   // const { isLoggedIn, isAdmin, token } = state.login.data;
   const {
-    isLoggedIn, isEcMember, functNameList, token,
+    name, isLoggedIn, isEcMember, functNameList, token,
   } = state.login.data;
   return {
+    name,
     isLoggedIn,
     isEcMember,
     functNameList,

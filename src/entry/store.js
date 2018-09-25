@@ -37,7 +37,7 @@ api.interceptors.response.use(
   (response) => {
     console.log('Getting Response', response);
     if (response.data) {
-      if (response.data.access) {
+      if (response.data.access && loginState) {
         store.dispatch({
           type: TOKEN_ERROR,
           payload: response.data.access,

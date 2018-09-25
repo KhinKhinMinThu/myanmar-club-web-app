@@ -16,7 +16,7 @@ export const DEFAULT_TIME = '00:00';
 export const NATIONALITY_LIST = ['myanmar', 'singaporean'];
 export const RELIGION_LIST = ['buddhism', 'islam', 'hinduism', 'christianity'];
 export const STRING_MAX_LEN = 255;
-export const STRING_MAX_LEN2 = 500;
+export const STRING_MAX_LEN2 = 2000;
 
 export const MEMBERSHIP_TYPES = {
   TYP1: 'TYP1:Life (ရာသက်ပန်) = SGD 350',

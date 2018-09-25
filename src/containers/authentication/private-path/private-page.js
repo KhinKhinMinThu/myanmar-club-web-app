@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Anchor } from 'antd';
-import { HeaderText } from '../shared-styled';
+import { HeaderText, BoldUnderlineText } from '../shared-styled';
 import {
   DEFAULT,
   DASHBOARD,
@@ -86,6 +86,7 @@ class PrivatePage extends Component {
   render() {
     const {
       computedMatch: { params },
+      name,
       isEcMember,
       functNameList,
       // token,
@@ -120,6 +121,14 @@ class PrivatePage extends Component {
             </Header>
           </a>
           <Anchor>
+            <div
+              style={{
+                textAlign: 'center',
+                marginTop: '8px',
+              }}
+            >
+              <BoldUnderlineText>{name}</BoldUnderlineText>
+            </div>
             <MenuPanel
               selectedKeys={['/portal/'.concat(pathname)]}
               isEcMember={isEcMember}
