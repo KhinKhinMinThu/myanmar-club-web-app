@@ -88,16 +88,16 @@ class AccessControl extends Component {
     } = this.props;
     // set the targetKeys as the list of ecMembers for selected role
     const keys = expanded ? [record.roleId.toString()] : [];
+    this.setState({
+      selectedRole: record.roleId,
+    });
+    dispatchExpandedRowKeys(keys);
     const targetKeys = accesscontrolData
       ? accesscontrolData
         .find(item => item.roleId === record.roleId)
         .functions.map(item => `${item.id}`)
       : [];
     setFieldsValue({ functionTransfer: targetKeys });
-    dispatchExpandedRowKeys(keys);
-    this.setState({
-      selectedRole: record.roleId,
-    });
   };
 
   // handle de-select all button
@@ -129,7 +129,13 @@ class AccessControl extends Component {
       dispatchSetAccessControlData,
       dispatchCurrentButton,
     } = this.props;
+    const { selectedRole } = this.state;
     dispatchCurrentButton('delete');
+    if (selectedKeys.includes(selectedRole)) {
+      this.setState({
+        selectedRole: '0',
+      });
+    }
     performDeleteRole({ rolesToDelete: selectedKeys });
     // to remove the selected role from the table display
     const updatedData = accesscontrolData.filter(
@@ -164,8 +170,9 @@ class AccessControl extends Component {
     } = this.props;
     const { selectedRole } = this.state;
     validateFieldsAndScroll((err, values) => {
-      if (err) return;
+      // if (err) return;
       const { functionTransfer } = values;
+      console.log('values', values);
       const roleId = selectedRole.toString();
       // get the original list of selected role
       const affectedRole = accesscontrolData
@@ -298,6 +305,7 @@ class AccessControl extends Component {
       selectedRowKeys: selectedKeys,
       onChange: keys => dispatchSelectedKeys(keys),
     };
+    console.log('selected role', selectedRole.toString());
     const hasSelected = selectedKeys.length > 0;
     if (accesscontrolData) this.roleList = this.prepareList(accesscontrolData);
     const dataSource = accesscontrolData ? this.funcList(accesscontrolData) : [];
@@ -375,8 +383,8 @@ class AccessControl extends Component {
                   roleList={this.roleList}
                   functionList={dataSource}
                   decorator={getFieldDecorator}
-                  targetKeys={targetKeys}
                   rowSelection={rowSelection}
+                  initVal={targetKeys}
                   onChange={(pagination, filters, sorter) => {
                     dispatchSortedInfo(sorter);
                     dispatchFilteredInfo(filters);

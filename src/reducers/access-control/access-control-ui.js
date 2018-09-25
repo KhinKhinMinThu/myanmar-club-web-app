@@ -76,7 +76,7 @@ const initialState = {
   expandedRowKeys: [],
   dummyTransacIndex: 0,
   editingKey: null,
-  selectedRole: null,
+  selectedRole: '0',
 };
 export default function (
   state = {

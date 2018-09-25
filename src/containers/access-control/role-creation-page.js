@@ -82,10 +82,14 @@ class RoleCreation extends Component {
               })(<Input type="text" />)}
             </FormItem>
             <FormItem label="Role Description">
-              {decorator('description')(<Input type="text" />)}
+              {decorator('description', {
+                initialValue: '',
+              })(<Input type="text" />)}
             </FormItem>
             <FormItem label="Accessible Function(s)">
-              {decorator('functions')(
+              {decorator('functions', {
+                initialValue: [],
+              })(
                 <CheckboxGroup>
                   <Checkbox style={checkboxStyle} value="1">
                     Role Management - Manage Member Role(s)
