@@ -22,6 +22,7 @@ export const RolesTable = ({
   functionList,
   decorator,
   onChange,
+  initVal,
   sortedInfo,
   filteredInfo,
   expandedRowKeys,
@@ -118,6 +119,7 @@ export const RolesTable = ({
       dataSource={roleList}
       rowSelection={rowSelection}
       onChange={onChange}
+      initVal={initVal}
       decorator={decorator}
       functionList={functionList}
       selectedFunction={expandedRowKeys}
@@ -133,6 +135,7 @@ export const RolesTable = ({
           decorator={decorator}
           dataSource={functionList}
           onSubmit={onSubmit}
+          initVal={initVal}
         />
       )}
     />
@@ -276,6 +279,7 @@ export const FunctionTransfer = ({
   isPostApiLoading,
   onSubmit,
   decorator,
+  initVal,
 }) => {
   const titles = [
     <BoldUnderlineText>Function(s) to be assigned:</BoldUnderlineText>,
@@ -286,6 +290,7 @@ export const FunctionTransfer = ({
     <Col span={15} offset={5}>
       <FormItem>
         {decorator('functionTransfer', {
+          initialValue: initVal,
           valuePropName: 'targetKeys',
         })(
           <Transfer
