@@ -1,5 +1,8 @@
 import React from 'react';
-import { Button, Tooltip } from 'antd';
+import {
+  Button, Tooltip, Row, Col,
+} from 'antd';
+import { Link } from 'react-router-dom';
 import {
   EVENT_CREATION,
   EVENT_VIEW,
@@ -100,16 +103,14 @@ export const EventsTable = ({
       render: record => (
         <div>
           <Tooltip title="View Event Details">
-            <TableActionButton
-              href={EVENT_VIEW.concat('/').concat(record.id)}
-              icon="eye"
-            />
+            <Link to={EVENT_VIEW.concat('/').concat(record.id)}>
+              <TableActionButton icon="eye" />
+            </Link>
           </Tooltip>
           <Tooltip title="Edit Event">
-            <TableActionButton
-              href={EVENT_EDIT.concat('/').concat(record.id)}
-              icon="edit"
-            />
+            <Link to={EVENT_EDIT.concat('/').concat(record.id)}>
+              <TableActionButton icon="edit" />
+            </Link>
           </Tooltip>
         </div>
       ),
@@ -118,7 +119,16 @@ export const EventsTable = ({
 
   return (
     <FullWidthTable
-      title={() => header}
+      title={() => (
+        <Row>
+          <Col span={12} style={{ textAlign: 'left' }}>
+            {header}
+          </Col>
+          <Col span={12} style={{ textAlign: 'right' }}>
+            <CreateNewEventButton />
+          </Col>
+        </Row>
+      )}
       columns={columns}
       dataSource={eventsList}
       rowSelection={rowSelection}
@@ -127,14 +137,16 @@ export const EventsTable = ({
       size="small"
       pagination={{
         position: 'top',
-        showTotal: () => <CreateNewEventButton />,
+        // showTotal: () => <CreateNewEventButton />,
       }}
     />
   );
 };
 
 export const CreateNewEventButton = () => (
-  <Button type="primary" icon="file-add" href={EVENT_CREATION}>
-    Create a New Event
-  </Button>
+  <Link to={EVENT_CREATION}>
+    <Button type="primary" icon="file-add">
+      Create a New Event
+    </Button>
+  </Link>
 );

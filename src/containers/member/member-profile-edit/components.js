@@ -125,7 +125,7 @@ export const PaymentTypeRadio = ({ decorator }) => (
 
 // TotalAmount
 export const TotalAmountInput = ({ decorator }) => (
-  <FormItem {...layout} label="Total Amount">
+  <FormItem {...layout} label="Total Amount" style={{ marginBottom: 0 }}>
     {decorator('totalAmount', {
       rules: [
         {

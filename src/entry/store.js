@@ -6,8 +6,10 @@ import logger from 'redux-logger';
 import { createBrowserHistory } from 'history';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import rootReducer from '../reducers';
+
 import rootSaga from '../sagas';
-import { AUTHENTICATED_USER } from '../reducers/login/login-data';
+import { api } from '../sagas/api';
+import { TOKEN_ERROR, AUTHENTICATED_USER } from '../reducers/login/login-data';
 
 export const history = createBrowserHistory();
 const rtrMiddleware = routerMiddleware(history); // for dispatching history actions
@@ -18,6 +20,9 @@ export const store = createStore(
   composeWithDevTools(applyMiddleware(sagaMiddleware, logger, rtrMiddleware)),
 );
 
+sagaMiddleware.run(rootSaga);
+export const persistor = persistStore(store);
+
 const loginState = localStorage.getItem('loginState');
 console.log('LoginState from localStorage:', loginState);
 if (loginState) {
@@ -27,5 +32,23 @@ if (loginState) {
   });
 }
 
-sagaMiddleware.run(rootSaga);
-export const persistor = persistStore(store);
+// to check if the token is valid
+api.interceptors.response.use(
+  (response) => {
+    console.log('Getting Response', response);
+    if (response.data) {
+      if (response.data.access) {
+        store.dispatch({
+          type: TOKEN_ERROR,
+          payload: response.data.access,
+        });
+        localStorage.clear();
+      }
+    }
+    return response;
+  },
+  (error) => {
+    console.log('Error', error);
+    Promise.reject(error);
+  },
+);

@@ -17,6 +17,10 @@ import {
   EVENT_CREATION,
   EVENT_VIEW,
   EVENT_EDIT,
+  INCIDENT_SEARCH,
+  INCIDENT_CREATION,
+  INCIDENT_MANAGMENT,
+  INCIDENT_EDIT,
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
 import MenuPanel from './components';
@@ -33,6 +37,10 @@ import EventCreation from '../../event/event-creation';
 import EventManagementPage from '../../event/event-management';
 import EventEditPage from '../../event/event-edit';
 import EventViewPage from '../../event/event-view';
+import SearchIncidentPage from '../../incident/incident-search';
+import IncidentManagementPage from '../../incident/incident-management';
+import IncidentCreationPage from '../../incident/incident-creation';
+import IncidentEditPage from '../../incident/incident-edit';
 
 const {
   Header, Content, Sider, Footer,
@@ -67,34 +75,13 @@ class PrivatePage extends Component {
     if (pathname === EVENT_CREATION && functNameList.includes(EVENT_CREATION)) return EventCreation; // prettier-ignore
     if (pathname === EVENT_VIEW && functNameList.includes(EVENT_VIEW)) return id ? EventViewPage : ErrorPage; // prettier-ignore
     if (pathname === EVENT_EDIT && functNameList.includes(EVENT_EDIT)) return id ? EventEditPage : ErrorPage; // prettier-ignore
+    if (pathname === INCIDENT_SEARCH && functNameList.includes(INCIDENT_SEARCH)) return SearchIncidentPage; // prettier-ignore
+    if (pathname === INCIDENT_MANAGMENT && functNameList.includes(INCIDENT_MANAGMENT)) return IncidentManagementPage; // prettier-ignore
+    if (pathname === INCIDENT_CREATION && functNameList.includes(INCIDENT_CREATION)) return IncidentCreationPage; // prettier-ignore
+    if (pathname === INCIDENT_EDIT && functNameList.includes(INCIDENT_EDIT)) return IncidentEditPage; // prettier-ignore
 
     return ErrorPage;
   };
-
-  // if (
-  //   pathname === CLAIM_MANAGEMENT
-  //   && (roleIdList.includes(1) || roleIdList.includes(2))
-  // ) return ClaimManagementPage;
-  // if (
-  //   pathname === EVENT_TRANSACTION
-  //   && (roleIdList.includes(1) || roleIdList.includes(2))
-  // ) return EventTransactionPage;
-  // if (
-  //   pathname === EVENT_MANAGEMENT
-  //   && (roleIdList.includes(1) || roleIdList.includes(3))
-  // ) return EventManagementPage;
-  // if (
-  //   pathname === EVENT_CREATION
-  //   && (roleIdList.includes(1) || roleIdList.includes(3))
-  // ) return EventCreation;
-  // if (
-  //   pathname === EVENT_VIEW
-  //   && (roleIdList.includes(1) || roleIdList.includes(3))
-  // ) return id ? EventViewPage : ErrorPage;
-  // if (
-  //   pathname === EVENT_EDIT
-  //   && (roleIdList.includes(1) || roleIdList.includes(3))
-  // ) return id ? EventEditPage : ErrorPage;
 
   render() {
     const {

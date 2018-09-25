@@ -55,7 +55,7 @@ class NationalityInput extends Component {
                 rules: [
                   {
                     required: this.showInput,
-                    message: 'Please enter natioanlity!',
+                    message: 'Please enter nationality!',
                   },
                 ],
               })(

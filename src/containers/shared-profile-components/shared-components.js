@@ -191,7 +191,11 @@ export const PassTypeSelect = ({ decorator }) => (
 
 // idNumber
 export const IdNumberInput = ({ decorator }) => (
-  <FormItem {...layoutHalf} label="Identification Number">
+  <FormItem
+    {...layoutHalf}
+    label="Identification Number"
+    style={{ marginBottom: 0 }}
+  >
     {decorator('idNumber', {
       rules: [
         {
@@ -433,7 +437,7 @@ export const HobbiesInput = ({ decorator }) => (
 
 // isEcMember
 export const IsEcMemberRadio = ({ decorator, onChange, disabled }) => (
-  <FormItem {...layout} label="Committee Member?">
+  <FormItem {...layout} label="Committee Member?" style={{ marginBottom: 0 }}>
     {decorator('isEcMember', { initialValue: '0' })(
       <RadioGroup name="isEcMember" onChange={onChange} disabled={disabled}>
         <Radio value="1">Yes</Radio>
@@ -448,7 +452,7 @@ export const IsEcMemberRadio = ({ decorator, onChange, disabled }) => (
 // subComInterest
 export const SubComInterest = ({ decorator, allSubComInterest }) => {
   const checkBoxList = allSubComInterest.map(item => (
-    <FormItem style={{ marginBottom: 0 }} key={item.id}>
+    <FormItem key={item.id} style={{ marginBottom: 0 }}>
       {decorator(`${item.id}`, {
         valuePropName: 'checked',
       })(
@@ -459,7 +463,11 @@ export const SubComInterest = ({ decorator, allSubComInterest }) => {
     </FormItem>
   ));
   return (
-    <FormItem {...layout} label="Interested Sub-Committee(s)">
+    <FormItem
+      {...layout}
+      label="Interested Sub-Committee(s)"
+      style={{ marginBottom: 0 }}
+    >
       <Col>{checkBoxList}</Col>
     </FormItem>
   );

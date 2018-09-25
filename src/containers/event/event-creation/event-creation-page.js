@@ -13,7 +13,6 @@ import {
 } from '../../../actions/constants';
 import {
   EventNameInput,
-  EventDescriptionInput,
   AddressInput,
   PostalCodeInput,
   EventPhoto,
@@ -28,6 +27,7 @@ import {
 } from '../shared-components';
 import StartDateTimePicker from '../startDateTimePicker';
 import EndDateTimePicker from '../endDateTimePicker';
+import EventDescriptionInput from '../eventDescriptionInput';
 import { postNewEvent } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventCreation extends Component {
@@ -129,6 +129,13 @@ class EventCreation extends Component {
       form: { getFieldDecorator, getFieldValue, setFields },
       eventmgmtData: { isPostApiLoading },
     } = this.props;
+    const layout = {
+      xs: { span: 24 },
+      sm: { span: 24 },
+      md: { span: 24 },
+      lg: { span: 12 },
+      xl: { span: 12 },
+    };
     const actionColLayout = {
       xs: { span: 24 },
       sm: { span: 24 },
@@ -148,46 +155,65 @@ class EventCreation extends Component {
           <Tooltip title="Click to go back to the top">
             <BackTop />
           </Tooltip>
-          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-            <EventNameInput decorator={getFieldDecorator} />
-            <EventDescriptionInput decorator={getFieldDecorator} />
-            <StartDateTimePicker
-              decorator={getFieldDecorator}
-              getFieldValue={getFieldValue}
-              setFields={setFields}
-            />
-            <EndDateTimePicker
-              decorator={getFieldDecorator}
-              getFieldValue={getFieldValue}
-              setFields={setFields}
-            />
-            <AddressInput decorator={getFieldDecorator} />
-            <PostalCodeInput decorator={getFieldDecorator} />
-            <EventPhoto
-              decorator={getFieldDecorator}
-              beforeUpload={this.beforeUpload}
-              removeFile={this.removeFile}
-            />
-          </Card>
-          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-            <TicketFeeInput decorator={getFieldDecorator} />
-            <NumPaxInput decorator={getFieldDecorator} />
-            <RefreshmentRadio decorator={getFieldDecorator} />
-          </Card>
-          <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-            <ContactPersonInput decorator={getFieldDecorator} />
-            <EmailAddressInput decorator={getFieldDecorator} />
-            <MobileNoInput decorator={getFieldDecorator} />
-            <br />
-            <Row gutter={8}>
-              <Col {...actionColLayout}>
-                <CreateButton />
-              </Col>
-              <Col {...actionColLayout}>
-                <BackButton history={history} />
-              </Col>
-            </Row>
-          </Card>
+          <Row gutter={8} justify="start">
+            <Col span={24}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <EventNameInput decorator={getFieldDecorator} />
+                <EventDescriptionInput decorator={getFieldDecorator} />
+                <EventPhoto
+                  decorator={getFieldDecorator}
+                  beforeUpload={this.beforeUpload}
+                  removeFile={this.removeFile}
+                />
+              </Card>
+            </Col>
+          </Row>
+          <Row gutter={8} justify="start">
+            <Col {...layout}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <StartDateTimePicker
+                  decorator={getFieldDecorator}
+                  getFieldValue={getFieldValue}
+                  setFields={setFields}
+                />
+                <EndDateTimePicker
+                  decorator={getFieldDecorator}
+                  getFieldValue={getFieldValue}
+                  setFields={setFields}
+                />
+                <AddressInput decorator={getFieldDecorator} />
+                <PostalCodeInput decorator={getFieldDecorator} />
+              </Card>
+            </Col>
+            <Col {...layout}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <br />
+                <br />
+                <TicketFeeInput decorator={getFieldDecorator} />
+                <NumPaxInput decorator={getFieldDecorator} />
+                <RefreshmentRadio decorator={getFieldDecorator} />
+                <br />
+              </Card>
+            </Col>
+          </Row>
+          <Row gutter={8} justify="start">
+            <Col span={24}>
+              <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+                <ContactPersonInput decorator={getFieldDecorator} />
+                <EmailAddressInput decorator={getFieldDecorator} />
+                <MobileNoInput decorator={getFieldDecorator} />
+                <br />
+                <Row gutter={8}>
+                  <Col {...actionColLayout}>
+                    <CreateButton />
+                  </Col>
+                  <Col {...actionColLayout}>
+                    <BackButton history={history} />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
         </Form>
       </Spin>
     );

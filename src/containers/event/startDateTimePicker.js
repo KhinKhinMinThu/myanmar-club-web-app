@@ -3,12 +3,7 @@ import moment from 'moment-timezone';
 import {
   Form, DatePicker, TimePicker, Row, Col,
 } from 'antd';
-import {
-  layout,
-  inputLayout1,
-  inputLayout2,
-  customInput,
-} from './shared-components';
+import { layoutHalf, customInput } from './shared-components';
 import { TIMEZONE, DATE_FORMAT, TIME_FORMAT } from '../../actions/constants';
 
 const FormItem = Form.Item;
@@ -60,9 +55,9 @@ const StartDateTimePicker = ({ decorator, getFieldValue, setFields }) => {
   const sameDate = isSameDate(currentDT, startDate);
 
   return (
-    <FormItem {...layout} label="Start Date/Time" colon required>
+    <FormItem {...layoutHalf} label="Start Date/Time" colon required>
       <Row type="flex" justify="start">
-        <Col {...inputLayout1}>
+        <Col span={12}>
           <FormItem>
             {decorator('startDate', {
               rules: [{ required: true, message: 'Please enter start date!' }],
@@ -81,7 +76,7 @@ const StartDateTimePicker = ({ decorator, getFieldValue, setFields }) => {
             )}
           </FormItem>
         </Col>
-        <Col {...inputLayout2}>
+        <Col span={12}>
           <FormItem>
             {decorator('startTime', {
               rules: [

@@ -36,7 +36,12 @@ class ReligionInput extends Component {
   render() {
     const { decorator } = this.props;
     return (
-      <FormItem {...layoutHalf} label="Religion" colon>
+      <FormItem
+        {...layoutHalf}
+        label="Religion"
+        colon
+        style={{ marginBottom: 0 }}
+      >
         <Row gutter={8} type="flex" justify="start">
           <Col span={12}>
             <FormItem>

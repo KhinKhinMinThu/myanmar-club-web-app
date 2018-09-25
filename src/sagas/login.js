@@ -27,7 +27,6 @@ function* asyncLogin(action) {
     yield put({ type: POST_APILOADING, payload: true });
     console.log('Calling API.........', action.type, action.userData);
     const response = yield call(postLogin, action.userData, authHeader);
-    console.log('API RESPONSE.........', response);
 
     const {
       isLoggedIn,
@@ -48,18 +47,19 @@ function* asyncLogin(action) {
       ? functionList.map(item => item.path)
       : [];
 
-    const payload = {
-      isLoggedIn,
-      isEcMember,
-      id,
-      name,
-      roleIdList, // required for controlling RoleAssignment at MemberEdit Page for Admin
-      functNameList, // required for menu & page access control
-      token,
-    };
     if (isLoggedIn) {
+      const payload = {
+        isLoggedIn,
+        isEcMember,
+        id,
+        name,
+        roleIdList, // required for controlling RoleAssignment at MemberEdit Page for Admin
+        functNameList, // required for menu & page access control
+        token,
+        tokenErrMsg: null,
+      };
       yield put({ type: LOGINDATA, payload });
-      // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
       localStorage.setItem('loginState', JSON.stringify(payload));
     }
   } catch (e) {

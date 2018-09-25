@@ -11,6 +11,7 @@ import eventTransactionReducer from './event-transaction';
 import forgotPasswordReducer from './forgot-password';
 import eventmgmtReducer from './eventmgmt';
 import accessControlReducer from './access-control';
+import incidentmgmtReducer from './incidentmgmt';
 
 /**
  * LocalStorage: storage engine for storing redux state
@@ -18,15 +19,15 @@ import accessControlReducer from './access-control';
  * this will check initial state and overrides it,
  * else it will replace initial state without checking (ignoring possible new entries)
  */
-const loginPersistConfig = {
+export const loginPersistConfig = {
   key: 'login',
   storage: localStorage,
   stateReconciler: autoMergeLevel2,
-  // whitelist: ['isLoggedIn', 'isAdmin'],
 };
 
 const rootReducer = combineReducers({
   login: persistReducer(loginPersistConfig, loginReducer),
+
   forgotpassword: forgotPasswordReducer,
   rolemgmt: rolemgmtReducer,
   membermgmt: membermgmtReducer,
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   eventmgmt: eventmgmtReducer,
   router: routerReducer,
   accessControl: accessControlReducer,
+  incidentmgmt: incidentmgmtReducer,
 });
 
 export default rootReducer;

@@ -6,7 +6,12 @@ import { connect } from 'react-redux';
 import {
   Form, Row, Col, message, Card,
 } from 'antd';
-import { SUCCESS_NOTIFYEVENT, SHOWFOR } from '../../../actions/message';
+import defaultPic from '../../../images/default_img.png';
+import {
+  SUCCESS_NOTIFYEVENT,
+  FB_EVENT_PRETEXT,
+  SHOWFOR,
+} from '../../../actions/message';
 import {
   TIME_FORMAT_DB,
   DATE_FORMAT,
@@ -15,7 +20,12 @@ import {
 } from '../../../actions/constants';
 import { EVENT_REGISTER } from '../../../actions/location';
 import {
-  EventData,
+  EventPhoto,
+  EventData1,
+  EventData2,
+  EventData3,
+  EventData4,
+  EventData5,
   EditEventButton,
   ShareFacebookButton,
   NotifyMsgButton,
@@ -52,13 +62,12 @@ class EventPage extends Component {
       form: { getFieldDecorator, getFieldValue },
       eventmgmtData: { isPostApiLoading, eventData },
     } = this.props;
-    const shareColLayout = {
-      xs: { span: 24, offset: 0 },
-      sm: { span: 24, offset: 0 },
-      md: { span: 24, offset: 0 },
-      lg: { span: 12, offset: 0 },
-      xl: { span: 12, offset: 0 },
-      style: { marginBottom: 14 },
+    const layout = {
+      xs: { span: 24 },
+      sm: { span: 24 },
+      md: { span: 24 },
+      lg: { span: 12 },
+      xl: { span: 12 },
     };
     const actionColLayout = {
       xs: { span: 24 },
@@ -69,42 +78,64 @@ class EventPage extends Component {
       style: { marginBottom: 14 },
     };
     const id = getFieldValue('id');
-    // const url = 'http://myanmarclub.com.s3-website-ap-southeast-1.amazonaws.com/event-register/15';
     const url = window.location.hostname.concat(EVENT_REGISTER, '/', id);
-    // console.log(url);
+    const fbQuote = `${FB_EVENT_PRETEXT} 
+    Event Name: ${getFieldValue('name')}, 
+    Date: ${getFieldValue('startDate')},
+    Address: ${getFieldValue('location')}, 
+    Postal Code: ${getFieldValue('locationPostalCode')}`;
+    console.log(fbQuote);
     return (
-      <div>
-        <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-          <EventData decorator={getFieldDecorator} />
-          <br />
-          <Row gutter={8}>
-            <Col
-              {...shareColLayout}
-              {...{
-                lg: { span: 6, offset: 6 },
-                xl: { span: 6, offset: 6 },
-              }}
-            >
-              <ShareFacebookButton url={url} />
-            </Col>
-            <Col {...shareColLayout}>
-              <NotifyMsgButton
-                onClickNotify={() => this.onClickNotify(id, url)}
-                loading={isPostApiLoading}
-              />{' '}
-              Notify Club Members
-            </Col>
-          </Row>
-          <Row gutter={8}>
-            <Col {...actionColLayout}>
-              <EditEventButton eventId={eventData ? eventData.id : ''} />
-            </Col>
-            <Col {...actionColLayout}>
-              <BackButton history={history} />
-            </Col>
-          </Row>
-        </Card>
-      </div>
+      <Form>
+        <Row gutter={8} justify="start">
+          <Col {...layout}>
+            <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+              <EventData1 decorator={getFieldDecorator} />
+              <br />
+              <EventData2 decorator={getFieldDecorator} />
+              <br />
+              <EventData3 decorator={getFieldDecorator} />
+              <br />
+              <Row gutter={8}>
+                <Col
+                  {...actionColLayout}
+                  {...{
+                    lg: { span: 9, offset: 3 },
+                    xl: { span: 9, offset: 3 },
+                  }}
+                >
+                  <ShareFacebookButton url={url} quote={fbQuote} />
+                </Col>
+                <Col {...actionColLayout}>
+                  <NotifyMsgButton
+                    onClickNotify={() => this.onClickNotify(id, url)}
+                    loading={isPostApiLoading}
+                  />{' '}
+                  Notify Club Members
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+          <Col {...layout}>
+            <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+              <EventPhoto decorator={getFieldDecorator} />
+            </Card>
+            <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
+              <EventData4 decorator={getFieldDecorator} />
+              <br />
+              <EventData5 decorator={getFieldDecorator} />
+            </Card>
+          </Col>
+        </Row>
+        <Row gutter={8}>
+          <Col {...actionColLayout}>
+            <EditEventButton eventId={eventData ? eventData.id : ''} />
+          </Col>
+          <Col {...actionColLayout}>
+            <BackButton history={history} />
+          </Col>
+        </Row>
+      </Form>
     );
   }
 }
@@ -142,7 +173,9 @@ const formatDate = (strDate) => {
 const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
   const event = eventData || {};
   return {
-    photoLink: Form.createFormField({ value: event.photoLink }),
+    photoLink: Form.createFormField({
+      value: event.photoLink ? event.photoLink : defaultPic,
+    }),
     id: Form.createFormField({ value: event.id }),
     name: Form.createFormField({ value: event.name }),
     description: Form.createFormField({ value: event.description }),

@@ -17,7 +17,6 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Option } = Select;
-const { TextArea } = Input;
 
 // Responsive layout for event forms
 export const layout = {
@@ -36,21 +35,36 @@ export const layout = {
     xl: { span: 16 },
   },
 };
-
-export const inputLayout1 = {
-  xs: { span: 8 },
-  sm: { span: 8 },
-  md: { span: 8 },
-  lg: { span: 10 },
-  xl: { span: 10 },
+export const layoutHalf = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 7 },
+    xl: { span: 7 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 24 },
+    lg: { span: 17 },
+    xl: { span: 17 },
+  },
 };
-export const inputLayout2 = {
-  xs: { span: 16 },
-  sm: { span: 16 },
-  md: { span: 16 },
-  lg: { span: 12 },
-  xl: { span: 12 },
-};
+// export const inputLayout1 = {
+//   xs: { span: 8 },
+//   sm: { span: 8 },
+//   md: { span: 8 },
+//   lg: { span: 10 },
+//   xl: { span: 10 },
+// };
+// export const inputLayout2 = {
+//   xs: { span: 16 },
+//   sm: { span: 16 },
+//   md: { span: 16 },
+//   lg: { span: 12 },
+//   xl: { span: 12 },
+// };
 
 /* eslint react/prop-types: 0 */
 // SearchNamePanel
@@ -149,25 +163,11 @@ export const EventNameInput = ({ decorator }) => (
   </FormItem>
 );
 
-// Event Description
-export const EventDescriptionInput = ({ decorator }) => (
-  <FormItem {...layout} label="Description">
-    {decorator('description', {
-      rules: [
-        {
-          required: true,
-          message: 'Please input event description!',
-        },
-      ],
-    })(<TextArea {...customInput} rows={2} placeholder="Event Description" />)}
-  </FormItem>
-);
-
 // Location Address
 export const AddressInput = ({ decorator }) => (
-  <FormItem {...layout} label="Location" colon required>
+  <FormItem {...layoutHalf} label="Location" colon required>
     <Row type="flex" justify="start">
-      <Col {...inputLayout1}>
+      <Col span={12}>
         <FormItem>
           {decorator('locationLine1', {
             rules: [
@@ -179,7 +179,7 @@ export const AddressInput = ({ decorator }) => (
           })(<Input {...customInput} placeholder="Street Address Line 1..." />)}
         </FormItem>
       </Col>
-      <Col {...inputLayout2}>
+      <Col span={12}>
         <FormItem>
           {decorator('locationLine2', initialValue)(
             <Input {...customInput} placeholder="Street Address Line 2..." />,
@@ -192,7 +192,7 @@ export const AddressInput = ({ decorator }) => (
 
 // Postal Code
 export const PostalCodeInput = ({ decorator }) => (
-  <FormItem {...layout} label=" " colon={false} required={false}>
+  <FormItem {...layoutHalf} label="Postal Code" colon required>
     {decorator('locationPostalCode', {
       rules: [
         {
@@ -211,11 +211,7 @@ export const PostalCodeInput = ({ decorator }) => (
 
 // Refreshment
 export const RefreshmentRadio = ({ decorator }) => (
-  <FormItem
-    {...layout}
-    label="Refreshment Provided"
-    style={{ marginBottom: 0 }}
-  >
+  <FormItem {...layoutHalf} label="Refreshment Provided">
     {decorator('isRefreshmentProvided', initialValue)(
       <RadioGroup name="refreshment">
         <RadioButton value="1">Yes</RadioButton>
@@ -235,7 +231,7 @@ const validateNumber = (rule, value, callback) => {
 
 // Ticket fee
 export const TicketFeeInput = ({ decorator }) => (
-  <FormItem {...layout} label="Ticket Fee (SGD)">
+  <FormItem {...layoutHalf} label="Ticket Fee (SGD)">
     {decorator('ticketFee', {
       initialValue: '',
       rules: [
@@ -250,7 +246,7 @@ export const TicketFeeInput = ({ decorator }) => (
 
 // No of Pax
 export const NumPaxInput = ({ decorator }) => (
-  <FormItem {...layout} label="No of Pax">
+  <FormItem {...layoutHalf} label="No of Pax">
     {decorator('noOfPax', {
       initialValue: '',
       rules: [
