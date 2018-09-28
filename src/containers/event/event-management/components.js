@@ -53,6 +53,16 @@ export const EventsTable = ({
       },
       sortOrder: sortedInfo.columnKey === 'description' && sortedInfo.order,
       width: '22%',
+      // render: (text) => {
+      //   // const strArr = text.split(' ');
+      //   const strArr = text;
+      //   return strArr.length >= 300
+      //     ? strArr
+      //       .slice(0, 300)
+      //       .join(' ')
+      //       .concat(' ...')
+      //     : text;
+      // },
     },
     {
       title: 'Start Date',

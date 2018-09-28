@@ -205,12 +205,14 @@ class EventRSVPPage extends Component {
               hasSelected={hasSelected}
               isPostApiLoading={action === 'paid' ? isPostApiLoading : false}
               placeHolder="Paid"
+              icon="check-circle"
             />
             <DeleteSeletedButton
               onClick={() => this.onClickUpdatePayment('unpaid')}
               hasSelected={hasSelected}
               isPostApiLoading={action === 'unpaid' ? isPostApiLoading : false}
               placeHolder="Not Paid"
+              icon="close-circle"
             />
             {hasSelected ? (
               <SelectedInfo

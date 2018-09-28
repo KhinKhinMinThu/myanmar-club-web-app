@@ -12,6 +12,7 @@ import {
 } from '../shared-styled';
 
 const FormItem = Form.Item;
+const { Search } = Input;
 const { TabPane } = Tabs;
 // Responsive layout for event forms
 export const layout = {
@@ -75,17 +76,14 @@ export const SearchNamePanel = ({
   <FormItem style={{ marginBottom: 3 }}>
     <Col span={4}>
       {decorator('searchName', { initialValue: null })(
-        <Input
+        <Search
           placeholder={placeHolder}
           onChange={onChange}
-          onPressEnter={onSearch}
+          onSearch={onSearch}
         />,
       )}
     </Col>
     <Col span={20}>
-      <MarginLeftButton type="primary" onClick={onSearch}>
-        Search
-      </MarginLeftButton>
       <MarginLeftButton type="primary" onClick={onClickReset} ghost>
         Clear Search
       </MarginLeftButton>
@@ -126,8 +124,10 @@ export const DeleteSeletedButton = ({
   hasSelected,
   isPostApiLoading,
   placeHolder,
+  icon,
 }) => (
   <MarginLeftButton
+    icon={icon}
     type="primary"
     onClick={onClick}
     disabled={!hasSelected}

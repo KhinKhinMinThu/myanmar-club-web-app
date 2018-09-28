@@ -138,7 +138,7 @@ class ClubMembersPage extends Component {
     if (clubMembersList) this.membersList = this.prepareList(clubMembersList);
 
     const header = this.membersList
-      ? 'Total EC members: '.concat(this.membersList.length)
+      ? 'Total Club Members: '.concat(this.membersList.length)
       : '';
 
     const rowSelection = {
@@ -181,7 +181,8 @@ class ClubMembersPage extends Component {
               onClick={this.onClickDeleteSelected}
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
-              placeHolder="Delete Selected Member(s)"
+              placeHolder="Delete Selected Club Member(s)"
+              icon="delete"
             />
             {hasSelected ? (
               <SelectedInfo

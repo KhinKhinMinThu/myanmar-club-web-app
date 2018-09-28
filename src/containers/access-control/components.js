@@ -13,6 +13,7 @@ import {
 } from './styled-components';
 
 const FormItem = Form.Item;
+const { Search } = Input;
 /* eslint react/prop-types: 0 */
 
 // RolesTable
@@ -201,17 +202,14 @@ export const SearchNamePanel = ({
   <FormItem style={{ marginBottom: 3 }}>
     <Col span={4}>
       {decorator('searchName', { initialValue: null })(
-        <Input
+        <Search
           placeholder={placeHolder}
           onChange={onChange}
-          onPressEnter={onSearch}
+          onSearch={onSearch}
         />,
       )}
     </Col>
     <Col span={20}>
-      <MarginLeftButton type="primary" onClick={onSearch}>
-        Search
-      </MarginLeftButton>
       <MarginLeftButton type="primary" onClick={onClickReset} ghost>
         Clear Search
       </MarginLeftButton>
@@ -252,12 +250,14 @@ export const DeleteSeletedButton = ({
   hasSelected,
   isPostApiLoading,
   placeHolder,
+  icon,
 }) => (
   <MarginLeftButton
     type="primary"
     onClick={onClick}
     disabled={!hasSelected}
     loading={isPostApiLoading}
+    icon={icon}
   >
     {placeHolder}
   </MarginLeftButton>

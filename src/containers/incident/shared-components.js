@@ -84,7 +84,13 @@ export const IncidentTypeSearchSelect = ({ decorator, incidentTypes }) => (
 export const SubmittedBySelect = ({ decorator, submittedBy }) => (
   <FormItem {...layout} label="Submitted By">
     {decorator('submittedBy', { initialValue: '0' })(
-      <Select {...customInput}>
+      <Select
+        {...customInput}
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
         <Option value="0">Select</Option>
         {submittedBy.map(item => (
           <Option key={item.id} value={item.id.toString()}>

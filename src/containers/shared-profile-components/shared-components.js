@@ -65,7 +65,18 @@ const readOnlyInput = {
   },
   readOnly: true,
 };
-
+const readOnlyMMInput = {
+  style: {
+    border: 0,
+    outline: 0,
+    borderRadius: 0,
+    padding: 0,
+    borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+    fontFamily: 'Myanmar3',
+    textAlign: 'justify',
+  },
+  readOnly: true,
+};
 /* eslint react/prop-types: 0 */
 // Member form data
 const initialValue = { initialValue: '' };
@@ -236,7 +247,7 @@ export const AddressInput = ({ decorator }) => (
 
 // postalCode
 export const PostalCodeInput = ({ decorator }) => (
-  <FormItem {...layout} label=" " colon={false} required={false}>
+  <FormItem {...layout} label="Postal Code" colon required>
     {decorator('postalCode', {
       rules: [
         {
@@ -486,7 +497,7 @@ export const DeleteProfileSwitch = ({ decorator }) => (
 // MembershipTypeReadOnly
 export const MembershipTypeReadOnly = ({ decorator }) => (
   <FormItem {...layout} label="Membership Type" style={{ margin: 0 }}>
-    {decorator('membershipTypeReadOnly')(<Input {...readOnlyInput} />)}
+    {decorator('membershipTypeReadOnly')(<Input {...readOnlyMMInput} />)}
   </FormItem>
 );
 

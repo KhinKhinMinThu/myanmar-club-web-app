@@ -173,6 +173,7 @@ class ApprovedClaimsPage extends Component {
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
               placeHolder="Unapprove Selected Claim(s)"
+              icon="redo"
             />
             {hasSelected ? (
               <SelectedInfo

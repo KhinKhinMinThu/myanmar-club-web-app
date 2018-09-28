@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Anchor } from 'antd';
-import { HeaderText, BoldUnderlineText } from '../shared-styled';
+import { HeaderText, UserNameText } from '../shared-styled';
 import {
   DEFAULT,
   DASHBOARD,
@@ -17,7 +17,6 @@ import {
   EVENT_CREATION,
   EVENT_VIEW,
   EVENT_EDIT,
-  INCIDENT_SEARCH,
   INCIDENT_CREATION,
   INCIDENT_MANAGMENT,
   INCIDENT_EDIT,
@@ -37,7 +36,6 @@ import EventCreation from '../../event/event-creation';
 import EventManagementPage from '../../event/event-management';
 import EventEditPage from '../../event/event-edit';
 import EventViewPage from '../../event/event-view';
-import SearchIncidentPage from '../../incident/incident-search';
 import IncidentManagementPage from '../../incident/incident-management';
 import IncidentCreationPage from '../../incident/incident-creation';
 import IncidentEditPage from '../../incident/incident-edit';
@@ -75,7 +73,6 @@ class PrivatePage extends Component {
     if (pathname === EVENT_CREATION && functNameList.includes(EVENT_CREATION)) return EventCreation; // prettier-ignore
     if (pathname === EVENT_VIEW && functNameList.includes(EVENT_VIEW)) return id ? EventViewPage : ErrorPage; // prettier-ignore
     if (pathname === EVENT_EDIT && functNameList.includes(EVENT_EDIT)) return id ? EventEditPage : ErrorPage; // prettier-ignore
-    if (pathname === INCIDENT_SEARCH && functNameList.includes(INCIDENT_SEARCH)) return SearchIncidentPage; // prettier-ignore
     if (pathname === INCIDENT_MANAGMENT && functNameList.includes(INCIDENT_MANAGMENT)) return IncidentManagementPage; // prettier-ignore
     if (pathname === INCIDENT_CREATION && functNameList.includes(INCIDENT_CREATION)) return IncidentCreationPage; // prettier-ignore
     if (pathname === INCIDENT_EDIT && functNameList.includes(INCIDENT_EDIT)) return IncidentEditPage; // prettier-ignore
@@ -127,7 +124,7 @@ class PrivatePage extends Component {
                 marginTop: '8px',
               }}
             >
-              <BoldUnderlineText>{name}</BoldUnderlineText>
+              <UserNameText>{name}</UserNameText>
             </div>
             <MenuPanel
               selectedKeys={['/portal/'.concat(pathname)]}

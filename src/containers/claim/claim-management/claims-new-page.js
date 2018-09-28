@@ -172,6 +172,7 @@ class NewClaimsPage extends Component {
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
               placeHolder="Approve Selected Claim(s)"
+              icon="check-circle"
             />
             {hasSelected ? (
               <SelectedInfo

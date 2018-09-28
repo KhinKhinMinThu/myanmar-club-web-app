@@ -5,6 +5,7 @@ import {
   Button, Form, Input, Col, Tooltip, Modal, Row, Card,
 } from 'antd';
 import { DATE_FORMAT } from '../../../actions/constants';
+import IncidentSearchModal from '../incidentSearchModal';
 import { INCIDENT_EDIT, INCIDENT_CREATION } from '../../../actions/location';
 import {
   FullWidthTable,
@@ -15,6 +16,7 @@ import {
 } from '../shared-styled';
 
 const FormItem = Form.Item;
+const { Search } = Input;
 // Responsive layout for event forms
 export const layout = {
   labelCol: {
@@ -38,15 +40,15 @@ const modalLayout = {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 24 },
-    lg: { span: 8 },
-    xl: { span: 8 },
+    lg: { span: 4 },
+    xl: { span: 4 },
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 24 },
-    lg: { span: 16 },
-    xl: { span: 16 },
+    lg: { span: 20 },
+    xl: { span: 20 },
   },
   colon: true,
 };
@@ -58,21 +60,31 @@ export const SearchNamePanel = ({
   onSearch,
   onClickReset,
   placeHolder,
+  // modal properties
+  incidentTypes,
+  submittedBy,
+  performSearchIncident,
+  getFieldValue,
 }) => (
   <FormItem style={{ marginBottom: 3 }}>
     <Col span={4}>
       {decorator('searchName', { initialValue: null })(
-        <Input
+        <Search
           placeholder={placeHolder}
           onChange={onChange}
-          onPressEnter={onSearch}
+          onSearch={onSearch}
         />,
       )}
     </Col>
     <Col span={20}>
-      <MarginLeftButton type="primary" onClick={onSearch}>
-        Search
-      </MarginLeftButton>
+      <IncidentSearchModal
+        decorator={decorator}
+        incidentTypes={incidentTypes}
+        submittedBy={submittedBy}
+        performSearchIncident={performSearchIncident}
+        getFieldValue={getFieldValue}
+      />
+
       <MarginLeftButton type="primary" onClick={onClickReset} ghost>
         Clear Search
       </MarginLeftButton>
@@ -113,12 +125,14 @@ export const DeleteSeletedButton = ({
   hasSelected,
   isPostApiLoading,
   placeHolder,
+  icon,
 }) => (
   <MarginLeftButton
     type="primary"
     onClick={onClick}
     disabled={!hasSelected}
     loading={isPostApiLoading}
+    icon={icon}
   >
     {placeHolder}
   </MarginLeftButton>
@@ -214,7 +228,7 @@ export class IncidentsTable extends Component {
           return 0;
         },
         sortOrder: sortedInfo.columnKey === 'incidentType' && sortedInfo.order,
-        width: '10%',
+        width: '11%',
       },
       {
         title: 'Description',
@@ -226,7 +240,14 @@ export class IncidentsTable extends Component {
           return 0;
         },
         sortOrder: sortedInfo.columnKey === 'description' && sortedInfo.order,
-        width: '20%',
+        width: '23%',
+        render: (text) => {
+          // const strArr = text.split(' ');
+          const strArr = text;
+          return strArr.length >= 300
+            ? strArr.slice(0, 300).concat(' ...')
+            : text;
+        },
       },
       {
         title: 'Created By',
@@ -238,7 +259,7 @@ export class IncidentsTable extends Component {
           return 0;
         },
         sortOrder: sortedInfo.columnKey === 'createdBy' && sortedInfo.order,
-        width: '11%',
+        width: '9%',
       },
       {
         title: 'Created Date',
@@ -258,7 +279,7 @@ export class IncidentsTable extends Component {
           return 0;
         },
         sortOrder: sortedInfo.columnKey === 'updatedBy' && sortedInfo.order,
-        width: '11%',
+        width: '9%',
       },
       {
         title: 'Updated Date',
@@ -271,7 +292,7 @@ export class IncidentsTable extends Component {
       {
         title: 'Action',
         key: 'action',
-        width: '10%',
+        width: '8%',
         // render: (text, record) => ()
         render: record => (
           <div>
@@ -316,6 +337,7 @@ export class IncidentsTable extends Component {
           }}
         />
         <Modal
+          width={800}
           visible={isModalVisible}
           style={{ top: 10 }}
           onCancel={this.onCloseModal}

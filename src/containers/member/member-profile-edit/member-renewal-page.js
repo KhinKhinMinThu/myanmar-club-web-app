@@ -43,6 +43,7 @@ import {
 import {
   getMemberData,
   postUpdateMembershipAdmin,
+  setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
 
 const { confirm } = Modal;
@@ -69,9 +70,11 @@ class MemberRenewal extends Component {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll },
+      membermgmtData: { memberData },
       computedMatch: {
         params: { id },
       },
+      dispatchMemberData,
       performUpdateMembership,
     } = this.props;
 
@@ -83,11 +86,15 @@ class MemberRenewal extends Component {
           ...formValues,
           id,
           membershipType,
+          membershipStatus: 'Active',
+          // lastPaymentDate: '',
+          lastPaymentType: formValues.paymentType,
           totalAmount: formValues.totalAmount.toString(),
         };
         confirm({
           title: CONFIRM_RENEWMEMBER,
           onOk() {
+            dispatchMemberData({ ...memberData, ...membershipToUpdate });
             performUpdateMembership(membershipToUpdate);
           },
         });
@@ -168,6 +175,7 @@ MemberRenewal.propTypes = {
 
   performUpdateMembership: PropTypes.func.isRequired,
   performGetMemberData: PropTypes.func.isRequired,
+  dispatchMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
@@ -180,6 +188,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   performUpdateMembership: postUpdateMembershipAdmin,
   performGetMemberData: getMemberData,
+  dispatchMemberData: setMemberData,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {

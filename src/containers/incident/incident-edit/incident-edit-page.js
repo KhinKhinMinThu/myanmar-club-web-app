@@ -57,6 +57,7 @@ class IncidentEdit extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      history,
       incidentmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
 
@@ -67,6 +68,7 @@ class IncidentEdit extends Component {
       message.error(postErrMsg, SHOWFOR);
     } else {
       message.success(SUCCESS_UPDATEINCIDENT, SHOWFOR);
+      history.go(-1);
     }
   }
 

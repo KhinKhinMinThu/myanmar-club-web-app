@@ -82,6 +82,7 @@ class EventEdit extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      history,
       eventmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
 
@@ -92,6 +93,7 @@ class EventEdit extends Component {
       message.error(postErrMsg, SHOWFOR);
     } else {
       message.success(SUCCESS_UPDATEEVENT, SHOWFOR);
+      history.go(-1);
     }
   }
 

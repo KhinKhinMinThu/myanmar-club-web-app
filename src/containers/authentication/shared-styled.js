@@ -27,3 +27,9 @@ export const BoldUnderlineText = styled.span`
   font-weight: bold;
   text-decoration: underline;
 `;
+
+export const UserNameText = styled.span`
+  font-style: italic;
+  font-weight: bold;
+  color: #02006c;
+`;

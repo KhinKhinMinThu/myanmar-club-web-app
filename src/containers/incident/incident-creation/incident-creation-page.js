@@ -41,6 +41,7 @@ class IncidentCreation extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      history,
       incidentmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
 
@@ -51,6 +52,7 @@ class IncidentCreation extends Component {
       message.error(postErrMsg, SHOWFOR);
     } else {
       message.success(SUCCESS_NEWINCIDENT, SHOWFOR);
+      history.go(-1);
     }
   }
 

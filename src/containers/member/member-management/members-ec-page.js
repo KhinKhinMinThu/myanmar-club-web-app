@@ -137,7 +137,7 @@ class EcMembersPage extends Component {
     if (ecMembersList) this.membersList = this.prepareList(ecMembersList);
 
     const header = this.membersList
-      ? 'Total EC members: '.concat(this.membersList.length)
+      ? 'Total EC Members: '.concat(this.membersList.length)
       : '';
 
     const rowSelection = {
@@ -180,7 +180,8 @@ class EcMembersPage extends Component {
               onClick={this.onClickDeleteSelected}
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
-              placeHolder="Delete Selected Member(s)"
+              placeHolder="Delete Selected EC Member(s)"
+              icon="delete"
             />
             {hasSelected ? (
               <SelectedInfo

@@ -37,6 +37,7 @@ class EventCreation extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      history,
       eventmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
 
@@ -47,6 +48,7 @@ class EventCreation extends Component {
       message.error(postErrMsg, SHOWFOR);
     } else {
       message.success(SUCCESS_NEWEVENT, SHOWFOR);
+      history.go(-1);
     }
   }
 

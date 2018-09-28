@@ -370,6 +370,7 @@ class AccessControl extends Component {
                   hasSelected={hasSelected}
                   isPostApiLoading={isPostApiLoading}
                   placeHolder="Delete Selected Role(s)"
+                  icon="delete"
                 />
                 {hasSelected ? (
                   <SelectedInfo

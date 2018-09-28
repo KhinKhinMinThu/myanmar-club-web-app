@@ -209,7 +209,7 @@ class EventTransaction extends Component {
                   placeHolder="Search event name"
                 />
               </Col>
-              <Col>
+              <Col span={24}>
                 <EventsTable
                   eventsList={this.eventsList}
                   onChange={(pagination, filters, sorter) => {

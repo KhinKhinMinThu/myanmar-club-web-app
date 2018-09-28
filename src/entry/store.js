@@ -11,7 +11,9 @@ import rootSaga from '../sagas';
 import { api } from '../sagas/api';
 import { TOKEN_ERROR, AUTHENTICATED_USER } from '../reducers/login/login-data';
 
-export const history = createBrowserHistory();
+export const history = createBrowserHistory({
+  forceRefresh: true,
+});
 const rtrMiddleware = routerMiddleware(history); // for dispatching history actions
 const sagaMiddleware = createSagaMiddleware();
 

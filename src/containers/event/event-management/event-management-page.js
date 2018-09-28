@@ -203,6 +203,7 @@ class EventManagementPage extends Component {
                   hasSelected={hasSelected}
                   isPostApiLoading={isPostApiLoading}
                   placeHolder="Delete Selected Event(s)"
+                  icon="delete"
                 />
                 {hasSelected ? (
                   <SelectedInfo
