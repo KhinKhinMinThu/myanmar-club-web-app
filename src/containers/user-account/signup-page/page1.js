@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import {
-  Form, Alert, Row, Col, Spin, Card, message, BackTop, Tooltip,
+  Form, Alert, Row, Col, Spin, Card, Modal, BackTop, Tooltip,
 } from 'antd';
 import FormStepAction from './form-step-action';
 import {
@@ -12,7 +12,7 @@ import {
   NATIONALITY_LIST,
   RELIGION_LIST,
 } from '../../../actions/constants';
-import { SHOWFOR } from '../../../actions/message';
+
 import {
   NameInput,
   GenderRadio,
@@ -73,7 +73,7 @@ class Page1 extends Component {
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) message.error(postErrMsg, SHOWFOR);
+    if (postErrMsg) Modal.error({ title: 'Error!', content: postErrMsg });
     if (isEmailFound === '1') {
       setFields({
         emailAddress: {

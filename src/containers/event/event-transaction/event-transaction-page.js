@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Spin, Alert, Row, Col,
+  Form, Spin, Alert, Row, Col, Modal,
 } from 'antd';
 import {
   SUCCESS_DELETEEVENTTRANSC,
   SUCCESS_ADDEVENTTRANSC,
-  SHOWFOR,
 } from '../../../actions/message';
 
 import { EventsTable } from './components';
@@ -52,10 +51,10 @@ class EventTransaction extends Component {
 
     if (this.actionType) {
       if (postErrMsg) {
-        message.error(postErrMsg, SHOWFOR);
+        Modal.error({ title: 'Error!', content: postErrMsg });
       } else {
-        if (this.actionType === 'save') message.success(SUCCESS_ADDEVENTTRANSC, SHOWFOR);
-        if (this.actionType === 'delete') message.success(SUCCESS_DELETEEVENTTRANSC, SHOWFOR);
+        if (this.actionType === 'save') Modal.success({ title: 'Success!', content: SUCCESS_ADDEVENTTRANSC });
+        if (this.actionType === 'delete') Modal.success({ title: 'Success!', content: SUCCESS_DELETEEVENTTRANSC });
       }
     }
     this.actionType = null;

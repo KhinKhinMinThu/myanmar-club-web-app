@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col,
+  Form, Row, Col, Modal,
 } from 'antd';
-import { SUCCESS_APPROVECLAIMS, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_APPROVECLAIMS, CONFIRM_APPROVECLAIMS } from '../../../actions/message';
 import {
   ClaimsTable,
   DeSeletAllButton,
@@ -39,9 +39,9 @@ class NewClaimsPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_APPROVECLAIMS, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_APPROVECLAIMS });
     }
   }
 
@@ -65,26 +65,6 @@ class NewClaimsPage extends Component {
     }, 1000);
   };
 
-  onClickDeleteSelected = () => {
-    const {
-      claimmgmtUI: { selectedKeys },
-      claimmgmtData: { newClaimsList, oldClaimsList },
-      performApproveClaims,
-      dispatchResetState,
-      dispatchNewClaimsData,
-      dispatchOldClaimsData,
-    } = this.props;
-    performApproveClaims({ claimsToApprove: selectedKeys });
-    dispatchResetState();
-    const updatedNewClaims = newClaimsList.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-    const updatedOldClaims = newClaimsList.filter(item => selectedKeys.includes(item.id));
-
-    dispatchNewClaimsData(updatedNewClaims);
-    dispatchOldClaimsData([...oldClaimsList, ...updatedOldClaims]);
-  };
-
   // handle onClick from Reset button
   onClickReset = () => {
     const {
@@ -99,6 +79,33 @@ class NewClaimsPage extends Component {
       this.searchNameValue = null;
     }
     dispatchResetState();
+  };
+
+  approveClaims = () => {
+    const {
+      claimmgmtUI: { selectedKeys },
+      claimmgmtData: { newClaimsList, oldClaimsList },
+      performApproveClaims,
+      dispatchResetState,
+      dispatchNewClaimsData,
+      dispatchOldClaimsData,
+    } = this.props;
+
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_APPROVECLAIMS,
+      onOk() {
+        performApproveClaims({ claimsToApprove: selectedKeys });
+        dispatchResetState();
+        const updatedNewClaims = newClaimsList.filter(
+          item => !selectedKeys.includes(item.id),
+        );
+        const updatedOldClaims = newClaimsList.filter(item => selectedKeys.includes(item.id));
+
+        dispatchNewClaimsData(updatedNewClaims);
+        dispatchOldClaimsData([...oldClaimsList, ...updatedOldClaims]);
+      },
+    });
   };
 
   prepareList = (sourceList) => {
@@ -168,7 +175,7 @@ class NewClaimsPage extends Component {
               loading={deselectAllLoading}
             />
             <DeleteSeletedButton
-              onClick={this.onClickDeleteSelected}
+              onClick={this.approveClaims}
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
               placeHolder="Approve Selected Claim(s)"

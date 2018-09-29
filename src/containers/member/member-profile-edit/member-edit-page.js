@@ -5,20 +5,11 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
-  Form,
-  message,
-  Row,
-  Col,
-  Spin,
-  Modal,
-  Card,
-  BackTop,
-  Tooltip,
+  Form, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
 } from 'antd';
 import {
   SUCCESS_UPDATEMEMBER,
   CONFIRM_DELETEMEMBER,
-  SHOWFOR,
 } from '../../../actions/message';
 import {
   DATETIME_FORMAT_DB,
@@ -57,8 +48,6 @@ import {
   setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
 
-const { confirm } = Modal;
-
 class MemberEdit extends Component {
   state = {
     fileList: [],
@@ -77,9 +66,9 @@ class MemberEdit extends Component {
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) message.error(postErrMsg, SHOWFOR);
+    if (postErrMsg) Modal.error({ title: 'Error!', content: postErrMsg });
     if (!postErrMsg) {
-      message.success(SUCCESS_UPDATEMEMBER, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_UPDATEMEMBER });
       if (this.actionType === 'delete') history.go(-1);
     }
     this.actionType = 'update';
@@ -127,8 +116,9 @@ class MemberEdit extends Component {
 
     if (getFieldValue('deleteProfile')) {
       this.actionType = 'delete';
-      confirm({
-        title: CONFIRM_DELETEMEMBER,
+      Modal.confirm({
+        title: 'Confirmation!',
+        content: CONFIRM_DELETEMEMBER,
         onOk() {
           performDeleteMembers({ membersToDelete: [id] });
         },

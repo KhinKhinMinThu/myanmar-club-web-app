@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Card, Spin, Alert,
+  Form, Modal, Card, Spin, Alert,
 } from 'antd';
-import { SUCCESS_NEWEVENTRSVP, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_NEWEVENTRSVP } from '../../../actions/message';
 import {
   TIME_FORMAT_DB,
   DATE_FORMAT,
@@ -53,9 +53,9 @@ class EventRegistration extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_NEWEVENTRSVP, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_NEWEVENTRSVP });
     }
   }
 

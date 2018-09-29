@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col,
+  Form, Modal, Row, Col,
 } from 'antd';
-import { SUCCESS_UNAPPROVECLAIMS, SHOWFOR } from '../../../actions/message';
+import {
+  SUCCESS_UNAPPROVECLAIMS,
+  CONFIRM_UNAPPROVECLAIMS,
+} from '../../../actions/message';
 import {
   ClaimsTable,
   DeSeletAllButton,
@@ -39,9 +42,9 @@ class ApprovedClaimsPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_UNAPPROVECLAIMS, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_UNAPPROVECLAIMS });
     }
   }
 
@@ -65,27 +68,6 @@ class ApprovedClaimsPage extends Component {
     }, 1000);
   };
 
-  onClickDeleteSelected = () => {
-    const {
-      claimmgmtUI: { selectedKeys },
-      claimmgmtData: { newClaimsList, oldClaimsList },
-      performUnApproveClaims,
-      dispatchResetState,
-      dispatchNewClaimsData,
-      dispatchOldClaimsData,
-    } = this.props;
-
-    performUnApproveClaims({ claimsToUnApprove: selectedKeys });
-    dispatchResetState();
-
-    const updatedNewClaims = oldClaimsList.filter(item => selectedKeys.includes(item.id));
-    const updatedOldClaims = oldClaimsList.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-    dispatchNewClaimsData([...newClaimsList, ...updatedNewClaims]);
-    dispatchOldClaimsData(updatedOldClaims);
-  };
-
   // handle onClick from Reset button
   onClickReset = () => {
     const {
@@ -100,6 +82,33 @@ class ApprovedClaimsPage extends Component {
       this.searchNameValue = null;
     }
     dispatchResetState();
+  };
+
+  unapproveClaims = () => {
+    const {
+      claimmgmtUI: { selectedKeys },
+      claimmgmtData: { newClaimsList, oldClaimsList },
+      performUnApproveClaims,
+      dispatchResetState,
+      dispatchNewClaimsData,
+      dispatchOldClaimsData,
+    } = this.props;
+
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_UNAPPROVECLAIMS,
+      onOk() {
+        performUnApproveClaims({ claimsToUnApprove: selectedKeys });
+        dispatchResetState();
+
+        const updatedNewClaims = oldClaimsList.filter(item => selectedKeys.includes(item.id));
+        const updatedOldClaims = oldClaimsList.filter(
+          item => !selectedKeys.includes(item.id),
+        );
+        dispatchNewClaimsData([...newClaimsList, ...updatedNewClaims]);
+        dispatchOldClaimsData(updatedOldClaims);
+      },
+    });
   };
 
   prepareList = (sourceList) => {
@@ -169,7 +178,7 @@ class ApprovedClaimsPage extends Component {
               loading={deselectAllLoading}
             />
             <DeleteSeletedButton
-              onClick={this.onClickDeleteSelected}
+              onClick={this.unapproveClaims}
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
               placeHolder="Unapprove Selected Claim(s)"

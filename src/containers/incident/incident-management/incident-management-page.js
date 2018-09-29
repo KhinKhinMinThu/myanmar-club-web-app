@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom/es';
 import {
-  Form, Row, Col, message,
+  Form, Row, Col, Modal,
 } from 'antd';
 import { BackButton } from '../shared-components';
-import { SUCCESS_DELETEINCIDENT, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_DELETEINCIDENT, CONFIRM_DELETEINCIDENTS } from '../../../actions/message';
 import {
   IncidentsTable,
   DeSeletAllButton,
@@ -47,8 +47,8 @@ class IncidentManagement extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
-    } else if (this.actionType === 'delete') message.success(SUCCESS_DELETEINCIDENT, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
+    } else if (this.actionType === 'delete') Modal.success({ title: 'Success!', content: SUCCESS_DELETEINCIDENT });
     this.actionType = 'none';
   }
 
@@ -82,12 +82,18 @@ class IncidentManagement extends Component {
       dispatchSetIncidents,
     } = this.props;
 
-    performDeleteIncidents({ incidentsToDelete: selectedKeys });
-    // to remove the selected incidents from the table display
-    const updatedData = incidents.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-    dispatchSetIncidents(updatedData);
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_DELETEINCIDENTS,
+      onOk() {
+        performDeleteIncidents({ incidentsToDelete: selectedKeys });
+        // to remove the selected incidents from the table display
+        const updatedData = incidents.filter(
+          item => !selectedKeys.includes(item.id),
+        );
+        dispatchSetIncidents(updatedData);
+      },
+    });
   };
 
   // handle onClick from Reset button

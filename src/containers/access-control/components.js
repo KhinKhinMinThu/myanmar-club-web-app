@@ -266,11 +266,12 @@ export const DeleteSeletedButton = ({
 // BackButton
 export const CreateRoleButton = ({ showModal }) => (
   <Button
+    icon="file-add"
     style={{ marginTop: '10px', marginBottom: '20px' }}
     type="primary"
     onClick={showModal}
   >
-    + Create New Role
+    Create New Role
   </Button>
 );
 

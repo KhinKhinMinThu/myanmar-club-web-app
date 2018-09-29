@@ -2,7 +2,7 @@ import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { Link } from 'react-router-dom';
 import {
-  Tabs, Button, Form, Input, Popconfirm, Tooltip,
+  Tabs, Button, Form, Input, Popconfirm, Tooltip, Row, Col,
 } from 'antd';
 import { EVENT_EDIT } from '../../../actions/location';
 import {
@@ -34,13 +34,13 @@ export const EventViewTabs = ({ onChange, tabContents, props }) => {
   const tabTitles = {
     tab1: (
       <BoldText>
-        <TabIcon type="calendar" />
+        <TabIcon type="calendar" theme="filled" />
         Event
       </BoldText>
     ),
     tab2: (
       <BoldText>
-        <TabIcon type="calendar" />
+        <TabIcon type="calendar" theme="filled" />
         Registration List
       </BoldText>
     ),
@@ -156,6 +156,7 @@ export const EditEventButton = ({ eventId }) => (
     <FullButton type="primary">Edit Event</FullButton>
   </Link>
 );
+
 export const ShareFacebookButton = ({ url, quote }) => (
   <FacebookShareButton url={url} quote={quote}>
     <Button icon="facebook" shape="circle" type="primary" /> Share on facebook
@@ -180,6 +181,7 @@ export const RegistrationTable = ({
   filteredInfo,
   header,
   deleteRegistration,
+  exportList,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -269,7 +271,18 @@ export const RegistrationTable = ({
 
   return (
     <FullWidthTable
-      title={() => header}
+      title={() => (
+        <Row>
+          <Col span={12} style={{ textAlign: 'left' }}>
+            {header}
+          </Col>
+          <Col span={12} style={{ textAlign: 'right' }}>
+            <Button icon="download" type="primary" onClick={exportList}>
+              Download Registration List
+            </Button>
+          </Col>
+        </Row>
+      )}
       columns={columns}
       dataSource={registrationList}
       rowSelection={rowSelection}

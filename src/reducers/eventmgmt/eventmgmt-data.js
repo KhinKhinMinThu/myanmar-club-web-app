@@ -4,6 +4,7 @@ export const GET_EVENTDATA = '[EVENTMGMT_DATA] GET_EVENTDATA';
 export const GET_APILOADING = '[EVENTMGMT_DATA] GET_APILOADING';
 export const EVENTDATA = '[EVENTMGMT_DATA] EVENTDATA';
 export const EVENTSDATA = '[EVENTMGMT_DATA] EVENTSDATA';
+export const PENDINGCLAIMS = '[EVENTMGMT_DATA] PENDINGCLAIMS';
 export const GET_ERROR = '[EVENTMGMT_DATA] GET_ERROR';
 // end
 
@@ -15,6 +16,8 @@ export const POST_NEWEVENT = '[EVENTMGMT_DATA] POST_NEWEVENT';
 export const POST_NEWEVENTRSVP = '[EVENTMGMT_DATA] POST_NEWEVENTRSVP';
 export const POST_UPDATEEVENT = '[EVENTMGMT_DATA] POST_UPDATEEVENT';
 export const POST_NOTIFYEVENT = '[EVENTMGMT_DATA] POST_NOTIFYEVENT';
+export const POST_DOWNLOAD_REGISTRATIONS = '[EVENTMGMT_DATA] POST_DOWNLOAD_REGISTRATIONS';
+export const POST_PENDING_CLAIMS = '[EVENTMGMT_DATA] POST_PENDING_CLAIMS';
 export const POST_UPDATEREGPAYMENT = '[EVENTMGMT_DATA] POST_UPDATEREGPAYMENT';
 export const POST_ERROR = '[EVENTMGMT_DATA] POST_ERROR';
 // end
@@ -57,6 +60,14 @@ export const postUpdateRegPayment = eventRSVPPayment => ({
   type: POST_UPDATEREGPAYMENT,
   eventRSVPPayment,
 });
+export const postDownloadRegistrations = eventId => ({
+  type: POST_DOWNLOAD_REGISTRATIONS,
+  eventId,
+});
+export const postPendingClaims = eventId => ({
+  type: POST_PENDING_CLAIMS,
+  eventId,
+});
 export default function (
   state = {
     isGetApiLoading: false,
@@ -65,10 +76,16 @@ export default function (
     postErrMsg: null,
     eventsData: null,
     eventData: null,
+    hasClaims: '0',
   },
   action,
 ) {
   switch (action.type) {
+    case PENDINGCLAIMS:
+      return {
+        ...state,
+        hasClaims: action.payload,
+      };
     case GET_APILOADING:
       return {
         ...state,

@@ -1,7 +1,7 @@
-export const SHOWFOR = 10;
+// export const SHOWFOR = 10;
 export const SUCCESS_APPROVECLAIMS = 'Approved Selected Claim(s)!';
 export const SUCCESS_UNAPPROVECLAIMS = 'Unapproved Selected Claim(s)!';
-export const SUCCESS_DELETEEVENTTRANSC = 'Deleted Selected Event Transaction(s)!';
+export const SUCCESS_DELETEEVENTTRANSC = 'Deleted Event Transaction!';
 export const SUCCESS_ADDEVENTTRANSC = 'Added New Transaction!';
 export const SUCCESS_DELETEEVENT = 'Deleted Selected Event(s)';
 export const SUCCESS_UPDATERSVP = 'Updated Selected Registration(s)';
@@ -19,11 +19,20 @@ export const SUCCESS_UPDATEROLE = 'Role has been updated with newly assigned fun
 export const SUCCESS_DELETEINCIDENT = 'Deleted Selected Incident(s)';
 export const SUCCESS_NEWINCIDENT = 'New Incident has been created!';
 export const SUCCESS_UPDATEINCIDENT = 'Incident has been updated!';
+export const SUCCESS_DOWNLAODREG = 'Registration list has been downloaded!';
 
 export const CONFIRM_DELETEEVENT = 'Please confirm to delete this event!';
+export const CONFIRM_DELETEEVENTS = 'Please confirm to delete selected event(s)!';
 export const CONFIRM_DELETEMEMBER = 'Please confirm to delete the member profile!';
+export const CONFIRM_DELETEMEMBERS = 'Please confirm to delete selected member(s)!';
 export const CONFIRM_RENEWMEMBER = 'Please confirm to renew the member!';
 export const CONFIRM_CREATEACC = 'Please confirm to signup!';
 export const CONFIRM_DELETEINCIDENT = 'Please confirm to delete this incident!';
-
+export const CONFIRM_DELETEINCIDENTS = 'Please confirm to delete selected incident(s)!';
+export const CONFIRM_APPROVECLAIMS = 'Please confirm to approve selected claim(s)!';
+export const CONFIRM_UNAPPROVECLAIMS = 'Please confirm to unapprove selected claim(s)!';
+export const CONFIRM_NOTIFYEVENT = 'Please confirm to send event notification to ALL members!';
+export const CONFIRM_PAIDREG = 'Please confirm to update the selected registration(s) as PAID!';
+export const CONFIRM_UNPAIDREG = 'Please confirm to update the selected registration(s) as UNPAID!';
+export const CONFIRM_CLOSEEVENT = 'There are pending claims for this event. Please confirm to proceed!';
 export const FB_EVENT_PRETEXT = 'Myanmar Club New Event! ';

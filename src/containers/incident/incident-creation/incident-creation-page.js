@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Form,
-  message,
+  Modal,
   Row,
   Col,
   Spin,
   Card,
   Alert,
 } from 'antd';
-import { SUCCESS_NEWINCIDENT, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_NEWINCIDENT } from '../../../actions/message';
 import IncidentTypeInput from '../incidentTypeInput';
 import IncidentDescriptionInput from '../incidentDescriptionInput';
 import {
@@ -49,9 +49,9 @@ class IncidentCreation extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_NEWINCIDENT, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_NEWINCIDENT });
       history.go(-1);
     }
   }

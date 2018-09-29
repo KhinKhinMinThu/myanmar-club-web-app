@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, Row, Col, message,
+  Form, Row, Col, Modal,
 } from 'antd';
-import { SUCCESS_UPDATERSVP, SHOWFOR } from '../../../actions/message';
+import {
+  SUCCESS_UPDATERSVP,
+  SUCCESS_DOWNLAODREG,
+  CONFIRM_PAIDREG,
+  CONFIRM_UNPAIDREG,
+} from '../../../actions/message';
 import { RegistrationTable } from './components';
 import {
   DeSeletAllButton,
@@ -26,6 +31,7 @@ import {
   setEventData,
   postDeleteRSVP,
   postUpdateRegPayment,
+  postDownloadRegistrations,
 } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventRSVPPage extends Component {
@@ -39,11 +45,13 @@ class EventRSVPPage extends Component {
     const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
-    } else {
-      message.success(SUCCESS_UPDATERSVP, SHOWFOR);
+    if (postErrMsg) Modal.error({ title: 'Error!', content: postErrMsg });
+
+    if (!postErrMsg) {
+      if (this.actionType === 'download') Modal.success({ title: 'Success!', content: SUCCESS_DOWNLAODREG });
+      else Modal.success({ title: 'Success!', content: SUCCESS_UPDATERSVP });
     }
+    this.actionType = 'update';
   }
 
   // handle de-select all button
@@ -76,25 +84,31 @@ class EventRSVPPage extends Component {
       dispatchSetAction,
       dispatchResetState,
     } = this.props;
-    dispatchSetAction(type);
-    const eventRSVPPayment = {
-      eventId: eventData.id,
-      paidReg: type === 'paid' ? selectedKeys : [],
-      unpaidReg: type === 'unpaid' ? selectedKeys : [],
-    };
-    performUpdatePayment(eventRSVPPayment);
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: type === 'paid' ? CONFIRM_PAIDREG : CONFIRM_UNPAIDREG,
+      onOk() {
+        dispatchSetAction(type);
+        const eventRSVPPayment = {
+          eventId: eventData.id,
+          paidReg: type === 'paid' ? selectedKeys : [],
+          unpaidReg: type === 'unpaid' ? selectedKeys : [],
+        };
+        performUpdatePayment(eventRSVPPayment);
 
-    // update RSVP payment statements
-    const { eventRSVPData } = eventData;
-    selectedKeys.forEach((item) => {
-      const reg = eventRSVPData.find(rsvp => rsvp.id === item);
-      if (reg) {
-        if (type === 'paid') reg.isPaid = '1';
-        if (type === 'unpaid') reg.isPaid = '0';
-      }
+        // update RSVP payment statements
+        const { eventRSVPData } = eventData;
+        selectedKeys.forEach((item) => {
+          const reg = eventRSVPData.find(rsvp => rsvp.id === item);
+          if (reg) {
+            if (type === 'paid') reg.isPaid = '1';
+            if (type === 'unpaid') reg.isPaid = '0';
+          }
+        });
+        dispatchSetEventData(eventData);
+        dispatchResetState();
+      },
     });
-    dispatchSetEventData(eventData);
-    dispatchResetState();
   };
 
   // handle onClick from Reset button
@@ -131,6 +145,7 @@ class EventRSVPPage extends Component {
       dispatchSetEventData,
       dispatchSetAction,
     } = this.props;
+
     dispatchSetAction('delete');
     performDeleteRSVP({ eventRSVPToDelete: [regId] });
 
@@ -155,6 +170,7 @@ class EventRSVPPage extends Component {
       dispatchSortedInfo,
       dispatchFilteredInfo,
       dispatchSelectedKeys,
+      performDownloadRegistrations,
     } = this.props;
 
     const rowSelection = {
@@ -233,6 +249,10 @@ class EventRSVPPage extends Component {
               filteredInfo={filteredInfo || {}}
               header={header}
               deleteRegistration={this.deleteRegistration}
+              exportList={() => {
+                this.actionType = 'download';
+                performDownloadRegistrations(eventData.id);
+              }}
             />
           </Col>
         </Row>
@@ -254,6 +274,7 @@ EventRSVPPage.propTypes = {
   dispatchSetEventData: PropTypes.func.isRequired,
   performDeleteRSVP: PropTypes.func.isRequired,
   performUpdatePayment: PropTypes.func.isRequired,
+  performDownloadRegistrations: PropTypes.func.isRequired,
 
   eventmgmtUI: PropTypes.shape({}).isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
@@ -275,6 +296,7 @@ const mapDispatchToProps = {
   dispatchSetEventData: setEventData,
   performDeleteRSVP: postDeleteRSVP,
   performUpdatePayment: postUpdateRegPayment,
+  performDownloadRegistrations: postDownloadRegistrations,
 };
 
 const FormEventRSVPPage = Form.create()(EventRSVPPage);

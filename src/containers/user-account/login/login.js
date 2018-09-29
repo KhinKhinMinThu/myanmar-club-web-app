@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
-import { Form, message } from 'antd';
-import { SHOWFOR } from '../../../actions/message';
+import { Form, Modal } from 'antd';
 import { UsernameInput, PasswordInput, Footer } from './components';
 import { postLogin, setLogout } from '../../../reducers/login/login-data';
 import { LoginCard } from '../shared-styled';
@@ -15,7 +14,7 @@ class LoginForm extends Component {
       dispatchLogout,
     } = this.props;
     if (tokenErrMsg) {
-      message.error(tokenErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: tokenErrMsg });
       // to set the tokenErrMsg: null
       // and prevent rehydration setting it more than once
       dispatchLogout();
@@ -31,7 +30,7 @@ class LoginForm extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     }
   }
 

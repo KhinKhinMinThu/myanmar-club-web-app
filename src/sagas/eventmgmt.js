@@ -11,6 +11,7 @@ import {
   GET_APILOADING,
   EVENTDATA,
   EVENTSDATA,
+  PENDINGCLAIMS,
   GET_ERROR,
   POST_APILOADING,
   POST_DELETEEVENT,
@@ -20,6 +21,8 @@ import {
   POST_UPDATEEVENT,
   POST_NOTIFYEVENT,
   POST_UPDATEREGPAYMENT,
+  POST_DOWNLOAD_REGISTRATIONS,
+  POST_PENDING_CLAIMS,
   POST_ERROR,
 } from '../reducers/eventmgmt/eventmgmt-data';
 import {
@@ -33,6 +36,8 @@ import {
   APIPOST_ADD_EVENTPHOTO,
   APIPOST_NOTIFY_EVENT,
   APIPOST_UPDATE_REGPAYMENT,
+  APIPOST_DOWNLOAD_REGISTRATIONGS,
+  APIPOST_PENDING_CLAIMS,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -164,6 +169,8 @@ const assembleFormData = ({ eventId, imageFile }) => {
   return null;
 };
 
+const postDownloadReg = (eventId, authHeader) => api.post(APIPOST_DOWNLOAD_REGISTRATIONGS, { id: eventId }, authHeader);
+const postPendingClaims = (eventId, authHeader) => api.post(APIPOST_PENDING_CLAIMS, { eventId }, authHeader);
 function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
@@ -182,6 +189,7 @@ function* asyncPostProcessEvents(action) {
       action.notification,
       action.newEventRSVPToAdd,
       action.eventRSVPPayment,
+      action.eventId,
     );
 
     let multipartForm;
@@ -254,6 +262,16 @@ function* asyncPostProcessEvents(action) {
           authHeader,
         );
         break;
+      case POST_DOWNLOAD_REGISTRATIONS:
+        response = yield call(postDownloadReg, action.eventId, authHeader);
+        break;
+      case POST_PENDING_CLAIMS:
+        response = yield call(postPendingClaims, action.eventId, authHeader);
+        if (response.data.hasClaims) {
+          yield put({ type: PENDINGCLAIMS, payload: response.data.hasClaims });
+          // yield put({ type: PENDINGCLAIMS, payload: '1' });
+        }
+        break;
       default:
     }
     const { errorMsg } = response.data;
@@ -296,5 +314,13 @@ export const postNotifyEventSaga = takeLatest(
 );
 export const postUpdateRegPaymentSaga = takeLatest(
   POST_UPDATEREGPAYMENT,
+  asyncPostProcessEvents,
+);
+export const postDownloadRegSaga = takeLatest(
+  POST_DOWNLOAD_REGISTRATIONS,
+  asyncPostProcessEvents,
+);
+export const postPendingClaimsSaga = takeLatest(
+  POST_PENDING_CLAIMS,
   asyncPostProcessEvents,
 );

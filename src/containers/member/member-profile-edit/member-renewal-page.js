@@ -4,20 +4,11 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form,
-  message,
-  Row,
-  Col,
-  Spin,
-  Modal,
-  Card,
-  Tooltip,
-  BackTop,
+  Form, Row, Col, Spin, Modal, Card, Tooltip, BackTop,
 } from 'antd';
 import {
   SUCCESS_RENEWMEMBER,
   CONFIRM_RENEWMEMBER,
-  SHOWFOR,
 } from '../../../actions/message';
 import {
   DEFAULT_DATE,
@@ -46,8 +37,6 @@ import {
   setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
 
-const { confirm } = Modal;
-
 class MemberRenewal extends Component {
   componentDidUpdate(prevProps) {
     const {
@@ -60,9 +49,9 @@ class MemberRenewal extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_RENEWMEMBER, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_RENEWMEMBER });
     }
   }
 
@@ -91,8 +80,9 @@ class MemberRenewal extends Component {
           lastPaymentType: formValues.paymentType,
           totalAmount: formValues.totalAmount.toString(),
         };
-        confirm({
-          title: CONFIRM_RENEWMEMBER,
+        Modal.confirm({
+          title: 'Confirmation!',
+          content: CONFIRM_RENEWMEMBER,
           onOk() {
             dispatchMemberData({ ...memberData, ...membershipToUpdate });
             performUpdateMembership(membershipToUpdate);

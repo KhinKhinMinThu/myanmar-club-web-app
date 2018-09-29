@@ -97,6 +97,8 @@ export const APIPOST_ADD_EVENT = '/event/createEvent';
 export const APIPOST_ADD_EVENTPHOTO = '/event/eventPhoto';
 export const APIPOST_NOTIFY_EVENT = '/event/sendEventNotification';
 export const APIPOST_UPDATE_REGPAYMENT = '/event/updateRegPayment';
+export const APIPOST_DOWNLOAD_REGISTRATIONGS = '/event/downloadRegistrationList';
+export const APIPOST_PENDING_CLAIMS = '/event/checkPendingClaims';
 
 export const APIPOST_FORGOTPWD = '/admin/forgotPassword';
 
