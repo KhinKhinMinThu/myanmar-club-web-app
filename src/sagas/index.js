@@ -20,7 +20,6 @@ import {
   postNotifyEventSaga,
   postNewEventRSVPSaga,
   postUpdateRegPaymentSaga,
-  postDownloadRegSaga,
   postPendingClaimsSaga,
 } from './eventmgmt';
 import {
@@ -70,7 +69,7 @@ export default function* rootSaga() {
     postNotifyEventSaga,
     postNewEventRSVPSaga,
     postUpdateRegPaymentSaga,
-    postDownloadRegSaga,
+
     postPendingClaimsSaga,
     // membermgmt
     getMembersDataSaga,

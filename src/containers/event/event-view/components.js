@@ -1,6 +1,7 @@
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { Link } from 'react-router-dom';
+import { CSVLink } from 'react-csv';
 import {
   Tabs, Button, Form, Input, Popconfirm, Tooltip, Row, Col,
 } from 'antd';
@@ -182,6 +183,7 @@ export const RegistrationTable = ({
   header,
   deleteRegistration,
   exportList,
+  exportFileName,
 }) => {
   const columns = [
     // dataIndex = databases column names
@@ -277,9 +279,17 @@ export const RegistrationTable = ({
             {header}
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
-            <Button icon="download" type="primary" onClick={exportList}>
-              Download Registration List
-            </Button>
+            <CSVLink
+              data={exportList}
+              filename={exportFileName}
+              // onClick={() => {
+              //   console.log('You click the link'); // 👍🏻 Your click handling logic
+              // }}
+            >
+              <Button icon="download" type="primary">
+                Download Registration List
+              </Button>
+            </CSVLink>
           </Col>
         </Row>
       )}

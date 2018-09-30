@@ -31,7 +31,6 @@ import {
   setEventData,
   postDeleteRSVP,
   postUpdateRegPayment,
-  postDownloadRegistrations,
 } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventRSVPPage extends Component {
@@ -137,6 +136,20 @@ class EventRSVPPage extends Component {
     return preparedList;
   };
 
+  prepareCSVList = (sourceList) => {
+    const preparedList = [];
+    sourceList.map((item, index) => preparedList.push({
+      No: index + 1,
+      Name: item.name,
+      Email_Address: item.emailAddress,
+      Mobile_No: item.mobilePhone,
+      No_of_Pax: item.noOfPax,
+      Payment: item.isPaid === '1' ? 'Paid' : 'Unpaid',
+      PaymentType: item.paymentType,
+    }));
+    return preparedList;
+  };
+
   // delete registraion
   deleteRegistration = (regId) => {
     const {
@@ -170,7 +183,7 @@ class EventRSVPPage extends Component {
       dispatchSortedInfo,
       dispatchFilteredInfo,
       dispatchSelectedKeys,
-      performDownloadRegistrations,
+      // performDownloadRegistrations,
     } = this.props;
 
     const rowSelection = {
@@ -182,11 +195,23 @@ class EventRSVPPage extends Component {
     this.registrationList = eventData
       ? this.prepareList(eventData.eventRSVPData)
       : [];
-
+    const exportList = eventData
+      ? this.prepareCSVList(eventData.eventRSVPData)
+      : [];
+    // registrations-event-2-3082018.csv
     const header = this.registrationList
       ? 'Total registration: '.concat(this.registrationList.length)
       : '';
-
+    const currentDate = new Date();
+    const exportFileName = 'registrations-event'.concat(
+      '-',
+      eventData.id,
+      '-',
+      currentDate.getDate(),
+      currentDate.getMonth(),
+      currentDate.getFullYear(),
+      '.csv',
+    );
     return (
       <div>
         <Row type="flex" justify="start">
@@ -249,10 +274,12 @@ class EventRSVPPage extends Component {
               filteredInfo={filteredInfo || {}}
               header={header}
               deleteRegistration={this.deleteRegistration}
-              exportList={() => {
-                this.actionType = 'download';
-                performDownloadRegistrations(eventData.id);
-              }}
+              // exportList={() => {
+              //   this.actionType = 'download';
+              //   performDownloadRegistrations(eventData.id);
+              // }}
+              exportList={exportList}
+              exportFileName={exportFileName}
             />
           </Col>
         </Row>
@@ -274,7 +301,6 @@ EventRSVPPage.propTypes = {
   dispatchSetEventData: PropTypes.func.isRequired,
   performDeleteRSVP: PropTypes.func.isRequired,
   performUpdatePayment: PropTypes.func.isRequired,
-  performDownloadRegistrations: PropTypes.func.isRequired,
 
   eventmgmtUI: PropTypes.shape({}).isRequired,
   eventmgmtData: PropTypes.shape({}).isRequired,
@@ -296,7 +322,6 @@ const mapDispatchToProps = {
   dispatchSetEventData: setEventData,
   performDeleteRSVP: postDeleteRSVP,
   performUpdatePayment: postUpdateRegPayment,
-  performDownloadRegistrations: postDownloadRegistrations,
 };
 
 const FormEventRSVPPage = Form.create()(EventRSVPPage);
