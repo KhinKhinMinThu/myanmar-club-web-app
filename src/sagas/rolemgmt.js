@@ -21,22 +21,23 @@ function* asyncGetRoleData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getRoleData, authHeader);
+    if (response) {
+      const { roleData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      if (roleData) {
+        const roleNameList = [];
+        roleData
+          .filter(item => item.roleId > 0)
+          .map(item => roleNameList.push({ id: item.roleId, name: item.roleName }));
 
-    const { roleData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    if (roleData) {
-      const roleNameList = [];
-      roleData
-        .filter(item => item.roleId > 0)
-        .map(item => roleNameList.push({ id: item.roleId, name: item.roleName }));
+        const allEcList = roleData
+          ? roleData.find(item => item.roleId === 0).ecMembers
+          : [];
 
-      const allEcList = roleData
-        ? roleData.find(item => item.roleId === 0).ecMembers
-        : [];
-
-      yield put({ type: ROLEDATA, payload: roleData });
-      yield put({ type: ROLENAMELIST, payload: roleNameList });
-      yield put({ type: ALLECLIST, payload: allEcList });
+        yield put({ type: ROLEDATA, payload: roleData });
+        yield put({ type: ROLENAMELIST, payload: roleNameList });
+        yield put({ type: ALLECLIST, payload: allEcList });
+      }
     }
   } catch (e) {
     errMsg = e.message;

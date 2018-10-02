@@ -48,9 +48,11 @@ function* asyncGetEventData(action) {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getEventData, action.id, authHeader);
-    const { eventData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    yield put({ type: EVENTDATA, payload: eventData });
+    if (response) {
+      const { eventData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      yield put({ type: EVENTDATA, payload: eventData });
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -65,9 +67,11 @@ function* asyncGetEventsData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getEventsData, authHeader);
-    const { eventsData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    yield put({ type: EVENTSDATA, payload: eventsData });
+    if (response) {
+      const { eventsData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      yield put({ type: EVENTSDATA, payload: eventsData });
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

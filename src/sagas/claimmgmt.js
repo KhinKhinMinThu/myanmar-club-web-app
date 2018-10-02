@@ -26,14 +26,21 @@ function* asyncGetClaimsData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getClaimsData, authHeader);
-    const { claimsData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    if (claimsData) {
-      const newClaimsList = claimsData.filter(item => item.isApproved === '0');
-      const oldClaimsList = claimsData.filter(item => item.isApproved === '1');
 
-      yield put({ type: NEWCLAIMSDATA, payload: newClaimsList });
-      yield put({ type: OLDCLAIMSDATA, payload: oldClaimsList });
+    if (response) {
+      const { claimsData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      if (claimsData) {
+        const newClaimsList = claimsData.filter(
+          item => item.isApproved === '0',
+        );
+        const oldClaimsList = claimsData.filter(
+          item => item.isApproved === '1',
+        );
+
+        yield put({ type: NEWCLAIMSDATA, payload: newClaimsList });
+        yield put({ type: OLDCLAIMSDATA, payload: oldClaimsList });
+      }
     }
   } catch (e) {
     errMsg = e.message;

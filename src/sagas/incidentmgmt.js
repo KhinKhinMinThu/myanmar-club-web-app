@@ -44,31 +44,35 @@ function* asyncGetIncidentData(action) {
     yield put({ type: GET_APILOADING, payload: true });
 
     response = yield call(getIncidentTypes, authHeader);
-    const { incidentTypes } = response.data;
-    if (incidentTypes) yield put({ type: INCIDENTTYPES, payload: incidentTypes });
+    if (response) {
+      const { incidentTypes } = response.data;
+      if (incidentTypes) yield put({ type: INCIDENTTYPES, payload: incidentTypes });
+    }
 
     response = yield call(getIncident, action.id, authHeader);
-    const { incident, errorMsg } = response.data;
+    if (response) {
+      const { incident, errorMsg } = response.data;
 
-    // delete below
-    // const incident = {
-    //   id: '1',
-    //   name: 'incident name',
-    //   requesterName: 'helper Oo',
-    //   requesterAge: '21-25',
-    //   incidentTypeId: '-1',
-    //   incidentType: 'abc type',
-    //   description: 'abcd',
-    //   createdDate: '2010-10-01',
-    //   createdBy: 'Ye Myint', // return name
-    //   updatedDate: '2010-11-01',
-    //   updatedBy: 'Wai Yan', // return name
-    // };
-    // errMsg = '';
-    // end detele
+      // delete below
+      // const incident = {
+      //   id: '1',
+      //   name: 'incident name',
+      //   requesterName: 'helper Oo',
+      //   requesterAge: '21-25',
+      //   incidentTypeId: '-1',
+      //   incidentType: 'abc type',
+      //   description: 'abcd',
+      //   createdDate: '2010-10-01',
+      //   createdBy: 'Ye Myint', // return name
+      //   updatedDate: '2010-11-01',
+      //   updatedBy: 'Wai Yan', // return name
+      // };
+      // errMsg = '';
+      // end detele
 
-    errMsg = errorMsg;
-    yield put({ type: INCIDENT, payload: incident });
+      errMsg = errorMsg;
+      yield put({ type: INCIDENT, payload: incident });
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {
