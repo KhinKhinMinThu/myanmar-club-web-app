@@ -4,20 +4,12 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form,
-  message,
-  Row,
-  Col,
-  Spin,
-  Modal,
-  Card,
-  Tooltip,
-  BackTop,
+  Form, Modal, Row, Col, Spin, Card, Tooltip, BackTop,
 } from 'antd';
 import {
   SUCCESS_UPDATEEVENT,
   CONFIRM_DELETEEVENT,
-  SHOWFOR,
+  CONFIRM_CLOSEEVENT,
 } from '../../../actions/message';
 import {
   DATE_FORMAT,
@@ -54,9 +46,8 @@ import {
   setEventData,
   postDeleteEvent,
   postUpdateEvent,
+  postPendingClaims,
 } from '../../../reducers/eventmgmt/eventmgmt-data';
-
-const { confirm } = Modal;
 
 class EventEdit extends Component {
   state = {
@@ -82,79 +73,130 @@ class EventEdit extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      eventmgmtData: { isPostApiLoading, postErrMsg },
+      history,
+      eventmgmtData: {
+        isPostApiLoading, postErrMsg, hasClaims, eventData,
+      },
+      performUpdateEvent,
     } = this.props;
 
     const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
-    } else {
-      message.success(SUCCESS_UPDATEEVENT, SHOWFOR);
+    if (postErrMsg) Modal.error({ title: 'Error!', content: postErrMsg });
+    if (!postErrMsg && this.actionType === 'update') {
+      Modal.success({
+        title: 'Success!',
+        content: SUCCESS_UPDATEEVENT,
+        onOk() {
+          history.go(-1);
+        },
+      });
     }
+    if (!postErrMsg && this.actionType === 'close') {
+      if (hasClaims === '1') {
+        Modal.confirm({
+          title: 'Confirmation!',
+          content: CONFIRM_CLOSEEVENT,
+          onOk() {
+            performUpdateEvent(eventData);
+          },
+        });
+      } else performUpdateEvent(eventData);
+    }
+    this.actionType = 'update';
   }
 
   onSubmit = (e) => {
     e.preventDefault();
     const {
-      form: { validateFieldsAndScroll, getFieldValue },
+      form: { getFieldValue },
+      computedMatch: {
+        params: { id },
+      },
+      performDeleteEvent,
+      performUpdateEvent,
+      performPendingClaims,
+    } = this.props;
+
+    // if user selects to delete event, it will be deleted without
+    // updating the rest of the data even if the user changed anything else.
+    this.actionType = 'update';
+    if (getFieldValue('deleteEvent')) {
+      Modal.confirm({
+        title: 'Confirmation!',
+        content: CONFIRM_DELETEEVENT,
+        onOk() {
+          performDeleteEvent({ eventsToDelete: [id] });
+        },
+      });
+    } else {
+      const eventToUpdate = this.saveFormData();
+      if (eventToUpdate) {
+        if (eventToUpdate.eventStatus === '1') performUpdateEvent(eventToUpdate);
+        else {
+          this.actionType = 'close';
+          performPendingClaims(id);
+        }
+      }
+    }
+  };
+
+  saveFormData = () => {
+    let eventToUpdate = null;
+    const {
+      form: { getFieldValue, validateFieldsAndScroll },
       computedMatch: {
         params: { id },
       },
       performEventData,
-      performUpdateEvent,
-      performDeleteEvent,
     } = this.props;
-
     const { fileList } = this.state;
+    validateFieldsAndScroll((error, values) => {
+      if (!error) {
+        const formValues = values;
+        const startDate = this.formatDateTime(
+          formValues.startDate,
+          formValues.startTime,
+        );
+        const endDate = this.formatDateTime(
+          formValues.endDate ? formValues.endDate : formValues.startDate,
+          formValues.endTime ? formValues.endTime : formValues.startTime,
+        );
+        const mobilePhone = formValues.mobilePhone
+          ? formValues.areaCode + formValues.mobilePhone
+          : formValues.mobilePhone;
 
-    // if user selects to delete event, it will be deleted without
-    // updating the rest of the data even if the user changed anything else.
-    if (getFieldValue('deleteEvent')) {
-      confirm({
-        title: CONFIRM_DELETEEVENT,
-        onOk() {
-          performDeleteEvent({ eventsToDelete: [id] });
+        // remove time value from the object
+        delete formValues.startTime;
+        delete formValues.endTime;
+
+        eventToUpdate = {
+          ...formValues,
+          id,
+          startDate,
+          endDate,
+          mobilePhone,
+          eventStatus: formValues.eventStatus ? '1' : '0',
+          uploadBtn: fileList,
+          photoLink: getFieldValue('photoLink'),
+        };
+        performEventData(eventToUpdate);
+      }
+    });
+    return eventToUpdate;
+  };
+
+  checkClaims = (value) => {
+    if (!value) {
+      const {
+        computedMatch: {
+          params: { id },
         },
-        // onCancel() {
-        //   console.log('Cancel');
-        // },
-      });
-    } else {
-      validateFieldsAndScroll((error, values) => {
-        if (!error) {
-          const formValues = values;
-          const startDate = this.formatDateTime(
-            formValues.startDate,
-            formValues.startTime,
-          );
-          const endDate = this.formatDateTime(
-            formValues.endDate ? formValues.endDate : formValues.startDate,
-            formValues.endTime ? formValues.endTime : formValues.startTime,
-          );
-          const mobilePhone = formValues.mobilePhone
-            ? formValues.areaCode + formValues.mobilePhone
-            : formValues.mobilePhone;
-
-          // remove time value from the object
-          delete formValues.startTime;
-          delete formValues.endTime;
-
-          const eventToUpdate = {
-            ...formValues,
-            id,
-            startDate,
-            endDate,
-            mobilePhone,
-            eventStatus: formValues.eventStatus ? '1' : '0',
-            uploadBtn: fileList,
-            photoLink: getFieldValue('photoLink'),
-          };
-          performEventData(eventToUpdate);
-          performUpdateEvent(eventToUpdate);
-        }
-      });
+        performPendingClaims,
+      } = this.props;
+      const eventToUpdate = this.saveFormData();
+      if (eventToUpdate) performPendingClaims(id);
     }
   };
 
@@ -300,6 +342,7 @@ EventEdit.propTypes = {
   performEventData: PropTypes.func.isRequired,
   performUpdateEvent: PropTypes.func.isRequired,
   performDeleteEvent: PropTypes.func.isRequired,
+  performPendingClaims: PropTypes.func.isRequired,
 
   eventmgmtData: PropTypes.shape({}).isRequired,
   history: PropTypes.shape({}).isRequired,
@@ -314,6 +357,7 @@ const mapDispatchToProps = {
   performEventData: setEventData,
   performUpdateEvent: postUpdateEvent,
   performDeleteEvent: postDeleteEvent,
+  performPendingClaims: postPendingClaims,
 };
 
 // convert string date to moment object for date/time picker

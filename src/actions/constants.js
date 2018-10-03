@@ -16,7 +16,7 @@ export const DEFAULT_TIME = '00:00';
 export const NATIONALITY_LIST = ['myanmar', 'singaporean'];
 export const RELIGION_LIST = ['buddhism', 'islam', 'hinduism', 'christianity'];
 export const STRING_MAX_LEN = 255;
-export const STRING_MAX_LEN2 = 500;
+export const STRING_MAX_LEN2 = 2000;
 
 export const CLIENT_ACC = {
   sandbox:
@@ -47,15 +47,16 @@ export const MEMBERSHIP_INFO = [
   'မြန်မာကလပ်(စင်္ကာပူ)၏ ဘဏ်အကောင့် (UOB 146-301-836-2) သို့ အသင်းကြေးပေးသွင်းပြီးပါက ဘဏ္ဍာရေးမှူး ဒေါ်မြမြစိန် H.P - 8233 5682 သို့ လူကြီးမင်း၏ အမည်နှင့်တကွ ပေးသွင်းသော အသင်းကြေးငွေ ပမာဏကို message ပို့ပေးပါရန်။',
 ];
 export const AGE_RANGE = [
-  '15-20',
-  '21-25',
-  '26-30',
-  '31-35',
-  '36-40',
-  '41-45',
-  '46-50',
-  '51-55',
-  '56-60',
+  '15 - 19',
+  '20 - 24',
+  '25 - 29',
+  '30 - 34',
+  '35 - 39',
+  '40 - 44',
+  '45 - 49',
+  '50 - 54',
+  '55 - 59',
+  '60+',
 ];
 // APIGET API URLS
 export const APIGET_ROLEDATA = '/admin/getRoleData';
@@ -101,6 +102,7 @@ export const APIPOST_ADD_EVENT = '/event/createEvent';
 export const APIPOST_ADD_EVENTPHOTO = '/event/eventPhoto';
 export const APIPOST_NOTIFY_EVENT = '/event/sendEventNotification';
 export const APIPOST_UPDATE_REGPAYMENT = '/event/updateRegPayment';
+export const APIPOST_PENDING_CLAIMS = '/event/checkPendingClaims';
 
 export const APIPOST_FORGOTPWD = '/admin/forgotPassword';
 

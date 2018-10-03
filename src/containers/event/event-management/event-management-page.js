@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Spin, Alert, Row, Col,
+  Form, Modal, Spin, Alert, Row, Col,
 } from 'antd';
 
-import { SUCCESS_DELETEEVENT, SHOWFOR } from '../../../actions/message';
+import {
+  SUCCESS_DELETEEVENT,
+  CONFIRM_DELETEEVENTS,
+} from '../../../actions/message';
 import { EventsTable } from './components';
 import {
   DeSeletAllButton,
@@ -52,9 +55,9 @@ class EventManagementPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_DELETEEVENT, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_DELETEEVENT });
     }
   }
 
@@ -86,13 +89,18 @@ class EventManagementPage extends Component {
       performDeleteEvent,
       dispatchSetEventsData,
     } = this.props;
-
-    performDeleteEvent({ eventsToDelete: selectedKeys });
-    // to remove the selected event from the table display
-    const updatedData = eventsData.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-    dispatchSetEventsData(updatedData);
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_DELETEEVENTS,
+      onOk() {
+        performDeleteEvent({ eventsToDelete: selectedKeys });
+        // to remove the selected event from the table display
+        const updatedData = eventsData.filter(
+          item => !selectedKeys.includes(item.id),
+        );
+        dispatchSetEventsData(updatedData);
+      },
+    });
   };
 
   // handle onClick from Reset button
@@ -203,6 +211,7 @@ class EventManagementPage extends Component {
                   hasSelected={hasSelected}
                   isPostApiLoading={isPostApiLoading}
                   placeHolder="Delete Selected Event(s)"
+                  icon="delete"
                 />
                 {hasSelected ? (
                   <SelectedInfo

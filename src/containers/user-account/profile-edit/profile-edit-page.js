@@ -5,12 +5,18 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
+  Form,
+  Row,
+  Col,
+  Spin,
+  Modal,
+  Card,
+  BackTop,
+  Tooltip,
 } from 'antd';
 import {
   SUCCESS_UPDATEMEMBER,
   CONFIRM_DELETEMEMBER,
-  SHOWFOR,
 } from '../../../actions/message';
 import {
   DATETIME_FORMAT_DB,
@@ -47,11 +53,9 @@ import {
   postUpdateMember,
   setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
-import {
-  setLogout,
-} from '../../../reducers/login/login-data';
+import { setLogout } from '../../../reducers/login/login-data';
 
-const { confirm } = Modal;
+const { confirm, success } = Modal;
 
 class MemberEdit extends Component {
   state = {
@@ -69,7 +73,9 @@ class MemberEdit extends Component {
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) message.error(postErrMsg, SHOWFOR);
+    if (postErrMsg) {
+      Modal.error({ title: 'Error!', content: postErrMsg });
+    }
     if (isEmailFound === '1') {
       setFields({
         emailAddress: {
@@ -82,7 +88,7 @@ class MemberEdit extends Component {
         },
       });
     } else {
-      message.success(SUCCESS_UPDATEMEMBER, SHOWFOR);
+      success({ title: 'Success!', content: SUCCESS_UPDATEMEMBER });
     }
   }
 
@@ -104,14 +110,12 @@ class MemberEdit extends Component {
     // updating the rest of the data even if the user changed anything else.
     if (getFieldValue('deleteProfile')) {
       confirm({
-        title: CONFIRM_DELETEMEMBER,
+        title: 'Confirmation!',
+        content: CONFIRM_DELETEMEMBER,
         onOk() {
           performDeleteMembers({ membersToDelete: [id] });
           performLogout();
         },
-        // onCancel() {
-        //   console.log('Cancel');
-        // },
       });
     } else {
       validateFieldsAndScroll((error, values) => {
@@ -137,8 +141,8 @@ class MemberEdit extends Component {
               subComInterest.push({ id: item[0].slice(-1) });
             }
           });
-          const roleNames = [];
-          if (formValues.roleNames) formValues.roleNames.forEach(item => roleNames.push({ id: item }));
+          // const roleNames = [];
+          // if (formValues.roleNames) formValues.roleNames.forEach(item => roleNames.push({ id: item }));
           // encryp the password if it's changed.
           let password = '';
           if (formValues.password) {
@@ -155,7 +159,7 @@ class MemberEdit extends Component {
             nationality,
             religion,
             subComInterest,
-            roleNames,
+            roleNames: memberData.roleNames ? memberData.roleNames : [],
             isEcMember: memberData.isEcMember ? memberData.isEcMember : '0',
             password,
             uploadBtn: fileList,

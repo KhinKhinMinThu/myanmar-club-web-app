@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Form,
-  message,
   Row,
   Col,
   Spin,
@@ -17,7 +16,6 @@ import {
 import {
   SUCCESS_RENEWMEMBER,
   CONFIRM_RENEWMEMBER,
-  SHOWFOR,
   ERROR_PAYMENT,
   CANCEL_PAYMENT,
 } from '../../../actions/message';
@@ -48,8 +46,6 @@ import {
 } from '../shared-components';
 import { postUpdateMembershipMember } from '../../../reducers/membermgmt/membermgmt-data';
 
-const { confirm } = Modal;
-
 class MemberRenewal extends Component {
   state = {
     isModalVisible: false,
@@ -68,9 +64,9 @@ class MemberRenewal extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_RENEWMEMBER, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_RENEWMEMBER });
     }
   }
 
@@ -81,6 +77,7 @@ class MemberRenewal extends Component {
       performUpdateMembership,
     } = this.props;
     console.log('Successful payment!', payment);
+    Modal.success({ title: 'Success!', content: SUCCESS_RENEWMEMBER });
     const formValues = getFieldsValue();
     const membershipType = MEMBERSHIP_TYPES[formValues.membershipType];
     const membershipToUpdate = {
@@ -118,8 +115,9 @@ class MemberRenewal extends Component {
           membershipType,
           totalAmount: formValues.totalAmount.toString(),
         };
-        confirm({
-          title: CONFIRM_RENEWMEMBER,
+        Modal.confirm({
+          title: 'Confirmation!',
+          content: CONFIRM_RENEWMEMBER,
           onOk() {
             performUpdateMembership(membershipToUpdate);
           },
@@ -175,11 +173,11 @@ class MemberRenewal extends Component {
     }
     const onError = (error) => {
       console.log('Erroneous payment OR failed to load script!', error);
-      message.error(ERROR_PAYMENT, SHOWFOR);
+      Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
     };
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
-      message.warning(CANCEL_PAYMENT, SHOWFOR);
+      Modal.error({ title: 'Error!', content: CANCEL_PAYMENT });
     };
     const actionColLayout = {
       xs: { span: 24 },

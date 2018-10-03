@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col,
+  Form, Modal, Row, Col,
 } from 'antd';
-import { SUCCESS_DELETEMEMBER, SHOWFOR } from '../../../actions/message';
+import {
+  SUCCESS_DELETEMEMBER,
+  CONFIRM_DELETEMEMBERS,
+} from '../../../actions/message';
 import {
   MembersTable,
   DeSeletAllButton,
@@ -38,9 +41,9 @@ class EcMembersPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_DELETEMEMBER, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_DELETEMEMBER });
     }
   }
 
@@ -73,13 +76,20 @@ class EcMembersPage extends Component {
       dispatchResetState,
       dispatchEcMembersData,
     } = this.props;
-    performDeleteMember({ membersToDelete: selectedKeys });
-    dispatchResetState();
 
-    const updatedEcMembers = ecMembersList.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-    dispatchEcMembersData(updatedEcMembers);
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_DELETEMEMBERS,
+      onOk() {
+        performDeleteMember({ membersToDelete: selectedKeys });
+        dispatchResetState();
+
+        const updatedEcMembers = ecMembersList.filter(
+          item => !selectedKeys.includes(item.id),
+        );
+        dispatchEcMembersData(updatedEcMembers);
+      },
+    });
   };
 
   // handle onClick from Reset button
@@ -137,7 +147,7 @@ class EcMembersPage extends Component {
     if (ecMembersList) this.membersList = this.prepareList(ecMembersList);
 
     const header = this.membersList
-      ? 'Total EC members: '.concat(this.membersList.length)
+      ? 'Total EC Members: '.concat(this.membersList.length)
       : '';
 
     const rowSelection = {
@@ -180,7 +190,8 @@ class EcMembersPage extends Component {
               onClick={this.onClickDeleteSelected}
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
-              placeHolder="Delete Selected Member(s)"
+              placeHolder="Delete Selected EC Member(s)"
+              icon="delete"
             />
             {hasSelected ? (
               <SelectedInfo

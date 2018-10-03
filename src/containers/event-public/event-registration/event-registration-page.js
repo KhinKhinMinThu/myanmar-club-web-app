@@ -15,7 +15,6 @@ import {
 } from 'antd';
 import {
   SUCCESS_NEWEVENTRSVP,
-  SHOWFOR,
   SUCCESS_PAYMENT,
   ERROR_PAYMENT,
   CANCEL_PAYMENT,
@@ -75,9 +74,9 @@ class EventRegistration extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_NEWEVENTRSVP, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_NEWEVENTRSVP });
     }
   }
 
@@ -145,7 +144,7 @@ class EventRegistration extends Component {
       performNewRSVP,
     } = this.props;
     console.log('Successful payment!', payment);
-    message.success(SUCCESS_PAYMENT, SHOWFOR);
+    Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT, SUCCESS_NEWEVENTRSVP });
     const formValues = getFieldsValue();
     const memberMobilePhone = formValues.memberMobilePhone
       ? formValues.memberAreaCode + formValues.memberMobilePhone
@@ -203,12 +202,12 @@ class EventRegistration extends Component {
     console.log('total', total);
     const onError = (error) => {
       console.log('Erroneous payment OR failed to load script!', error);
-      message.error(ERROR_PAYMENT, SHOWFOR);
+      Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
     };
 
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
-      message.warning(CANCEL_PAYMENT, SHOWFOR);
+      Modal.warning({ title: 'Error!', content: CANCEL_PAYMENT });
     };
 
     return (

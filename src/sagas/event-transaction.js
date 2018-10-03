@@ -25,9 +25,11 @@ function* asyncGetEventTranscData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getEventTranscData, authHeader);
-    const { eventsData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    yield put({ type: EVENTTRANSACDATA, payload: eventsData });
+    if (response) {
+      const { eventsData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      yield put({ type: EVENTTRANSACDATA, payload: eventsData });
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   Form, message, Spin, Modal, Button, Input, Checkbox, Col,
 } from 'antd';
-import { SUCCESS_NEWROLE, SHOWFOR } from '../../actions/message';
+import { SUCCESS_NEWROLE } from '../../actions/message';
 import { postNewRole } from '../../reducers/access-control/access-control-data';
 
 const FormItem = Form.Item;
@@ -19,10 +19,10 @@ class RoleCreation extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else if (isModalVisible) {
-      message.success(SUCCESS_NEWROLE, SHOWFOR);
       // window.location.reload();
+      Modal.success({ title: 'Success!', content: SUCCESS_NEWROLE });
     }
   }
 

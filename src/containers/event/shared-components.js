@@ -17,7 +17,7 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Option } = Select;
-
+const { Search } = Input;
 // Responsive layout for event forms
 export const layout = {
   labelCol: {
@@ -51,21 +51,6 @@ export const layoutHalf = {
     xl: { span: 17 },
   },
 };
-// export const inputLayout1 = {
-//   xs: { span: 8 },
-//   sm: { span: 8 },
-//   md: { span: 8 },
-//   lg: { span: 10 },
-//   xl: { span: 10 },
-// };
-// export const inputLayout2 = {
-//   xs: { span: 16 },
-//   sm: { span: 16 },
-//   md: { span: 16 },
-//   lg: { span: 12 },
-//   xl: { span: 12 },
-// };
-
 /* eslint react/prop-types: 0 */
 // SearchNamePanel
 export const SearchNamePanel = ({
@@ -78,17 +63,14 @@ export const SearchNamePanel = ({
   <FormItem style={{ marginBottom: 3 }}>
     <Col span={4}>
       {decorator('searchName', { initialValue: null })(
-        <Input
+        <Search
           placeholder={placeHolder}
           onChange={onChange}
-          onPressEnter={onSearch}
+          onSearch={onSearch}
         />,
       )}
     </Col>
     <Col span={20}>
-      <MarginLeftButton type="primary" onClick={onSearch}>
-        Search
-      </MarginLeftButton>
       <MarginLeftButton type="primary" onClick={onClickReset} ghost>
         Clear Search
       </MarginLeftButton>
@@ -129,12 +111,14 @@ export const DeleteSeletedButton = ({
   hasSelected,
   isPostApiLoading,
   placeHolder,
+  icon,
 }) => (
   <MarginLeftButton
     type="primary"
     onClick={onClick}
     disabled={!hasSelected}
     loading={isPostApiLoading}
+    icon={icon}
   >
     {placeHolder}
   </MarginLeftButton>

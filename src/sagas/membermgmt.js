@@ -52,28 +52,32 @@ function* asyncGetMemberData(action) {
     yield put({ type: GET_APILOADING, payload: true });
     if (action.type === GET_MEMBERDATA) {
       response = yield call(getMemberData, action.id, authHeader);
-      const { memberData, errorMsg } = response.data;
-      errMsg = errorMsg;
+      if (response) {
+        const { memberData, errorMsg } = response.data;
+        errMsg = errorMsg;
 
-      if (memberData) {
-        yield put({ type: MEMBERDATA, payload: memberData });
-        // call formfields
-        yield put({ type: GET_MEMBERFORMFIELDS });
+        if (memberData) {
+          yield put({ type: MEMBERDATA, payload: memberData });
+          // call formfields
+          yield put({ type: GET_MEMBERFORMFIELDS });
+        }
       }
     }
     if (action.type === GET_MEMBERFORMFIELDS) {
       response = yield call(getMemberFormFields, authHeader);
-      const { memberFormFields, errorMsg } = response.data;
-      errMsg = errorMsg;
+      if (response) {
+        const { memberFormFields, errorMsg } = response.data;
+        errMsg = errorMsg;
 
-      if (memberFormFields) {
-        memberFormFields.allSubComInterest.forEach((item, index) => {
-          memberFormFields.allSubComInterest[index] = {
-            ...item,
-            id: 'subComChk'.concat(item.id),
-          };
-        });
-        yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
+        if (memberFormFields) {
+          memberFormFields.allSubComInterest.forEach((item, index) => {
+            memberFormFields.allSubComInterest[index] = {
+              ...item,
+              id: 'subComChk'.concat(item.id),
+            };
+          });
+          yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
+        }
       }
     }
   } catch (e) {
@@ -90,16 +94,20 @@ function* asyncGetMembersData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getMembersData, authHeader);
-    const { membersData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    if (membersData) {
-      const ecMembersList = membersData.filter(item => item.isEcMember === '1');
-      const clubMembersList = membersData.filter(
-        item => item.isEcMember === '0',
-      );
+    if (response) {
+      const { membersData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      if (membersData) {
+        const ecMembersList = membersData.filter(
+          item => item.isEcMember === '1',
+        );
+        const clubMembersList = membersData.filter(
+          item => item.isEcMember === '0',
+        );
 
-      yield put({ type: ECMEMBERSDATA, payload: ecMembersList });
-      yield put({ type: CLUBMEMBERSDATA, payload: clubMembersList });
+        yield put({ type: ECMEMBERSDATA, payload: ecMembersList });
+        yield put({ type: CLUBMEMBERSDATA, payload: clubMembersList });
+      }
     }
   } catch (e) {
     errMsg = e.message;

@@ -15,9 +15,11 @@ import {
   MarginLeftButton,
   BottomUnder,
 } from '../shared-styled';
+import { MMText } from '../../shared-profile-components/shared-styled';
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
+const { Search } = Input;
 
 // Responsive layout for event forms
 export const layout = {
@@ -98,17 +100,14 @@ export const SearchNamePanel = ({
   <FormItem style={{ marginBottom: 3 }}>
     <Col span={4}>
       {decorator('searchName', { initialValue: null })(
-        <Input
+        <Search
           placeholder={placeHolder}
           onChange={onChange}
-          onPressEnter={onSearch}
+          onSearch={onSearch}
         />,
       )}
     </Col>
     <Col span={20}>
-      <MarginLeftButton type="primary" onClick={onSearch}>
-        Search
-      </MarginLeftButton>
       <MarginLeftButton type="primary" onClick={onClickReset} ghost>
         Clear Search
       </MarginLeftButton>
@@ -149,12 +148,14 @@ export const DeleteSeletedButton = ({
   hasSelected,
   isPostApiLoading,
   placeHolder,
+  icon,
 }) => (
   <MarginLeftButton
     type="primary"
     onClick={onClick}
     disabled={!hasSelected}
     loading={isPostApiLoading}
+    icon={icon}
   >
     {placeHolder}
   </MarginLeftButton>
@@ -434,14 +435,19 @@ export class MembersTable extends Component {
               </Card>
             </TabPane>
             <TabPane tab="Membership" key="tab2">
-              {displayMembership(member).map(item => (
+              {displayMembership(member).map((item, index) => (
                 <FormItem
                   key={item.label}
                   {...modalLayout}
                   style={{ marginBottom: 0 }}
                   label={item.label}
                 >
-                  <BottomUnder>{item.text}</BottomUnder>
+                  {index === 0 && (
+                    <BottomUnder>
+                      <MMText>{item.text}</MMText>
+                    </BottomUnder>
+                  )}
+                  {index !== 0 && <BottomUnder>{item.text}</BottomUnder>}
                 </FormItem>
               ))}
             </TabPane>

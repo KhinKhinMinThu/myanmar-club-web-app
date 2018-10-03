@@ -17,8 +17,10 @@ function* asyncPostForgotPwd(action) {
 
     console.log('Calling API.........', action.type, action.email);
     const response = yield call(postForgotPwd, action.email, authHeader);
-    const { errorMsg } = response.data;
-    errMsg = errorMsg;
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

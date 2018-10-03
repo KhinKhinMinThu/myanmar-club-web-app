@@ -12,6 +12,7 @@ import {
 } from '../shared-styled';
 
 const FormItem = Form.Item;
+const { Search } = Input;
 const { TabPane } = Tabs;
 // Responsive layout for event forms
 export const layout = {
@@ -30,20 +31,24 @@ export const layout = {
     xl: { span: 20 },
   },
 };
-
+const ClaimSvg = () => (
+  <svg width="1em" height="1em" fill="currentColor" viewBox="0 0 1024 1024">
+    <path d="M128 128a128 128 0 0 1 128-128h704a64 64 0 0 1 0 128c-42.688 0-64 21.312-64 64v640H128V128z m128 192v64h64V320H256z m0 192v64h64V512H256z m128-192v64h320V320H384z m0 192v64h320V512H384z m-320 384h832a128 128 0 0 1-128 128H64a64 64 0 0 1 0-128z" />
+  </svg>
+);
 /* eslint react/prop-types: 0 */
 // claim tabs
 export const ClaimTabs = ({ onChange, tabContents }) => {
   const tabTitles = {
     tab1: (
       <BoldText>
-        <TabIcon type="file-text" />
+        <TabIcon component={ClaimSvg} />
         New-Claims
       </BoldText>
     ),
     tab2: (
       <BoldText>
-        <TabIcon type="file-text" />
+        <TabIcon component={ClaimSvg} />
         Approved-Claims
       </BoldText>
     ),
@@ -75,17 +80,14 @@ export const SearchNamePanel = ({
   <FormItem style={{ marginBottom: 3 }}>
     <Col span={4}>
       {decorator('searchName', { initialValue: null })(
-        <Input
+        <Search
           placeholder={placeHolder}
           onChange={onChange}
-          onPressEnter={onSearch}
+          onSearch={onSearch}
         />,
       )}
     </Col>
     <Col span={20}>
-      <MarginLeftButton type="primary" onClick={onSearch}>
-        Search
-      </MarginLeftButton>
       <MarginLeftButton type="primary" onClick={onClickReset} ghost>
         Clear Search
       </MarginLeftButton>
@@ -126,8 +128,10 @@ export const DeleteSeletedButton = ({
   hasSelected,
   isPostApiLoading,
   placeHolder,
+  icon,
 }) => (
   <MarginLeftButton
+    icon={icon}
     type="primary"
     onClick={onClick}
     disabled={!hasSelected}
@@ -223,7 +227,7 @@ export class ClaimsTable extends Component {
         dataIndex: 'photoLink',
         key: 'photoLink',
         render: (text, record) => (
-          <Button icon="picture" onClick={() => this.showModal(record)}>
+          <Button icon="picture" type="picture" onClick={() => this.showModal(record)}>
             View receipt
           </Button>
         ),

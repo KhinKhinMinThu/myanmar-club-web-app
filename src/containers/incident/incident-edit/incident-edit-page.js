@@ -3,12 +3,11 @@ import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card, Alert,
+  Form, Row, Col, Spin, Modal, Card, Alert,
 } from 'antd';
 import {
   SUCCESS_UPDATEINCIDENT,
   CONFIRM_DELETEINCIDENT,
-  SHOWFOR,
 } from '../../../actions/message';
 import IncidentTypeInput from '../incidentTypeInput';
 import IncidentDescriptionInput from '../incidentDescriptionInput';
@@ -29,8 +28,6 @@ import {
   getIncident,
   // getSearchParams,
 } from '../../../reducers/incidentmgmt/incidentmgmt-data';
-
-const { confirm } = Modal;
 
 class IncidentEdit extends Component {
   componentWillMount() {
@@ -57,6 +54,7 @@ class IncidentEdit extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      history,
       incidentmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
 
@@ -64,9 +62,10 @@ class IncidentEdit extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_UPDATEINCIDENT, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_UPDATEINCIDENT });
+      history.go(-1);
     }
   }
 
@@ -86,8 +85,9 @@ class IncidentEdit extends Component {
     // if user selects to delete incidentData, it will be deleted without
     // updating the rest of the data even if the user changed anything else.
     if (getFieldValue('deleteIncident')) {
-      confirm({
-        title: CONFIRM_DELETEINCIDENT,
+      Modal.confirm({
+        title: 'Confirmation!',
+        content: CONFIRM_DELETEINCIDENT,
         onOk() {
           performDeleteIncidents({ incidentsToDelete: [id] });
         },

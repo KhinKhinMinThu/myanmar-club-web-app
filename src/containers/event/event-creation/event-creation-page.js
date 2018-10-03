@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Card, Tooltip, BackTop,
+  Form, Modal, Row, Col, Spin, Card, Tooltip, BackTop,
 } from 'antd';
-import { SUCCESS_NEWEVENT, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_NEWEVENT } from '../../../actions/message';
 import {
   DATETIME_FORMAT_DB,
   DEFAULT_DATETIME,
@@ -37,6 +37,7 @@ class EventCreation extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      history,
       eventmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
 
@@ -44,9 +45,10 @@ class EventCreation extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_NEWEVENT, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_NEWEVENT });
+      history.go(-1);
     }
   }
 

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom/es';
 import PropTypes from 'prop-types';
 import {
-  Form, Spin, Alert, message, Row, Col, Card,
+  Form, Spin, Alert, Modal, Row, Col, Card,
 } from 'antd';
 import { connect } from 'react-redux';
-import { SUCCESS_UPDATEASSIGNROLE, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_UPDATEASSIGNROLE } from '../../../actions/message';
 import {
   RoleNameSelect,
   RoleAssignTransfer,
@@ -45,9 +45,9 @@ class RoleManagement extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_UPDATEASSIGNROLE, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_UPDATEASSIGNROLE });
     }
   }
 

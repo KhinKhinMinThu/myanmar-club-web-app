@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom/es';
 import {
-  Form, Row, Col, message,
+  Form, Row, Col, Modal,
 } from 'antd';
 import { BackButton } from '../shared-components';
-import { SUCCESS_DELETEINCIDENT, SHOWFOR } from '../../../actions/message';
+import { SUCCESS_DELETEINCIDENT, CONFIRM_DELETEINCIDENTS } from '../../../actions/message';
 import {
   IncidentsTable,
   DeSeletAllButton,
@@ -27,12 +27,15 @@ import {
 import {
   setIncidents,
   postDeleteIncidents,
+  postSearchIncident,
+  getSearchParams,
 } from '../../../reducers/incidentmgmt/incidentmgmt-data';
 
 class IncidentManagement extends Component {
   componentDidMount() {
-    const { dispatchResetState } = this.props;
+    const { dispatchResetState, performGetSearchParams } = this.props;
     dispatchResetState();
+    performGetSearchParams();
   }
 
   componentDidUpdate(prevProps) {
@@ -44,10 +47,9 @@ class IncidentManagement extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
-    } else {
-      message.success(SUCCESS_DELETEINCIDENT, SHOWFOR);
-    }
+      Modal.error({ title: 'Error!', content: postErrMsg });
+    } else if (this.actionType === 'delete') Modal.success({ title: 'Success!', content: SUCCESS_DELETEINCIDENT });
+    this.actionType = 'none';
   }
 
   // handle de-select all button
@@ -71,7 +73,8 @@ class IncidentManagement extends Component {
   };
 
   // delete selected incidents
-  onClickDeleteSelected = () => {
+  onDeleteIncidents = () => {
+    this.actionType = 'delete';
     const {
       incidentmgmtData: { incidents },
       incidentmgmtUI: { selectedKeys },
@@ -79,12 +82,18 @@ class IncidentManagement extends Component {
       dispatchSetIncidents,
     } = this.props;
 
-    performDeleteIncidents({ incidentsToDelete: selectedKeys });
-    // to remove the selected incidents from the table display
-    const updatedData = incidents.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-    dispatchSetIncidents(updatedData);
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_DELETEINCIDENTS,
+      onOk() {
+        performDeleteIncidents({ incidentsToDelete: selectedKeys });
+        // to remove the selected incidents from the table display
+        const updatedData = incidents.filter(
+          item => !selectedKeys.includes(item.id),
+        );
+        dispatchSetIncidents(updatedData);
+      },
+    });
   };
 
   // handle onClick from Reset button
@@ -92,6 +101,7 @@ class IncidentManagement extends Component {
     const {
       dispatchFilteredInfo,
       dispatchResetState,
+      performSearchIncident,
       form: { resetFields },
     } = this.props;
 
@@ -101,6 +111,7 @@ class IncidentManagement extends Component {
       this.searchNameValue = null;
     }
     dispatchResetState();
+    performSearchIncident({ default: '1' });
   };
 
   prepareList = (sourceList) => {
@@ -122,11 +133,17 @@ class IncidentManagement extends Component {
         sortedInfo,
         filteredInfo,
       },
-      incidentmgmtData: { incidents, isPostApiLoading },
-      form: { getFieldDecorator },
+      incidentmgmtData: {
+        incidents,
+        isPostApiLoading,
+        submittedBy,
+        incidentTypes,
+      },
+      form: { getFieldDecorator, getFieldValue },
       dispatchSortedInfo,
       dispatchFilteredInfo,
       dispatchSelectedKeys,
+      performSearchIncident,
     } = this.props;
 
     const rowSelection = {
@@ -135,7 +152,7 @@ class IncidentManagement extends Component {
     };
     const hasSelected = selectedKeys.length > 0;
 
-    if (incidents) this.incidentsList = this.prepareList(incidents);
+    this.incidentsList = incidents ? this.prepareList(incidents) : [];
     const header = this.incidentsList
       ? 'Total incidents: '.concat(this.incidentsList.length)
       : '';
@@ -159,6 +176,11 @@ class IncidentManagement extends Component {
               }
               onClickReset={this.onClickReset}
               placeHolder="Search incident name"
+              // modal properties
+              incidentTypes={incidentTypes}
+              submittedBy={submittedBy}
+              performSearchIncident={performSearchIncident}
+              getFieldValue={getFieldValue}
             />
           </Col>
           <Col span={24}>
@@ -172,10 +194,13 @@ class IncidentManagement extends Component {
               loading={deselectAllLoading}
             />
             <DeleteSeletedButton
-              onClick={this.onClickDeleteSelected}
+              onClick={this.onDeleteIncidents}
               hasSelected={hasSelected}
-              isPostApiLoading={isPostApiLoading}
+              isPostApiLoading={
+                this.actionType === 'delete' ? isPostApiLoading : false
+              }
               placeHolder="Delete Selected Incident(s)"
+              icon="delete"
             />
             {hasSelected ? (
               <SelectedInfo
@@ -217,6 +242,8 @@ IncidentManagement.propTypes = {
 
   dispatchSetIncidents: PropTypes.func.isRequired,
   performDeleteIncidents: PropTypes.func.isRequired,
+  performSearchIncident: PropTypes.func.isRequired,
+  performGetSearchParams: PropTypes.func.isRequired,
 
   incidentmgmtUI: PropTypes.shape({}).isRequired,
   incidentmgmtData: PropTypes.shape({}).isRequired,
@@ -236,6 +263,8 @@ const mapDispatchToProps = {
 
   dispatchSetIncidents: setIncidents,
   performDeleteIncidents: postDeleteIncidents,
+  performSearchIncident: postSearchIncident,
+  performGetSearchParams: getSearchParams,
 };
 
 const FormIncidentManagementPage = Form.create()(IncidentManagement);

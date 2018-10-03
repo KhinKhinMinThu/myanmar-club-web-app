@@ -37,7 +37,17 @@ class IncidentTypeInput extends Component {
               {decorator('incidentType', {
                 initialValue: '0', // index
               })(
-                <Select {...customInput} onChange={this.onChange}>
+                <Select
+                  {...customInput}
+                  onChange={this.onChange}
+                  showSearch
+                  placeholder="Select incident type"
+                  optionFilterProp="children"
+                  filterOption={(input, option) => option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
                   {incidentTypes.map((item, index) => (
                     <Option key={item.id} value={index.toString()}>
                       {item.name}

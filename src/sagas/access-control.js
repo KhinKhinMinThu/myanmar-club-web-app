@@ -27,9 +27,11 @@ function* asyncGetAccessControlData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getAccessControlData, authHeader);
-    const { accesscontrolData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    yield put({ type: ACCESSCONTROLDATA, payload: accesscontrolData });
+    if (response) {
+      const { accesscontrolData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      yield put({ type: ACCESSCONTROLDATA, payload: accesscontrolData });
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

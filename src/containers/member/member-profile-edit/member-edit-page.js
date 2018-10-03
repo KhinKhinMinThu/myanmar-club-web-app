@@ -5,12 +5,11 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
+  Form, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
 } from 'antd';
 import {
   SUCCESS_UPDATEMEMBER,
   CONFIRM_DELETEMEMBER,
-  SHOWFOR,
 } from '../../../actions/message';
 import {
   DATETIME_FORMAT_DB,
@@ -49,8 +48,6 @@ import {
   setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
 
-const { confirm } = Modal;
-
 class MemberEdit extends Component {
   state = {
     fileList: [],
@@ -58,16 +55,23 @@ class MemberEdit extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      history,
       membermgmtData: { isPostApiLoading, postErrMsg, isEmailFound },
       membermgmtUI: { currentTab },
       form: { setFields, getFieldValue },
     } = this.props;
+
     if (currentTab !== 'tab1') return;
 
     const isApiPost = prevProps.membermgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
-    if (postErrMsg) message.error(postErrMsg, SHOWFOR);
+    if (postErrMsg) Modal.error({ title: 'Error!', content: postErrMsg });
+    if (!postErrMsg) {
+      Modal.success({ title: 'Success!', content: SUCCESS_UPDATEMEMBER });
+      if (this.actionType === 'delete') history.go(-1);
+    }
+    this.actionType = 'update';
     if (isEmailFound === '1') {
       setFields({
         emailAddress: {
@@ -79,8 +83,6 @@ class MemberEdit extends Component {
           ],
         },
       });
-    } else {
-      message.success(SUCCESS_UPDATEMEMBER, SHOWFOR);
     }
   }
 
@@ -111,15 +113,15 @@ class MemberEdit extends Component {
 
     // if user selects to delete member, it will be deleted without
     // updating the rest of the data even if the user changed anything else.
+
     if (getFieldValue('deleteProfile')) {
-      confirm({
-        title: CONFIRM_DELETEMEMBER,
+      this.actionType = 'delete';
+      Modal.confirm({
+        title: 'Confirmation!',
+        content: CONFIRM_DELETEMEMBER,
         onOk() {
           performDeleteMembers({ membersToDelete: [id] });
         },
-        // onCancel() {
-        //   console.log('Cancel');
-        // },
       });
     } else {
       validateFieldsAndScroll((error, values) => {
@@ -168,7 +170,7 @@ class MemberEdit extends Component {
             uploadBtn: fileList,
             photoLink: getFieldValue('photoLink'),
           };
-          dispatchMemberData(memberToUpdate);
+          dispatchMemberData({ ...memberData, ...memberToUpdate });
           performUpdateMember(memberToUpdate);
         }
       });

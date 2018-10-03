@@ -3,12 +3,12 @@ import { select } from 'redux-saga/effects';
 import { BASE_URL } from '../actions/constants';
 
 export const api = axios.create({
-  timeout: 5000,
+  timeout: 10000,
   baseURL: BASE_URL,
 });
 
 export const apiMultiPart = axios.create({
-  timeout: 5000,
+  timeout: 10000,
   baseURL: BASE_URL,
 });
 

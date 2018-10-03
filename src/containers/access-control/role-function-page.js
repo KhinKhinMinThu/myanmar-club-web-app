@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Spin, Alert, Row, Col,
+  Form, Spin, Alert, Row, Col, Modal,
 } from 'antd';
 import RoleCreationForm from './role-creation-page';
-import { SUCCESS_DELETEROLE, SUCCESS_UPDATEROLE, SHOWFOR } from '../../actions/message';
+import { SUCCESS_DELETEROLE, SUCCESS_UPDATEROLE } from '../../actions/message';
 import {
   RolesTable,
   DeSeletAllButton,
@@ -61,11 +61,11 @@ class AccessControl extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else if (currentButton === 'delete') {
-      message.success(SUCCESS_DELETEROLE, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_DELETEROLE });
     } else if (currentButton === 'save') {
-      message.success(SUCCESS_UPDATEROLE, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_UPDATEROLE });
     }
   }
 
@@ -370,6 +370,7 @@ class AccessControl extends Component {
                   hasSelected={hasSelected}
                   isPostApiLoading={isPostApiLoading}
                   placeHolder="Delete Selected Role(s)"
+                  icon="delete"
                 />
                 {hasSelected ? (
                   <SelectedInfo

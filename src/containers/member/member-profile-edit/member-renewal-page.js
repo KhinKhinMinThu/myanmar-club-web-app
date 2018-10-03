@@ -4,20 +4,11 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form,
-  message,
-  Row,
-  Col,
-  Spin,
-  Modal,
-  Card,
-  Tooltip,
-  BackTop,
+  Form, Row, Col, Spin, Modal, Card, Tooltip, BackTop,
 } from 'antd';
 import {
   SUCCESS_RENEWMEMBER,
   CONFIRM_RENEWMEMBER,
-  SHOWFOR,
 } from '../../../actions/message';
 import {
   DEFAULT_DATE,
@@ -43,9 +34,8 @@ import {
 import {
   getMemberData,
   postUpdateMembershipAdmin,
+  setMemberData,
 } from '../../../reducers/membermgmt/membermgmt-data';
-
-const { confirm } = Modal;
 
 class MemberRenewal extends Component {
   componentDidUpdate(prevProps) {
@@ -59,9 +49,9 @@ class MemberRenewal extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_RENEWMEMBER, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_RENEWMEMBER });
     }
   }
 
@@ -69,9 +59,11 @@ class MemberRenewal extends Component {
     e.preventDefault();
     const {
       form: { validateFieldsAndScroll },
+      membermgmtData: { memberData },
       computedMatch: {
         params: { id },
       },
+      dispatchMemberData,
       performUpdateMembership,
     } = this.props;
 
@@ -83,11 +75,16 @@ class MemberRenewal extends Component {
           ...formValues,
           id,
           membershipType,
+          membershipStatus: 'Active',
+          // lastPaymentDate: '',
+          lastPaymentType: formValues.paymentType,
           totalAmount: formValues.totalAmount.toString(),
         };
-        confirm({
-          title: CONFIRM_RENEWMEMBER,
+        Modal.confirm({
+          title: 'Confirmation!',
+          content: CONFIRM_RENEWMEMBER,
           onOk() {
+            dispatchMemberData({ ...memberData, ...membershipToUpdate });
             performUpdateMembership(membershipToUpdate);
           },
         });
@@ -168,6 +165,7 @@ MemberRenewal.propTypes = {
 
   performUpdateMembership: PropTypes.func.isRequired,
   performGetMemberData: PropTypes.func.isRequired,
+  dispatchMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
@@ -180,6 +178,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   performUpdateMembership: postUpdateMembershipAdmin,
   performGetMemberData: getMemberData,
+  dispatchMemberData: setMemberData,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {

@@ -29,6 +29,14 @@ export const EventsTable = ({
       render: (text, record, index) => <span>{`${index + 1}`}</span>,
     },
     {
+      title: 'Id',
+      dataIndex: 'id',
+      key: 'id',
+      sorter: (a, b) => Number.parseInt(a.id, 10) - Number.parseInt(b.id, 10),
+      sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+      width: '5%',
+    },
+    {
       title: 'Event Name',
       dataIndex: 'name',
       key: 'name',
@@ -53,6 +61,16 @@ export const EventsTable = ({
       },
       sortOrder: sortedInfo.columnKey === 'description' && sortedInfo.order,
       width: '22%',
+      // render: (text) => {
+      //   // const strArr = text.split(' ');
+      //   const strArr = text;
+      //   return strArr.length >= 300
+      //     ? strArr
+      //       .slice(0, 300)
+      //       .join(' ')
+      //       .concat(' ...')
+      //     : text;
+      // },
     },
     {
       title: 'Start Date',
@@ -60,7 +78,7 @@ export const EventsTable = ({
       key: 'startDate',
       sorter: (a, b) => new Date(a.startDate) - new Date(b.startDate),
       sortOrder: sortedInfo.columnKey === 'startDate' && sortedInfo.order,
-      width: '10%',
+      width: '9%',
     },
     {
       title: 'End Date',
@@ -68,7 +86,7 @@ export const EventsTable = ({
       key: 'endDate',
       sorter: (a, b) => new Date(a.endDate) - new Date(b.endDate),
       sortOrder: sortedInfo.columnKey === 'endDate' && sortedInfo.order,
-      width: '10%',
+      width: '9%',
     },
     {
       title: 'Location',
@@ -93,7 +111,7 @@ export const EventsTable = ({
       },
       sortOrder: sortedInfo.columnKey === 'eventStatus' && sortedInfo.order,
       render: text => (text === '1' ? 'Open' : 'Closed'),
-      width: '10%',
+      width: '7%',
     },
     {
       title: 'Action',

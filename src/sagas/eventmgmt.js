@@ -11,6 +11,7 @@ import {
   GET_APILOADING,
   EVENTDATA,
   EVENTSDATA,
+  PENDINGCLAIMS,
   GET_ERROR,
   POST_APILOADING,
   POST_DELETEEVENT,
@@ -20,6 +21,7 @@ import {
   POST_UPDATEEVENT,
   POST_NOTIFYEVENT,
   POST_UPDATEREGPAYMENT,
+  POST_PENDING_CLAIMS,
   POST_ERROR,
 } from '../reducers/eventmgmt/eventmgmt-data';
 import {
@@ -33,6 +35,7 @@ import {
   APIPOST_ADD_EVENTPHOTO,
   APIPOST_NOTIFY_EVENT,
   APIPOST_UPDATE_REGPAYMENT,
+  APIPOST_PENDING_CLAIMS,
 } from '../actions/constants';
 
 // GET REQUEST
@@ -45,9 +48,11 @@ function* asyncGetEventData(action) {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getEventData, action.id, authHeader);
-    const { eventData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    yield put({ type: EVENTDATA, payload: eventData });
+    if (response) {
+      const { eventData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      yield put({ type: EVENTDATA, payload: eventData });
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -62,9 +67,11 @@ function* asyncGetEventsData() {
     const authHeader = yield call(getAuthHeader);
     yield put({ type: GET_APILOADING, payload: true });
     const response = yield call(getEventsData, authHeader);
-    const { eventsData, errorMsg } = response.data;
-    errMsg = errorMsg;
-    yield put({ type: EVENTSDATA, payload: eventsData });
+    if (response) {
+      const { eventsData, errorMsg } = response.data;
+      errMsg = errorMsg;
+      yield put({ type: EVENTSDATA, payload: eventsData });
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -164,6 +171,7 @@ const assembleFormData = ({ eventId, imageFile }) => {
   return null;
 };
 
+const postPendingClaims = (eventId, authHeader) => api.post(APIPOST_PENDING_CLAIMS, { eventId }, authHeader);
 function* asyncPostProcessEvents(action) {
   let errMsg;
   try {
@@ -182,6 +190,7 @@ function* asyncPostProcessEvents(action) {
       action.notification,
       action.newEventRSVPToAdd,
       action.eventRSVPPayment,
+      action.eventId,
     );
 
     let multipartForm;
@@ -254,6 +263,13 @@ function* asyncPostProcessEvents(action) {
           authHeader,
         );
         break;
+      case POST_PENDING_CLAIMS:
+        response = yield call(postPendingClaims, action.eventId, authHeader);
+        if (response.data.hasClaims) {
+          yield put({ type: PENDINGCLAIMS, payload: response.data.hasClaims });
+          // yield put({ type: PENDINGCLAIMS, payload: '1' });
+        }
+        break;
       default:
     }
     const { errorMsg } = response.data;
@@ -296,5 +312,9 @@ export const postNotifyEventSaga = takeLatest(
 );
 export const postUpdateRegPaymentSaga = takeLatest(
   POST_UPDATEREGPAYMENT,
+  asyncPostProcessEvents,
+);
+export const postPendingClaimsSaga = takeLatest(
+  POST_PENDING_CLAIMS,
   asyncPostProcessEvents,
 );

@@ -56,8 +56,8 @@ export default function (
     postErrMsg: null,
     incidentTypes: [],
     submittedBy: [],
-    incidents: null,
-    incident: null,
+    incidents: [],
+    incident: [],
   },
   action,
 ) {

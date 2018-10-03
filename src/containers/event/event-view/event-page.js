@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, Row, Col, message, Card,
+  Form, Row, Col, Modal, Card,
 } from 'antd';
 import defaultPic from '../../../images/default_img.png';
 import {
   SUCCESS_NOTIFYEVENT,
   FB_EVENT_PRETEXT,
-  SHOWFOR,
+  CONFIRM_NOTIFYEVENT,
 } from '../../../actions/message';
 import {
   TIME_FORMAT_DB,
@@ -45,15 +45,21 @@ class EventPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_NOTIFYEVENT, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_NOTIFYEVENT });
     }
   }
 
   onClickNotify = (id, url) => {
-    const { performNotifyEvent } = this.props;
-    performNotifyEvent({ id, url });
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_NOTIFYEVENT,
+      onOk() {
+        const { performNotifyEvent } = this.props;
+        performNotifyEvent({ id, url });
+      },
+    });
   };
 
   render() {

@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Row, Col,
+  Form, Row, Col, Modal,
 } from 'antd';
-import { SUCCESS_DELETEMEMBER, SHOWFOR } from '../../../actions/message';
+import {
+  SUCCESS_DELETEMEMBER,
+  CONFIRM_DELETEMEMBERS,
+} from '../../../actions/message';
 import {
   MembersTable,
   DeSeletAllButton,
@@ -38,9 +41,9 @@ class ClubMembersPage extends Component {
     if (!isApiPost) return;
 
     if (postErrMsg) {
-      message.error(postErrMsg, SHOWFOR);
+      Modal.error({ title: 'Error!', content: postErrMsg });
     } else {
-      message.success(SUCCESS_DELETEMEMBER, SHOWFOR);
+      Modal.success({ title: 'Success!', content: SUCCESS_DELETEMEMBER });
     }
   }
 
@@ -73,13 +76,20 @@ class ClubMembersPage extends Component {
       dispatchResetState,
       dispatchClubMembersData,
     } = this.props;
-    performDeleteMember({ membersToDelete: selectedKeys });
-    dispatchResetState();
 
-    const updatedClubMembers = clubMembersList.filter(
-      item => !selectedKeys.includes(item.id),
-    );
-    dispatchClubMembersData(updatedClubMembers);
+    Modal.confirm({
+      title: 'Confirmation!',
+      content: CONFIRM_DELETEMEMBERS,
+      onOk() {
+        performDeleteMember({ membersToDelete: selectedKeys });
+        dispatchResetState();
+
+        const updatedClubMembers = clubMembersList.filter(
+          item => !selectedKeys.includes(item.id),
+        );
+        dispatchClubMembersData(updatedClubMembers);
+      },
+    });
   };
 
   // handle onClick from Reset button
@@ -138,7 +148,7 @@ class ClubMembersPage extends Component {
     if (clubMembersList) this.membersList = this.prepareList(clubMembersList);
 
     const header = this.membersList
-      ? 'Total EC members: '.concat(this.membersList.length)
+      ? 'Total Club Members: '.concat(this.membersList.length)
       : '';
 
     const rowSelection = {
@@ -181,7 +191,8 @@ class ClubMembersPage extends Component {
               onClick={this.onClickDeleteSelected}
               hasSelected={hasSelected}
               isPostApiLoading={isPostApiLoading}
-              placeHolder="Delete Selected Member(s)"
+              placeHolder="Delete Selected Club Member(s)"
+              icon="delete"
             />
             {hasSelected ? (
               <SelectedInfo

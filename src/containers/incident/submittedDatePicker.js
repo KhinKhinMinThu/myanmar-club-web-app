@@ -1,14 +1,7 @@
 import React from 'react';
 import moment from 'moment-timezone';
-import {
-  Form, DatePicker, Row, Col,
-} from 'antd';
-import {
-  layout,
-  inputLayout1,
-  inputLayout2,
-  customInput,
-} from './shared-components';
+import { Form, DatePicker } from 'antd';
+import { layout, customInput } from './shared-components';
 import { TIMEZONE, DATE_FORMAT } from '../../actions/constants';
 
 const FormItem = Form.Item;
@@ -23,39 +16,28 @@ const SubmittedDatePicker = ({ decorator, getFieldValue }) => {
   const disabledEndDate = current => (startDate ? current < startDate : false); // disabled date before start date
 
   return (
-    <FormItem {...layout} label="Submitted Date" colon>
-      <Row type="flex" justify="start">
-        <Col {...inputLayout1}>
-          <FormItem>
-            {decorator('startDate')(
-              <DatePicker
-                {...customInput}
-                format={DATE_FORMAT}
-                // disabledDate={disabledStartDate}
-                // onChange={value => onChangeStartDate({
-                //   value,
-                //   endDate,
-                //   setFields,
-                // })
-                // }
-              />,
-            )}
-          </FormItem>
-        </Col>
-        <Col {...inputLayout2}>
-          <FormItem>
-            {decorator('endDate')(
-              <DatePicker
-                {...customInput}
-                format={DATE_FORMAT}
-                disabledDate={disabledEndDate}
-                disabled={!startDate}
-              />,
-            )}
-          </FormItem>
-        </Col>
-      </Row>
-    </FormItem>
+    <div>
+      <FormItem {...layout} label="Submitted Date" colon>
+        {decorator('startDate')(
+          <DatePicker
+            {...customInput}
+            format={DATE_FORMAT}
+            placeholder="From date"
+          />,
+        )}
+      </FormItem>
+      <FormItem {...layout} label=" " colon={false} style={{ marginBottom: 0 }}>
+        {decorator('endDate')(
+          <DatePicker
+            {...customInput}
+            format={DATE_FORMAT}
+            placeholder="To date"
+            disabledDate={disabledEndDate}
+            disabled={!startDate}
+          />,
+        )}
+      </FormItem>
+    </div>
   );
 };
 
