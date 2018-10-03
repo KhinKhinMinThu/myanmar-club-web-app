@@ -17,11 +17,8 @@
     "moment-timezone": "^0.5.21",
     "prop-types": "^15.6.2",
     "react": "^16.4.0",
-<<<<<<< HEAD
     "react-async-script-loader": "^0.3.0",
-=======
     "react-csv": "^1.0.15-RC2",
->>>>>>> 28e64713d05c38107b27603ffa83e81e84d1327b
     "react-dom": "^16.4.0",
     "react-paypal-express-checkout": "^1.0.4",
     "react-redux": "^5.0.7",

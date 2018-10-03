@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, Row, Col, Card, Modal, BackTop, Tooltip, message,
+  Form, Row, Col, Card, Modal, BackTop, Tooltip,
 } from 'antd';
 import FormStepAction from './form-step-action';
 import { MEMBERSHIP_FEES, MEMBERSHIP_TYPES } from '../../../actions/constants';
 import {
   CONFIRM_CREATEACC,
-  SHOWFOR,
   SUCCESS_PAYMENT,
   ERROR_PAYMENT,
   CANCEL_PAYMENT,
@@ -81,7 +80,7 @@ class Page2 extends Component {
       performSignup,
     } = this.props;
     console.log('Successful payment!', payment);
-    message.success(SUCCESS_PAYMENT, SHOWFOR);
+    Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
     const formValues = getFieldsValue();
     const membershipType = MEMBERSHIP_TYPES[formValues.membershipType];
     const memberToAdd = {
@@ -152,11 +151,11 @@ class Page2 extends Component {
     }
     const onError = (error) => {
       console.log('Erroneous payment OR failed to load script!', error);
-      message.error(ERROR_PAYMENT, SHOWFOR);
+      Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
     };
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
-      message.warning(CANCEL_PAYMENT, SHOWFOR);
+      Modal.warning({ title: 'Success!', content: CANCEL_PAYMENT });
     };
     return (
       <Form onSubmit={this.onSubmit}>

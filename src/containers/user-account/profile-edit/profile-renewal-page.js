@@ -99,8 +99,9 @@ class MemberRenewal extends Component {
     const paymentType = getFieldValue('paymentType');
     validateFieldsAndScroll((error, values) => {
       if (!error && paymentType === 'Direct Online Payment') {
-        confirm({
-          title: CONFIRM_RENEWMEMBER,
+        Modal.confirm({
+          title: 'Confirmation!',
+          content: CONFIRM_RENEWMEMBER,
           onOk: () => {
             this.setState({ isModalVisible: true });
           },

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, message, Spin, Modal, Button, Input, Checkbox, Col,
+  Form, Spin, Modal, Button, Input, Checkbox, Col,
 } from 'antd';
 import { SUCCESS_NEWROLE } from '../../actions/message';
 import { postNewRole } from '../../reducers/access-control/access-control-data';
@@ -21,8 +21,13 @@ class RoleCreation extends Component {
     if (postErrMsg) {
       Modal.error({ title: 'Error!', content: postErrMsg });
     } else if (isModalVisible) {
-      // window.location.reload();
-      Modal.success({ title: 'Success!', content: SUCCESS_NEWROLE });
+      Modal.success({
+        title: 'Success!',
+        content: SUCCESS_NEWROLE,
+        onOk: () => {
+          window.location.reload();
+        },
+      });
     }
   }
 

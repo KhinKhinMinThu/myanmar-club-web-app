@@ -4,7 +4,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import {
   Form,
-  message,
   Card,
   Spin,
   Alert,
@@ -12,6 +11,7 @@ import {
   Tooltip,
   Row,
   Col,
+  Modal,
 } from 'antd';
 import {
   SUCCESS_NEWEVENTRSVP,
@@ -144,7 +144,7 @@ class EventRegistration extends Component {
       performNewRSVP,
     } = this.props;
     console.log('Successful payment!', payment);
-    Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT, SUCCESS_NEWEVENTRSVP });
+    Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
     const formValues = getFieldsValue();
     const memberMobilePhone = formValues.memberMobilePhone
       ? formValues.memberAreaCode + formValues.memberMobilePhone
