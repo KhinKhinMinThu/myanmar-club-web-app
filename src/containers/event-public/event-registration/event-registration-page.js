@@ -207,7 +207,7 @@ class EventRegistration extends Component {
 
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
-      Modal.warning({ title: 'Error!', content: CANCEL_PAYMENT });
+      Modal.warning({ title: 'Payment Cancellation!', content: CANCEL_PAYMENT });
     };
 
     return (

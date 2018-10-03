@@ -178,7 +178,7 @@ class MemberRenewal extends Component {
     };
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
-      Modal.error({ title: 'Error!', content: CANCEL_PAYMENT });
+      Modal.warning({ title: 'Payment Cancellation!', content: CANCEL_PAYMENT });
     };
     const actionColLayout = {
       xs: { span: 24 },

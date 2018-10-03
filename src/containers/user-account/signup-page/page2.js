@@ -155,7 +155,7 @@ class Page2 extends Component {
     };
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
-      Modal.warning({ title: 'Success!', content: CANCEL_PAYMENT });
+      Modal.warning({ title: 'Payment Cancellation!', content: CANCEL_PAYMENT });
     };
     return (
       <Form onSubmit={this.onSubmit}>
