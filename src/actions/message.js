@@ -19,6 +19,9 @@ export const SUCCESS_UPDATEROLE = 'Role has been updated with newly assigned fun
 export const SUCCESS_DELETEINCIDENT = 'Deleted Selected Incident(s)';
 export const SUCCESS_NEWINCIDENT = 'New Incident has been created!';
 export const SUCCESS_UPDATEINCIDENT = 'Incident has been updated!';
+export const SUCCESS_PAYMENT = 'Payment has been made successfully. Thank you for the purchase.';
+export const CANCEL_PAYMENT = 'Payment has been canceled.';
+export const ERROR_PAYMENT = 'Erroneous payment OR failed to load script!';
 
 export const CONFIRM_DELETEEVENT = 'Please confirm to delete this event!';
 export const CONFIRM_DELETEMEMBER = 'Please confirm to delete the member profile!';

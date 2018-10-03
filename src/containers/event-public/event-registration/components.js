@@ -1,14 +1,16 @@
 import React from 'react';
 import {
-  Form, Input, DatePicker, Radio, Card, Col, Select,
+  Form, Input, Radio, Card, Col, Select, Modal,
 } from 'antd';
-import { FullButton, ExtraInfoText } from '../shared-styled';
+import PaypalExpressBtn from 'react-paypal-express-checkout';
+import { FullButton, ExtraInfoText, HighlightText } from '../shared-styled';
+import { CLIENT_ACC } from '../../../actions/constants';
 import { layout } from '../shared-components';
 
+const ENV = 'sandbox';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const MonthPicker = DatePicker;
 const Option = Select;
 const customInput = { style: { width: '200px' } };
 const readOnlyInput = {
@@ -18,6 +20,21 @@ const readOnlyInput = {
     borderRadius: 0,
     padding: 0,
     borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+  },
+  readOnly: true,
+  size: 'small',
+};
+
+const paymentDisplay = {
+  style: {
+    border: 0,
+    outline: 0,
+    borderRadius: 0,
+    padding: 0,
+    fontWeight: 'bold',
+    width: '100px',
+    textAlign: 'right',
+    marginRight: '10px',
   },
   readOnly: true,
   size: 'small',
@@ -76,7 +93,7 @@ export const MobileNoInput = ({ decorator }) => {
 };
 
 // Number of ticket input
-export const TicketNumInput = ({ decorator }) => (
+export const TicketNumInput = ({ decorator, onChange }) => (
   <FormItem {...layout} label="No of Ticket(s)/Attendee(s)">
     {decorator('memberNoOfPax', {
       rules: [
@@ -89,7 +106,7 @@ export const TicketNumInput = ({ decorator }) => (
           message: 'Please enter number of tickets/attendees!',
         },
       ],
-    })(<Input {...customInput} type="text" />)}
+    })(<Input {...customInput} type="text" onChange={onChange} />)}
   </FormItem>
 );
 
@@ -114,116 +131,281 @@ export const EventRegisterButton = () => (
   </FullButton>
 );
 
-class PaymentToggler extends React.Component {
-  state = { showDirectPayment: false };
-
-  onSelect = (e) => {
-    const { showDirectPayment } = this.state;
-    // console.log('toggleDirectPayment');
-    if (e.target.value === 'Direct Online Payment' && !showDirectPayment) {
-      this.setState({ showDirectPayment: true });
-      // unhide and reset the fields with validator
-    }
-    if (e.target.value !== 'Direct Online Payment' && showDirectPayment) {
-      this.setState({ showDirectPayment: false });
-      // hide the fields with validator
-    }
-  };
-
-  render() {
-    const { render } = this.props;
-    const { showDirectPayment } = this.state;
-    return render(showDirectPayment, this.onSelect);
-  }
-}
-
-export const Payment = ({ decorator, clicked }) => (
-  <PaymentToggler
-    render={(showDirectPayment, onSelect) => (
-      <FormItem {...layout} label="Payment Method">
-        <FormItem>
-          {decorator('paymentType', { initialValue: 'Bank Transfer' })(
-            <RadioGroup name="paymentTypeRdo" onChange={onSelect}>
-              <RadioButton value="Direct Online Payment">Direct Online Payment</RadioButton>
-              <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>
-              <RadioButton value="Cash">Cash Payment</RadioButton>
-            </RadioGroup>,
-          )}
-        </FormItem>
-        {/* show text input if nationality is others */}
-        {showDirectPayment && (
-          <Col span={1}>
-            <FormItem {...layout} label=" " colon={false}>
-              <Card style={{ width: '500px', textAlign: 'left' }}>
-                <FormItem {...layout} label="Name on Card">
-                  {decorator('nameOnCard', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter cardholder name!',
-                      },
-                    ],
-                  })(<Input {...customInput} type="text" />)}
-                </FormItem>
-                <FormItem {...layout} label="Card Number">
-                  {decorator('cardNumber', {
-                    rules: [
-                      {
-                        pattern: '^([0-9]{16})$',
-                        message: 'The input is not a 16-digits card number!',
-                      },
-                      {
-                        required: true,
-                        message: 'Please enter card number!',
-                      },
-                    ],
-                  })(<Input {...customInput} maxLength="16" type="text" />)}
-                  <br />
-                  <ExtraInfoText style={{ marginTop: '0px' }}>
-                    {' '}
-                    {'Do not include space or dashes "-".'}
-                  </ExtraInfoText>
-                </FormItem>
-                <FormItem {...layout} label="Expiry Date">
-                  {decorator('cardExpiry', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter card expiry month and year!',
-                      },
-                    ],
-                  })(
-                    <MonthPicker
-                      placeholder="Select month and year"
-                      format="MM-YYYY"
-                    />,
-                  )}
-                  <ExtraInfoText>MM-YYYY</ExtraInfoText>
-                </FormItem>
-                <FormItem {...layout} label="Security Code">
-                  {decorator('cardSecurityCode', {
-                    rules: [
-                      {
-                        pattern: '^([0-9]{3,})$',
-                        message: 'The input is not a 16-digits card number!',
-                      },
-                      {
-                        required: true,
-                        message: 'Please enter card security code!',
-                      },
-                    ],
-                  })(<Input maxLength="4" type="text" />)}
-                </FormItem>
-                <FullButton type="primary" htmlType="submit" onClick={clicked}>
-                  Make Payment Now
-                </FullButton>
-              </Card>
-            </FormItem>
-          </Col>
-        )}
-      </FormItem>
+// Payment Radio
+export const Payment = ({
+  decorator,
+  onSelect,
+  showDirectPayment,
+  paymentOption,
+}) => (
+  <FormItem {...layout} label="Payment Method">
+    <FormItem>
+      {decorator('paymentType', { initialValue: 'Bank Transfer' })(
+        <RadioGroup name="paymentTypeRdo" onChange={onSelect}>
+          <RadioButton value="Direct Online Payment">
+            Direct Online Payment
+          </RadioButton>
+          <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>
+          <RadioButton value="Cash">Cash Payment</RadioButton>
+        </RadioGroup>,
+      )}
+    </FormItem>
+    {/* show text input if nationality is others */}
+    {showDirectPayment && (
+      <Col span={1}>
+        <Card style={{ width: '400px', textAlign: 'left' }}>
+          <FormItem
+            {...layout}
+            style={{ marginBottom: 0, fontWeight: 'bold' }}
+            label="No. of Ticket(s)"
+            colon
+          >
+            {decorator('ticketNum', { initialValue: '0' })(
+              <Input {...paymentDisplay} />,
+            )}
+          </FormItem>
+          <FormItem
+            {...layout}
+            style={{ marginBottom: 0, fontWeight: 'bold' }}
+            label="Price per ticket"
+            colon
+          >
+            {decorator('ticketPrice', { initialValue: '0' })(
+              <Input {...paymentDisplay} />,
+            )}
+            <span>
+              <HighlightText>SGD</HighlightText>{' '}
+            </span>
+          </FormItem>
+          <FormItem
+            {...layout}
+            style={{ fontWeight: 'bold' }}
+            label="Total Amount"
+            colon
+          >
+            {decorator('totalAmount', { initialValue: '0' })(
+              <Input {...paymentDisplay} />,
+            )}
+            <span>
+              <HighlightText>SGD</HighlightText>{' '}
+            </span>
+          </FormItem>
+          <FormItem style={{ marginBottom: 0 }}>
+            <img
+              src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
+              border="0"
+              alt="PayPal Logo"
+              style={{ marginRight: '10px' }}
+            />
+            <span>
+              <ExtraInfoText>Pay directly with PayPal...</ExtraInfoText>
+            </span>
+          </FormItem>
+        </Card>
+      </Col>
     )}
-  />
+    {!showDirectPayment
+      && paymentOption
+        === 'Bank' && (
+          <Col span={1}>
+            <Card style={{ width: '450px', textAlign: 'left' }}>
+              <FormItem
+                {...layout}
+                style={{ marginBottom: 0, fontWeight: 'bold' }}
+                label="No. of Ticket(s)"
+                colon
+              >
+                {decorator('ticketNum', { initialValue: '0' })(
+                  <Input {...paymentDisplay} />,
+                )}
+              </FormItem>
+              <FormItem
+                {...layout}
+                style={{ marginBottom: 0, fontWeight: 'bold' }}
+                label="Price per ticket"
+                colon
+              >
+                {decorator('ticketPrice', { initialValue: '0' })(
+                  <Input {...paymentDisplay} />,
+                )}
+                <span>
+                  <HighlightText>SGD</HighlightText>{' '}
+                </span>
+              </FormItem>
+              <FormItem
+                {...layout}
+                style={{ fontWeight: 'bold' }}
+                label="Total Amount"
+                colon
+              >
+                {decorator('totalAmount', { initialValue: '0' })(
+                  <Input {...paymentDisplay} />,
+                )}
+                <span>
+                  <HighlightText>SGD</HighlightText>{' '}
+                </span>
+              </FormItem>
+              <ExtraInfoText>
+                Note:
+              </ExtraInfoText>
+              <br />
+              <ExtraInfoText>
+                By choosing this payment option, purchase confirmation
+                will only be upon the approval of Executive Committe Member.
+              </ExtraInfoText>
+              <br />
+              <ExtraInfoText>
+                To make payment, please kindly transfer to Myanmar Club bank account:
+              </ExtraInfoText>
+              <span>
+                <HighlightText> DBS Savings 001-123-456 </HighlightText>
+              </span>
+              <br />
+              <ExtraInfoText>
+                For other enquries, contact U Ye Myint at
+              </ExtraInfoText>
+              <span>
+                <HighlightText> 93807095</HighlightText>
+              </span>
+            </Card>
+          </Col>
+    )}
+    {!showDirectPayment
+      && paymentOption
+        === 'Cash' && (
+          <Col span={1}>
+            <Card style={{ width: '450px', textAlign: 'left' }}>
+              <FormItem
+                {...layout}
+                style={{ marginBottom: 0, fontWeight: 'bold' }}
+                label="No. of Ticket(s)"
+                colon
+              >
+                {decorator('ticketNum', { initialValue: '0' })(
+                  <Input {...paymentDisplay} />,
+                )}
+              </FormItem>
+              <FormItem
+                {...layout}
+                style={{ marginBottom: 0, fontWeight: 'bold' }}
+                label="Price per ticket"
+                colon
+              >
+                {decorator('ticketPrice', { initialValue: '0' })(
+                  <Input {...paymentDisplay} />,
+                )}
+                <span>
+                  <HighlightText>SGD</HighlightText>{' '}
+                </span>
+              </FormItem>
+              <FormItem
+                {...layout}
+                style={{ fontWeight: 'bold' }}
+                label="Total Amount"
+                colon
+              >
+                {decorator('totalAmount', { initialValue: '0' })(
+                  <Input {...paymentDisplay} />,
+                )}
+                <span>
+                  <HighlightText>SGD</HighlightText>{' '}
+                </span>
+              </FormItem>
+              <ExtraInfoText>
+                Note:
+              </ExtraInfoText>
+              <br />
+              <ExtraInfoText>
+                By choosing this payment option, purchase confirmation
+                will only be upon the approval of Executive Committe Member.
+              </ExtraInfoText>
+              <br />
+              <ExtraInfoText>
+                To make payment, please kindly proceed to Myanmar Club office at
+              </ExtraInfoText>
+              <span>
+                <HighlightText>  111 North Bridge Road #05-42 Peninsula Plaza </HighlightText>
+              </span>
+              <br />
+              <ExtraInfoText>
+                For other enquries, contact U Ye Myint at
+              </ExtraInfoText>
+              <span>
+                <HighlightText> 93807095</HighlightText>
+              </span>
+            </Card>
+          </Col>
+    )}
+  </FormItem>
+);
+
+// Payment Modal
+export const PaymentModal = ({
+  decorator,
+  isModalVisible,
+  onCloseModal,
+  total,
+  onSuccess,
+  onError,
+  onCancel,
+}) => (
+  <Modal
+    title="Check out with PayPal"
+    visible={isModalVisible}
+    onCancel={onCloseModal}
+    width={385}
+    style={{ top: 10 }}
+    footer={[
+      <PaypalExpressBtn
+        style={{ size: 'large', tagline: 'true' }}
+        client={CLIENT_ACC}
+        env={ENV}
+        commit
+        currency="SGD"
+        total={total}
+        onSuccess={onSuccess}
+        onError={onError}
+        onCancel={onCancel}
+      />,
+    ]}
+  >
+    <FormItem
+      {...layout}
+      style={{ marginBottom: 0, fontWeight: 'bold' }}
+      label="No. of Ticket(s)"
+      colon
+    >
+      {decorator('ticketNum', { initialValue: '0' })(
+        <Input {...paymentDisplay} />,
+      )}
+    </FormItem>
+    <FormItem
+      {...layout}
+      style={{ marginBottom: 0, fontWeight: 'bold' }}
+      label="Price per ticket"
+      colon
+    >
+      {decorator('ticketPrice', { initialValue: '0' })(
+        <Input {...paymentDisplay} />,
+      )}
+      <span>
+        <HighlightText>SGD</HighlightText>{' '}
+      </span>
+    </FormItem>
+    <FormItem
+      {...layout}
+      style={{ marginBottom: 0, fontWeight: 'bold' }}
+      label="Total Amount"
+      colon
+    >
+      {decorator('totalAmount', { initialValue: '0' })(
+        <Input {...paymentDisplay} />,
+      )}
+      <span>
+        <HighlightText>SGD</HighlightText>{' '}
+      </span>
+    </FormItem>
+  </Modal>
 );
 
 /* eslint react/prop-types: 0 */
@@ -239,10 +421,12 @@ export const EventData = ({ decorator }) => (
             height: '200px',
             margin: '0 auto 0 auto',
             display: 'block',
+            marginBottom: '7px',
           }}
         />,
       )}
     </FormItem>
+    <br />
     <FormItem {...layout} style={{ marginBottom: 0 }}>
       {decorator('id')(<Input type="hidden" {...readOnlyInput} />)}
     </FormItem>
@@ -286,5 +470,7 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
     </FormItem>
+    <br />
+    <br />
   </Form>
 );

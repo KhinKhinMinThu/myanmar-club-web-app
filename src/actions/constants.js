@@ -18,6 +18,11 @@ export const RELIGION_LIST = ['buddhism', 'islam', 'hinduism', 'christianity'];
 export const STRING_MAX_LEN = 255;
 export const STRING_MAX_LEN2 = 500;
 
+export const CLIENT_ACC = {
+  sandbox:
+    'AbUbuK0ObTjdeftpghhk_mC2j9QVMLX39pBYjLgmSYgHzCaD6mA1qYMmMa3z9iJLr6_WJWGsaJuzFUYz',
+};
+
 export const MEMBERSHIP_TYPES = {
   TYP1: 'TYP1:Life (ရာသက်ပန်) = SGD 350',
   TYP2:

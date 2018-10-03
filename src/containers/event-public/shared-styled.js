@@ -12,9 +12,15 @@ export const MarginLeftButton = styled(Button)`
 `;
 
 export const ExtraInfoText = styled.span`
-  color: rgba(0, 0, 0, 0.4);
+  color: #800000;
   font-style: italic;
-  margin-left: 8px;
+  font-weight: bold;
+`;
+
+export const HighlightText = styled.span`
+  color: #4169e1;
+  font-weight: bold;
+  font-style: italic;
 `;
 
 // &:visited,

@@ -3,9 +3,23 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  Form, message, Card, Spin, Alert,
+  Form,
+  message,
+  Card,
+  Spin,
+  Alert,
+  BackTop,
+  Tooltip,
+  Row,
+  Col,
 } from 'antd';
-import { SUCCESS_NEWEVENTRSVP, SHOWFOR } from '../../../actions/message';
+import {
+  SUCCESS_NEWEVENTRSVP,
+  SHOWFOR,
+  SUCCESS_PAYMENT,
+  ERROR_PAYMENT,
+  CANCEL_PAYMENT,
+} from '../../../actions/message';
 import {
   TIME_FORMAT_DB,
   DATE_FORMAT,
@@ -20,6 +34,7 @@ import {
   TicketNumInput,
   Payment,
   EventRegisterButton,
+  PaymentModal,
 } from './components';
 import {
   getEventData,
@@ -27,6 +42,13 @@ import {
 } from '../../../reducers/eventmgmt/eventmgmt-data';
 
 class EventRegistration extends Component {
+  state = {
+    total: 0.01,
+    isModalVisible: false,
+    showDirectPayment: false,
+    paymentOption: 'Bank',
+  };
+
   componentDidMount() {
     const {
       computedMatch: {
@@ -59,15 +81,102 @@ class EventRegistration extends Component {
     }
   }
 
+  onCloseModal = () => {
+    const {
+      form: { setFieldsValue, getFieldValue },
+    } = this.props;
+    // console.log('toggleDirectPayment', showDirectPayment);
+    const ticketNum = getFieldValue('memberNoOfPax');
+    const ticketPrice = getFieldValue('ticketFee');
+    const totalAmt = ticketNum * ticketPrice;
+    this.setState({ total: totalAmt });
+    setFieldsValue({ totalAmount: totalAmt, ticketNum, ticketPrice });
+    this.setState({
+      isModalVisible: false,
+    });
+  };
+
+  onChange = (event) => {
+    const {
+      form: { setFieldsValue, getFieldValue },
+    } = this.props;
+    // console.log('num', total);
+    const totalAmt = event.target.value * getFieldValue('ticketFee');
+    this.setState({ total: totalAmt });
+    setFieldsValue({
+      totalAmount: totalAmt,
+      ticketNum: event.target.value,
+      ticketPrice: getFieldValue('ticketFee'),
+    });
+  };
+
+  onSelect = (e) => {
+    const {
+      form: { setFieldsValue, getFieldValue },
+    } = this.props;
+    const { showDirectPayment, paymentOption } = this.state;
+    const ticketNum = getFieldValue('memberNoOfPax');
+    const ticketPrice = getFieldValue('ticketFee');
+    let totalAmt = ticketNum * ticketPrice;
+    if (ticketNum === undefined) {
+      totalAmt = 0;
+    }
+    this.setState({ total: totalAmt });
+    setFieldsValue({ totalAmount: totalAmt, ticketNum, ticketPrice });
+    if (e.target.value === 'Direct Online Payment' && !showDirectPayment) {
+      this.setState({ showDirectPayment: true });
+      // unhide and reset the fields with validator
+    }
+    if (e.target.value !== 'Direct Online Payment') {
+      this.setState({ showDirectPayment: false });
+      if (e.target.value === 'Bank Transfer') {
+        this.setState({ paymentOption: 'Bank' });
+      } else {
+        this.setState({ paymentOption: 'Cash' });
+      }
+      console.log('payment Type', paymentOption);
+      // hide the fields with validator
+    }
+  };
+
+  onSuccess = (payment) => {
+    const {
+      form: { getFieldsValue },
+      performNewRSVP,
+    } = this.props;
+    console.log('Successful payment!', payment);
+    message.success(SUCCESS_PAYMENT, SHOWFOR);
+    const formValues = getFieldsValue();
+    const memberMobilePhone = formValues.memberMobilePhone
+      ? formValues.memberAreaCode + formValues.memberMobilePhone
+      : formValues.memberMobilePhone;
+    performNewRSVP({
+      ...formValues,
+      memberMobilePhone,
+    });
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
-      form: { validateFieldsAndScroll },
+      form: { validateFieldsAndScroll, getFieldValue, setFieldsValue },
       performNewRSVP,
     } = this.props;
+    const paymentType = getFieldValue('paymentType');
     validateFieldsAndScroll((error, values) => {
       console.log('form values', values);
-      if (!error) {
+      if (!error && paymentType === 'Direct Online Payment') {
+        // console.log('toggleDirectPayment', showDirectPayment);
+        const ticketNum = getFieldValue('memberNoOfPax');
+        const ticketPrice = getFieldValue('ticketFee');
+        const totalAmt = ticketNum * ticketPrice;
+        this.setState({ total: totalAmt });
+        setFieldsValue({ totalAmount: totalAmt, ticketNum, ticketPrice });
+        this.setState({
+          isModalVisible: true,
+        });
+      }
+      if (!error && paymentType !== 'Direct Online Payment') {
         const formValues = values;
         const memberMobilePhone = formValues.memberMobilePhone
           ? formValues.memberAreaCode + formValues.memberMobilePhone
@@ -85,6 +194,23 @@ class EventRegistration extends Component {
       form: { getFieldDecorator },
       eventmgmtData: { isGetApiLoading, getErrMsg },
     } = this.props;
+    const {
+      total,
+      isModalVisible,
+      showDirectPayment,
+      paymentOption,
+    } = this.state;
+    console.log('total', total);
+    const onError = (error) => {
+      console.log('Erroneous payment OR failed to load script!', error);
+      message.error(ERROR_PAYMENT, SHOWFOR);
+    };
+
+    const onCancel = (data) => {
+      console.log('Cancelled payment!', data);
+      message.warning(CANCEL_PAYMENT, SHOWFOR);
+    };
+
     return (
       <Spin spinning={isGetApiLoading} size="large" delay={1000}>
         {this.isApiCalled && getErrMsg ? (
@@ -96,21 +222,55 @@ class EventRegistration extends Component {
           />
         ) : (
           <div>
-            <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-              <EventData decorator={getFieldDecorator} />
-              <br />
-              <Form onSubmit={this.onSubmit}>
-                <Card type="inner" title="Event Registration">
-                  <NameInput decorator={getFieldDecorator} />
-                  <EmailAddressInput decorator={getFieldDecorator} />
-                  <MobileNoInput decorator={getFieldDecorator} />
-                  <TicketNumInput decorator={getFieldDecorator} />
-                  <Payment decorator={getFieldDecorator} />
-                  <br />
-                  <EventRegisterButton />
-                </Card>
-              </Form>
-            </Card>
+            <h2>Event Registeration</h2>
+            <Form onSubmit={this.onSubmit}>
+              <Row gutter={8}>
+                <Col span={10}>
+                  <Card
+                    style={{
+                      borderRadius: 15,
+                      margin: '0 auto 8px auto',
+                    }}
+                  >
+                    <EventData decorator={getFieldDecorator} />
+                    <Tooltip title="Click to go back to the top">
+                      <BackTop />
+                    </Tooltip>
+                  </Card>
+                </Col>
+                <Col span={14}>
+                  <Card
+                    title="Register for event"
+                    style={{ borderRadius: 15, margin: '0 auto 8px auto' }}
+                  >
+                    <NameInput decorator={getFieldDecorator} />
+                    <EmailAddressInput decorator={getFieldDecorator} />
+                    <MobileNoInput decorator={getFieldDecorator} />
+                    <TicketNumInput
+                      decorator={getFieldDecorator}
+                      onChange={this.onChange}
+                    />
+                    <Payment
+                      decorator={getFieldDecorator}
+                      showDirectPayment={showDirectPayment}
+                      paymentOption={paymentOption}
+                      onSelect={this.onSelect}
+                    />
+                    <br />
+                    <EventRegisterButton />
+                    <PaymentModal
+                      isModalVisible={isModalVisible}
+                      onCloseModal={this.onCloseModal}
+                      decorator={getFieldDecorator}
+                      onSuccess={this.onSuccess}
+                      onError={onError}
+                      onCancel={onCancel}
+                      total={total}
+                    />
+                  </Card>
+                </Col>
+              </Row>
+            </Form>
           </div>
         )}
       </Spin>
@@ -154,9 +314,9 @@ const formatDate = (strDate) => {
 };
 
 const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
+  // const eventDataFilter = eventData ? eventData.find(item => moment(item.endDate).isBefore(now)) : {};
   const event = eventData || {};
-  // const eventData = eventsData ? eventsData.find(item => item.id === '2') : {};
-  console.log('event data', eventData);
+  // console.log('event data', eventData);
   return {
     id: Form.createFormField({ value: event.id }),
     photoLink: Form.createFormField({ value: event.photoLink }),
@@ -169,6 +329,7 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
       value: event.locationPostalCode,
     }),
     ticketFee: Form.createFormField({ value: event.ticketFee }),
+    ticketPrice: Form.createFormField({ value: event.ticketFee }),
     noOfPax: Form.createFormField({ value: event.noOfPax }),
     isRefreshmentProvided: Form.createFormField({
       value: event.isRefreshmentProvided === '1' ? 'Yes' : 'No',

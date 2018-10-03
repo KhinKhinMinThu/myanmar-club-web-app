@@ -11,7 +11,6 @@ import {
 } from './shared-styled';
 import {
   layout,
-  customInput,
 } from '../shared-profile-components/shared-components';
 
 const { TabPane } = Tabs;
@@ -19,6 +18,20 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
+const paymentDisplay = {
+  style: {
+    border: 0,
+    outline: 0,
+    borderRadius: 0,
+    padding: 0,
+    fontWeight: 'bold',
+    width: '100px',
+    textAlign: 'right',
+    marginRight: '10px',
+  },
+  readOnly: true,
+  size: 'small',
+};
 
 /* eslint react/prop-types: 0 */
 export const ProfileTabs = ({ onChange, tabContents, props }) => {
@@ -97,7 +110,7 @@ export const TotalAmountInput = ({ decorator }) => (
       ],
     })(
       <InputNumber
-        {...customInput}
+        {...paymentDisplay}
         formatter={value => `SGD ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         }
         parser={value => value.replace(/[SGD]\s?|(,*)/g, '')}

@@ -305,7 +305,6 @@ class AccessControl extends Component {
       selectedRowKeys: selectedKeys,
       onChange: keys => dispatchSelectedKeys(keys),
     };
-    console.log('selected role', selectedRole.toString());
     const hasSelected = selectedKeys.length > 0;
     if (accesscontrolData) this.roleList = this.prepareList(accesscontrolData);
     const dataSource = accesscontrolData ? this.funcList(accesscontrolData) : [];
@@ -338,6 +337,7 @@ class AccessControl extends Component {
                 decorator={getFieldDecorator}
                 isModalVisible={isModalVisible}
                 onCloseModal={this.onCloseModal}
+                funcList={dataSource}
               />
               <Col span={24}>
                 <SearchNamePanel
