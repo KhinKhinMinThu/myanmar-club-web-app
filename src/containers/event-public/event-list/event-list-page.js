@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import {
   Form, Spin, Alert, Row, Col,
 } from 'antd';
@@ -46,8 +47,9 @@ class EventManagementPage extends Component {
   // filter closed event
   prepareList = (sourceList) => {
     const preparedList = [];
+    const now = moment();
     sourceList.map(
-      item => (item.eventStatus !== '0'
+      item => (item.eventStatus !== '0' && now.isBefore(moment(item.endDate))
         ? preparedList.push({
           key: `${item.id}`,
           ...item,

@@ -6,12 +6,17 @@ import {
 } from 'antd';
 import FormStepAction from './form-step-action';
 import { MEMBERSHIP_FEES, MEMBERSHIP_TYPES } from '../../../actions/constants';
-import { CONFIRM_CREATEACC } from '../../../actions/message';
+import {
+  CONFIRM_CREATEACC,
+  SUCCESS_PAYMENT,
+  ERROR_PAYMENT,
+  CANCEL_PAYMENT,
+} from '../../../actions/message';
 import { MembershipTypeRadio } from '../../shared-profile-components/shared-components';
+import { Payment, PaymentModal } from '../../shared-profile-components/payment';
 import { MMText } from '../../shared-profile-components/shared-styled';
 import { HightlightedText } from '../shared-styled';
 import {
-  PaymentTypeRadio,
   TotalAmountInput,
   feesTbl,
   DeclarationCheckBox,
@@ -25,26 +30,92 @@ import {
 const { confirm } = Modal;
 
 class Page2 extends Component {
+  state = {
+    isModalVisible: false,
+    showDirectPayment: false,
+    paymentOption: 'Bank',
+  };
+
   onChange = (e) => {
     const { value } = e.target;
     const {
       form: { setFieldsValue },
     } = this.props;
-    setFieldsValue({ totalAmount: MEMBERSHIP_FEES[value] });
+    setFieldsValue({
+      totalAmount: MEMBERSHIP_FEES[value],
+      totalAmt: MEMBERSHIP_FEES[value],
+    });
   };
 
-  onSubmit = (e) => {
-    e.preventDefault();
+  onCloseModal = () => {
+    this.setState({
+      isModalVisible: false,
+    });
+  };
+
+  onSelect = (e) => {
+    const { showDirectPayment, paymentOption } = this.state;
+    if (e.target.value === 'Direct Online Payment' && !showDirectPayment) {
+      this.setState({ showDirectPayment: true });
+      // unhide and reset the fields with validator
+    }
+    if (e.target.value !== 'Direct Online Payment') {
+      this.setState({ showDirectPayment: false });
+      if (e.target.value === 'Bank Transfer') {
+        this.setState({ paymentOption: 'Bank' });
+      } else {
+        this.setState({ paymentOption: 'Cash' });
+      }
+      console.log('payment Type', paymentOption);
+      // hide the fields with validator
+    }
+  };
+
+  onSuccess = (payment) => {
     const {
-      form: { validateFieldsAndScroll },
+      form: { getFieldsValue },
       membermgmtData: { memberData },
       dispatchMemberData,
       dispatchNext,
       performSignup,
     } = this.props;
+    console.log('Successful payment!', payment);
+    Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
+    const formValues = getFieldsValue();
+    const membershipType = MEMBERSHIP_TYPES[formValues.membershipType];
+    const memberToAdd = {
+      ...memberData,
+      ...formValues,
+      membershipType,
+      totalAmount: formValues.totalAmount.toString(),
+    };
+    dispatchMemberData(memberToAdd);
+    // perform backend post
+    performSignup(memberToAdd);
+    dispatchNext();
+    document.documentElement.scrollTop = 0;
+  };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    const {
+      form: { validateFieldsAndScroll, getFieldValue },
+      membermgmtData: { memberData },
+      dispatchMemberData,
+      dispatchNext,
+      performSignup,
+    } = this.props;
+    const paymentType = getFieldValue('paymentType');
     validateFieldsAndScroll((error, values) => {
-      if (!error) {
+      if (!error && paymentType === 'Direct Online Payment') {
+        confirm({
+          title: CONFIRM_CREATEACC,
+          onOk: () => {
+            this.setState({ isModalVisible: true });
+          },
+        });
+      }
+      if (!error && paymentType !== 'Direct Online Payment') {
         const formValues = values;
         const membershipType = MEMBERSHIP_TYPES[formValues.membershipType];
         const memberToAdd = {
@@ -69,8 +140,23 @@ class Page2 extends Component {
 
   render() {
     const {
-      form: { getFieldDecorator },
+      form: { getFieldDecorator, getFieldValue },
     } = this.props;
+    const {
+      showDirectPayment, paymentOption, isModalVisible,
+    } = this.state;
+    let membership = MEMBERSHIP_TYPES[getFieldValue('membershipType')];
+    if (membership === undefined) {
+      membership = MEMBERSHIP_TYPES.TYP1;
+    }
+    const onError = (error) => {
+      console.log('Erroneous payment OR failed to load script!', error);
+      Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
+    };
+    const onCancel = (data) => {
+      console.log('Cancelled payment!', data);
+      Modal.warning({ title: 'Payment Cancellation!', content: CANCEL_PAYMENT });
+    };
     return (
       <Form onSubmit={this.onSubmit}>
         <Tooltip title="Click to go back to the top">
@@ -88,7 +174,22 @@ class Page2 extends Component {
                 decorator={getFieldDecorator}
                 onChange={this.onChange}
               />
-              <PaymentTypeRadio decorator={getFieldDecorator} />
+              <Payment
+                decorator={getFieldDecorator}
+                showDirectPayment={showDirectPayment}
+                paymentOption={paymentOption}
+                onSelect={this.onSelect}
+              />
+              <PaymentModal
+                isModalVisible={isModalVisible}
+                onCloseModal={this.onCloseModal}
+                decorator={getFieldDecorator}
+                onSuccess={this.onSuccess}
+                onError={onError}
+                onCancel={onCancel}
+                total={getFieldValue('totalAmount')}
+                membership={membership}
+              />
               <TotalAmountInput decorator={getFieldDecorator} />
             </Card>
           </Col>

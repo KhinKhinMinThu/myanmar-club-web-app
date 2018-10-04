@@ -2,18 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form, Spin, Modal, Button, Input, Checkbox,
+  Form, Spin, Modal, Button, Input, Checkbox, Col,
 } from 'antd';
 import { SUCCESS_NEWROLE } from '../../actions/message';
 import { postNewRole } from '../../reducers/access-control/access-control-data';
 
 const FormItem = Form.Item;
-const CheckboxGroup = Checkbox.Group;
-const checkboxStyle = {
-  display: 'block',
-  height: '30px',
-  lineHeight: '30px',
-};
 class RoleCreation extends Component {
   componentDidUpdate(prevProps) {
     const {
@@ -27,7 +21,13 @@ class RoleCreation extends Component {
     if (postErrMsg) {
       Modal.error({ title: 'Error!', content: postErrMsg });
     } else if (isModalVisible) {
-      Modal.success({ title: 'Success!', content: SUCCESS_NEWROLE });
+      Modal.success({
+        title: 'Success!',
+        content: SUCCESS_NEWROLE,
+        onOk: () => {
+          window.location.reload();
+        },
+      });
     }
   }
 
@@ -38,10 +38,20 @@ class RoleCreation extends Component {
       performNewRole,
     } = this.props;
     validateFieldsAndScroll((error, values) => {
+      const functions = [];
+      Object.entries(values).forEach((item) => {
+        if (item[0].includes('funcChk') && item[1]) {
+          const id = item[0].substring(7);
+          functions.push(id);
+        }
+      });
+      console.log('functions', functions);
+      console.log('form values', values);
       if (!error) {
         const formValues = values;
         performNewRole({
           ...formValues,
+          functions,
         });
       }
     });
@@ -52,8 +62,19 @@ class RoleCreation extends Component {
       isModalVisible,
       onCloseModal,
       decorator,
+      funcList,
       accesscontrolData: { isPostApiLoading },
     } = this.props;
+    console.log('fucn', funcList);
+    const checkBoxList = funcList.map(item => (
+      <FormItem key={item.id} style={{ marginBottom: 0 }}>
+        {decorator(`funcChk${item.key}`)(
+          <Checkbox style={{ float: 'left', lineHeight: '30px' }}>
+            {item.description}
+          </Checkbox>,
+        )}
+      </FormItem>
+    ));
     return (
       <Modal
         title="Create a new role"
@@ -86,43 +107,11 @@ class RoleCreation extends Component {
                 initialValue: '',
               })(<Input type="text" />)}
             </FormItem>
-            <FormItem label="Accessible Function(s)">
-              {decorator('functions', {
-                initialValue: [],
-              })(
-                <CheckboxGroup>
-                  <Checkbox style={checkboxStyle} value="1">
-                    Role Management - Manage Member Role(s)
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="2">
-                    Member Management - Manage Member Account(s)
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="3">
-                    Member Edit - Edit Member Profile(s)
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="4">
-                    Claim Management - Manage Claim Process
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="5">
-                    Event Finance - Manage Transaction(s) of Event
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="6">
-                    Event Management - Manage Event(s)
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="7">
-                    Event Creation - Create New Event
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="8">
-                    Event Edit - Edit Event(s)
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="9">
-                    Event View - View Event(s)
-                  </Checkbox>
-                  <Checkbox style={checkboxStyle} value="10">
-                    Access Control - Manage Roles and Functions
-                  </Checkbox>
-                </CheckboxGroup>,
-              )}
+            <FormItem
+              label="Accessible Function(s)"
+              style={{ marginBottom: 0 }}
+            >
+              <Col>{checkBoxList}</Col>
             </FormItem>
           </Form>
         </Spin>
@@ -138,6 +127,7 @@ RoleCreation.propTypes = {
   decorator: PropTypes.func.isRequired,
   isModalVisible: PropTypes.bool.isRequired,
   performNewRole: PropTypes.func.isRequired,
+  funcList: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({

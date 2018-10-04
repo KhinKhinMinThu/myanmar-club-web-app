@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-  Form, Col, Popconfirm, Button, Input, Tooltip, Transfer,
+  Form, Col, Button, Input, Transfer,
 } from 'antd';
 import {
-  TableActionButton,
   FullWidthTable,
   MarginLeftButton,
   HalfWidthButton,
@@ -151,32 +150,6 @@ export const SaveButton = ({ isPostApiLoading }) => (
 
 export const GoBackButton = ({ history }) => (
   <HalfWidthButton onClick={() => history.go(-1)}>Go Back</HalfWidthButton>
-);
-
-// CancelButton for TransactionTable
-export const CancelButton = ({ record, action }) => (
-  <Popconfirm title="Confirm to cancel?" onConfirm={() => action(record.id)}>
-    <TableActionButton icon="close-circle-o" />
-  </Popconfirm>
-);
-
-// EditButton for TransactionTable
-export const EditButton = ({ record, action }) => (
-  <Tooltip title="Edit Income">
-    <TableActionButton icon="edit" onClick={() => action(record.id)} />
-  </Tooltip>
-);
-
-// DeleteButton for TransactionTable
-export const DeleteButton = ({ record, action }) => (
-  <Popconfirm
-    title="Confirm to remove this role?"
-    onConfirm={() => action(record.id)}
-  >
-    <Tooltip title="Delete Role">
-      <TableActionButton icon="delete" />
-    </Tooltip>
-  </Popconfirm>
 );
 
 // AddRowButton for TransactionTable

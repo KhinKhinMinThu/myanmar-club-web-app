@@ -9,6 +9,8 @@ import {
 import {
   SUCCESS_RENEWMEMBER,
   CONFIRM_RENEWMEMBER,
+  ERROR_PAYMENT,
+  CANCEL_PAYMENT,
 } from '../../../actions/message';
 import {
   DEFAULT_DATE,
@@ -27,9 +29,12 @@ import {
   MembershipTypeRadio,
 } from '../../shared-profile-components/shared-components';
 import {
+  Payment,
+  PaymentModal,
+} from '../../shared-profile-components/payment';
+import {
   SaveUpdateButton,
   BackButton,
-  PaymentTypeRadio,
   TotalAmountInput,
   feesTbl,
 } from '../shared-components';
@@ -39,6 +44,12 @@ import {
 } from '../../../reducers/membermgmt/membermgmt-data';
 
 class MemberRenewal extends Component {
+  state = {
+    isModalVisible: false,
+    showDirectPayment: false,
+    paymentOption: 'Bank',
+  };
+
   componentDidUpdate(prevProps) {
     const {
       membermgmtData: { isPostApiLoading, postErrMsg },
@@ -56,18 +67,46 @@ class MemberRenewal extends Component {
     }
   }
 
+  onSuccess = (payment) => {
+    const {
+      form: { getFieldsValue },
+      loginData: { id },
+      performUpdateMembership,
+    } = this.props;
+    console.log('Successful payment!', payment);
+    Modal.success({ title: 'Success!', content: SUCCESS_RENEWMEMBER });
+    const formValues = getFieldsValue();
+    const membershipType = MEMBERSHIP_TYPES[formValues.membershipType];
+    const membershipToUpdate = {
+      ...formValues,
+      id,
+      membershipType,
+      totalAmount: formValues.totalAmount.toString(),
+    };
+    performUpdateMembership(membershipToUpdate);
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
-      form: { validateFieldsAndScroll },
+      form: { validateFieldsAndScroll, getFieldValue },
       loginData: { id },
       membermgmtData: { memberData },
       performUpdateMembership,
       dispatchMemberData,
     } = this.props;
-
+    const paymentType = getFieldValue('paymentType');
     validateFieldsAndScroll((error, values) => {
-      if (!error) {
+      if (!error && paymentType === 'Direct Online Payment') {
+        Modal.confirm({
+          title: 'Confirmation!',
+          content: CONFIRM_RENEWMEMBER,
+          onOk: () => {
+            this.setState({ isModalVisible: true });
+          },
+        });
+      }
+      if (!error && paymentType !== 'Direct Online Payment') {
         const formValues = values;
         const membershipType = MEMBERSHIP_TYPES[formValues.membershipType];
         const membershipToUpdate = {
@@ -96,15 +135,54 @@ class MemberRenewal extends Component {
     const {
       form: { setFieldsValue },
     } = this.props;
-    setFieldsValue({ totalAmount: MEMBERSHIP_FEES[value] });
+    setFieldsValue({ totalAmount: MEMBERSHIP_FEES[value], totalAmt: MEMBERSHIP_FEES[value] });
+  };
+
+  onCloseModal = () => {
+    this.setState({
+      isModalVisible: false,
+    });
+  };
+
+  onSelect = (e) => {
+    const { showDirectPayment, paymentOption } = this.state;
+    if (e.target.value === 'Direct Online Payment' && !showDirectPayment) {
+      this.setState({ showDirectPayment: true });
+      // unhide and reset the fields with validator
+    }
+    if (e.target.value !== 'Direct Online Payment') {
+      this.setState({ showDirectPayment: false });
+      if (e.target.value === 'Bank Transfer') {
+        this.setState({ paymentOption: 'Bank' });
+      } else {
+        this.setState({ paymentOption: 'Cash' });
+      }
+      console.log('payment Type', paymentOption);
+      // hide the fields with validator
+    }
   };
 
   render() {
     const {
       history,
-      form: { getFieldDecorator },
+      form: { getFieldDecorator, getFieldValue },
       membermgmtData: { isPostApiLoading },
     } = this.props;
+    const {
+      showDirectPayment, paymentOption, isModalVisible,
+    } = this.state;
+    let membership = MEMBERSHIP_TYPES[getFieldValue('membershipType')];
+    if (membership === undefined) {
+      membership = MEMBERSHIP_TYPES.TYP1;
+    }
+    const onError = (error) => {
+      console.log('Erroneous payment OR failed to load script!', error);
+      Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
+    };
+    const onCancel = (data) => {
+      console.log('Cancelled payment!', data);
+      Modal.warning({ title: 'Payment Cancellation!', content: CANCEL_PAYMENT });
+    };
     const actionColLayout = {
       xs: { span: 24 },
       sm: { span: 24 },
@@ -142,7 +220,22 @@ class MemberRenewal extends Component {
                   decorator={getFieldDecorator}
                   onChange={this.onChange}
                 />
-                <PaymentTypeRadio decorator={getFieldDecorator} />
+                <Payment
+                  decorator={getFieldDecorator}
+                  showDirectPayment={showDirectPayment}
+                  paymentOption={paymentOption}
+                  onSelect={this.onSelect}
+                />
+                <PaymentModal
+                  isModalVisible={isModalVisible}
+                  onCloseModal={this.onCloseModal}
+                  decorator={getFieldDecorator}
+                  onSuccess={this.onSuccess}
+                  onError={onError}
+                  onCancel={onCancel}
+                  total={getFieldValue('totalAmount')}
+                  membership={membership}
+                />
                 <TotalAmountInput decorator={getFieldDecorator} />
                 <br />
                 <Row gutter={8}>

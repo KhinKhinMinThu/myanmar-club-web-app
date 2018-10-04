@@ -55,6 +55,7 @@ class AccessControl extends Component {
     const {
       accesscontrolData: { isPostApiLoading, postErrMsg },
       accesscontrolUI: { currentButton },
+      dispatchCurrentButton,
     } = this.props;
 
     const isApiPost = prevProps.accesscontrolData.isPostApiLoading && !isPostApiLoading;
@@ -64,8 +65,10 @@ class AccessControl extends Component {
       Modal.error({ title: 'Error!', content: postErrMsg });
     } else if (currentButton === 'delete') {
       Modal.success({ title: 'Success!', content: SUCCESS_DELETEROLE });
+      dispatchCurrentButton('');
     } else if (currentButton === 'save') {
       Modal.success({ title: 'Success!', content: SUCCESS_UPDATEROLE });
+      dispatchCurrentButton('');
     }
   }
 
@@ -305,7 +308,6 @@ class AccessControl extends Component {
       selectedRowKeys: selectedKeys,
       onChange: keys => dispatchSelectedKeys(keys),
     };
-    console.log('selected role', selectedRole.toString());
     const hasSelected = selectedKeys.length > 0;
     if (accesscontrolData) this.roleList = this.prepareList(accesscontrolData);
     const dataSource = accesscontrolData ? this.funcList(accesscontrolData) : [];
@@ -338,6 +340,7 @@ class AccessControl extends Component {
                 decorator={getFieldDecorator}
                 isModalVisible={isModalVisible}
                 onCloseModal={this.onCloseModal}
+                funcList={dataSource}
               />
               <Col span={24}>
                 <SearchNamePanel

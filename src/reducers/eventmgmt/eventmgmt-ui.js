@@ -1,4 +1,5 @@
 export const CURRENTTAB = '[EVENTMGMT_UI] CURRENTTAB';
+export const CURRENTRADIO = '[EVENTMGMT_UI] CURRENTRADIO';
 export const SELECTEDKEYS = '[EVENTMGMT_UI] SELECTEDKEYS';
 export const DESELECTALL_LOADING = '[EVENTMGMT_UI] DESELECTALL_LOADING';
 export const SELECTALL_LOADING = '[EVENTMGMT_UI] SELECTALL_LOADING';
@@ -10,6 +11,11 @@ export const RESETSTATE = '[EVENTMGMT_UI] RESETSTATE';
 export const setCurrentTab = currentTab => ({
   type: CURRENTTAB,
   payload: currentTab,
+});
+
+export const setCurrentRadio = currentRadio => ({
+  type: CURRENTRADIO,
+  payload: currentRadio,
 });
 
 export const setSelectedKeys = selectedKeys => ({
@@ -55,6 +61,7 @@ export default function (
   state = {
     ...initialState,
     currentTab: 'tab1',
+    currentRadio: 'BT',
     action: null,
   },
   action,
@@ -64,6 +71,11 @@ export default function (
       return {
         ...state,
         currentTab: action.payload,
+      };
+    case CURRENTRADIO:
+      return {
+        ...state,
+        currentRadio: action.payload,
       };
     case SELECTEDKEYS:
       return {
