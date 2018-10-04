@@ -100,13 +100,16 @@ class EventRegistration extends Component {
       form: { setFieldsValue, getFieldValue },
     } = this.props;
     // console.log('num', total);
-    const totalAmt = event.target.value * getFieldValue('ticketFee');
-    this.setState({ total: totalAmt });
-    setFieldsValue({
-      totalAmount: totalAmt,
-      ticketNum: event.target.value,
-      ticketPrice: getFieldValue('ticketFee'),
-    });
+    const tixNum = event.target.value;
+    if (!Number.isNaN(Number(tixNum))) {
+      const totalAmt = tixNum * getFieldValue('ticketFee');
+      this.setState({ total: totalAmt });
+      setFieldsValue({
+        totalAmount: totalAmt,
+        ticketNum: tixNum,
+        ticketPrice: getFieldValue('ticketFee'),
+      });
+    }
   };
 
   onSelect = (e) => {
@@ -207,7 +210,10 @@ class EventRegistration extends Component {
 
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
-      Modal.warning({ title: 'Payment Cancellation!', content: CANCEL_PAYMENT });
+      Modal.warning({
+        title: 'Payment Cancellation!',
+        content: CANCEL_PAYMENT,
+      });
     };
 
     return (
