@@ -4,14 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Form,
-  Row,
-  Col,
-  Spin,
-  Modal,
-  Card,
-  BackTop,
-  Tooltip,
+  Form, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
 } from 'antd';
 import {
   SUCCESS_RENEWMEMBER,
@@ -20,6 +13,7 @@ import {
 import {
   DEFAULT_DATE,
   DATE_FORMAT,
+  DATETIME_FORMAT,
   MEMBERSHIP_FEES,
   MEMBERSHIP_TYPES,
 } from '../../../actions/constants';
@@ -39,7 +33,10 @@ import {
   TotalAmountInput,
   feesTbl,
 } from '../shared-components';
-import { postUpdateMembershipMember } from '../../../reducers/membermgmt/membermgmt-data';
+import {
+  postUpdateMembershipMember,
+  setMemberData,
+} from '../../../reducers/membermgmt/membermgmt-data';
 
 class MemberRenewal extends Component {
   componentDidUpdate(prevProps) {
@@ -64,7 +61,9 @@ class MemberRenewal extends Component {
     const {
       form: { validateFieldsAndScroll },
       loginData: { id },
+      membermgmtData: { memberData },
       performUpdateMembership,
+      dispatchMemberData,
     } = this.props;
 
     validateFieldsAndScroll((error, values) => {
@@ -75,12 +74,16 @@ class MemberRenewal extends Component {
           ...formValues,
           id,
           membershipType,
+          lastPaymentType: formValues.paymentType,
+          lastPaymentDate: moment(new Date()).format(DATETIME_FORMAT),
           totalAmount: formValues.totalAmount.toString(),
+          membershipStatus: 'Requested',
         };
         Modal.confirm({
           title: 'Confirmation!',
           content: CONFIRM_RENEWMEMBER,
           onOk() {
+            dispatchMemberData({ ...memberData, ...membershipToUpdate });
             performUpdateMembership(membershipToUpdate);
           },
         });
@@ -165,6 +168,7 @@ MemberRenewal.propTypes = {
   form: PropTypes.shape({}).isRequired,
 
   performUpdateMembership: PropTypes.func.isRequired,
+  dispatchMemberData: PropTypes.func.isRequired,
 
   membermgmtUI: PropTypes.shape({}).isRequired,
   membermgmtData: PropTypes.shape({}).isRequired,
@@ -178,6 +182,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   performUpdateMembership: postUpdateMembershipMember,
+  dispatchMemberData: setMemberData,
 };
 
 const mapPropsToFields = ({ membermgmtData: { memberData } }) => {

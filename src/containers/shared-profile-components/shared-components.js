@@ -524,14 +524,14 @@ export const MembershipExpiryDate = ({ decorator }) => (
 
 // lastPaymentDate
 export const LastPaymentDate = ({ decorator }) => (
-  <FormItem {...layout} label="Last Payment Date" style={{ margin: 0 }}>
+  <FormItem {...layout} label="Payment Date" style={{ margin: 0 }}>
     {decorator('lastPaymentDate')(<Input {...readOnlyInput} />)}
   </FormItem>
 );
 
 // lastPaymentType
 export const LastPaymentType = ({ decorator }) => (
-  <FormItem {...layout} label="Last Payment Type" style={{ margin: 0 }}>
+  <FormItem {...layout} label="Payment Type" style={{ margin: 0 }}>
     {decorator('lastPaymentType')(<Input {...readOnlyInput} />)}
   </FormItem>
 );

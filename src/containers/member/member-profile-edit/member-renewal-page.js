@@ -12,7 +12,10 @@ import {
 } from '../../../actions/message';
 import {
   DEFAULT_DATE,
+  DEFAULT_DATETIME,
+  DATETIME_FORMAT_DB,
   DATE_FORMAT,
+  DATETIME_FORMAT,
   MEMBERSHIP_FEES,
   MEMBERSHIP_TYPES,
 } from '../../../actions/constants';
@@ -71,14 +74,21 @@ class MemberRenewal extends Component {
       if (!error) {
         const formValues = values;
         const membershipType = MEMBERSHIP_TYPES[formValues.membershipType];
+        const membershipExpiryDate = this.getExipryDate(
+          formValues.membershipType,
+          formValues.membershipExpiryDate,
+        );
+        // console.log('membershipExpiryDate', membershipExpiryDate);
+
         const membershipToUpdate = {
           ...formValues,
           id,
           membershipType,
-          membershipStatus: 'Active',
-          // lastPaymentDate: '',
           lastPaymentType: formValues.paymentType,
+          lastPaymentDate: moment(new Date()).format(DATETIME_FORMAT),
           totalAmount: formValues.totalAmount.toString(),
+          membershipStatus: 'Active',
+          membershipExpiryDate,
         };
         Modal.confirm({
           title: 'Confirmation!',
@@ -98,6 +108,20 @@ class MemberRenewal extends Component {
       form: { setFieldsValue },
     } = this.props;
     setFieldsValue({ totalAmount: MEMBERSHIP_FEES[value] });
+  };
+
+  getExipryDate = (type, expiryDate) => {
+    // expiryDate is from form field, '-' or date string
+    let newExDate;
+    const currentExDate = expiryDate === '-' ? moment(new Date()) : moment(new Date(expiryDate));
+    if (type === 'TYP2' || type === 'TYP3' || type === 'TYP4') {
+      newExDate = currentExDate.add(12, 'M');
+    } else if (type === 'TYP5') {
+      newExDate = currentExDate.add(6, 'M');
+    } else {
+      newExDate = moment(new Date(DEFAULT_DATETIME));
+    }
+    return newExDate.format(DATETIME_FORMAT_DB);
   };
 
   render() {
