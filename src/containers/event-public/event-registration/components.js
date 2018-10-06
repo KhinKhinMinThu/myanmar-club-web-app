@@ -4,10 +4,9 @@ import {
 } from 'antd';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
 import { FullButton, ExtraInfoText, HighlightText } from '../shared-styled';
-import { CLIENT_ACC } from '../../../actions/constants';
+import { CLIENT_ACC, ENV } from '../../../actions/constants';
 import { layout } from '../shared-components';
 
-const ENV = 'sandbox';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -258,14 +257,20 @@ export const Payment = ({
                 To make payment, please kindly transfer to Myanmar Club bank account:
               </ExtraInfoText>
               <span>
-                <HighlightText> DBS Savings 001-123-456 </HighlightText>
+                <HighlightText> UOB 146-301-836-2 </HighlightText>
               </span>
               <br />
               <ExtraInfoText>
-                For other enquries, contact U Ye Myint at
+              Please notify Daw Mya Mya Sein at
               </ExtraInfoText>
               <span>
-                <HighlightText> 93807095</HighlightText>
+                <HighlightText> 82335682</HighlightText>
+              </span>
+              <span>
+                <ExtraInfoText>
+                  {' '}
+                after payment for confirmation.
+                </ExtraInfoText>
               </span>
             </Card>
           </Col>
@@ -328,10 +333,10 @@ export const Payment = ({
               </span>
               <br />
               <ExtraInfoText>
-                For other enquries, contact U Ye Myint at
+                For other enquries, contact Daw Mya Mya Sein at
               </ExtraInfoText>
               <span>
-                <HighlightText> 93807095</HighlightText>
+                <HighlightText> 82335682</HighlightText>
               </span>
             </Card>
           </Col>

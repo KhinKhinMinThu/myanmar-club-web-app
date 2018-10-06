@@ -3,7 +3,7 @@ import {
   Form, Radio, Modal, Col, Card, Input,
 } from 'antd';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
-import { CLIENT_ACC } from '../../actions/constants';
+import { CLIENT_ACC, ENV } from '../../actions/constants';
 import {
   PaymentInfoText,
   HighlightText,
@@ -11,7 +11,6 @@ import {
 } from './shared-styled';
 import { layout } from './shared-components';
 
-const ENV = 'sandbox';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -74,7 +73,7 @@ export const Payment = ({
     {!showDirectPayment
       && paymentOption === 'Bank' && (
         <Col span={1}>
-          <Card style={{ width: '450px', textAlign: 'left' }}>
+          <Card style={{ width: '480px', textAlign: 'left' }}>
             <PaymentInfoText>Note:</PaymentInfoText>
             <br />
             <PaymentInfoText>
@@ -87,14 +86,18 @@ export const Payment = ({
               account:
             </PaymentInfoText>
             <span>
-              <HighlightText> DBS Savings 001-123-456 </HighlightText>
+              <HighlightText> UOB 146-301-836-2 </HighlightText>
             </span>
             <br />
-            <PaymentInfoText>
-              For other enquries, contact U Ye Myint at
-            </PaymentInfoText>
+            <PaymentInfoText>Please notify Daw Mya Mya Sein at</PaymentInfoText>
             <span>
-              <HighlightText> 93807095</HighlightText>
+              <HighlightText> 82335682</HighlightText>
+            </span>
+            <span>
+              <PaymentInfoText>
+                {' '}
+                after payment for confirmation.
+              </PaymentInfoText>
             </span>
           </Card>
         </Col>
@@ -102,7 +105,7 @@ export const Payment = ({
     {!showDirectPayment
       && paymentOption === 'Cash' && (
         <Col span={1}>
-          <Card style={{ width: '450px', textAlign: 'left' }}>
+          <Card style={{ width: '480px', textAlign: 'left' }}>
             <PaymentInfoText>Note:</PaymentInfoText>
             <br />
             <PaymentInfoText>
@@ -121,10 +124,10 @@ export const Payment = ({
             </span>
             <br />
             <PaymentInfoText>
-              For other enquries, contact U Ye Myint at
+              For other enquries, contact Daw Mya Mya Sein at
             </PaymentInfoText>
             <span>
-              <HighlightText> 93807095</HighlightText>
+              <HighlightText> 82335682</HighlightText>
             </span>
           </Card>
         </Col>
