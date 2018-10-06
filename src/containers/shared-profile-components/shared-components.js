@@ -201,6 +201,26 @@ export const PassTypeSelect = ({ decorator }) => (
 );
 
 // idNumber
+// export const IdNumberInput = ({ decorator }) => (
+//   <FormItem
+//     {...layoutHalf}
+//     label="Identification Number"
+//     style={{ marginBottom: 0 }}
+//   >
+//     {decorator('idNumber', {
+//       rules: [
+//         {
+//           pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
+//           message: 'The input is not a valid ID Number!',
+//         },
+//         { required: true /* kkmt */, message: 'Please enter ID Number!' },
+//       ],
+//       validateTrigger: 'onBlur',
+//     })(<Input {...customInput} maxLength="9" placeholder="NRIC/ FIN No." />)}
+//     <ExtraInfoText> S1234567Z, G1234567Z etc.</ExtraInfoText>
+//   </FormItem>
+// );
+
 export const IdNumberInput = ({ decorator }) => (
   <FormItem
     {...layoutHalf}
@@ -209,15 +229,11 @@ export const IdNumberInput = ({ decorator }) => (
   >
     {decorator('idNumber', {
       rules: [
-        {
-          pattern: '^([A-Z]|[a-z])([0-9]{7})([A-Z]|[a-z])$',
-          message: 'The input is not a valid ID Number!',
-        },
         { required: true /* kkmt */, message: 'Please enter ID Number!' },
       ],
       validateTrigger: 'onBlur',
-    })(<Input {...customInput} maxLength="9" placeholder="NRIC/ FIN No." />)}
-    <ExtraInfoText> S1234567Z, G1234567Z etc.</ExtraInfoText>
+    })(<Input {...customInput} maxLength="4" placeholder="Last 4 numbers of NRIC/ FIN No." />)}
+    <ExtraInfoText> 67Z, 38X etc.</ExtraInfoText>
   </FormItem>
 );
 
