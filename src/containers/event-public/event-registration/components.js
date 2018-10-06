@@ -217,7 +217,7 @@ export const Payment = ({
     {!showDirectPayment
       && paymentOption === 'Bank' && (
         <Col span={1}>
-          <Card style={{ width: '450px', textAlign: 'left' }}>
+          <Card style={{ width: '480px', textAlign: 'left' }}>
             <FormItem
               {...layout}
               style={{ marginBottom: 0, fontWeight: 'bold' }}
@@ -236,10 +236,10 @@ export const Payment = ({
             >
               {decorator('ticketPrice', { initialValue: '0' })(
                 <Input {...paymentDisplay} />,
-                <span>
-                  <HighlightText>SGD</HighlightText>{' '}
-                </span>,
               )}
+              <span>
+                <HighlightText>SGD</HighlightText>{' '}
+              </span>
             </FormItem>
             <FormItem
               {...layout}
@@ -287,7 +287,7 @@ export const Payment = ({
     {!showDirectPayment
       && paymentOption === 'Cash' && (
         <Col span={1}>
-          <Card style={{ width: '450px', textAlign: 'left' }}>
+          <Card style={{ width: '480px', textAlign: 'left', marginBottom: '21px' }}>
             <FormItem
               {...layout}
               style={{ marginBottom: 0, fontWeight: 'bold' }}
@@ -485,6 +485,7 @@ export const EventData = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
     </FormItem>
+    <br />
     <br />
     <br />
   </div>
