@@ -96,16 +96,27 @@ export const TicketNumInput = ({ decorator, onChange }) => (
   <FormItem {...layout} label="No of Ticket(s)/Attendee(s)">
     {decorator('memberNoOfPax', {
       rules: [
-        {
-          pattern: '^([0-9])$',
-          message: 'The input is not a number!',
-        },
+        // Error: input only allow 1 to 9, can't enter a number more than 9
+        // should only check if the entered value is a legit number
+        // {
+        //   pattern: '^([0-9])$',
+        //   message: 'The input is not a number!',
+        // },
         {
           required: true,
           message: 'Please enter number of tickets/attendees!',
         },
+        {
+          validator: (rule, value, callback) => {
+            if (value && Number.isNaN(Number(value))) {
+              callback('Please enter a number!');
+            } else {
+              callback();
+            }
+          },
+        },
       ],
-    })(<Input {...customInput} type="text" onChange={onChange} />)}
+    })(<Input {...customInput} onChange={onChange} />)}
   </FormItem>
 );
 
@@ -204,142 +215,140 @@ export const Payment = ({
       </Col>
     )}
     {!showDirectPayment
-      && paymentOption
-        === 'Bank' && (
-          <Col span={1}>
-            <Card style={{ width: '450px', textAlign: 'left' }}>
-              <FormItem
-                {...layout}
-                style={{ marginBottom: 0, fontWeight: 'bold' }}
-                label="No. of Ticket(s)"
-                colon
-              >
-                {decorator('ticketNum', { initialValue: '0' })(
-                  <Input {...paymentDisplay} />,
-                )}
-              </FormItem>
-              <FormItem
-                {...layout}
-                style={{ marginBottom: 0, fontWeight: 'bold' }}
-                label="Price per ticket"
-                colon
-              >
-                {decorator('ticketPrice', { initialValue: '0' })(
-                  <Input {...paymentDisplay} />,
-                )}
+      && paymentOption === 'Bank' && (
+        <Col span={1}>
+          <Card style={{ width: '450px', textAlign: 'left' }}>
+            <FormItem
+              {...layout}
+              style={{ marginBottom: 0, fontWeight: 'bold' }}
+              label="No. of Ticket(s)"
+              colon
+            >
+              {decorator('ticketNum', { initialValue: '0' })(
+                <Input {...paymentDisplay} />,
+              )}
+            </FormItem>
+            <FormItem
+              {...layout}
+              style={{ marginBottom: 0, fontWeight: 'bold' }}
+              label="Price per ticket"
+              colon
+            >
+              {decorator('ticketPrice', { initialValue: '0' })(
+                <Input {...paymentDisplay} />,
                 <span>
                   <HighlightText>SGD</HighlightText>{' '}
-                </span>
-              </FormItem>
-              <FormItem
-                {...layout}
-                style={{ fontWeight: 'bold' }}
-                label="Total Amount"
-                colon
-              >
-                {decorator('totalAmount', { initialValue: '0' })(
-                  <Input {...paymentDisplay} />,
-                )}
-                <span>
-                  <HighlightText>SGD</HighlightText>{' '}
-                </span>
-              </FormItem>
-              <ExtraInfoText>
-                Note:
-              </ExtraInfoText>
-              <br />
-              <ExtraInfoText>
-                By choosing this payment option, purchase confirmation
-                will only be upon the approval of Executive Committe Member.
-              </ExtraInfoText>
-              <br />
-              <ExtraInfoText>
-                To make payment, please kindly transfer to Myanmar Club bank account:
-              </ExtraInfoText>
+                </span>,
+              )}
+            </FormItem>
+            <FormItem
+              {...layout}
+              style={{ fontWeight: 'bold' }}
+              label="Total Amount"
+              colon
+            >
+              {decorator('totalAmount', { initialValue: '0' })(
+                <Input {...paymentDisplay} />,
+              )}
               <span>
-                <HighlightText> UOB 146-301-836-2 </HighlightText>
+                <HighlightText>SGD</HighlightText>{' '}
               </span>
-              <br />
-              <ExtraInfoText>
+            </FormItem>
+            <ExtraInfoText>Note:</ExtraInfoText>
+            <br />
+            <ExtraInfoText>
+              By choosing this payment option, purchase confirmation will only
+              be upon the approval of Executive Committe Member.
+            </ExtraInfoText>
+            <br />
+            <ExtraInfoText>
+              To make payment, please kindly transfer to Myanmar Club bank
+              account:
+            </ExtraInfoText>
+            <span>
+              <HighlightText> UOB 146-301-836-2 </HighlightText>
+            </span>
+            <br />
+            <ExtraInfoText>
               Please notify Daw Mya Mya Sein at
-              </ExtraInfoText>
-              <span>
-                <HighlightText> 82335682</HighlightText>
-              </span>
-              <span>
-                <ExtraInfoText>
-                  {' '}
+            </ExtraInfoText>
+            <span>
+              <HighlightText> 82335682</HighlightText>
+            </span>
+            <span>
+              <ExtraInfoText>
+                {' '}
                 after payment for confirmation.
-                </ExtraInfoText>
-              </span>
-            </Card>
-          </Col>
+              </ExtraInfoText>
+            </span>
+          </Card>
+        </Col>
     )}
     {!showDirectPayment
-      && paymentOption
-        === 'Cash' && (
-          <Col span={1}>
-            <Card style={{ width: '450px', textAlign: 'left' }}>
-              <FormItem
-                {...layout}
-                style={{ marginBottom: 0, fontWeight: 'bold' }}
-                label="No. of Ticket(s)"
-                colon
-              >
-                {decorator('ticketNum', { initialValue: '0' })(
-                  <Input {...paymentDisplay} />,
-                )}
-              </FormItem>
-              <FormItem
-                {...layout}
-                style={{ marginBottom: 0, fontWeight: 'bold' }}
-                label="Price per ticket"
-                colon
-              >
-                {decorator('ticketPrice', { initialValue: '0' })(
-                  <Input {...paymentDisplay} />,
-                )}
-                <span>
-                  <HighlightText>SGD</HighlightText>{' '}
-                </span>
-              </FormItem>
-              <FormItem
-                {...layout}
-                style={{ fontWeight: 'bold' }}
-                label="Total Amount"
-                colon
-              >
-                {decorator('totalAmount', { initialValue: '0' })(
-                  <Input {...paymentDisplay} />,
-                )}
-                <span>
-                  <HighlightText>SGD</HighlightText>{' '}
-                </span>
-              </FormItem>
-              <ExtraInfoText>
-                Note:
-              </ExtraInfoText>
-              <br />
-              <ExtraInfoText>
-                By choosing this payment option, purchase confirmation
-                will only be upon the approval of Executive Committe Member.
-              </ExtraInfoText>
-              <br />
-              <ExtraInfoText>
-                To make payment, please kindly proceed to Myanmar Club office at
-              </ExtraInfoText>
+      && paymentOption === 'Cash' && (
+        <Col span={1}>
+          <Card style={{ width: '450px', textAlign: 'left' }}>
+            <FormItem
+              {...layout}
+              style={{ marginBottom: 0, fontWeight: 'bold' }}
+              label="No. of Ticket(s)"
+              colon
+            >
+              {decorator('ticketNum', { initialValue: '0' })(
+                <Input {...paymentDisplay} />,
+              )}
+            </FormItem>
+            <FormItem
+              {...layout}
+              style={{ marginBottom: 0, fontWeight: 'bold' }}
+              label="Price per ticket"
+              colon
+            >
+              {decorator('ticketPrice', { initialValue: '0' })(
+                <Input {...paymentDisplay} />,
+              )}
               <span>
-                <HighlightText>  111 North Bridge Road #05-42 Peninsula Plaza </HighlightText>
+                <HighlightText>SGD</HighlightText>{' '}
               </span>
-              <br />
-              <ExtraInfoText>
+            </FormItem>
+            <FormItem
+              {...layout}
+              style={{ fontWeight: 'bold' }}
+              label="Total Amount"
+              colon
+            >
+              {decorator('totalAmount', { initialValue: '0' })(
+                <Input {...paymentDisplay} />,
+              )}
+              <span>
+                <HighlightText>SGD</HighlightText>{' '}
+              </span>
+            </FormItem>
+            <ExtraInfoText>Note:</ExtraInfoText>
+            <br />
+            <ExtraInfoText>
+              By choosing this payment option, purchase confirmation will only
+              be upon the approval of Executive Committe Member.
+            </ExtraInfoText>
+            <br />
+            <ExtraInfoText>
+              To make payment, please kindly proceed to Myanmar Club office at
+            </ExtraInfoText>
+            <span>
+              <HighlightText>
+                {' '}
+                111 North Bridge Road #05-42 Peninsula Plaza{' '}
+              </HighlightText>
+            </span>
+            <br />
+            <ExtraInfoText>
                 For other enquries, contact Daw Mya Mya Sein at
-              </ExtraInfoText>
-              <span>
-                <HighlightText> 82335682</HighlightText>
-              </span>
-            </Card>
-          </Col>
+            </ExtraInfoText>
+            <span>
+              <HighlightText> 82335682</HighlightText>
+            </span>
+          </Card>
+        </Col>
     )}
   </FormItem>
 );
@@ -362,6 +371,7 @@ export const PaymentModal = ({
     style={{ top: 10 }}
     footer={[
       <PaypalExpressBtn
+        key="PaypalExBtn"
         style={{ size: 'large', tagline: 'true' }}
         client={CLIENT_ACC}
         env={ENV}
@@ -416,7 +426,7 @@ export const PaymentModal = ({
 /* eslint react/prop-types: 0 */
 // ALL FORM ITEM MUST PASS IN decorator!
 export const EventData = ({ decorator }) => (
-  <Form>
+  <div>
     <FormItem>
       {decorator('photoLink', { valuePropName: 'src' })(
         <img
@@ -477,5 +487,5 @@ export const EventData = ({ decorator }) => (
     </FormItem>
     <br />
     <br />
-  </Form>
+  </div>
 );

@@ -5,14 +5,7 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import {
-  Form,
-  Row,
-  Col,
-  Spin,
-  Modal,
-  Card,
-  BackTop,
-  Tooltip,
+  Form, Row, Col, Spin, Modal, Card, BackTop, Tooltip,
 } from 'antd';
 import {
   SUCCESS_UPDATEMEMBER,
@@ -165,7 +158,7 @@ class MemberEdit extends Component {
             uploadBtn: fileList,
             photoLink: getFieldValue('photoLink'),
           };
-          dispatchMemberData(memberToUpdate);
+          dispatchMemberData({ ...memberData, ...memberToUpdate });
           performUpdateMember(memberToUpdate);
         }
       });

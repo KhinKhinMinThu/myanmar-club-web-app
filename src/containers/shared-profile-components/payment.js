@@ -154,6 +154,7 @@ export const PaymentModal = ({
     style={{ top: 10 }}
     footer={[
       <PaypalExpressBtn
+        key="PaypalExBtn"
         style={{ size: 'large', tagline: 'true' }}
         client={CLIENT_ACC}
         env={ENV}
