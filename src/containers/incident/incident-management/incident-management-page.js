@@ -45,7 +45,7 @@ class IncidentManagement extends Component {
     const {
       incidentmgmtData: { isGetApiLoading },
     } = this.props;
-    this.isApiCalled = !nextProps.claimmgmtData.isGetApiLoading && isGetApiLoading;
+    this.isApiCalled = !nextProps.incidentmgmtData.isGetApiLoading && isGetApiLoading;
   }
 
   componentDidUpdate(prevProps) {
