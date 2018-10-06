@@ -7,7 +7,7 @@ import {
   POST_APILOADING,
   POST_ERROR,
 } from '../reducers/login/login-data';
-import { DASHBOARD, LOGIN } from '../actions/location';
+import { DASHBOARD } from '../actions/location';
 import { APIPOST_LOGIN } from '../actions/constants';
 
 const postLogin = (userData, authHeader) => api.post(
@@ -69,9 +69,7 @@ function* asyncLogin(action) {
     yield put({ type: POST_APILOADING, payload: false });
     if (successLogin) {
       yield put(push(DASHBOARD));
-    } else {
-      yield put(push(LOGIN));
-    } // login path;
+    }
   }
 }
 

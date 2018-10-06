@@ -1,5 +1,5 @@
-// export const BASE_URL = 'http://demo0532724.mockable.io';
-// 'http://54.200.158.0/MyanmarClubAPI';
+// LIVE: 54.179.143.171
+// DEV: 52.39.145.149
 export const BASE_URL = 'http://52.39.145.149/MyanmarClubAPI';
 
 export const TIMEZONE = 'Asia/Singapore';
