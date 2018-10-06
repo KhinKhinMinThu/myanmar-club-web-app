@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom/es';
 import {
-  Form, Row, Col, Modal,
+  Form, Row, Col, Modal, Spin, Alert,
 } from 'antd';
 import { BackButton } from '../shared-components';
-import { SUCCESS_DELETEINCIDENT, CONFIRM_DELETEINCIDENTS } from '../../../actions/message';
+import {
+  SUCCESS_DELETEINCIDENT,
+  CONFIRM_DELETEINCIDENTS,
+} from '../../../actions/message';
 import {
   IncidentsTable,
   DeSeletAllButton,
@@ -36,6 +39,13 @@ class IncidentManagement extends Component {
     const { dispatchResetState, performGetSearchParams } = this.props;
     dispatchResetState();
     performGetSearchParams();
+  }
+
+  componentWillUpdate(nextProps) {
+    const {
+      incidentmgmtData: { isGetApiLoading },
+    } = this.props;
+    this.isApiCalled = !nextProps.claimmgmtData.isGetApiLoading && isGetApiLoading;
   }
 
   componentDidUpdate(prevProps) {
@@ -135,9 +145,11 @@ class IncidentManagement extends Component {
       },
       incidentmgmtData: {
         incidents,
+        isGetApiLoading,
         isPostApiLoading,
         submittedBy,
         incidentTypes,
+        getErrMsg,
       },
       form: { getFieldDecorator, getFieldValue },
       dispatchSortedInfo,
@@ -157,75 +169,86 @@ class IncidentManagement extends Component {
       ? 'Total incidents: '.concat(this.incidentsList.length)
       : '';
     return (
-      <div>
-        <div className="pageHeaderContainer">
-          <h2>Incident Managment Page</h2>
-        </div>
-        <Row type="flex" justify="start">
-          <Col span={24}>
-            <SearchNamePanel
-              onChange={(e) => {
-                this.searchNameValue = e.target.value;
-              }}
-              decorator={getFieldDecorator}
-              onSearch={() => dispatchFilteredInfo(
-                this.searchNameValue
-                  ? { name: [this.searchNameValue.toLowerCase()] }
-                  : {},
-              )
-              }
-              onClickReset={this.onClickReset}
-              placeHolder="Search incident name"
-              // modal properties
-              incidentTypes={incidentTypes}
-              submittedBy={submittedBy}
-              performSearchIncident={performSearchIncident}
-              getFieldValue={getFieldValue}
-            />
-          </Col>
-          <Col span={24}>
-            <SeletAllButton
-              onClick={this.onClickSelectAll}
-              loading={selectAllLoading}
-            />
-            <DeSeletAllButton
-              onClick={this.onClickDeselectAll}
-              hasSelected={hasSelected}
-              loading={deselectAllLoading}
-            />
-            <DeleteSeletedButton
-              onClick={this.onDeleteIncidents}
-              hasSelected={hasSelected}
-              isPostApiLoading={
-                this.actionType === 'delete' ? isPostApiLoading : false
-              }
-              placeHolder="Delete Selected Incident(s)"
-              icon="delete"
-            />
-            {hasSelected ? (
-              <SelectedInfo
-                selectedNum={selectedKeys.length}
-                placeHolder="incident"
-              />
-            ) : null}
-          </Col>
-          <Col span={24}>
-            <IncidentsTable
-              incidentsList={this.incidentsList}
-              rowSelection={rowSelection}
-              onChange={(pagination, filters, sorter) => {
-                dispatchSortedInfo(sorter);
-                dispatchFilteredInfo(filters);
-              }}
-              sortedInfo={sortedInfo || {}}
-              filteredInfo={filteredInfo || {}}
-              header={header}
-            />
-            <br />
-            <BackButton history={history} />
-          </Col>
-        </Row>
-      </div>
+      <Spin spinning={isGetApiLoading} size="large" delay={1000}>
+        {this.isApiCalled && getErrMsg ? (
+          <Alert
+            message="Error"
+            description={getErrMsg}
+            type="error"
+            showIcon
+          />
+        ) : (
+          <div>
+            <div className="pageHeaderContainer">
+              <h2>Incident Managment Page</h2>
+            </div>
+            <Row type="flex" justify="start">
+              <Col span={24}>
+                <SearchNamePanel
+                  onChange={(e) => {
+                    this.searchNameValue = e.target.value;
+                  }}
+                  decorator={getFieldDecorator}
+                  onSearch={() => dispatchFilteredInfo(
+                    this.searchNameValue
+                      ? { name: [this.searchNameValue.toLowerCase()] }
+                      : {},
+                  )
+                  }
+                  onClickReset={this.onClickReset}
+                  placeHolder="Search incident name"
+                  // modal properties
+                  incidentTypes={incidentTypes}
+                  submittedBy={submittedBy}
+                  performSearchIncident={performSearchIncident}
+                  getFieldValue={getFieldValue}
+                />
+              </Col>
+              <Col span={24}>
+                <SeletAllButton
+                  onClick={this.onClickSelectAll}
+                  loading={selectAllLoading}
+                />
+                <DeSeletAllButton
+                  onClick={this.onClickDeselectAll}
+                  hasSelected={hasSelected}
+                  loading={deselectAllLoading}
+                />
+                <DeleteSeletedButton
+                  onClick={this.onDeleteIncidents}
+                  hasSelected={hasSelected}
+                  isPostApiLoading={
+                    this.actionType === 'delete' ? isPostApiLoading : false
+                  }
+                  placeHolder="Delete Selected Incident(s)"
+                  icon="delete"
+                />
+                {hasSelected ? (
+                  <SelectedInfo
+                    selectedNum={selectedKeys.length}
+                    placeHolder="incident"
+                  />
+                ) : null}
+              </Col>
+              <Col span={24}>
+                <IncidentsTable
+                  incidentsList={this.incidentsList}
+                  rowSelection={rowSelection}
+                  onChange={(pagination, filters, sorter) => {
+                    dispatchSortedInfo(sorter);
+                    dispatchFilteredInfo(filters);
+                  }}
+                  sortedInfo={sortedInfo || {}}
+                  filteredInfo={filteredInfo || {}}
+                  header={header}
+                />
+                <br />
+                <BackButton history={history} />
+              </Col>
+            </Row>
+          </div>
+        )}
+      </Spin>
     );
   }
 }
