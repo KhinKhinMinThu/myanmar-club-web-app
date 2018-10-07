@@ -83,7 +83,7 @@ class RoleCreation extends Component {
         style={{ top: 10 }}
         footer={[
           <Button key="close" type="default" onClick={onCloseModal}>
-            Cancle
+            Cancel
           </Button>,
           <Button key="submit" type="primary" onClick={this.onSaveButtonSubmit}>
             Submit
