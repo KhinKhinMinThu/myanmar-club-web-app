@@ -23,13 +23,11 @@ import EventListPage from '../../event-public/event-list';
 import SignupPage from '../../user-account/signup-page';
 import ForgotPasswordPage from '../../user-account/forgotpwd-page';
 
-const {
-  Header, Content, Sider, Footer,
-} = Layout;
+const { Header, Content, Footer } = Layout;
 const logoImage = (
   <img alt="logo" src={logo} style={{ width: 'auto', height: '55px' }} />
 );
-const siderWidth = 230;
+// const siderWidth = 230;
 
 /* eslint react/prop-types: 0 */
 class PrivatePage extends Component {
@@ -80,26 +78,25 @@ class PrivatePage extends Component {
 
     return (
       <Layout style={{ minWidth: '1500px' }}>
-        <Sider
+        {/* <Sider
           width={siderWidth}
           style={{ background: '#ffffff', height: '100vh' }}
         >
-          <a href={DEFAULT}>
-            <Header
-              style={{
-                height: 65,
-                background: '#ffffff',
-                borderBottom: '3px solid #1DA57A',
-              }}
-            >
-              {logoImage}
-            </Header>
-          </a>
-          <Anchor>
-            <MenuPanel selectedKeys={[path]} />
-          </Anchor>
-        </Sider>
-
+        <a href={DEFAULT}>
+          <Header
+            style={{
+              height: 65,
+              background: '#ffffff',
+              borderBottom: '3px solid #1DA57A',
+            }}
+          >
+            {logoImage}
+          </Header>
+        </a>
+        <Anchor>
+          <MenuPanel selectedKeys={[path]} />
+        </Anchor> */}
+        {/* </Sider> */}
         <Layout>
           <Header
             style={{
@@ -108,19 +105,27 @@ class PrivatePage extends Component {
               borderBottom: '3px solid #1DA57A',
             }}
           >
-            <HeaderText>Myanmar Club (Singapore)</HeaderText>;
+            <HeaderText>{logoImage} &emsp;Myanmar Club (Singapore)</HeaderText>
           </Header>
-
+          <Anchor>
+            <MenuPanel selectedKeys={[path]} />
+          </Anchor>
           <Content
             style={{
               ...contentStyle,
               margin: '5px',
               padding: '10px 10px 10px 10px',
+              minHeight: 560,
             }}
           >
             <Page {...this.props} />
           </Content>
-          <Footer style={{ textAlign: 'center', background: '#ffffff' }}>
+          <Footer
+            style={{
+              textAlign: 'center',
+              background: '#ffffff',
+            }}
+          >
             MyanmarClub ©2018 developed by{' '}
             <a href="https://wiki.smu.edu.sg/is480/IS480_Team_wiki%3A_2018T1_PentaHive_AboutPentaHive">
               PentaHive

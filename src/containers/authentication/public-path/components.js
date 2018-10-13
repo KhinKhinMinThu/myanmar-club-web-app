@@ -30,28 +30,30 @@ const MenuPanel = ({ updateLocation, currentLocation, selectedKeys }) => {
   };
   const height = { style: { height: 40 } };
   return (
-    <Menu mode="inline" onClick={onClick} selectedKeys={selectedKeys}>
-      <MenuItem {...height} key={DEFAULT}>
-        {commonTitles.DEFAULT.icon}
-        {commonTitles.DEFAULT.text}
-      </MenuItem>
-      <MenuItem {...height} key={LOGIN}>
-        {commonTitles.LOGIN.icon}
-        {commonTitles.LOGIN.text}
-      </MenuItem>
-      <MenuItem {...height} key={SIGNUP}>
-        {commonTitles.SIGNUP.icon}
-        {commonTitles.SIGNUP.text}
-      </MenuItem>
-      <MenuItem {...height} key={EVENT_LIST}>
-        {commonTitles.EVENT_LIST.icon}
-        {commonTitles.EVENT_LIST.text}
-      </MenuItem>
-      <MenuItem {...height} key={DASHBOARD}>
-        {commonTitles.DASHBOARD.icon}
-        {commonTitles.DASHBOARD.text}
-      </MenuItem>
-    </Menu>
+    <div style={{ textAlign: 'center' }}>
+      <Menu mode="horizontal" onClick={onClick} selectedKeys={selectedKeys}>
+        <MenuItem {...height} key={DEFAULT}>
+          {commonTitles.DEFAULT.icon}
+          {commonTitles.DEFAULT.text}
+        </MenuItem>
+        <MenuItem {...height} key={LOGIN}>
+          {commonTitles.LOGIN.icon}
+          {commonTitles.LOGIN.text}
+        </MenuItem>
+        <MenuItem {...height} key={SIGNUP}>
+          {commonTitles.SIGNUP.icon}
+          {commonTitles.SIGNUP.text}
+        </MenuItem>
+        <MenuItem {...height} key={EVENT_LIST}>
+          {commonTitles.EVENT_LIST.icon}
+          {commonTitles.EVENT_LIST.text}
+        </MenuItem>
+        <MenuItem {...height} key={DASHBOARD}>
+          {commonTitles.DASHBOARD.icon}
+          {commonTitles.DASHBOARD.text}
+        </MenuItem>
+      </Menu>
+    </div>
   );
 };
 

@@ -162,6 +162,7 @@ class PrivatePage extends Component {
               ...contentStyle,
               margin: '5px',
               padding: '10px 10px 10px 10px',
+              minHeight: 560,
             }}
           >
             <Page {...this.props} />
