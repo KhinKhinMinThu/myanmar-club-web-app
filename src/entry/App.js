@@ -9,7 +9,6 @@ import { persistor, store, history } from './store';
 import PrivatePath from '../containers/authentication/private-path';
 import PublicPath from '../containers/authentication/public-path';
 
-
 const App = () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>

@@ -52,11 +52,11 @@ class EventPage extends Component {
   }
 
   onClickNotify = (id, url) => {
+    const { performNotifyEvent } = this.props;
     Modal.confirm({
       title: 'Confirmation!',
       content: CONFIRM_NOTIFYEVENT,
       onOk() {
-        const { performNotifyEvent } = this.props;
         performNotifyEvent({ id, url });
       },
     });

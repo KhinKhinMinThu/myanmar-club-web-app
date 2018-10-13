@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Anchor } from 'antd';
+import loginImg from '../../../images/login.jpg';
 import { HeaderText } from '../shared-styled';
 import {
   DEFAULT,
@@ -62,17 +63,26 @@ class PrivatePage extends Component {
     const path = pathname ? '/'.concat(pathname) : DEFAULT;
     const Page = this.switchPage(path, id);
 
-    console.log('public props:', this.props);
-    console.log('pathname:', path);
+    let contentStyle;
+    if (Page === LoginPage || Page === ErrorPage) {
+      contentStyle = {
+        backgroundImage: `url(${loginImg})`,
+        backgroundSize: '100% auto',
+        backgroundRepeat: 'no-repeat',
+      };
+    } else {
+      contentStyle = {
+        background: '#ffffff',
+      };
+    }
+    // console.log('public props:', this.props);
+    // console.log('pathname:', path);
 
     return (
-      <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
+      <Layout style={{ minWidth: '1500px' }}>
         <Sider
           width={siderWidth}
-          style={{
-            background: '#ffffff',
-            height: '100vh',
-          }}
+          style={{ background: '#ffffff', height: '100vh' }}
         >
           <a href={DEFAULT}>
             <Header
@@ -100,21 +110,17 @@ class PrivatePage extends Component {
           >
             <HeaderText>Myanmar Club (Singapore)</HeaderText>;
           </Header>
-          {/* <div style={{ marginLeft: '4px' }}>
-            <Anchor style={{ background: 'transparent' }}>
-              <MenuPanel selectedKeys={[path]} />
-            </Anchor>
-          </div> */}
+
           <Content
             style={{
+              ...contentStyle,
               margin: '5px',
-              background: '#ffffff',
               padding: '10px 10px 10px 10px',
             }}
           >
             <Page {...this.props} />
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={{ textAlign: 'center', background: '#ffffff' }}>
             MyanmarClub ©2018 developed by{' '}
             <a href="https://wiki.smu.edu.sg/is480/IS480_Team_wiki%3A_2018T1_PentaHive_AboutPentaHive">
               PentaHive

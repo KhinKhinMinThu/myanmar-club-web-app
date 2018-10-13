@@ -22,6 +22,7 @@ import {
   INCIDENT_EDIT,
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
+import loginImg from '../../../images/login.jpg';
 import MenuPanel from './components';
 import Dashboard from './home-ex';
 import ErrorPage from '../error-page';
@@ -94,8 +95,20 @@ class PrivatePage extends Component {
       ? this.switchPageEcMember(path, id, functNameList)
       : this.switchPageClubMember(path);
 
-    console.log('private props:', this.props);
-    console.log('pathname:', path);
+    let contentStyle;
+    if (Page === ErrorPage) {
+      contentStyle = {
+        backgroundImage: `url(${loginImg})`,
+        backgroundSize: '100% auto',
+        backgroundRepeat: 'no-repeat',
+      };
+    } else {
+      contentStyle = {
+        background: '#ffffff',
+      };
+    }
+    // console.log('private props:', this.props);
+    // console.log('pathname:', path);
 
     return (
       <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
@@ -146,14 +159,14 @@ class PrivatePage extends Component {
           </Header>
           <Content
             style={{
+              ...contentStyle,
               margin: '5px',
-              background: '#ffffff',
               padding: '10px 10px 10px 10px',
             }}
           >
             <Page {...this.props} />
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={{ textAlign: 'center', background: '#ffffff' }}>
             MyanmarClub Portal ©2018 developed by{' '}
             <a href="https://wiki.smu.edu.sg/is480/IS480_Team_wiki%3A_2018T1_PentaHive_AboutPentaHive">
               PentaHive
