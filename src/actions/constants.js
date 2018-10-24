@@ -71,7 +71,7 @@ export const APIGET_MEBERFORMFIELDS = '/admin/memberFormFields';
 export const APIGET_ACCESS_CONTROL = '/admin/getAccessControlData';
 export const APIGET_INCIDENTTPYES = '/incident/getIncidentTypes';
 export const APIGET_SUBMITTEDBY = '/incident/getSubmittedBy';
-
+export const APIGET_CHARTSDATA = '/populateCharts';
 // end
 
 // POST API URLS

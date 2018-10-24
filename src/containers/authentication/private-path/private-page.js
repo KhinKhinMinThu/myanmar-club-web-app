@@ -24,7 +24,7 @@ import {
 import logo from '../../../images/logo.jpg';
 import loginImg from '../../../images/login.jpg';
 import MenuPanel from './components';
-import Dashboard from './home-ex';
+import Dashboard from '../../home';
 import ErrorPage from '../error-page';
 import RoleManagementPage from '../../user-role/user-role-management';
 import RoleFunctionManagementPage from '../../access-control';
@@ -109,10 +109,12 @@ class PrivatePage extends Component {
     }
     // console.log('private props:', this.props);
     // console.log('pathname:', path);
-
+    // <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
     return (
-      <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
+      <Layout style={{ background: '#ffffff' }}>
         <Sider
+          breakpoint="lg"
+          collapsedWidth="0"
           width={siderWidth}
           style={{
             background: '#ffffff',

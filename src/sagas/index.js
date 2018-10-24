@@ -49,6 +49,7 @@ import {
   getIncidentSaga,
   postUpdateIncidentSaga,
 } from './incidentmgmt';
+import getChartsDataSaga from './charts';
 
 export default function* rootSaga() {
   yield all([
@@ -100,5 +101,7 @@ export default function* rootSaga() {
     postNewIncidentSaga,
     getIncidentSaga,
     postUpdateIncidentSaga,
+    // charts
+    getChartsDataSaga,
   ]);
 }
