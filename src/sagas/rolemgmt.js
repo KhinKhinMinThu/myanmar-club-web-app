@@ -38,6 +38,8 @@ function* asyncGetRoleData() {
         yield put({ type: ROLENAMELIST, payload: roleNameList });
         yield put({ type: ALLECLIST, payload: allEcList });
       }
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
@@ -70,9 +72,12 @@ function* asyncPostProcessRoles(action) {
         break;
       default:
     }
-
-    const { errorMsg } = response.data;
-    errMsg = errorMsg;
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

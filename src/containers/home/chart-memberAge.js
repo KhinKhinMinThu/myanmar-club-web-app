@@ -21,9 +21,8 @@ const MemberAgeChart = ({ membersAges }) => {
   const { DataView } = DataSet;
   const { Text } = Guide;
   const dv = new DataView();
-  const totalMembers = 'Total Members: '.concat(
-    Object.values(membersAges).reduce((a, b) => a + b, 0),
-  );
+  const total = Object.values(membersAges).reduce((a, b) => a + b, 0);
+  const totalMembers = 'Total Members: '.concat(total);
 
   dv.source(data).transform({
     type: 'percent',
@@ -33,7 +32,7 @@ const MemberAgeChart = ({ membersAges }) => {
   });
   const cols = {
     percent: {
-      formatter: val => `${Math.round(val * 100) / 100}%`,
+      formatter: val => `${(((val * 100) / total) * 100).toFixed(2)}%`,
     },
   };
   return (
@@ -52,7 +51,7 @@ const MemberAgeChart = ({ membersAges }) => {
         position="right"
         // offsetY={-window.innerHeight / 2 + 120}
         offsetY={-400 / 2 + 120}
-        offsetX={-50}
+        offsetX={-150}
       />
       <Tooltip
         showTitle={false}
@@ -79,7 +78,7 @@ const MemberAgeChart = ({ membersAges }) => {
           'ageRange*percent',
           (item, percent) => ({
             name: item,
-            value: `${Math.round(percent * 100) / 100}%`,
+            value: `${(((percent * 100) / total) * 100).toFixed(2)}%`,
           }),
         ]}
         guide={totalMembers}

@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Spin, Alert, Row, Col,
+  Spin, Alert, Row, Col, Tabs, Icon,
 } from 'antd';
 import { getChartsData } from '../../reducers/charts/charts-data';
 import MembershipChart from './chart-membership';
 import MemberAgeChart from './chart-memberAge';
+import EventFinanceChart from './chart-eventFinance';
+import IncidentCategoriesChart from './chart-incidentCategories';
+
+const { TabPane } = Tabs;
 
 class DashboardPage extends Component {
   state = { mounted: false };
@@ -31,8 +35,27 @@ class DashboardPage extends Component {
     const {
       chartsData: { chartsList, getErrMsg, isGetApiLoading },
     } = this.props;
-    console.log(chartsList);
     const { mounted } = this.state;
+    const tabTitles = {
+      tab1: (
+        <span>
+          <Icon type="bar-chart" theme="outlined" />
+          Membership Charts
+        </span>
+      ),
+      tab2: (
+        <span>
+          <Icon type="bar-chart" theme="outlined" />
+          Event Finance Chart
+        </span>
+      ),
+      tab3: (
+        <span>
+          <Icon type="bar-chart" theme="outlined" />
+          Incident Type Chart
+        </span>
+      ),
+    };
     return (
       <Spin spinning={isGetApiLoading} size="large" delay={1000}>
         {this.isApiCalled && getErrMsg ? (
@@ -45,32 +68,64 @@ class DashboardPage extends Component {
         ) : (
           <div>
             <div className="pageHeaderContainer">
-              <h2>Charts Page</h2>
+              <h2>Home Page</h2>
             </div>
             <Row type="flex" justify="start">
               <Col span={24}>
-                {mounted && (
-                  <MembershipChart
-                    newMembership={chartsList ? chartsList.newMembership : {}}
-                    renewedMembership={
-                      chartsList ? chartsList.renewedMembership : {}
-                    }
-                    expiringMembership={
-                      chartsList ? chartsList.expiringMembership : {}
-                    }
-                  />
-                )}
-                <h1 style={{ textAlign: 'center' }}>
-                  Membership Information in 2018
-                </h1>
-              </Col>
-              <Col span={24}>
-                {mounted && (
-                  <MemberAgeChart
-                    membersAges={chartsList ? chartsList.membersAges : {}}
-                  />
-                )}
-                <h1 style={{ textAlign: 'center' }}>Members Age Range</h1>
+                <Tabs defaultActiveKey="1">
+                  <TabPane tab={tabTitles.tab1} key="1">
+                    {mounted && (
+                      <MembershipChart
+                        newMembership={
+                          chartsList ? chartsList.newMembership : {}
+                        }
+                        renewedMembership={
+                          chartsList ? chartsList.renewedMembership : {}
+                        }
+                        expiringMembership={
+                          chartsList ? chartsList.expiringMembership : {}
+                        }
+                      />
+                    )}
+                    <br />
+                    <h1 style={{ textAlign: 'center' }}>
+                      Membership Information in 2018
+                    </h1>
+                    <br />
+                    {mounted && (
+                      <MemberAgeChart
+                        membersAges={chartsList ? chartsList.membersAges : {}}
+                      />
+                    )}
+                    <br />
+                    <h1 style={{ textAlign: 'center' }}>Members Age Range</h1>
+                  </TabPane>
+                  <TabPane tab={tabTitles.tab2} key="2">
+                    {mounted && (
+                      <EventFinanceChart
+                        eventsFinance={
+                          chartsList ? chartsList.eventsFinance : {}
+                        }
+                      />
+                    )}
+                    <br />
+                    <h1 style={{ textAlign: 'center' }}>
+                      Event Finance Breakdown in 2018
+                    </h1>
+                  </TabPane>
+                  <TabPane tab={tabTitles.tab3} key="3">
+                    {mounted && (
+                      <IncidentCategoriesChart
+                        incidentCategories={
+                          chartsList ? chartsList.incidentCategories : {}
+                        }
+                      />
+                    )}
+                    <h1 style={{ textAlign: 'center' }}>
+                      Incident Types in 2018
+                    </h1>
+                  </TabPane>
+                </Tabs>
               </Col>
             </Row>
           </div>
