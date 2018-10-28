@@ -74,56 +74,68 @@ class DashboardPage extends Component {
               <Col span={24}>
                 <Tabs defaultActiveKey="1">
                   <TabPane tab={tabTitles.tab1} key="1">
-                    {mounted && (
-                      <MembershipChart
-                        newMembership={
-                          chartsList ? chartsList.newMembership : {}
-                        }
-                        renewedMembership={
-                          chartsList ? chartsList.renewedMembership : {}
-                        }
-                        expiringMembership={
-                          chartsList ? chartsList.expiringMembership : {}
-                        }
-                      />
+                    {mounted
+                      && this.isApiCalled && (
+                        <div>
+                          <MembershipChart
+                            newMembership={
+                              chartsList ? chartsList.newMembership : {}
+                            }
+                            renewedMembership={
+                              chartsList ? chartsList.renewedMembership : {}
+                            }
+                            expiringMembership={
+                              chartsList ? chartsList.expiringMembership : {}
+                            }
+                          />
+                          <br />
+                          <h1 style={{ textAlign: 'center' }}>
+                            Membership Information in 2018
+                          </h1>
+                          <br />
+                          {mounted && (
+                            <MemberAgeChart
+                              membersAges={
+                                chartsList ? chartsList.membersAges : {}
+                              }
+                            />
+                          )}
+                          <br />
+                          <h1 style={{ textAlign: 'center' }}>
+                            Members Age Range
+                          </h1>
+                        </div>
                     )}
-                    <br />
-                    <h1 style={{ textAlign: 'center' }}>
-                      Membership Information in 2018
-                    </h1>
-                    <br />
-                    {mounted && (
-                      <MemberAgeChart
-                        membersAges={chartsList ? chartsList.membersAges : {}}
-                      />
-                    )}
-                    <br />
-                    <h1 style={{ textAlign: 'center' }}>Members Age Range</h1>
                   </TabPane>
                   <TabPane tab={tabTitles.tab2} key="2">
-                    {mounted && (
-                      <EventFinanceChart
-                        eventsFinance={
-                          chartsList ? chartsList.eventsFinance : {}
-                        }
-                      />
+                    {mounted
+                      && this.isApiCalled && (
+                        <div>
+                          <EventFinanceChart
+                            eventsFinance={
+                              chartsList ? chartsList.eventsFinance : {}
+                            }
+                          />
+                          <br />
+                          <h1 style={{ textAlign: 'center' }}>
+                            Event Finance Breakdown in 2018
+                          </h1>
+                        </div>
                     )}
-                    <br />
-                    <h1 style={{ textAlign: 'center' }}>
-                      Event Finance Breakdown in 2018
-                    </h1>
                   </TabPane>
                   <TabPane tab={tabTitles.tab3} key="3">
                     {mounted && (
-                      <IncidentCategoriesChart
-                        incidentCategories={
-                          chartsList ? chartsList.incidentCategories : {}
-                        }
-                      />
+                      <div>
+                        <IncidentCategoriesChart
+                          incidentCategories={
+                            chartsList ? chartsList.incidentCategories : {}
+                          }
+                        />
+                        <h1 style={{ textAlign: 'center' }}>
+                          Incident Types in 2018
+                        </h1>
+                      </div>
                     )}
-                    <h1 style={{ textAlign: 'center' }}>
-                      Incident Types in 2018
-                    </h1>
                   </TabPane>
                 </Tabs>
               </Col>
