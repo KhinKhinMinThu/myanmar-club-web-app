@@ -5,14 +5,27 @@ import {
 import DataSet from '@antv/data-set';
 
 /* eslint react/prop-types: 0 */
-
+const months = [
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
+];
 const MembershipChart = ({
   newMembership,
   renewedMembership,
   expiringMembership,
 }) => {
   const data = [
-    { name: 'New Registraions', ...newMembership },
+    { name: 'New Registrations', ...newMembership },
     { name: 'Renewed Membership', ...renewedMembership },
     { name: 'Expired Membership', ...expiringMembership },
   ];
@@ -21,7 +34,7 @@ const MembershipChart = ({
 
   dv.transform({
     type: 'fold',
-    fields: Object.keys(newMembership),
+    fields: months,
     key: 'months',
     value: 'memberships',
   });

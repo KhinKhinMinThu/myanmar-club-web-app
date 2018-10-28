@@ -80,7 +80,7 @@ class EventFinanceChart extends Component {
 
     const colorMap = colormap({
       colormap: 'jet',
-      nshades: categories.length,
+      nshades: categories.length < 7 ? 7 : categories.length,
       format: 'hex',
       alpha: 1,
     });

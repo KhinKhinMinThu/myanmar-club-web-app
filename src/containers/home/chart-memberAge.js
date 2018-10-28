@@ -14,16 +14,20 @@ import DataSet from '@antv/data-set';
 /* eslint react/prop-types: 0 */
 
 const MemberAgeChart = ({ membersAges }) => {
-  const data = [];
-  Object.entries(membersAges).forEach((item) => {
-    if (item[1] !== 0) data.push({ ageRange: `Age ${item[0]}`, count: item[1] });
-  });
   const { DataView } = DataSet;
   const { Text } = Guide;
   const dv = new DataView();
   const total = Object.values(membersAges).reduce((a, b) => a + b, 0);
   const totalMembers = 'Total Members: '.concat(total);
-
+  const data = [];
+  Object.entries(membersAges).forEach((item) => {
+    if (item[1] !== 0) {
+      data.push({
+        ageRange: `Age ${item[0]}`,
+        count: (item[1] * 100) / total,
+      });
+    }
+  });
   dv.source(data).transform({
     type: 'percent',
     field: 'count',
@@ -32,7 +36,7 @@ const MemberAgeChart = ({ membersAges }) => {
   });
   const cols = {
     percent: {
-      formatter: val => `${(((val * 100) / total) * 100).toFixed(2)}%`,
+      formatter: val => `${(val * 100).toFixed(2)}%`,
     },
   };
   return (
@@ -78,7 +82,7 @@ const MemberAgeChart = ({ membersAges }) => {
           'ageRange*percent',
           (item, percent) => ({
             name: item,
-            value: `${(((percent * 100) / total) * 100).toFixed(2)}%`,
+            value: `${(percent * 100).toFixed(2)}%`,
           }),
         ]}
         guide={totalMembers}
