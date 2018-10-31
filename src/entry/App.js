@@ -8,6 +8,7 @@ import { persistor, store, history } from './store';
 
 import PrivatePath from '../containers/authentication/private-path';
 import PublicPath from '../containers/authentication/public-path';
+import PublicSite from '../containers/public-site';
 
 const App = () => (
   <Provider store={store}>
@@ -22,7 +23,8 @@ const App = () => (
 
             <PublicPath exact path="/:pathname/:id?" />
             {/* all other paths */}
-            <PublicPath path="*" />
+            {/* <PublicPath path="*" /> */}
+            <PublicSite />
           </Switch>
         </div>
       </ConnectedRouter>
