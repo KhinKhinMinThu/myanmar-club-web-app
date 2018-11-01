@@ -79,14 +79,20 @@ class Events extends Component {
                 </EventTextTwo>
                 <EventTextTwo>Fee: ${event.ticketFee}</EventTextTwo>
                 <EventTextThree>{event.description}</EventTextThree>
-                <Button
-                  type="primary"
+                <a
                   href={EVENT_REGISTER.concat('/').concat(event.id)}
-                  icon="form"
-                  style={{ width: '10em' }}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  Register
-                </Button>
+                  <Button
+                    type="primary"
+                    // href={EVENT_REGISTER.concat('/').concat(event.id), target="_blank"}
+                    icon="form"
+                    style={{ width: '10em' }}
+                  >
+                    Register
+                  </Button>
+                </a>
               </EventTextContainer>
             </EventBlockContainer>
           ))}

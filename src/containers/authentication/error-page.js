@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom/es';
 import { Card, Button } from 'antd';
-import { DASHBOARD } from '../../actions/location';
+import { DEFAULT } from '../../actions/location';
 
 const ErrorPage = () => (
   <Card
@@ -33,7 +33,7 @@ const ErrorPage = () => (
     </span>
     <br />
     <br />
-    <Button type="primary" href={DASHBOARD} icon="smile" ghost>
+    <Button type="primary" href={DEFAULT} icon="smile" ghost>
       Myanmar Club Home Page
     </Button>
   </Card>

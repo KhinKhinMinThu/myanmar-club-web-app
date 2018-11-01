@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Layout, Anchor } from 'antd';
+import { Layout } from 'antd';
 import loginImg from '../../../images/login.jpg';
 import { HeaderText } from '../shared-styled';
 import {
@@ -14,12 +14,13 @@ import {
   // PUBLIC_EVENT_VIEW,
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
-import MenuPanel from './components';
+// import MenuPanel from './components';
 import MainPage from './main-page';
 import ErrorPage from '../error-page';
 import LoginPage from '../../user-account/login';
 import EventRegisterPage from '../../event-public/event-registration';
-import EventListPage from '../../event-public/event-list';
+// import EventListPage from '../../event-public/event-list';
+import EventListPage from '../../public-site/containers/events';
 import SignupPage from '../../user-account/signup-page';
 import ForgotPasswordPage from '../../user-account/forgotpwd-page';
 
@@ -78,38 +79,23 @@ class PrivatePage extends Component {
 
     return (
       <Layout style={{ minWidth: '1500px' }}>
-        {/* <Sider
-          width={siderWidth}
-          style={{ background: '#ffffff', height: '100vh' }}
-        >
-        <a href={DEFAULT}>
-          <Header
-            style={{
-              height: 65,
-              background: '#ffffff',
-              borderBottom: '3px solid #1DA57A',
-            }}
-          >
-            {logoImage}
-          </Header>
-        </a>
-        <Anchor>
-          <MenuPanel selectedKeys={[path]} />
-        </Anchor> */}
-        {/* </Sider> */}
         <Layout>
-          <Header
-            style={{
-              height: 65,
-              background: '#312D2D',
-              borderBottom: '3px solid #1DA57A',
-            }}
-          >
-            <HeaderText>{logoImage} &emsp;Myanmar Club (Singapore)</HeaderText>
-          </Header>
-          <Anchor>
-            <MenuPanel selectedKeys={[path]} />
-          </Anchor>
+          <a href={DEFAULT}>
+            <Header
+              style={{
+                height: 65,
+                background: '#312D2D',
+                borderBottom: '3px solid #1DA57A',
+              }}
+            >
+              <HeaderText>
+                {logoImage} &emsp;Myanmar Club (Singapore)
+              </HeaderText>
+            </Header>
+          </a>
+          {/* <Anchor> */}
+          {/*  <MenuPanel selectedKeys={[path]} /> *}
+          {/* </Anchor> */}
           <Content
             style={{
               ...contentStyle,
