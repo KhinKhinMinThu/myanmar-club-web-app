@@ -220,7 +220,7 @@ const mapPropsToFields = ({ membermgmtData: { memberData } }) => {
     }),
     membershipExpiryDate: Form.createFormField({
       value:
-        moment(member.membershipExpiryDate).format(DATE_FORMAT) === DEFAULT_DATE
+        !member.membershipExpiryDate || moment(member.membershipExpiryDate).format(DATE_FORMAT) === DEFAULT_DATE
           ? '-'
           : member.membershipExpiryDate,
     }),
