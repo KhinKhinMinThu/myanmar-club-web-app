@@ -152,7 +152,7 @@ export const Payment = ({
     <FormItem>
       {decorator('paymentType', { initialValue: 'Bank Transfer' })(
         <RadioGroup name="paymentTypeRdo" onChange={onSelect}>
-          <RadioButton value="Direct Online Payment">
+          <RadioButton value="Direct Online Payment" disabled>
             Direct Online Payment
           </RadioButton>
           <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>

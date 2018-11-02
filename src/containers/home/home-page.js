@@ -9,6 +9,7 @@ import MembershipChart from './chart-membership';
 import MemberAgeChart from './chart-memberAge';
 import EventFinanceChart from './chart-eventFinance';
 import IncidentCategoriesChart from './chart-incidentCategories';
+import dashboardImg from '../../images/dashaboard.jpg';
 
 const { TabPane } = Tabs;
 
@@ -34,6 +35,7 @@ class DashboardPage extends Component {
   render() {
     const {
       chartsData: { chartsList, getErrMsg, isGetApiLoading },
+      loginData: { isEcMember, name },
     } = this.props;
     const { mounted } = this.state;
     const tabTitles = {
@@ -67,79 +69,96 @@ class DashboardPage extends Component {
           />
         ) : (
           <div>
-            <div className="pageHeaderContainer">
-              <h2>Home Page</h2>
-            </div>
-            <Row type="flex" justify="start">
-              <Col span={24}>
-                <Tabs defaultActiveKey="1">
-                  <TabPane tab={tabTitles.tab1} key="1">
-                    {mounted
-                      && this.isApiCalled && (
-                        <div>
-                          <MembershipChart
-                            newMembership={
-                              chartsList ? chartsList.newMembership : {}
-                            }
-                            renewedMembership={
-                              chartsList ? chartsList.renewedMembership : {}
-                            }
-                            expiringMembership={
-                              chartsList ? chartsList.expiringMembership : {}
-                            }
-                          />
-                          <br />
-                          <h1 style={{ textAlign: 'center' }}>
-                            Membership Information in 2018
-                          </h1>
-                          <br />
-                          {mounted && (
-                            <MemberAgeChart
-                              membersAges={
-                                chartsList ? chartsList.membersAges : {}
+            {isEcMember !== '1' && (
+              <Row
+                style={{
+                  backgroundImage: `url(${dashboardImg})`,
+                  height: '580px',
+                }}
+              >
+                <Col span={24}>
+                  <div style={{ padding: '2px', backgroundColor: 'white' }}>
+                    <h3>Hi {name},</h3>
+                    <h3>Welcome to Myanmar Club!</h3>
+                    <span>
+                      If you have any problem, please contact Myanmar Club.
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+            )}
+            {isEcMember === '1' && (
+              <Row type="flex" justify="start">
+                <Col span={24}>
+                  <Tabs defaultActiveKey="1">
+                    <TabPane tab={tabTitles.tab1} key="1">
+                      {mounted
+                        && this.isApiCalled && (
+                          <div>
+                            <MembershipChart
+                              newMembership={
+                                chartsList ? chartsList.newMembership : {}
+                              }
+                              renewedMembership={
+                                chartsList ? chartsList.renewedMembership : {}
+                              }
+                              expiringMembership={
+                                chartsList ? chartsList.expiringMembership : {}
                               }
                             />
-                          )}
-                          <br />
-                          <h1 style={{ textAlign: 'center' }}>
-                            Members Age Range
-                          </h1>
-                        </div>
-                    )}
-                  </TabPane>
-                  <TabPane tab={tabTitles.tab2} key="2">
-                    {mounted
-                      && this.isApiCalled && (
+                            <br />
+                            <h1 style={{ textAlign: 'center' }}>
+                              Membership Information in 2018
+                            </h1>
+                            <br />
+                            {mounted && (
+                              <MemberAgeChart
+                                membersAges={
+                                  chartsList ? chartsList.membersAges : {}
+                                }
+                              />
+                            )}
+                            <br />
+                            <h1 style={{ textAlign: 'center' }}>
+                              Members Age Range
+                            </h1>
+                          </div>
+                      )}
+                    </TabPane>
+                    <TabPane tab={tabTitles.tab2} key="2">
+                      {mounted
+                        && this.isApiCalled && (
+                          <div>
+                            <EventFinanceChart
+                              eventsFinance={
+                                chartsList ? chartsList.eventsFinance : {}
+                              }
+                            />
+                            <br />
+                            <h1 style={{ textAlign: 'center' }}>
+                              Event Finance Breakdown in 2018
+                            </h1>
+                          </div>
+                      )}
+                    </TabPane>
+                    <TabPane tab={tabTitles.tab3} key="3">
+                      {mounted && (
                         <div>
-                          <EventFinanceChart
-                            eventsFinance={
-                              chartsList ? chartsList.eventsFinance : {}
+                          <IncidentCategoriesChart
+                            incidentCategories={
+                              chartsList ? chartsList.incidentCategories : {}
                             }
                           />
-                          <br />
                           <h1 style={{ textAlign: 'center' }}>
-                            Event Finance Breakdown in 2018
+                            Incident Types in 2018
                           </h1>
                         </div>
-                    )}
-                  </TabPane>
-                  <TabPane tab={tabTitles.tab3} key="3">
-                    {mounted && (
-                      <div>
-                        <IncidentCategoriesChart
-                          incidentCategories={
-                            chartsList ? chartsList.incidentCategories : {}
-                          }
-                        />
-                        <h1 style={{ textAlign: 'center' }}>
-                          Incident Types in 2018
-                        </h1>
-                      </div>
-                    )}
-                  </TabPane>
-                </Tabs>
-              </Col>
-            </Row>
+                      )}
+                    </TabPane>
+                  </Tabs>
+                </Col>
+              </Row>
+            )}
           </div>
         )}
       </Spin>
@@ -149,10 +168,12 @@ class DashboardPage extends Component {
 
 DashboardPage.propTypes = {
   chartsData: PropTypes.shape({}).isRequired,
+  loginData: PropTypes.shape({}).isRequired,
   performGetChartsData: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   chartsData: state.charts.data,
+  loginData: state.login.data,
 });
 const mapDispatchToProps = {
   performGetChartsData: getChartsData,
