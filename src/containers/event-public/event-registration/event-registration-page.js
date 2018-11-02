@@ -166,7 +166,7 @@ class EventRegistration extends Component {
     } = this.props;
     const paymentType = getFieldValue('paymentType');
     validateFieldsAndScroll((error, values) => {
-      console.log('form values', values);
+      // console.log('form values', values);
       if (!error && paymentType === 'Direct Online Payment') {
         // console.log('toggleDirectPayment', showDirectPayment);
         const ticketNum = getFieldValue('memberNoOfPax');
@@ -194,7 +194,7 @@ class EventRegistration extends Component {
   render() {
     const {
       form: { getFieldDecorator },
-      eventmgmtData: { isGetApiLoading, getErrMsg },
+      eventmgmtData: { isGetApiLoading, getErrMsg, isPostApiLoading },
     } = this.props;
     const {
       total,
@@ -202,7 +202,7 @@ class EventRegistration extends Component {
       showDirectPayment,
       paymentOption,
     } = this.state;
-    console.log('total', total);
+    // console.log('total', total);
     const onError = (error) => {
       console.log('Erroneous payment OR failed to load script!', error);
       Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
@@ -226,10 +226,9 @@ class EventRegistration extends Component {
             showIcon
           />
         ) : (
-          <div>
-            <h2>Event Registeration</h2>
+          <Spin spinning={isPostApiLoading} size="large" delay={1000}>
             <Form onSubmit={this.onSubmit}>
-              <Row gutter={8}>
+              <Row gutter={8} justify="start">
                 <Col span={10}>
                   <Card
                     style={{
@@ -276,7 +275,7 @@ class EventRegistration extends Component {
                 </Col>
               </Row>
             </Form>
-          </div>
+          </Spin>
         )}
       </Spin>
     );
