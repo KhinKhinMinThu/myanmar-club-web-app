@@ -26,6 +26,7 @@ import {
   INCIDENT_EDIT,
   MEMBER_EDIT,
 } from '../../actions/location';
+import dashboardImg from '../../images/dashaboard.jpg';
 
 const { TabPane } = Tabs;
 class DashboardPage extends Component {
@@ -141,6 +142,7 @@ class DashboardPage extends Component {
     const {
       chartsData: { chartsList, getErrMsg, isGetApiLoading },
       taskData: { taskData },
+      loginData: { isEcMember, name },
     } = this.props;
     const { mounted } = this.state;
     if (taskData) this.sortedData = taskData.sort((a, b) => (b.pendingFor - a.pendingFor));
@@ -179,12 +181,31 @@ class DashboardPage extends Component {
             <div className="pageHeaderContainer">
               <h2>Home Page</h2>
             </div>
-            <Row gutter={8} type="flex" justify="start">
-              <Col span={17}>
-                <Card style={{ marginTop: '50px' }}>
-                  <Tabs defaultActiveKey="1">
-                    <TabPane tab={tabTitles.tab1} key="1">
-                      {mounted
+            {isEcMember !== '1' && (
+              <Row
+                style={{
+                  backgroundImage: `url(${dashboardImg})`,
+                  height: '580px',
+                }}
+              >
+                <Col span={24}>
+                  <div style={{ padding: '2px', backgroundColor: 'white' }}>
+                    <h3>Hi {name},</h3>
+                    <h3>Welcome to Myanmar Club!</h3>
+                    <span>
+                      If you have any problem, please contact Myanmar Club.
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+            )}
+            {isEcMember === '1' && (
+              <Row gutter={7} type="flex" justify="start">
+                <Col span={17}>
+                  <Card style={{ marginTop: '50px' }}>
+                    <Tabs defaultActiveKey="1">
+                      <TabPane tab={tabTitles.tab1} key="1">
+                        {mounted
                         && this.isApiCalled && (
                           <div>
                             <MembershipChart
@@ -215,10 +236,10 @@ class DashboardPage extends Component {
                               Members Age Range
                             </h1>
                           </div>
-                      )}
-                    </TabPane>
-                    <TabPane tab={tabTitles.tab2} key="2">
-                      {mounted
+                        )}
+                      </TabPane>
+                      <TabPane tab={tabTitles.tab2} key="2">
+                        {mounted
                         && this.isApiCalled && (
                           <div>
                             <EventFinanceChart
@@ -231,10 +252,10 @@ class DashboardPage extends Component {
                               Event Finance Breakdown in 2018
                             </h1>
                           </div>
-                      )}
-                    </TabPane>
-                    <TabPane tab={tabTitles.tab3} key="3">
-                      {mounted && (
+                        )}
+                      </TabPane>
+                      <TabPane tab={tabTitles.tab3} key="3">
+                        {mounted && (
                         <div>
                           <IncidentCategoriesChart
                             incidentCategories={
@@ -245,40 +266,41 @@ class DashboardPage extends Component {
                             Incident Types in 2018
                           </h1>
                         </div>
-                      )}
-                    </TabPane>
-                  </Tabs>
-                </Card>
-              </Col>
-              <Col span={7}>
-                <Card
-                  title="Task List"
-                  style={{ marginTop: '50px' }}
-                  extra={(
-                    <Badge count={this.numTask}>
-                      <Avatar size="small" icon="alert" style={{ color: 'black', backgroundColor: 'white' }} />
-                    </Badge>
+                        )}
+                      </TabPane>
+                    </Tabs>
+                  </Card>
+                </Col>
+                <Col span={7}>
+                  <Card
+                    title="Task List"
+                    style={{ marginTop: '50px' }}
+                    extra={(
+                      <Badge count={this.numTask}>
+                        <Avatar size="small" icon="alert" style={{ color: 'black', backgroundColor: 'white' }} />
+                      </Badge>
                   )}
-                >
-                  <List
-                    locale={{ emptyText: 'You have no task items' }}
-                    itemLayout="horizontal"
-                    dataSource={this.sortedData}
-                    renderItem={item => (
-                      <List.Item>
-                        <List.Item.Meta
-                          title={this.prepareTitle(item)}
-                          description={[
-                            this.prepareDescription(item),
-                            this.preparePendingStatus(item),
-                          ]}
-                        />
-                      </List.Item>
-                    )}
-                  />,
-                </Card>
-              </Col>
-            </Row>
+                  >
+                    <List
+                      locale={{ emptyText: 'You have no task items' }}
+                      itemLayout="horizontal"
+                      dataSource={this.sortedData}
+                      renderItem={item => (
+                        <List.Item>
+                          <List.Item.Meta
+                            title={this.prepareTitle(item)}
+                            description={[
+                              this.prepareDescription(item),
+                              this.preparePendingStatus(item),
+                            ]}
+                          />
+                        </List.Item>
+                      )}
+                    />,
+                  </Card>
+                </Col>
+              </Row>
+            )}
           </div>
         )}
       </Spin>
@@ -289,12 +311,14 @@ class DashboardPage extends Component {
 DashboardPage.propTypes = {
   chartsData: PropTypes.shape({}).isRequired,
   taskData: PropTypes.shape({}).isRequired,
+  loginData: PropTypes.shape({}).isRequired,
   performGetChartsData: PropTypes.func.isRequired,
   performGetTaskData: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   chartsData: state.charts.data,
   taskData: state.taskList.data,
+  loginData: state.login.data,
 });
 const mapDispatchToProps = {
   performGetChartsData: getChartsData,

@@ -23,6 +23,7 @@ const App = () => (
             <PublicPath exact path="/:pathname/:id?" />
             {/* all other paths */}
             <PublicPath path="*" />
+            {/* <PublicSite /> */}
           </Switch>
         </div>
       </ConnectedRouter>

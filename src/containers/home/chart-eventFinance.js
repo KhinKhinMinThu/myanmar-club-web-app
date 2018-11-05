@@ -48,7 +48,7 @@ class EventFinanceChart extends Component {
     categories = categories.filter(
       item => item !== 'eventId' && item !== 'name' && item !== 'month',
     );
-
+    categories.sort();
     // console.log('fianance', eventsFinance);
     // console.log('data', data);
     // console.log('cat', categories);

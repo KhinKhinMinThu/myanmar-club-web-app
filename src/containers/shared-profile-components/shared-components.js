@@ -165,7 +165,7 @@ export const EducationLevelInput = ({ decorator }) => (
         },
       ],
     })(<Input {...customInput} placeholder="Education Level" />)}
-    <ExtraInfoText> GCE A Level/Bachelor/Master/(PhD)</ExtraInfoText>
+    <ExtraInfoText> GCE A,Bachelor,Master,PhD</ExtraInfoText>
   </FormItem>
 );
 
@@ -224,7 +224,7 @@ export const PassTypeSelect = ({ decorator }) => (
 export const IdNumberInput = ({ decorator }) => (
   <FormItem
     {...layoutHalf}
-    label="Identification Number"
+    label="ID Number"
     style={{ marginBottom: 0 }}
   >
     {decorator('idNumber', {

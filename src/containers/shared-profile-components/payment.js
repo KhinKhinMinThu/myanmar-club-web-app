@@ -44,7 +44,7 @@ export const Payment = ({
         rules: [{ required: true, message: 'Please select payment type!' }],
       })(
         <RadioGroup name="paymentTypeRdo" onChange={onSelect}>
-          <RadioButton value="Direct Online Payment">
+          <RadioButton value="Direct Online Payment" disabled>
             Direct Online Payment
           </RadioButton>
           <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>

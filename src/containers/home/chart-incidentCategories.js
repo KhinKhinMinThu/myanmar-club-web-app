@@ -6,7 +6,7 @@ import {
 /* eslint react/prop-types: 0 */
 const IncidentCategoriesChart = ({ incidentCategories }) => {
   const cols = {
-    sales: {
+    total: {
       tickInterval: 1,
     },
   };
