@@ -13,6 +13,7 @@ import eventmgmtReducer from './eventmgmt';
 import accessControlReducer from './access-control';
 import incidentmgmtReducer from './incidentmgmt';
 import chartsReducer from './charts';
+import taskListReducer from './task-list';
 /**
  * LocalStorage: storage engine for storing redux state
  * autoMergeLevel2: when restoring state during app launch,
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
   accessControl: accessControlReducer,
   incidentmgmt: incidentmgmtReducer,
   charts: chartsReducer,
+  taskList: taskListReducer,
 });
 
 export default rootReducer;

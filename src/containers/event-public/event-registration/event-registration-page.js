@@ -69,14 +69,16 @@ class EventRegistration extends Component {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
-
+    const { showDirectPayment } = this.state;
     const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
     if (postErrMsg) {
       Modal.error({ title: 'Error!', content: postErrMsg });
-    } else {
+    } else if (showDirectPayment) {
       Modal.success({ title: 'Success!', content: SUCCESS_NEWEVENTRSVP });
+    } else {
+      Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
     }
   }
 
@@ -87,7 +89,10 @@ class EventRegistration extends Component {
     // console.log('toggleDirectPayment', showDirectPayment);
     const ticketNum = getFieldValue('memberNoOfPax');
     const ticketPrice = getFieldValue('ticketFee');
-    const totalAmt = ticketNum * ticketPrice;
+    let totalAmt = ticketNum * ticketPrice;
+    if (ticketNum === undefined) {
+      totalAmt = 0;
+    }
     this.setState({ total: totalAmt });
     setFieldsValue({ totalAmount: totalAmt, ticketNum, ticketPrice });
     this.setState({
@@ -147,7 +152,7 @@ class EventRegistration extends Component {
       performNewRSVP,
     } = this.props;
     console.log('Successful payment!', payment);
-    Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
+    this.setState({ isModalVisible: false });
     const formValues = getFieldsValue();
     const memberMobilePhone = formValues.memberMobilePhone
       ? formValues.memberAreaCode + formValues.memberMobilePhone
