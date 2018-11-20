@@ -15,9 +15,9 @@ import {
   Avatar,
 } from 'antd';
 import { getChartsData } from '../../reducers/charts/charts-data';
-import { getTaskData } from '../../reducers/task-list/task-list-data';
 import MembershipChart from './chart-membership';
 import MemberAgeChart from './chart-memberAge';
+import MemberGenderChart from './chart-memberGender';
 import EventFinanceChart from './chart-eventFinance';
 import IncidentCategoriesChart from './chart-incidentCategories';
 import {
@@ -33,12 +33,8 @@ class DashboardPage extends Component {
   state = { mounted: false };
 
   componentWillMount() {
-    const {
-      performGetChartsData,
-      performGetTaskData,
-    } = this.props;
+    const { performGetChartsData } = this.props;
     performGetChartsData();
-    performGetTaskData();
   }
 
   componentDidMount() {
@@ -55,25 +51,15 @@ class DashboardPage extends Component {
   prepareDescription = (item) => {
     switch (item.taskType) {
       case 'New Membership Request':
-        return [
-          <Tag color="#179E71"> {item.taskType} </Tag>,
-        ];
+        return [<Tag color="#179E71"> {item.taskType} </Tag>];
       case 'Membership Renewal Request':
-        return [
-          <Tag color="#4682B4"> {item.taskType} </Tag>,
-        ];
+        return [<Tag color="#4682B4"> {item.taskType} </Tag>];
       case 'Event Closure':
-        return [
-          <Tag color="#A52A2A"> {item.taskType} </Tag>,
-        ];
+        return [<Tag color="#A52A2A"> {item.taskType} </Tag>];
       case 'Claim Approval Request':
-        return [
-          <Tag color="#808000"> {item.taskType} </Tag>,
-        ];
+        return [<Tag color="#808000"> {item.taskType} </Tag>];
       case 'Incident Follow-up':
-        return [
-          <Tag color="#D2691E"> {item.taskType} </Tag>,
-        ];
+        return [<Tag color="#D2691E"> {item.taskType} </Tag>];
       default:
         return [<Tag color="#A85E5E"> {item.taskType} </Tag>];
     }
@@ -83,8 +69,20 @@ class DashboardPage extends Component {
     let memberPhoto = [<Avatar src={item.photo} />];
     let eventPhoto = [<Avatar src={item.photo} />];
     if (item.photo === '' || item.photo === undefined) {
-      memberPhoto = [<Avatar icon="user" style={{ color: 'black', backgroundColor: '#fde3cf' }} />, '  '];
-      eventPhoto = [<Avatar icon="picture" style={{ color: 'black', backgroundColor: '#fde3cf' }} />, '  '];
+      memberPhoto = [
+        <Avatar
+          icon="user"
+          style={{ color: 'black', backgroundColor: '#fde3cf' }}
+        />,
+        '  ',
+      ];
+      eventPhoto = [
+        <Avatar
+          icon="picture"
+          style={{ color: 'black', backgroundColor: '#fde3cf' }}
+        />,
+        '  ',
+      ];
     }
     switch (item.taskType) {
       case 'Event Closure':
@@ -93,9 +91,7 @@ class DashboardPage extends Component {
           <a href={EVENT_EDIT.concat('/').concat(item.id)}> {item.name} </a>,
         ];
       case 'Claim Approval Request':
-        return [
-          memberPhoto,
-          <a href={CLAIM_MANAGEMENT}> {item.name} </a>];
+        return [memberPhoto, <a href={CLAIM_MANAGEMENT}> {item.name} </a>];
       case 'Incident Follow-up':
         return [
           <Avatar
@@ -145,8 +141,9 @@ class DashboardPage extends Component {
       loginData: { isEcMember, name },
     } = this.props;
     const { mounted } = this.state;
-    if (taskData) this.sortedData = taskData.sort((a, b) => (b.pendingFor - a.pendingFor));
+    if (taskData) this.sortedData = taskData.sort((a, b) => b.pendingFor - a.pendingFor);
     if (taskData) this.numTask = taskData.length;
+
     const tabTitles = {
       tab1: (
         <span>
@@ -181,6 +178,7 @@ class DashboardPage extends Component {
             <div className="pageHeaderContainer">
               <h2>Home Page</h2>
             </div>
+            {/* None EC Member Home Page */}
             {isEcMember !== '1' && (
               <Row
                 style={{
@@ -199,73 +197,58 @@ class DashboardPage extends Component {
                 </Col>
               </Row>
             )}
+            {/* EC Member Home Page */}
             {isEcMember === '1' && (
               <Row gutter={7} type="flex" justify="start">
                 <Col span={17}>
                   <Card style={{ marginTop: '50px' }}>
                     <Tabs defaultActiveKey="1">
                       <TabPane tab={tabTitles.tab1} key="1">
-                        {mounted
-                        && this.isApiCalled && (
-                          <div>
-                            <MembershipChart
-                              newMembership={
-                                chartsList ? chartsList.newMembership : {}
-                              }
-                              renewedMembership={
-                                chartsList ? chartsList.renewedMembership : {}
-                              }
-                              expiringMembership={
-                                chartsList ? chartsList.expiringMembership : {}
-                              }
-                            />
-                            <br />
-                            <h1 style={{ textAlign: 'center' }}>
-                              Membership Information in 2018
-                            </h1>
-                            <br />
-                            {mounted && (
-                              <MemberAgeChart
-                                membersAges={
-                                  chartsList ? chartsList.membersAges : {}
+                        <div>
+                          {/* Membership Chart */}
+                          {mounted
+                            && chartsList && (
+                              <MembershipChart
+                                newMembership={chartsList.newMembership}
+                                renewedMembership={chartsList.renewedMembership}
+                                expiringMembership={
+                                  chartsList.expiringMembership
                                 }
                               />
-                            )}
-                            <br />
-                            <h1 style={{ textAlign: 'center' }}>
-                              Members Age Range
-                            </h1>
-                          </div>
-                        )}
+                          )}
+                          {/* Age Chart */}
+                          {mounted
+                            && chartsList && (
+                              <MemberAgeChart
+                                membersAges={chartsList.membersAges}
+                              />
+                          )}
+                          <br />
+                          {/* Gender Chart */}
+                          {mounted
+                            && chartsList && (
+                              <MemberGenderChart
+                                membersAges={chartsList.membersAges}
+                              />
+                          )}
+                        </div>
                       </TabPane>
                       <TabPane tab={tabTitles.tab2} key="2">
+                        {/* Event Finance Chart */}
                         {mounted
-                        && this.isApiCalled && (
-                          <div>
+                          && chartsList && (
                             <EventFinanceChart
-                              eventsFinance={
-                                chartsList ? chartsList.eventsFinance : {}
-                              }
+                              eventsFinance={chartsList.eventsFinance}
                             />
-                            <br />
-                            <h1 style={{ textAlign: 'center' }}>
-                              Event Finance Breakdown in 2018
-                            </h1>
-                          </div>
                         )}
                       </TabPane>
                       <TabPane tab={tabTitles.tab3} key="3">
-                        {mounted && (
-                        <div>
-                          <IncidentCategoriesChart
-                            incidentCategories={
-                              chartsList ? chartsList.incidentCategories : {}
-                            }
-                          />
-                          <h1 style={{ textAlign: 'center' }}>
-                            Incident Types in 2018
-                          </h1>
-                        </div>
+                        {/* Incident Chart */}
+                        {mounted
+                          && chartsList && (
+                            <IncidentCategoriesChart
+                              incidentCategories={chartsList.incidentCategories}
+                            />
                         )}
                       </TabPane>
                     </Tabs>
@@ -277,9 +260,13 @@ class DashboardPage extends Component {
                     style={{ marginTop: '50px' }}
                     extra={(
                       <Badge count={this.numTask}>
-                        <Avatar size="small" icon="alert" style={{ color: 'black', backgroundColor: 'white' }} />
+                        <Avatar
+                          size="small"
+                          icon="alert"
+                          style={{ color: 'black', backgroundColor: 'white' }}
+                        />
                       </Badge>
-                  )}
+)}
                   >
                     <List
                       locale={{ emptyText: 'You have no task items' }}
@@ -313,7 +300,6 @@ DashboardPage.propTypes = {
   taskData: PropTypes.shape({}).isRequired,
   loginData: PropTypes.shape({}).isRequired,
   performGetChartsData: PropTypes.func.isRequired,
-  performGetTaskData: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   chartsData: state.charts.data,
@@ -322,7 +308,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
   performGetChartsData: getChartsData,
-  performGetTaskData: getTaskData,
 };
 
 export default connect(

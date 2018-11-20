@@ -10,18 +10,17 @@ const IncidentCategoriesChart = ({ incidentCategories }) => {
       tickInterval: 1,
     },
   };
+  incidentCategories.sort((a, b) => b.total - a.total);
+  const year = new Date().getFullYear();
   return (
     <div>
       <Chart height={400} data={incidentCategories} scale={cols} forceFit>
         <Axis name="type" />
         <Axis name="total" />
-        <Tooltip
-          crosshairs={{
-            type: 'y',
-          }}
-        />
+        <Tooltip crosshairs={{ type: 'y' }} />
         <Geom type="interval" position="type*total" />
       </Chart>
+      <h1 style={{ textAlign: 'center' }}>{`Incident Types in ${year}`}</h1>
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import colormap from 'colormap';
+// import colormap from 'colormap';
 import { Radio, Alert } from 'antd';
 import {
-  Chart, Geom, Axis, Tooltip, Legend,
+  Chart, Geom, Axis, Tooltip, Legend, Label,
 } from 'bizcharts';
 import DataSet from '@antv/data-set';
 
@@ -14,78 +14,57 @@ class EventFinanceChart extends Component {
     this.setState({ period: e.target.value });
   };
 
+  getFilteredPeriod = (period, eventsFinanceData) => {
+    let filteredData = [];
+    if (period === '1') {
+      filteredData = eventsFinanceData.filter(
+        item => item.month === 'JUN' || item.month === 'JUL' || item.month === 'AUG',
+      );
+    } else if (period === '2') {
+      filteredData = eventsFinanceData.filter(
+        item => item.month === 'SEP' || item.month === 'OCT' || item.month === 'NOV',
+      );
+    } else if (period === '3') {
+      filteredData = eventsFinanceData.filter(
+        item => item.month === 'DEC' || item.month === 'JAN' || item.month === 'FEB',
+      );
+    } else {
+      filteredData = eventsFinanceData.filter(
+        item => item.month === 'MAR' || item.month === 'APR' || item.month === 'MAY',
+      );
+    }
+    return filteredData;
+  };
+
   render() {
     const { eventsFinance } = this.props;
     const { period } = this.state;
-    const { DataView } = DataSet;
-    let data = [];
-    let categories = [];
-    if (period === '1') {
-      data = eventsFinance.filter(
-        item => item.month === 'JAN'
-          || item.month === 'FEB'
-          || item.month === 'MAR'
-          || item.month === 'APR',
-      );
-    } else if (period === '2') {
-      data = eventsFinance.filter(
-        item => item.month === 'MAY'
-          || item.month === 'JUN'
-          || item.month === 'JUL'
-          || item.month === 'AUG',
-      );
-    } else {
-      data = eventsFinance.filter(
-        item => item.month === 'SEP'
-          || item.month === 'OCT'
-          || item.month === 'NOV'
-          || item.month === 'DEC',
-      );
-    }
-    data.forEach((item) => {
-      categories.push(...Object.keys(item));
+    const eventsFinanceData = eventsFinance;
+    const filteredData = this.getFilteredPeriod(period, eventsFinanceData);
+    const income = {};
+    const expenditure = {};
+    filteredData.forEach((item) => {
+      income[item.name] = item.totalIncome;
+      expenditure[item.name] = item.totalExpenditure;
     });
-    categories = categories.filter(
-      item => item !== 'eventId' && item !== 'name' && item !== 'month',
-    );
-    categories.sort();
-    // console.log('fianance', eventsFinance);
-    // console.log('data', data);
-    // console.log('cat', categories);
-    const dv = new DataView();
-    if (data.length > 0) {
-      dv.source(data)
-        .transform({
-          type: 'fold',
-          fields: categories,
-          key: 'category',
-          value: 'totalamt',
-          retains: ['name', 'eventId', 'month'],
-        })
-        .transform({
-          type: 'map',
-          callback: (obj) => {
-            const key = obj.category;
-            let type;
-            if (key.substr(0, key.indexOf('-') - 1) === 'income') {
-              type = 'a';
-            } else {
-              type = 'b';
-            }
-            const object = { ...obj, type };
-            return object;
-          },
-        });
-    }
+    console.log('Income:', income);
+    console.log('Expenditure:', expenditure);
 
-    const colorMap = colormap({
-      colormap: 'jet',
-      nshades: categories.length < 7 ? 7 : categories.length,
-      format: 'hex',
-      alpha: 1,
+    const data = [
+      { name: 'Income', ...income },
+      { name: 'Expenditure', ...expenditure },
+    ];
+    const ds = new DataSet();
+    const dv = ds.createView().source(data);
+    dv.transform({
+      type: 'fold',
+      fields: Object.keys(income),
+      key: 'events',
+      value: 'amount',
     });
+    const year = new Date().getFullYear();
     const cols = {
-      totalamt: {
+      amount: {
         tickInterval: 50,
       },
     };
@@ -97,54 +76,74 @@ class EventFinanceChart extends Component {
           onChange={this.onChange}
           buttonStyle="solid"
         >
-          <Radio.Button value="1">January - April</Radio.Button>
-          <Radio.Button value="2">May - August</Radio.Button>
-          <Radio.Button value="3">September - December</Radio.Button>
+          <Radio.Button value="1">June - August</Radio.Button>
+          <Radio.Button value="2">September - November</Radio.Button>
+          <Radio.Button value="3">December - February</Radio.Button>
+          <Radio.Button value="4">March - May</Radio.Button>
         </Radio.Group>
-        {data.length > 0 && (
-          <Chart
-            height={window.innerHeight}
-            data={dv}
-            scale={cols}
-            padding={[20, 160, 80, 60]}
-            forceFit
-          >
-            <Axis
-              name="totalamt"
-              label={{
-                formatter(val) {
-                  return `$${val}`;
-                },
-              }}
-            />
-            <Legend position="bottom" />
-            <Tooltip crosshairs={{ type: 'y' }} />
-            <Geom
-              type="interval"
-              position="name*totalamt"
-              color={[
-                'category',
-                category => colorMap[categories.indexOf(category)],
-              ]}
-              tooltip={[
-                'category*totalamt',
-                (category, totalamt) => ({
-                  name: category,
-                  value: totalamt,
-                }),
-              ]}
-              adjust={[
-                {
-                  type: 'dodge',
-                  dodgeBy: 'type',
-                  marginRatio: 0,
-                },
-                { type: 'stack' },
-              ]}
-            />
-          </Chart>
+        <br /> <br />
+        {filteredData.length > 0 && (
+          <div>
+            <Chart
+              height={400}
+              data={dv}
+              forceFit
+              padding={[50, 0, 80, 50]}
+              scale={cols}
+            >
+              <Axis name="Events" />
+              <Axis
+                name="Amount"
+                label={{
+                  formatter(val) {
+                    return `$${val}`;
+                  },
+                }}
+              />
+              <Legend />
+              <Tooltip crosshairs={{ type: 'y' }} />
+              <Geom
+                type="interval"
+                position="events*amount"
+                color="name"
+                adjust={[
+                  {
+                    type: 'dodge',
+                    marginRatio: 1 / 32,
+                  },
+                ]}
+              />
+              <Geom type="point" position="events*amount">
+                <Label
+                  content={[
+                    'name*amount',
+                    (name, amount) => (name === 'Income'
+                      ? `${name}:     \n$${amount}     `
+                      : `     ${name}:\n     $${amount}`),
+                  ]}
+                  offset={15}
+                  textStyle={(name) => {
+                    const style = {
+                      fill: '#404040',
+                      fontSize: '12',
+                      fontWeight: 'bold',
+                      textBaseline: 'middle',
+                    };
+                    const type = name.substring(0, name.indexOf(':'));
+                    if (type === 'Income') style.textAlign = 'right';
+                    else style.textAlign = 'left';
+                    return style;
+                  }}
+                />
+              </Geom>
+            </Chart>
+            <br />
+            <h1 style={{ textAlign: 'center' }}>
+              {`Event Finance Breakdown ${year} - ${year + 1}`}
+            </h1>
+          </div>
         )}
-        {data.length === 0 && (
+        {filteredData.length === 0 && (
           <Alert
             message="No data to display for selected period!"
             type="warning"
@@ -157,14 +156,3 @@ class EventFinanceChart extends Component {
 }
 
 export default EventFinanceChart;
-
-// <Label
-// content="totalamt"
-// // formatter={(val, item) => `${item.point.category}: $${item.point.totalamt}`
-// htmlTemplate={(text, item) => {
-//   const { point } = item;
-//   const { category, totalamt } = point;
-//   const categoryStr = category.substr(2, category.length);
-//   return `<span style="display: inline-block; padding-top: 80px">${categoryStr}: $${totalamt}</span>`;
-// }}
-// />

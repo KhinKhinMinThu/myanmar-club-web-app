@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Layout, Anchor } from 'antd';
+import { Layout, Anchor, Avatar } from 'antd';
 import { HeaderText, UserNameText } from '../shared-styled';
 import {
   DEFAULT,
@@ -85,6 +85,7 @@ class PrivatePage extends Component {
     const {
       computedMatch: { params },
       name,
+      photo,
       isEcMember,
       functNameList,
       // token,
@@ -139,6 +140,11 @@ class PrivatePage extends Component {
                 marginTop: '8px',
               }}
             >
+              <Avatar
+                shape="square"
+                src={photo}
+              />
+              {'   '}
               <UserNameText>{name}</UserNameText>
             </div>
             <MenuPanel

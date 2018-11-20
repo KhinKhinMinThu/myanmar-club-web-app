@@ -49,8 +49,8 @@ import {
   getIncidentSaga,
   postUpdateIncidentSaga,
 } from './incidentmgmt';
-import getChartsDataSaga from './charts';
-import getTaskListSaga from './task-list';
+import { getChartsSaga, getTasksSaga } from './charts';
+// import getTaskListSaga from './task-list';
 
 export default function* rootSaga() {
   yield all([
@@ -103,8 +103,8 @@ export default function* rootSaga() {
     getIncidentSaga,
     postUpdateIncidentSaga,
     // charts
-    getChartsDataSaga,
+    getChartsSaga,
     // task list
-    getTaskListSaga,
+    getTasksSaga,
   ]);
 }

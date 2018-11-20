@@ -17,6 +17,7 @@ const Default = props => (
 
 const PrivatePath = ({
   name,
+  photo,
   isLoggedIn,
   isEcMember,
   roleIdList,
@@ -28,6 +29,7 @@ const PrivatePath = ({
     <PrivatePage
       {...props}
       name={name}
+      photo={photo}
       isEcMember={isEcMember}
       functNameList={functNameList}
       token={token}
@@ -54,6 +56,7 @@ const mapStateToProps = (state) => {
   // const { isLoggedIn, isAdmin, token } = state.login.data;
   const {
     name,
+    photo,
     isLoggedIn,
     isEcMember,
     functNameList,
@@ -61,6 +64,7 @@ const mapStateToProps = (state) => {
   } = state.login.data;
   return {
     name,
+    photo,
     isLoggedIn,
     isEcMember,
     functNameList,
