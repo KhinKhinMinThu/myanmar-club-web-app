@@ -56,26 +56,26 @@ class DashboardPage extends Component {
     switch (item.taskType) {
       case 'New Membership Request':
         return [
-          <Tag color="#179E71"> {item.taskType} </Tag>,
+          <Tag color="#179E71"><a href={MEMBER_EDIT.concat('/').concat(item.id)}> {item.taskType} </a></Tag>,
         ];
       case 'Membership Renewal Request':
         return [
-          <Tag color="#4682B4"> {item.taskType} </Tag>,
+          <Tag color="#4682B4"><a href={MEMBER_EDIT.concat('/').concat(item.id)}> {item.taskType} </a></Tag>,
         ];
       case 'Event Closure':
         return [
-          <Tag color="#A52A2A"> {item.taskType} </Tag>,
+          <Tag color="#A52A2A"><a href={EVENT_EDIT.concat('/').concat(item.id)}> {item.taskType} </a></Tag>,
         ];
       case 'Claim Approval Request':
         return [
-          <Tag color="#808000"> {item.taskType} </Tag>,
+          <Tag color="#808000"><a href={CLAIM_MANAGEMENT}> {item.taskType} </a></Tag>,
         ];
       case 'Incident Follow-up':
         return [
-          <Tag color="#D2691E"> {item.taskType} </Tag>,
+          <Tag color="#D2691E"><a href={INCIDENT_EDIT.concat('/').concat(item.id)}> {item.taskType} </a></Tag>,
         ];
       default:
-        return [<Tag color="#A85E5E"> {item.taskType} </Tag>];
+        return [<Tag color="#F08080"> {item.taskType} </Tag>];
     }
   };
 
@@ -117,21 +117,21 @@ class DashboardPage extends Component {
     switch (item.pendingFor) {
       case '0':
         return [
-          <Tag color="geekblue" style={{ marginLeft: '1px' }}>
+          <Tag color="geekblue" style={{ marginLeft: '1px', cursor: 'default' }}>
             {' '}
             Today{' '}
           </Tag>,
         ];
       case '1':
         return [
-          <Tag color="blue" style={{ marginLeft: '1px' }}>
+          <Tag color="blue" style={{ marginLeft: '1px', cursor: 'default' }}>
             {' '}
             Yesterday{' '}
           </Tag>,
         ];
       default:
         return [
-          <Tag color="red" style={{ marginLeft: '1px' }}>
+          <Tag color="red" style={{ marginLeft: '1px', cursor: 'default' }}>
             Pending for {item.pendingFor} days
           </Tag>,
         ];
