@@ -173,9 +173,9 @@ class EventFinanceChart extends Component {
                 this.showModal(_origin, budgetBreakdown);
               }}
             >
-              <Axis name="Events" />
+              <Axis name="events" />
               <Axis
-                name="Amount"
+                name="amount"
                 label={{
                   formatter(val) {
                     return `$${val}`;
@@ -209,7 +209,7 @@ class EventFinanceChart extends Component {
                 <Label
                   content={[
                     'amount',
-                    amount => `$${amount}`,
+                    amount => (amount > 0 ? `$${amount}` : ''),
                   ]}
                   offset={10}
                 />
