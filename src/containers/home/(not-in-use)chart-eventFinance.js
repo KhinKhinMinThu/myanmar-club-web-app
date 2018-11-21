@@ -164,3 +164,27 @@ export default EventFinanceChart;
 //   return `<span style="display: inline-block; padding-top: 80px">${categoryStr}: $${totalamt}</span>`;
 // }}
 // />
+
+/* <Geom type="point" position="events*amount">
+                <Label
+                  content={[
+                    'name*amount',
+                    (name, amount) => (name === 'Income'
+                      ? `${name}:     \n$${amount}     `
+                      : `     ${name}:\n     $${amount}`),
+                  ]}
+                  offset={15}
+                  textStyle={(name) => {
+                    const style = {
+                      fill: '#404040',
+                      fontSize: '12',
+                      fontWeight: 'bold',
+                      textBaseline: 'middle',
+                    };
+                    const type = name.substring(0, name.indexOf(':'));
+                    if (type === 'Income') style.textAlign = 'right';
+                    else style.textAlign = 'left';
+                    return style;
+                  }}
+                />
+                </Geom> */

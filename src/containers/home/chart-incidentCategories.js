@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Chart, Geom, Axis, Tooltip,
+  Chart, Geom, Axis, Tooltip, Label,
 } from 'bizcharts';
 
 /* eslint react/prop-types: 0 */
@@ -18,7 +18,12 @@ const IncidentCategoriesChart = ({ incidentCategories }) => {
         <Axis name="type" />
         <Axis name="total" />
         <Tooltip crosshairs={{ type: 'y' }} />
-        <Geom type="interval" position="type*total" />
+        <Geom type="interval" position="type*total">
+          <Label
+            content={['total', total => (total === 0 ? '' : `${total}`)]}
+            offset={10}
+          />
+        </Geom>
       </Chart>
       <h1 style={{ textAlign: 'center' }}>{`Incident Types in ${year}`}</h1>
     </div>

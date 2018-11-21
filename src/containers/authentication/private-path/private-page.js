@@ -140,11 +140,7 @@ class PrivatePage extends Component {
                 marginTop: '8px',
               }}
             >
-              <Avatar
-                shape="square"
-                src={photo}
-              />
-              {'   '}
+              <Avatar shape="square" src={photo} style={{ marginRight: 10 }} />
               <UserNameText>{name}</UserNameText>
             </div>
             <MenuPanel

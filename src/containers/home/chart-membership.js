@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Chart, Geom, Axis, Tooltip, Legend,
+  Chart, Geom, Axis, Tooltip, Legend, Label,
 } from 'bizcharts';
 import DataSet from '@antv/data-set';
 
@@ -50,7 +50,7 @@ const MembershipChart = ({
   });
   return (
     <div>
-      <Chart height={400} data={dv} forceFit padding="auto">
+      <Chart height={400} data={dv} forceFit padding={[50, 0, 80, 50]}>
         <Axis name="Months" />
         <Axis name="Memberships" />
         <Legend />
@@ -60,7 +60,15 @@ const MembershipChart = ({
           position="months*memberships"
           color="name"
           adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]}
-        />
+        >
+          <Label
+            content={[
+              'memberships',
+              memberships => (memberships === 0 ? '' : `${memberships}`),
+            ]}
+            offset={10}
+          />
+        </Geom>
       </Chart>
       <br />
       <h1 style={{ textAlign: 'center' }}>
