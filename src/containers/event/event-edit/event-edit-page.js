@@ -39,6 +39,7 @@ import EventDescriptionInput from '../eventDescriptionInput';
 import {
   DeleteEventSwitch,
   EventStatusSwitch,
+  DirectPaymentSwitch,
   SaveUpdateButton,
 } from './components';
 import {
@@ -178,6 +179,7 @@ class EventEdit extends Component {
           endDate,
           mobilePhone,
           eventStatus: formValues.eventStatus ? '1' : '0',
+          directPayment: formValues.directPayment ? '1' : '0',
           uploadBtn: fileList,
           photoLink: getFieldValue('photoLink'),
         };
@@ -315,6 +317,7 @@ class EventEdit extends Component {
               </Card>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
                 <EventStatusSwitch decorator={getFieldDecorator} />
+                <DirectPaymentSwitch decorator={getFieldDecorator} />
                 <DeleteEventSwitch decorator={getFieldDecorator} />
                 <br />
                 <Row gutter={8}>
@@ -412,6 +415,9 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
     }),
     eventStatus: Form.createFormField({
       value: event.eventStatus === '1',
+    }),
+    directPayment: Form.createFormField({
+      value: event.directPayment === '1',
     }),
     startDate: Form.createFormField({
       value: formatDate(event.startDate),

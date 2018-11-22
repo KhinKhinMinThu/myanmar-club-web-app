@@ -121,7 +121,7 @@ class EventRegistration extends Component {
     const {
       form: { setFieldsValue, getFieldValue },
     } = this.props;
-    const { showDirectPayment, paymentOption } = this.state;
+    const { showDirectPayment } = this.state;
     const ticketNum = getFieldValue('memberNoOfPax');
     const ticketPrice = getFieldValue('ticketFee');
     let totalAmt = ticketNum * ticketPrice;
@@ -141,7 +141,7 @@ class EventRegistration extends Component {
       } else {
         this.setState({ paymentOption: 'Cash' });
       }
-      console.log('payment Type', paymentOption);
+      // console.log('payment Type', paymentOption);
       // hide the fields with validator
     }
   };
@@ -198,8 +198,10 @@ class EventRegistration extends Component {
 
   render() {
     const {
-      form: { getFieldDecorator },
-      eventmgmtData: { isGetApiLoading, getErrMsg, isPostApiLoading },
+      form: { getFieldDecorator, getFieldValue },
+      eventmgmtData: {
+        isGetApiLoading, getErrMsg, isPostApiLoading,
+      },
     } = this.props;
     const {
       total,
@@ -207,7 +209,6 @@ class EventRegistration extends Component {
       showDirectPayment,
       paymentOption,
     } = this.state;
-    // console.log('total', total);
     const onError = (error) => {
       console.log('Erroneous payment OR failed to load script!', error);
       Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
@@ -264,6 +265,7 @@ class EventRegistration extends Component {
                       showDirectPayment={showDirectPayment}
                       paymentOption={paymentOption}
                       onSelect={this.onSelect}
+                      directPaymentDisabled={getFieldValue('directPaymentDisabled')}
                     />
                     <br />
                     <EventRegisterButton />
@@ -328,6 +330,9 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
   // console.log('event data', eventData);
   return {
     id: Form.createFormField({ value: event.id }),
+    directPaymentDisabled: Form.createFormField({
+      value: event.directPayment !== '1',
+    }),
     photoLink: Form.createFormField({ value: event.photoLink }),
     name: Form.createFormField({ value: event.name }),
     description: Form.createFormField({ value: event.description }),

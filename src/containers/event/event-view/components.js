@@ -109,17 +109,20 @@ export const EventData3 = ({ decorator }) => (
     >
       {decorator('isRefreshmentProvided')(<Input {...readOnlyInput} />)}
     </FormItem>
+    <FormItem {...layout} style={{ marginBottom: 0 }} label="Direct Payment (PayPal)">
+      {decorator('directPayment')(<Input {...readOnlyInput} />)}
+    </FormItem>
   </div>
 );
 export const EventData4 = ({ decorator }) => (
   <div>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Contact Person">
+    <FormItem {...layout} style={{ marginBottom: 0, marginTop: 8 }} label="Contact Person">
       {decorator('contactPerson')(<Input {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Email Address">
       {decorator('emailAddress')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Mobile No">
+    <FormItem {...layout} style={{ marginBottom: 1 }} label="Mobile No">
       {decorator('mobilePhone')(<Input {...readOnlyInput} />)}
     </FormItem>
   </div>
@@ -129,7 +132,7 @@ export const EventData5 = ({ decorator }) => (
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Created By">
       {decorator('createdBy')(<Input {...readOnlyInput} />)}
     </FormItem>
-    <FormItem {...layout} style={{ marginBottom: 0 }} label="Created Date">
+    <FormItem {...layout} style={{ marginBottom: 7 }} label="Created Date">
       {decorator('createdDate')(<Input {...readOnlyInput} />)}
     </FormItem>
   </div>

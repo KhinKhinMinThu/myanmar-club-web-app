@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   Icon,
+  Switch,
 } from 'antd';
 import { SelectedText, MarginLeftButton, FullButton } from './shared-styled';
 
@@ -202,6 +203,17 @@ export const RefreshmentRadio = ({ decorator }) => (
         <RadioButton value="0">No</RadioButton>
       </RadioGroup>,
     )}
+  </FormItem>
+);
+
+// Direct Payment Switch
+
+export const DirectPaymentSwitch = ({ decorator }) => (
+  <FormItem {...layoutHalf} label="Direct Payment (PayPal)">
+    {decorator('directPayment', {
+      valuePropName: 'checked',
+      initialValue: false,
+    })(<Switch checkedChildren="Unabled" unCheckedChildren="Disabled" />)}
   </FormItem>
 );
 

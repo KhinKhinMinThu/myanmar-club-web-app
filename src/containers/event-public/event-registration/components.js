@@ -147,12 +147,13 @@ export const Payment = ({
   onSelect,
   showDirectPayment,
   paymentOption,
+  directPaymentDisabled,
 }) => (
   <FormItem {...layout} label="Payment Method">
     <FormItem>
       {decorator('paymentType', { initialValue: 'Bank Transfer' })(
         <RadioGroup name="paymentTypeRdo" onChange={onSelect}>
-          <RadioButton value="Direct Online Payment" disabled>
+          <RadioButton value="Direct Online Payment" disabled={directPaymentDisabled}>
             Direct Online Payment
           </RadioButton>
           <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>
@@ -444,6 +445,9 @@ export const EventData = ({ decorator }) => (
     <br />
     <FormItem {...layout} style={{ marginBottom: 0 }}>
       {decorator('id')(<Input type="hidden" {...readOnlyInput} />)}
+    </FormItem>
+    <FormItem {...layout} style={{ marginBottom: 0 }}>
+      {decorator('directPaymentDisabled', { initialValue: true })(<Input type="hidden" {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Name">
       {decorator('name')(<Input {...readOnlyInput} />)}

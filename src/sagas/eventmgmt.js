@@ -109,6 +109,7 @@ const postNewEvent = (newEventToAdd, authHeader) => api.post(
     emailAddress: newEventToAdd.emailAddress,
     mobilePhone: newEventToAdd.mobilePhone,
     eventStatus: newEventToAdd.eventStatus,
+    directPayment: newEventToAdd.directPayment,
   },
   authHeader,
 );
@@ -145,6 +146,7 @@ const postUpdateEvent = (eventToUpdate, authHeader) => api.post(
     emailAddress: eventToUpdate.emailAddress,
     mobilePhone: eventToUpdate.mobilePhone,
     eventStatus: eventToUpdate.eventStatus,
+    directPayment: eventToUpdate.directPayment,
   },
   authHeader,
 );
