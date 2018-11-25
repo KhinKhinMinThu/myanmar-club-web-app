@@ -76,9 +76,9 @@ class EventRegistration extends Component {
     if (postErrMsg) {
       Modal.error({ title: 'Error!', content: postErrMsg });
     } else if (showDirectPayment) {
-      Modal.success({ title: 'Success!', content: SUCCESS_NEWEVENTRSVP });
-    } else {
       Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
+    } else {
+      Modal.success({ title: 'Success!', content: SUCCESS_NEWEVENTRSVP });
     }
   }
 
