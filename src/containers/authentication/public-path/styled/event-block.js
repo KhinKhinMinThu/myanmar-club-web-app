@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const EventBlockContainer = styled.div`
-  width: 80%;
+  width: 70%;
   padding: 1em;
   height: 18em;
   background-color: '#fff';
@@ -18,7 +18,7 @@ export const EventImage = styled.img`
 `;
 
 export const EventTextContainer = styled.div`
-  width: 65%;
+  width: 63%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

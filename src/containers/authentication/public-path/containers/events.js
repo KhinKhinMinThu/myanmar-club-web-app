@@ -61,7 +61,12 @@ class Events extends Component {
 
     return (
       <Content
-        style={{ display: 'flex', justifyContent: 'center' }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
         <Spin spinning={isGetApiLoading} size="large" delay={1000} />
 
