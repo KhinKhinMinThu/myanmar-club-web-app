@@ -18,7 +18,7 @@ export const RELIGION_LIST = ['buddhism', 'islam', 'hinduism', 'christianity'];
 export const STRING_MAX_LEN = 255;
 export const STRING_MAX_LEN2 = 2000;
 
-export const ENV = 'sandbox';
+export const ENV = 'production';
 export const CLIENT_ACC = {
   sandbox:
     'AbUbuK0ObTjdeftpghhk_mC2j9QVMLX39pBYjLgmSYgHzCaD6mA1qYMmMa3z9iJLr6_WJWGsaJuzFUYz',

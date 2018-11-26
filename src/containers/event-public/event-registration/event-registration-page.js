@@ -86,7 +86,6 @@ class EventRegistration extends Component {
     const {
       form: { setFieldsValue, getFieldValue },
     } = this.props;
-    // console.log('toggleDirectPayment', showDirectPayment);
     const ticketNum = getFieldValue('memberNoOfPax');
     const ticketPrice = getFieldValue('ticketFee');
     let totalAmt = ticketNum * ticketPrice;
@@ -199,9 +198,7 @@ class EventRegistration extends Component {
   render() {
     const {
       form: { getFieldDecorator, getFieldValue },
-      eventmgmtData: {
-        isGetApiLoading, getErrMsg, isPostApiLoading,
-      },
+      eventmgmtData: { isGetApiLoading, getErrMsg, isPostApiLoading },
     } = this.props;
     const {
       total,
@@ -216,9 +213,25 @@ class EventRegistration extends Component {
 
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
+      const {
+        form: { setFieldsValue },
+      } = this.props;
       Modal.warning({
         title: 'Payment Cancellation!',
         content: CANCEL_PAYMENT,
+        onOk: () => {
+          const ticketNum = getFieldValue('memberNoOfPax');
+          const ticketPrice = getFieldValue('ticketFee');
+          let totalAmt = ticketNum * ticketPrice;
+          if (ticketNum === undefined) {
+            totalAmt = 0;
+          }
+          this.setState({ total: totalAmt });
+          setFieldsValue({ totalAmount: totalAmt, ticketNum, ticketPrice });
+        },
+      });
+      this.setState({
+        isModalVisible: false,
       });
     };
 
@@ -265,7 +278,9 @@ class EventRegistration extends Component {
                       showDirectPayment={showDirectPayment}
                       paymentOption={paymentOption}
                       onSelect={this.onSelect}
-                      directPaymentDisabled={getFieldValue('directPaymentDisabled')}
+                      directPaymentDisabled={getFieldValue(
+                        'directPaymentDisabled',
+                      )}
                     />
                     <br />
                     <EventRegisterButton />
