@@ -31,6 +31,8 @@ function* asyncGetAccessControlData() {
       const { accesscontrolData, errorMsg } = response.data;
       errMsg = errorMsg;
       yield put({ type: ACCESSCONTROLDATA, payload: accesscontrolData });
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;

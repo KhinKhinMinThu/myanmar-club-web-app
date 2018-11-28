@@ -29,6 +29,8 @@ function* asyncGetEventTranscData() {
       const { eventsData, errorMsg } = response.data;
       errMsg = errorMsg;
       yield put({ type: EVENTTRANSACDATA, payload: eventsData });
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
@@ -86,9 +88,12 @@ function* asyncPostProcessEventTransc(action) {
         authHeader,
       );
     }
-
-    const { errorMsg } = response.data;
-    errMsg = errorMsg;
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

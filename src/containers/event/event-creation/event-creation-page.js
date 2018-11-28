@@ -24,6 +24,7 @@ import {
   MobileNoInput,
   CreateButton,
   BackButton,
+  DirectPaymentSwitch,
 } from '../shared-components';
 import StartDateTimePicker from '../startDateTimePicker';
 import EndDateTimePicker from '../endDateTimePicker';
@@ -84,6 +85,7 @@ class EventCreation extends Component {
           startDate,
           endDate,
           mobilePhone,
+          directPayment: formValues.directPayment ? '1' : '0',
           eventStatus: '1',
           uploadBtn: fileList,
         });
@@ -189,12 +191,10 @@ class EventCreation extends Component {
             </Col>
             <Col {...layout}>
               <Card style={{ borderRadius: 15, margin: '0 auto 8px auto' }}>
-                <br />
-                <br />
                 <TicketFeeInput decorator={getFieldDecorator} />
                 <NumPaxInput decorator={getFieldDecorator} />
                 <RefreshmentRadio decorator={getFieldDecorator} />
-                <br />
+                <DirectPaymentSwitch decorator={getFieldDecorator} />
               </Card>
             </Col>
           </Row>

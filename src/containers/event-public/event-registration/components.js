@@ -147,12 +147,13 @@ export const Payment = ({
   onSelect,
   showDirectPayment,
   paymentOption,
+  directPaymentDisabled,
 }) => (
   <FormItem {...layout} label="Payment Method">
     <FormItem>
       {decorator('paymentType', { initialValue: 'Bank Transfer' })(
         <RadioGroup name="paymentTypeRdo" onChange={onSelect}>
-          <RadioButton value="Direct Online Payment">
+          <RadioButton value="Direct Online Payment" disabled={directPaymentDisabled}>
             Direct Online Payment
           </RadioButton>
           <RadioButton value="Bank Transfer">Bank Transfer</RadioButton>
@@ -162,8 +163,8 @@ export const Payment = ({
     </FormItem>
     {/* show text input if nationality is others */}
     {showDirectPayment && (
-      <Col span={1}>
-        <Card style={{ width: '400px', textAlign: 'left' }}>
+      <Col span={24}>
+        <Card style={{ width: '100%', textAlign: 'left' }}>
           <FormItem
             {...layout}
             style={{ marginBottom: 0, fontWeight: 'bold' }}
@@ -216,8 +217,8 @@ export const Payment = ({
     )}
     {!showDirectPayment
       && paymentOption === 'Bank' && (
-        <Col span={1}>
-          <Card style={{ width: '480px', textAlign: 'left' }}>
+        <Col span={24}>
+          <Card style={{ width: '100%', textAlign: 'left' }}>
             <FormItem
               {...layout}
               style={{ marginBottom: 0, fontWeight: 'bold' }}
@@ -286,8 +287,8 @@ export const Payment = ({
     )}
     {!showDirectPayment
       && paymentOption === 'Cash' && (
-        <Col span={1}>
-          <Card style={{ width: '480px', textAlign: 'left', marginBottom: '21px' }}>
+        <Col span={24}>
+          <Card style={{ width: '100%', textAlign: 'left', marginBottom: '21px' }}>
             <FormItem
               {...layout}
               style={{ marginBottom: 0, fontWeight: 'bold' }}
@@ -444,6 +445,9 @@ export const EventData = ({ decorator }) => (
     <br />
     <FormItem {...layout} style={{ marginBottom: 0 }}>
       {decorator('id')(<Input type="hidden" {...readOnlyInput} />)}
+    </FormItem>
+    <FormItem {...layout} style={{ marginBottom: 0 }}>
+      {decorator('directPaymentDisabled', { initialValue: true })(<Input type="hidden" {...readOnlyInput} />)}
     </FormItem>
     <FormItem {...layout} style={{ marginBottom: 0 }} label="Event Name">
       {decorator('name')(<Input {...readOnlyInput} />)}

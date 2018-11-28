@@ -69,12 +69,14 @@ class EventRegistration extends Component {
     const {
       eventmgmtData: { isPostApiLoading, postErrMsg },
     } = this.props;
-
+    const { showDirectPayment } = this.state;
     const isApiPost = prevProps.eventmgmtData.isPostApiLoading && !isPostApiLoading;
     if (!isApiPost) return;
 
     if (postErrMsg) {
       Modal.error({ title: 'Error!', content: postErrMsg });
+    } else if (showDirectPayment) {
+      Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
     } else {
       Modal.success({ title: 'Success!', content: SUCCESS_NEWEVENTRSVP });
     }
@@ -84,10 +86,12 @@ class EventRegistration extends Component {
     const {
       form: { setFieldsValue, getFieldValue },
     } = this.props;
-    // console.log('toggleDirectPayment', showDirectPayment);
     const ticketNum = getFieldValue('memberNoOfPax');
     const ticketPrice = getFieldValue('ticketFee');
-    const totalAmt = ticketNum * ticketPrice;
+    let totalAmt = ticketNum * ticketPrice;
+    if (ticketNum === undefined) {
+      totalAmt = 0;
+    }
     this.setState({ total: totalAmt });
     setFieldsValue({ totalAmount: totalAmt, ticketNum, ticketPrice });
     this.setState({
@@ -116,7 +120,7 @@ class EventRegistration extends Component {
     const {
       form: { setFieldsValue, getFieldValue },
     } = this.props;
-    const { showDirectPayment, paymentOption } = this.state;
+    const { showDirectPayment } = this.state;
     const ticketNum = getFieldValue('memberNoOfPax');
     const ticketPrice = getFieldValue('ticketFee');
     let totalAmt = ticketNum * ticketPrice;
@@ -136,7 +140,7 @@ class EventRegistration extends Component {
       } else {
         this.setState({ paymentOption: 'Cash' });
       }
-      console.log('payment Type', paymentOption);
+      // console.log('payment Type', paymentOption);
       // hide the fields with validator
     }
   };
@@ -147,7 +151,7 @@ class EventRegistration extends Component {
       performNewRSVP,
     } = this.props;
     console.log('Successful payment!', payment);
-    Modal.success({ title: 'Success!', content: SUCCESS_PAYMENT });
+    this.setState({ isModalVisible: false });
     const formValues = getFieldsValue();
     const memberMobilePhone = formValues.memberMobilePhone
       ? formValues.memberAreaCode + formValues.memberMobilePhone
@@ -166,7 +170,7 @@ class EventRegistration extends Component {
     } = this.props;
     const paymentType = getFieldValue('paymentType');
     validateFieldsAndScroll((error, values) => {
-      console.log('form values', values);
+      // console.log('form values', values);
       if (!error && paymentType === 'Direct Online Payment') {
         // console.log('toggleDirectPayment', showDirectPayment);
         const ticketNum = getFieldValue('memberNoOfPax');
@@ -193,8 +197,8 @@ class EventRegistration extends Component {
 
   render() {
     const {
-      form: { getFieldDecorator },
-      eventmgmtData: { isGetApiLoading, getErrMsg },
+      form: { getFieldDecorator, getFieldValue },
+      eventmgmtData: { isGetApiLoading, getErrMsg, isPostApiLoading },
     } = this.props;
     const {
       total,
@@ -202,7 +206,6 @@ class EventRegistration extends Component {
       showDirectPayment,
       paymentOption,
     } = this.state;
-    console.log('total', total);
     const onError = (error) => {
       console.log('Erroneous payment OR failed to load script!', error);
       Modal.error({ title: 'Error!', content: ERROR_PAYMENT });
@@ -210,9 +213,25 @@ class EventRegistration extends Component {
 
     const onCancel = (data) => {
       console.log('Cancelled payment!', data);
+      const {
+        form: { setFieldsValue },
+      } = this.props;
       Modal.warning({
         title: 'Payment Cancellation!',
         content: CANCEL_PAYMENT,
+        onOk: () => {
+          const ticketNum = getFieldValue('memberNoOfPax');
+          const ticketPrice = getFieldValue('ticketFee');
+          let totalAmt = ticketNum * ticketPrice;
+          if (ticketNum === undefined) {
+            totalAmt = 0;
+          }
+          this.setState({ total: totalAmt });
+          setFieldsValue({ totalAmount: totalAmt, ticketNum, ticketPrice });
+        },
+      });
+      this.setState({
+        isModalVisible: false,
       });
     };
 
@@ -226,10 +245,9 @@ class EventRegistration extends Component {
             showIcon
           />
         ) : (
-          <div>
-            <h2>Event Registeration</h2>
+          <Spin spinning={isPostApiLoading} size="large" delay={1000}>
             <Form onSubmit={this.onSubmit}>
-              <Row gutter={8}>
+              <Row gutter={8} justify="start">
                 <Col span={10}>
                   <Card
                     style={{
@@ -260,6 +278,9 @@ class EventRegistration extends Component {
                       showDirectPayment={showDirectPayment}
                       paymentOption={paymentOption}
                       onSelect={this.onSelect}
+                      directPaymentDisabled={getFieldValue(
+                        'directPaymentDisabled',
+                      )}
                     />
                     <br />
                     <EventRegisterButton />
@@ -276,7 +297,7 @@ class EventRegistration extends Component {
                 </Col>
               </Row>
             </Form>
-          </div>
+          </Spin>
         )}
       </Spin>
     );
@@ -324,6 +345,9 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
   // console.log('event data', eventData);
   return {
     id: Form.createFormField({ value: event.id }),
+    directPaymentDisabled: Form.createFormField({
+      value: event.directPayment !== '1',
+    }),
     photoLink: Form.createFormField({ value: event.photoLink }),
     name: Form.createFormField({ value: event.name }),
     description: Form.createFormField({ value: event.description }),

@@ -9,7 +9,6 @@ import { persistor, store, history } from './store';
 import PrivatePath from '../containers/authentication/private-path';
 import PublicPath from '../containers/authentication/public-path';
 
-
 const App = () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>
@@ -24,6 +23,7 @@ const App = () => (
             <PublicPath exact path="/:pathname/:id?" />
             {/* all other paths */}
             <PublicPath path="*" />
+            {/* <PublicSite /> */}
           </Switch>
         </div>
       </ConnectedRouter>

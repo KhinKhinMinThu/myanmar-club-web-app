@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import { connect } from 'react-redux';
-import dashboardImg from '../../../images/dashaboard.jpg';
+import dashboardImg from '../../images/dashaboard.jpg';
 
 const DashboardPage = ({ loginData }) => {
   const { name } = loginData;

@@ -41,6 +41,8 @@ function* asyncGetClaimsData() {
         yield put({ type: NEWCLAIMSDATA, payload: newClaimsList });
         yield put({ type: OLDCLAIMSDATA, payload: oldClaimsList });
       }
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
@@ -85,8 +87,12 @@ function* asyncPostProcessClaims(action) {
         authHeader,
       );
     }
-    const { errorMsg } = response.data;
-    errMsg = errorMsg;
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

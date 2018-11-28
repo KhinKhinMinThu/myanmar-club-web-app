@@ -33,6 +33,7 @@ function* asyncLogin(action) {
       isEcMember,
       id,
       name,
+      photo,
       roleList,
       functionList,
       token,
@@ -53,6 +54,7 @@ function* asyncLogin(action) {
         isEcMember,
         id,
         name,
+        photo,
         roleIdList, // required for controlling RoleAssignment at MemberEdit Page for Admin
         functNameList, // required for menu & page access control
         token,

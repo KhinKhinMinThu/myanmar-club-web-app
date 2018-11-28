@@ -1,6 +1,6 @@
 // LIVE: 54.179.143.171
 // DEV: 52.39.145.149
-export const BASE_URL = 'http://52.39.145.149/MyanmarClubAPI';
+export const BASE_URL = 'http://54.191.128.23/MyanmarClubAPI';
 
 export const TIMEZONE = 'Asia/Singapore';
 export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
@@ -71,7 +71,8 @@ export const APIGET_MEBERFORMFIELDS = '/admin/memberFormFields';
 export const APIGET_ACCESS_CONTROL = '/admin/getAccessControlData';
 export const APIGET_INCIDENTTPYES = '/incident/getIncidentTypes';
 export const APIGET_SUBMITTEDBY = '/incident/getSubmittedBy';
-
+export const APIGET_CHARTSDATA = '/admin/populateCharts';
+export const APIGET_TASKDATA = '/admin/taskData';
 // end
 
 // POST API URLS

@@ -52,11 +52,11 @@ class EventPage extends Component {
   }
 
   onClickNotify = (id, url) => {
+    const { performNotifyEvent } = this.props;
     Modal.confirm({
       title: 'Confirmation!',
       content: CONFIRM_NOTIFYEVENT,
       onOk() {
-        const { performNotifyEvent } = this.props;
         performNotifyEvent({ id, url });
       },
     });
@@ -130,6 +130,7 @@ class EventPage extends Component {
               <EventData4 decorator={getFieldDecorator} />
               <br />
               <EventData5 decorator={getFieldDecorator} />
+              <br />
             </Card>
           </Col>
         </Row>
@@ -195,6 +196,9 @@ const mapPropsToFields = ({ eventmgmtData: { eventData } }) => {
     noOfPax: Form.createFormField({ value: event.noOfPax }),
     isRefreshmentProvided: Form.createFormField({
       value: event.isRefreshmentProvided === '1' ? 'Yes' : 'No',
+    }),
+    directPayment: Form.createFormField({
+      value: event.directPayment === '1' ? 'Enabled' : 'Disabled',
     }),
     contactPerson: Form.createFormField({ value: event.contactPerson }),
     emailAddress: Form.createFormField({ value: event.emailAddress }),

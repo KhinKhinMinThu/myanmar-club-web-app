@@ -72,6 +72,8 @@ function* asyncGetIncidentData(action) {
 
       errMsg = errorMsg;
       yield put({ type: INCIDENT, payload: incident });
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
@@ -115,7 +117,12 @@ function* asyncGetIncidentsData() {
     response = yield call(postSearchIncidents, { default: '1' }, authHeader);
     yield put({ type: INCIDENTS, payload: response.data.incidents });
 
-    errMsg = response.data.errorMsg ? response.data.errMsg : '';
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {
@@ -183,8 +190,12 @@ function* asyncPostProcessIncident(action) {
       default:
     }
 
-    const { errorMsg } = response.data;
-    errMsg = errorMsg;
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

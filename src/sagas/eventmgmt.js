@@ -52,6 +52,8 @@ function* asyncGetEventData(action) {
       const { eventData, errorMsg } = response.data;
       errMsg = errorMsg;
       yield put({ type: EVENTDATA, payload: eventData });
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
@@ -71,6 +73,8 @@ function* asyncGetEventsData() {
       const { eventsData, errorMsg } = response.data;
       errMsg = errorMsg;
       yield put({ type: EVENTSDATA, payload: eventsData });
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
@@ -105,6 +109,7 @@ const postNewEvent = (newEventToAdd, authHeader) => api.post(
     emailAddress: newEventToAdd.emailAddress,
     mobilePhone: newEventToAdd.mobilePhone,
     eventStatus: newEventToAdd.eventStatus,
+    directPayment: newEventToAdd.directPayment,
   },
   authHeader,
 );
@@ -141,6 +146,7 @@ const postUpdateEvent = (eventToUpdate, authHeader) => api.post(
     emailAddress: eventToUpdate.emailAddress,
     mobilePhone: eventToUpdate.mobilePhone,
     eventStatus: eventToUpdate.eventStatus,
+    directPayment: eventToUpdate.directPayment,
   },
   authHeader,
 );
@@ -272,8 +278,12 @@ function* asyncPostProcessEvents(action) {
         break;
       default:
     }
-    const { errorMsg } = response.data;
-    errMsg = errorMsg;
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

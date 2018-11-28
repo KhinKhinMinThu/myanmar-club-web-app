@@ -61,6 +61,8 @@ function* asyncGetMemberData(action) {
           // call formfields
           yield put({ type: GET_MEMBERFORMFIELDS });
         }
+      } else {
+        errMsg = 'Error: Request failed with status code 404';
       }
     }
     if (action.type === GET_MEMBERFORMFIELDS) {
@@ -78,6 +80,8 @@ function* asyncGetMemberData(action) {
           });
           yield put({ type: MEMBERFORMFIELDS, payload: memberFormFields });
         }
+      } else {
+        errMsg = 'Error: Request failed with status code 404';
       }
     }
   } catch (e) {
@@ -108,6 +112,8 @@ function* asyncGetMembersData() {
         yield put({ type: ECMEMBERSDATA, payload: ecMembersList });
         yield put({ type: CLUBMEMBERSDATA, payload: clubMembersList });
       }
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
@@ -324,9 +330,12 @@ function* asyncPostProcessMembers(action) {
         break;
       default:
     }
-
-    const { errorMsg } = response.data;
-    errMsg = errorMsg;
+    if (response) {
+      const { errorMsg } = response.data;
+      errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
+    }
   } catch (e) {
     errMsg = e.message;
   } finally {

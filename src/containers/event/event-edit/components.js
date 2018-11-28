@@ -41,6 +41,15 @@ export const EventStatusSwitch = ({ decorator }) => (
   </FormItem>
 );
 
+export const DirectPaymentSwitch = ({ decorator }) => (
+  <FormItem {...layout} label="Direct Payment (PayPal)">
+    {decorator('directPayment', {
+      valuePropName: 'checked',
+      initialValue: true,
+    })(<Switch checkedChildren="Unabled" unCheckedChildren="Disabled" />)}
+  </FormItem>
+);
+
 export const SaveUpdateButton = () => (
   <FullButton type="primary" htmlType="submit">
     Save Update

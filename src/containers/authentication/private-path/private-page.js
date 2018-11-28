@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Layout, Anchor } from 'antd';
+import { Layout, Anchor, Avatar } from 'antd';
 import { HeaderText, UserNameText } from '../shared-styled';
 import {
   DEFAULT,
@@ -22,8 +22,9 @@ import {
   INCIDENT_EDIT,
 } from '../../../actions/location';
 import logo from '../../../images/logo.jpg';
+import loginImg from '../../../images/login.jpg';
 import MenuPanel from './components';
-import Dashboard from './home-ex';
+import Dashboard from '../../home';
 import ErrorPage from '../error-page';
 import RoleManagementPage from '../../user-role/user-role-management';
 import RoleFunctionManagementPage from '../../access-control';
@@ -84,6 +85,7 @@ class PrivatePage extends Component {
     const {
       computedMatch: { params },
       name,
+      photo,
       isEcMember,
       functNameList,
       // token,
@@ -94,12 +96,26 @@ class PrivatePage extends Component {
       ? this.switchPageEcMember(path, id, functNameList)
       : this.switchPageClubMember(path);
 
-    console.log('private props:', this.props);
-    console.log('pathname:', path);
-
+    let contentStyle;
+    if (Page === ErrorPage) {
+      contentStyle = {
+        backgroundImage: `url(${loginImg})`,
+        backgroundSize: '100% auto',
+        backgroundRepeat: 'no-repeat',
+      };
+    } else {
+      contentStyle = {
+        background: '#ffffff',
+      };
+    }
+    // console.log('private props:', this.props);
+    // console.log('pathname:', path);
+    // <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
     return (
-      <Layout style={{ minWidth: '1500px', background: '#ffffff' }}>
+      <Layout style={{ background: '#ffffff' }}>
         <Sider
+          breakpoint="lg"
+          collapsedWidth="0"
           width={siderWidth}
           style={{
             background: '#ffffff',
@@ -124,6 +140,7 @@ class PrivatePage extends Component {
                 marginTop: '8px',
               }}
             >
+              <Avatar shape="square" src={photo} style={{ marginRight: 10 }} />
               <UserNameText>{name}</UserNameText>
             </div>
             <MenuPanel
@@ -146,14 +163,15 @@ class PrivatePage extends Component {
           </Header>
           <Content
             style={{
+              ...contentStyle,
               margin: '5px',
-              background: '#ffffff',
               padding: '10px 10px 10px 10px',
+              minHeight: 560,
             }}
           >
             <Page {...this.props} />
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={{ textAlign: 'center', background: '#ffffff' }}>
             MyanmarClub Portal ©2018 developed by{' '}
             <a href="https://wiki.smu.edu.sg/is480/IS480_Team_wiki%3A_2018T1_PentaHive_AboutPentaHive">
               PentaHive

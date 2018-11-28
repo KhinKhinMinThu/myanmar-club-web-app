@@ -20,6 +20,8 @@ function* asyncPostForgotPwd(action) {
     if (response) {
       const { errorMsg } = response.data;
       errMsg = errorMsg;
+    } else {
+      errMsg = 'Error: Request failed with status code 404';
     }
   } catch (e) {
     errMsg = e.message;
