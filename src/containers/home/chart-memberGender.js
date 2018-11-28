@@ -7,10 +7,10 @@ import {
 const MemberGenderChart = ({ membersAges }) => {
   const tmp = membersAges;
   const scale = {
-    // range: {
-    //   sync: true,
-    //   tickCount: 11,
-    // },
+    range: {
+      sync: true,
+      tickCount: 0,
+    },
     count: {
       sync: true,
       tickInterval: 1,
