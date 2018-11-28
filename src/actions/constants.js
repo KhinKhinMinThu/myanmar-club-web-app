@@ -1,6 +1,6 @@
 // LIVE: 54.179.143.171
-// DEV: 52.39.145.149
-export const BASE_URL = 'http://54.191.128.23/MyanmarClubAPI';
+// DEV: 54.191.128.23
+export const BASE_URL = 'http://54.179.143.171/MyanmarClubAPI';
 
 export const TIMEZONE = 'Asia/Singapore';
 export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';

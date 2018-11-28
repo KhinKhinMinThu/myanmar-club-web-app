@@ -13,7 +13,7 @@ const MemberGenderChart = ({ membersAges }) => {
     },
     count: {
       sync: true,
-      tickInterval: 1,
+      tickInterval: 10,
     },
     gender: {
       sync: true,

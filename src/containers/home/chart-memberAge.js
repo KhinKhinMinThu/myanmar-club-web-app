@@ -1,6 +1,13 @@
 import React from 'react';
 import {
-  Chart, Geom, Tooltip, Coord, Label, View, Guide,
+  Chart,
+  Geom,
+  Tooltip,
+  Coord,
+  Label,
+  View,
+  Guide,
+  Legend,
 } from 'bizcharts';
 import DataSet from '@antv/data-set';
 
@@ -57,11 +64,12 @@ const MemberAgeChart = ({ membersAges }) => {
         forceFit
       >
         <Coord type="theta" radius={0.8} innerRadius={0.2} />
-
+        <Legend />
         <Tooltip
           showTitle={false}
           itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
         />
+        <Legend name="gender" visible={false} />
         <Guide>
           <Text
             position={['50%', '50%']}
