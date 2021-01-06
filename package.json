@@ -9,7 +9,7 @@
   "dependencies": {
     "@antv/data-set": "^0.9.6",
     "antd": "^3.9.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "axios-token-interceptor": "^0.1.0",
     "bizcharts": "^3.2.4",
     "colormap": "^2.3.0",
